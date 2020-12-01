@@ -8,14 +8,17 @@ namespace AoC2020
     {
         public List<string> Input { get; }
 
-        protected Solution(string day) =>
-            Input = File.ReadAllText($"../../../../input/{day}.txt")
+        protected Solution( ) => Input = ParseInput(GetType( ).Name);
+
+        protected Solution(string day) => Input = ParseInput(day);
+
+        private List<string> ParseInput(string file) =>
+            File.ReadAllText($"../../../../input/{file}.txt")
                 .Split(',')
-                .ToList()
-                .Select(s => s.Trim())
-                .ToList();
-                
-        
+                .Select(s => s.Trim( ))
+                .Where(s => !string.IsNullOrEmpty(s))
+                .ToList( );        
+
         public abstract int SolvePart1( );
         public abstract int SolvePart2( );
     }

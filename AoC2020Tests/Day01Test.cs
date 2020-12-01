@@ -10,34 +10,27 @@ namespace AoC2020Tests
         [SetUp]
         public void Setup( )
         {
-
+            day01 = new Day01("day01test1");
         }
 
         [Test]
         public void Part1( )
         {
-            day01 = new Day01("day01test1");
-
             var expected = 514579;
 
             var result = day01.SolvePart1( );
 
             Assert.AreEqual(expected, result);
-
         }
 
         [Test]
         public void Part2( )
         {
-            {
-                day01 = new Day01("day01test1");
+            var expected = 241861950;
 
-                var expected = 241861950;
+            var result = day01.SolvePart2( );
 
-                var result = day01.SolvePart2( );
-
-                Assert.AreEqual(expected, result);
-            }
+            Assert.AreEqual(expected, result);
         }
     }
 }

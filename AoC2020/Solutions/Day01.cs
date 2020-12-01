@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace AoC2020
 {
     public class Day01 : Solution
     {
+        
         public Day01(string day) : base(day)
         {
         }
@@ -21,7 +18,6 @@ namespace AoC2020
                 {
                     return lookingFor * int.Parse(number);
                 }
-
             }
             return 0;
         }
@@ -44,8 +40,6 @@ namespace AoC2020
                     }
                 }
             }
-
-
             return 0;
         }
     }

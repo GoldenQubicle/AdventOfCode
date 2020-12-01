@@ -6,8 +6,7 @@ namespace AoC2020
     {
         static void Main()
         {
-
-            var day1 = new Day01("day01");
+            var day1 = new Day01(nameof(Day01));
 
             Console.WriteLine(day1.SolvePart1());
             Console.WriteLine(day1.SolvePart2());
