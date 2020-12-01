@@ -8,11 +8,12 @@ namespace AoC2020
     {
         public List<string> Input { get; }
 
+        protected Solution(List<string> input) => Input = input;
         protected Solution( ) => Input = ParseInput(GetType( ).Name);
 
         protected Solution(string day) => Input = ParseInput(day);
 
-        private List<string> ParseInput(string file) =>
+        public static List<string> ParseInput(string file) =>
             File.ReadAllText($"../../../../input/{file}.txt")
                 .Split(',')
                 .Select(s => s.Trim( ))

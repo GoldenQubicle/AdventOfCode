@@ -11,12 +11,13 @@ namespace AoC2020
 
         public override int SolvePart1()
         {
-            foreach (var number in Input)
+            var input = Input.Select(int.Parse);
+            foreach (var number in input)
             {
-                var lookingFor = 2020 - int.Parse(number);
+                var lookingFor = 2020 - number;
                 if (Input.Contains(lookingFor.ToString()))
                 {
-                    return lookingFor * int.Parse(number);
+                    return lookingFor * number;
                 }
             }
             return 0;
