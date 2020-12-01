@@ -8,16 +8,14 @@ namespace AoC2020
         {
         }
 
-        public override string SolvePart1()
+        public override int SolvePart1()
         {
             throw new NotImplementedException();
         }
 
-        public override string SolvePart2()
+        public override int SolvePart2()
         {
             throw new NotImplementedException();
         }
-
-       
     }
 }

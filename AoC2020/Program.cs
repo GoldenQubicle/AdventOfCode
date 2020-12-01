@@ -6,9 +6,11 @@ namespace AoC2020
     {
         static void Main()
         {
-            var test = new Day00("test");
 
-            test.Input.ForEach(Console.WriteLine);
+            var day1 = new Day01("day01");
+
+            Console.WriteLine(day1.SolvePart1());
+            Console.WriteLine(day1.SolvePart2());
         }
     }
 }

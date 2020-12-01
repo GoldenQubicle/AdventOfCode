@@ -7,10 +7,16 @@ namespace AoC2020
     public abstract class Solution
     {
         public List<string> Input { get; }
+
         protected Solution(string day) =>
-            Input = File.ReadAllText($"../../../../input/{day}.txt").Split(',').ToList( );
+            Input = File.ReadAllText($"../../../../input/{day}.txt")
+                .Split(',')
+                .ToList()
+                .Select(s => s.Trim())
+                .ToList();
+                
         
-        public abstract string SolvePart1( );
-        public abstract string SolvePart2( );
+        public abstract int SolvePart1( );
+        public abstract int SolvePart2( );
     }
 }
