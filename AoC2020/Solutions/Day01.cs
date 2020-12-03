@@ -2,7 +2,7 @@
 
 namespace AoC2020
 {
-    public class Day01 : Solution
+    public class Day01 : Solution<int>
     {
 
         public Day01(string day) : base(day)

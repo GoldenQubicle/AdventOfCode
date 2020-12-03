@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AoC2020
 {
-    public abstract class Solution
+    public abstract class Solution<TOut>
     {
         public List<string> Input { get; }
         protected Solution(string day) => Input = ParseInput(day);
@@ -15,7 +15,7 @@ namespace AoC2020
                 .Where(s => !string.IsNullOrEmpty(s))
                 .ToList( );        
 
-        public abstract int SolvePart1( );
-        public abstract int SolvePart2( );
+        public abstract TOut SolvePart1( );
+        public abstract TOut SolvePart2( );
     }
 }
