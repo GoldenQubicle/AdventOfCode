@@ -1,5 +1,6 @@
 ﻿using AoC2020.Solutions;
 using NUnit.Framework;
+using System;
 
 namespace AoC2020Tests
 {
@@ -20,22 +21,17 @@ namespace AoC2020Tests
             var actual = day03.SolvePart1( );
 
             Assert.AreEqual(expected, actual);
-        }
+        }      
 
-        [Test]
-        public void WidthShouldBeCorrect( )
-        {
-            var expected = '#';
-            var actual = day03.GetTerrainTile(11, 7);
-            Assert.AreEqual(expected, actual);
-        }
 
+        [TestCase(0, 0, '.')]
+        [TestCase(11, 1, '#')]
         [TestCase(12, 1, '.')]
-        [TestCase(23, 9 , '#')]
+        [TestCase(15, 9 , '#')]
         [TestCase(22, 8 , '#')]
         public void GetTerrainTileShouldNotGoOutOfBounds(int x, int y, char expected)
         {
-            var actual = day03.GetTerrainTile(x, y);
+            var actual = day03.GetTerrainTile((x, y));
             Assert.AreEqual(expected, actual);
         }
         [TestCase(1,1,2)]
@@ -45,7 +41,7 @@ namespace AoC2020Tests
         [TestCase(1,2,2)]
         public void TraverseSlopeShouldFindCorrectTrees(int xIncr, int yIncr, int expected  )
         {
-            var actual = day03.TraverseSlope(xIncr, yIncr);
+            var actual = day03.TraverseSlope((xIncr, yIncr));
             Assert.AreEqual(expected, actual);
         }
 

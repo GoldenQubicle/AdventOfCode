@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AoC2020.Solutions
@@ -12,36 +13,32 @@ namespace AoC2020.Solutions
             Height = Input.Count;
             Width = Input[0].Length;
         }
-        public override long SolvePart1( ) => TraverseSlope(3, 1);
+        public override long SolvePart1( ) => TraverseSlope((3, 1));
 
-        public override long SolvePart2( )
-        {
-            var slope1 = TraverseSlope(1, 1);
-            var slope2 = TraverseSlope(3, 1);
-            var slope3 = TraverseSlope(5, 1);
-            var slope4 = TraverseSlope(7, 1);
-            var slope5 = TraverseSlope(1, 2);
-            return slope1 * slope2 * slope3 * slope4 * slope5;
-        }
+        public override long SolvePart2( ) => new List<(int, int)>
+            { (1, 1), (3, 1), (5, 1), (7, 1), (1, 2) }
+            .Select(s => TraverseSlope(s))
+            .Aggregate((s1, s2) => s1 * s2);
 
-        public long TraverseSlope(int xIncr, int yIncr)
+        public long TraverseSlope((int, int) incr)
         {
-            var pos = (x: 1, y: 1);
+            var pos = (x: 0, y: 0);
             var tiles = new List<char>( );
 
-            while ( pos.y <= Height )
+            while ( pos.y < Height )
             {
-                tiles.Add(GetTerrainTile(pos.x, pos.y));
-                pos.x += xIncr;
-                pos.y += yIncr;
+                tiles.Add(GetTerrainTile(pos));
+                pos = pos.Add(incr);
             }
             return tiles.Count(t => t == '#');
         }
 
-        public char GetTerrainTile(int x, int y)
-        {
-            var r = x >= Width ? x % Width : x;
-            return Input[y - 1][r == 0 ? Width - 1 : r - 1];
-        }
+        public char GetTerrainTile((int x, int y) i) => Input[i.y][i.x >= Width ? i.x % Width : i.x];
+
     }
+    public static class TupleExtension
+    {
+        public static (int, int) Add(this (int x, int y) a, (int x, int y) b) => (a.x + b.x, a.y + b.y);
+    }
+
 }
