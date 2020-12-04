@@ -11,7 +11,6 @@ namespace AoC2020Tests
         public void Setup( )
         {
             day02 = new Day02("day02test1");
-
         }
 
         [Test]
@@ -19,15 +18,14 @@ namespace AoC2020Tests
         {
             var expected = 2;
             var actual = day02.SolvePart1( );
-
             Assert.AreEqual(expected, actual);
         }
+
         [Test]
         public void Part2( )
         {
             var expected = 1;
             var actual = day02.SolvePart2( );
-
             Assert.AreEqual(expected, actual);
         }
     }

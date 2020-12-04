@@ -23,7 +23,6 @@ namespace AoC2020Tests
             Assert.AreEqual(expected, actual);
         }      
 
-
         [TestCase(0, 0, '.')]
         [TestCase(11, 1, '#')]
         [TestCase(12, 1, '.')]
@@ -34,6 +33,7 @@ namespace AoC2020Tests
             var actual = day03.GetTerrainTile((x, y));
             Assert.AreEqual(expected, actual);
         }
+
         [TestCase(1,1,2)]
         [TestCase(3,1,7)]
         [TestCase(5,1,3)]

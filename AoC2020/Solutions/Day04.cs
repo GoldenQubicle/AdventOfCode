@@ -6,19 +6,7 @@ using System.Text.RegularExpressions;
 namespace AoC2020.Solutions
 {
     public class Day04 : Solution<int>
-    {
-        private readonly Dictionary<string, Func<string, bool>> fieldValidation = new( )
-        {
-            { "byr", CheckBirthYear },
-            { "iyr", CheckIssueYear },
-            { "eyr", CheckExperirationYear },
-            { "hgt", CheckHeight },
-            { "hcl", CheckHairColor },
-            { "ecl", CheckEyeColor },
-            { "pid", CheckPassportId },
-            { "cid", s => true },
-        };
-
+    {     
         private List<Dictionary<string, string>> passports;
 
         public Day04(string file) : base(file, "\r\n\r\n")
@@ -35,20 +23,32 @@ namespace AoC2020.Solutions
                 }).ToList( );
         }
 
-        public override int SolvePart1( ) =>
-          passports.Count(p => p.Keys.Count == 8 || ( p.Keys.Count == 7 && !p.ContainsKey("cid") ));
 
-        public override int SolvePart2( ) =>
-            passports.Where(p => p.Keys.Count == 8 || ( p.Keys.Count == 7 && !p.ContainsKey("cid") ))
-                     .Count(p => p.All(kvp => fieldValidation[kvp.Key].Invoke(kvp.Value)));
+        public override int SolvePart1( ) => passports.Count(IsValidPassport);
 
-        public static bool CheckBirthYear(string arg) => CheckRange(int.Parse(arg), 1920, 2002);
+        public override int SolvePart2( ) => passports.Where(IsValidPassport).Count(p => p.All(IsValidField));
 
-        public static bool CheckIssueYear(string arg) => CheckRange(int.Parse(arg), 2010, 2020);
+        private bool IsValidPassport(Dictionary<string, string> p) => p.Keys.Count == 8 || ( p.Keys.Count == 7 && !p.ContainsKey("cid") );
 
-        public static bool CheckExperirationYear(string arg) => CheckRange(int.Parse(arg), 2020, 2030);
+        private bool IsValidField(KeyValuePair<string, string> kvp) => kvp.Key switch
+        {
+            "byr" => CheckBirthYear(kvp.Value),
+            "iyr" => CheckIssueYear(kvp.Value),
+            "eyr" => CheckExperirationYear(kvp.Value),
+            "hgt" => CheckHeight(kvp.Value),
+            "hcl" => CheckHairColor(kvp.Value),
+            "ecl" => CheckEyeColor(kvp.Value),
+            "pid" => CheckPassportId(kvp.Value),
+            "cid" => true,              
+        };
 
-        public static bool CheckHeight(string arg) =>
+        public bool CheckBirthYear(string arg) => CheckRange(int.Parse(arg), 1920, 2002);
+
+        public bool CheckIssueYear(string arg) => CheckRange(int.Parse(arg), 2010, 2020);
+
+        public bool CheckExperirationYear(string arg) => CheckRange(int.Parse(arg), 2020, 2030);
+
+        public bool CheckHeight(string arg) =>
             new string(arg.Where(char.IsLetter).ToArray( )) switch
             {
                 "cm" => CheckRange(int.Parse(arg.Where(char.IsDigit).ToArray( )), 150, 193),
@@ -56,15 +56,15 @@ namespace AoC2020.Solutions
                 _ => false
             };
 
-        public static bool CheckHairColor(string arg) => !arg.StartsWith('#') ? false :
+        public bool CheckHairColor(string arg) => !arg.StartsWith('#') ? false :
             !new Regex(@"[g-z]").Match(new string(arg.Where(char.IsLetter).ToArray( ))).Success;
 
-        public static bool CheckEyeColor(string arg) =>
+        public bool CheckEyeColor(string arg) =>
             new List<string> { "amb", "blu", "brn", "gry", "grn", "hzl", "oth" }.Contains(arg);
 
-        public static bool CheckPassportId(string arg) => arg.Any(char.IsLetter) ? false : arg.Length == 9;
+        public bool CheckPassportId(string arg) => arg.Any(char.IsLetter) ? false : arg.Length == 9;
 
-        private static bool CheckRange(int i, int min, int max) => i >= min && i <= max;
+        private bool CheckRange(int i, int min, int max) => i >= min && i <= max;
 
     }
 }

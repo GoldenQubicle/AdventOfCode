@@ -2,3 +2,5 @@
 *bin
 *obj
 *input
+.editorconfig
+.DotSettings.user

@@ -22,24 +22,14 @@ namespace AoC2020Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        public void InvalidPassports( )
+        [TestCase("day04test2", 0)]
+        [TestCase("day04test3", 4)]
+        public void Part2(string file, int expected )
         {
-            day4 = new Day04("day04test2");
-            var expected = 0;
+            day4 = new Day04(file);            
             var actual = day4.SolvePart2( );
             Assert.AreEqual(expected, actual);
         }
-
-        [Test]
-        public void ValidPassports( )
-        {
-            day4 = new Day04("day04test3");
-            var expected = 4;
-            var actual = day4.SolvePart2( );
-            Assert.AreEqual(expected, actual);
-        }
-
 
         [TestCase("1915", false)]
         [TestCase("1920", true)]
@@ -48,7 +38,7 @@ namespace AoC2020Tests
         [TestCase("2003", false)]        
         public void BirthYearShouldBeValidated(string toCheck, bool expected )
         {
-            var actual = Day04.CheckBirthYear(toCheck);
+            var actual = day4.CheckBirthYear(toCheck);
             Assert.AreEqual(expected, actual);
         }
 
@@ -58,7 +48,7 @@ namespace AoC2020Tests
         [TestCase("2021", false)]
         public void IssueYearShouldBeValidated(string toCheck, bool expected)
         {
-            var actual = Day04.CheckIssueYear(toCheck);
+            var actual = day4.CheckIssueYear(toCheck);
             Assert.AreEqual(expected, actual);
         }
 
@@ -68,7 +58,7 @@ namespace AoC2020Tests
         [TestCase("2031", false)]
         public void ExperitationYearShouldBeValidated(string toCheck, bool expected)
         {
-            var actual = Day04.CheckExperirationYear(toCheck);
+            var actual = day4.CheckExperirationYear(toCheck);
             Assert.AreEqual(expected, actual);
         }
 
@@ -78,29 +68,32 @@ namespace AoC2020Tests
         [TestCase("190", false)]
         public void HeightShouldBeValidated(string toCheck, bool expected)
         {
-            var actual = Day04.CheckHeight(toCheck);
+            var actual = day4.CheckHeight(toCheck);
             Assert.AreEqual(expected, actual);
         }
+
         [TestCase("#123abc", true )]
         [TestCase("#123abz", false )]
         [TestCase("123abc", false )]
         public void HairColorShouldBeValidated(string toCheck, bool expected)
         {
-            var actual = Day04.CheckHairColor(toCheck);
+            var actual = day4.CheckHairColor(toCheck);
             Assert.AreEqual(expected, actual);
         }
+
         [TestCase("brn", true)]
         [TestCase("wat", false)]
         public void EyeColorShouldBeValidated(string toCheck, bool expected)
         {
-            var actual = Day04.CheckEyeColor(toCheck);
+            var actual = day4.CheckEyeColor(toCheck);
             Assert.AreEqual(expected, actual);
         }
+
         [TestCase("000000001", true)]
         [TestCase("0123456789", false)]
-        public void PassportidShouldBeValidated(string toCheck, bool expected)
+        public void PassportIdShouldBeValidated(string toCheck, bool expected)
         {
-            var actual = Day04.CheckPassportId(toCheck);
+            var actual = day4.CheckPassportId(toCheck);
             Assert.AreEqual(expected, actual);
         }
     }
