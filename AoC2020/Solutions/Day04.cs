@@ -20,6 +20,7 @@ namespace AoC2020.Solutions
         };
 
         private List<Dictionary<string, string>> passports;
+
         public Day04(string file) : base(file, "\r\n\r\n")
         {
             passports = Input
@@ -34,43 +35,36 @@ namespace AoC2020.Solutions
                 }).ToList( );
         }
 
-        public static bool CheckBirthYear(string arg) => CheckRange(int.Parse(arg), 1920, 2002);
-        public static bool CheckIssueYear(string arg) => CheckRange(int.Parse(arg), 2010, 2020);
-        public static bool CheckExperirationYear(string arg) => CheckRange(int.Parse(arg), 2020, 2030);
-        public static bool CheckHeight(string arg)
-        {
-            var digit = int.Parse(arg.Where(c => char.IsDigit(c)).ToArray( ));
-            var unit = new string(arg.Where(c => char.IsLetter(c)).ToArray( ));
-
-            return unit switch
-            {
-                "cm" => CheckRange(digit, 150, 193),
-                "in" => CheckRange(digit, 59, 76),
-                _ => false
-            };
-        }
-        public static bool CheckHairColor(string arg)
-        {
-            if ( !arg.StartsWith('#') ) return false;
-
-            var letters = new string(arg.Where(c => char.IsLetter(c)).ToArray( ));
-
-            return !new Regex(@"[g-z]").Match(letters).Success;
-        }
-        public static bool CheckEyeColor(string arg) =>
-            new List<string> { "amb", "blu", "brn", "gry", "grn", "hzl", "oth" }.Contains(arg);
-
-        public static bool CheckPassportId(string arg) =>
-            arg.Where(c => char.IsLetter(c)).Any( ) ? false : arg.Length == 9;
-
-        private static bool CheckRange(int i, int min, int max) => i >= min && i <= max;
-
         public override int SolvePart1( ) =>
-            passports.Count(d => d.Keys.Count == 8 || ( d.Keys.Count == 7 && !d.ContainsKey("cid") ));
+          passports.Count(d => d.Keys.Count == 8 || ( d.Keys.Count == 7 && !d.ContainsKey("cid") ));
 
         public override int SolvePart2( ) =>
             passports.Where(d => d.Keys.Count == 8 || ( d.Keys.Count == 7 && !d.ContainsKey("cid") ))
-                    .Count(p => p.All(kvp => fieldValidation[kvp.Key].Invoke(kvp.Value)));
+                     .Count(p => p.All(kvp => fieldValidation[kvp.Key].Invoke(kvp.Value)));
+
+        public static bool CheckBirthYear(string arg) => CheckRange(int.Parse(arg), 1920, 2002);
+
+        public static bool CheckIssueYear(string arg) => CheckRange(int.Parse(arg), 2010, 2020);
+
+        public static bool CheckExperirationYear(string arg) => CheckRange(int.Parse(arg), 2020, 2030);
+
+        public static bool CheckHeight(string arg) =>
+            new string(arg.Where(char.IsLetter).ToArray( )) switch
+            {
+                "cm" => CheckRange(int.Parse(arg.Where(char.IsDigit).ToArray( )), 150, 193),
+                "in" => CheckRange(int.Parse(arg.Where(char.IsDigit).ToArray( )), 59, 76),
+                _ => false
+            };
+
+        public static bool CheckHairColor(string arg) => !arg.StartsWith('#') ? false :
+            !new Regex(@"[g-z]").Match(new string(arg.Where(char.IsLetter).ToArray( ))).Success;
+
+        public static bool CheckEyeColor(string arg) =>
+            new List<string> { "amb", "blu", "brn", "gry", "grn", "hzl", "oth" }.Contains(arg);
+
+        public static bool CheckPassportId(string arg) => arg.Any(char.IsLetter) ? false : arg.Length == 9;
+
+        private static bool CheckRange(int i, int min, int max) => i >= min && i <= max;
 
     }
 }
