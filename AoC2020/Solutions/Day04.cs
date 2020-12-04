@@ -6,12 +6,10 @@ using System.Text.RegularExpressions;
 namespace AoC2020.Solutions
 {
     public class Day04 : Solution<int>
-    {     
-        private List<Dictionary<string, string>> passports;
+    {
+        private readonly List<Dictionary<string, string>> passports;
 
-        public Day04(string file) : base(file, "\r\n\r\n")
-        {
-            passports = Input
+        public Day04(string file) : base(file, "\r\n\r\n") => passports = Input
                 .Select(i => i.Split("\r\n"))
                 .Select(i => i.Select(i => i.Split(" ")))
                 .Select(i =>
@@ -20,9 +18,8 @@ namespace AoC2020.Solutions
                     var kvp = i.SelectMany(f => f.Select(e => e.Split(" ")[0])).ToList( );
                     kvp.ForEach(e => dict.Add(e.Split(":")[0], e.Split(":")[1]));
                     return dict;
-                }).ToList( );
-        }
-
+                })
+            .ToList( );
 
         public override int SolvePart1( ) => passports.Count(IsValidPassport);
 
@@ -39,7 +36,7 @@ namespace AoC2020.Solutions
             "hcl" => CheckHairColor(kvp.Value),
             "ecl" => CheckEyeColor(kvp.Value),
             "pid" => CheckPassportId(kvp.Value),
-            "cid" => true,              
+            "cid" => true,
         };
 
         public bool CheckBirthYear(string arg) => CheckRange(int.Parse(arg), 1920, 2002);
