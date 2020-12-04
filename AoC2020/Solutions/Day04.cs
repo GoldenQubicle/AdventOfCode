@@ -36,10 +36,10 @@ namespace AoC2020.Solutions
         }
 
         public override int SolvePart1( ) =>
-          passports.Count(d => d.Keys.Count == 8 || ( d.Keys.Count == 7 && !d.ContainsKey("cid") ));
+          passports.Count(p => p.Keys.Count == 8 || ( p.Keys.Count == 7 && !p.ContainsKey("cid") ));
 
         public override int SolvePart2( ) =>
-            passports.Where(d => d.Keys.Count == 8 || ( d.Keys.Count == 7 && !d.ContainsKey("cid") ))
+            passports.Where(p => p.Keys.Count == 8 || ( p.Keys.Count == 7 && !p.ContainsKey("cid") ))
                      .Count(p => p.All(kvp => fieldValidation[kvp.Key].Invoke(kvp.Value)));
 
         public static bool CheckBirthYear(string arg) => CheckRange(int.Parse(arg), 1920, 2002);
