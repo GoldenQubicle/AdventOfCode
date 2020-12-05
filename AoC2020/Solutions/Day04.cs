@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -12,20 +11,15 @@ namespace AoC2020.Solutions
         public Day04(string file) : base(file, "\r\n\r\n") => passports = Input
                 .Select(i => i.Split("\r\n"))
                 .Select(i => i.Select(i => i.Split(" ")))
-                .Select(i =>
-                {
-                    var dict = new Dictionary<string, string>( );
-                    var kvp = i.SelectMany(f => f.Select(e => e.Split(" ")[0])).ToList( );
-                    kvp.ForEach(e => dict.Add(e.Split(":")[0], e.Split(":")[1]));
-                    return dict;
-                })
-            .ToList( );
+                .Select(i => i.SelectMany(f => f.Select(e => e.Split(" ")[0]))
+                .ToDictionary(kvp => kvp.Split(":")[0], kvp => kvp.Split(":")[1])).ToList( );
 
         public override int SolvePart1( ) => passports.Count(IsValidPassport);
 
         public override int SolvePart2( ) => passports.Where(IsValidPassport).Count(p => p.All(IsValidField));
 
-        private bool IsValidPassport(Dictionary<string, string> p) => p.Keys.Count == 8 || ( p.Keys.Count == 7 && !p.ContainsKey("cid") );
+        private bool IsValidPassport(Dictionary<string, string> p) =>
+            p.Keys.Count == 8 || ( p.Keys.Count == 7 && !p.ContainsKey("cid") );
 
         private bool IsValidField(KeyValuePair<string, string> kvp) => kvp.Key switch
         {

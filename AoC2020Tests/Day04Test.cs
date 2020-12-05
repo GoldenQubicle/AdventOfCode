@@ -1,6 +1,7 @@
 ﻿using AoC2020.Solutions;
 using NUnit.Framework;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace AoC2020Tests
 {
@@ -15,7 +16,7 @@ namespace AoC2020Tests
         }
 
         [Test]
-        public void Part1()
+        public void Part1( )
         {
             var expected = 2;
             var actual = day4.SolvePart1( );
@@ -24,9 +25,9 @@ namespace AoC2020Tests
 
         [TestCase("day04test2", 0)]
         [TestCase("day04test3", 4)]
-        public void Part2(string file, int expected )
+        public void Part2(string file, int expected)
         {
-            day4 = new Day04(file);            
+            day4 = new Day04(file);
             var actual = day4.SolvePart2( );
             Assert.AreEqual(expected, actual);
         }
@@ -35,8 +36,8 @@ namespace AoC2020Tests
         [TestCase("1920", true)]
         [TestCase("1990", true)]
         [TestCase("2002", true)]
-        [TestCase("2003", false)]        
-        public void BirthYearShouldBeValidated(string toCheck, bool expected )
+        [TestCase("2003", false)]
+        public void BirthYearShouldBeValidated(string toCheck, bool expected)
         {
             var actual = day4.CheckBirthYear(toCheck);
             Assert.AreEqual(expected, actual);
@@ -72,9 +73,9 @@ namespace AoC2020Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCase("#123abc", true )]
-        [TestCase("#123abz", false )]
-        [TestCase("123abc", false )]
+        [TestCase("#123abc", true)]
+        [TestCase("#123abz", false)]
+        [TestCase("123abc", false)]
         public void HairColorShouldBeValidated(string toCheck, bool expected)
         {
             var actual = day4.CheckHairColor(toCheck);
