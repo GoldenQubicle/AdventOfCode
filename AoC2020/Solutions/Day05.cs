@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace AoC2020.Solutions
 {
@@ -12,28 +8,23 @@ namespace AoC2020.Solutions
 
         public override int SolvePart1( ) => Input.Select(PartitionString).Max(p => p.id);
 
-        public override int SolvePart2( )
-        {
-            var ids = Input.Select(PartitionString).OrderBy(p => p.id).Select(p => p.id).ToList( );
-            return ids
-                .Where(id => !ids.Contains(id + 1) || !ids.Contains(id - 1))
-                .ToArray( )[1..2]
-                .First( ) + 1;
-        }
+        public override int SolvePart2( ) => 
+                Enumerable.Range(Input.Select(PartitionString).Min(p => p.id), Input.Count)
+                .Except(Input.Select(PartitionString).Select(p => p.id)).First( );
 
         public (int row, int col, int id) PartitionString(string s)
         {
-            var row = s.Substring(0, 7);
-            var col = s.Substring(7, 3);
+            var rows = s.Substring(0, 7);
+            var cols = s.Substring(7, 3);
             var rowPart = (min: 0, max: 127, div: 128);
             var colPart = (min: 0, max: 7, div: 8);
-            for ( int i = 0 ; i < row.Length ; i++ )
+            for ( int i = 0 ; i < rows.Length ; i++ )
             {
-                rowPart = Partition(row[i], rowPart);
+                rowPart = Partition(rows[i], rowPart);
             }
-            for ( int i = 0 ; i < col.Length ; i++ )
+            for ( int i = 0 ; i < cols.Length ; i++ )
             {
-                colPart = Partition(col[i], colPart);
+                colPart = Partition(cols[i], colPart);
             }
             return (rowPart.min, colPart.min, ( rowPart.min * 8 ) + colPart.min);
         }
