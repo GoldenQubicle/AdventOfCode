@@ -26,7 +26,7 @@ namespace AoC2020.Solutions
                         answers[answer]++;
                 }
             }
-            return answers.Where(c => c.Value == group.Length).ToList( ).Count;
+            return answers.Where(c => c.Value == group.Length).Count( );
         }
     }
 }
