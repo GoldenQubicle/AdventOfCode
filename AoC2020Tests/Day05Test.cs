@@ -13,6 +13,7 @@ namespace AoC2020Tests
             day5 = new Day05("day05test1");
         }
 
+
         [Test]
         public void Part1( )
         {

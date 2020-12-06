@@ -1,6 +1,8 @@
 ﻿using AoC2020.Solutions;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
 namespace AoC2020
 {
@@ -24,9 +26,13 @@ namespace AoC2020
             //Console.WriteLine($"Day 4 part 1: {day4.SolvePart1( )} ");
             //Console.WriteLine($"Day 4 part 2: {day4.SolvePart2( )} ");           
 
-            var day5 = new Day05(nameof(Day05));
-            Console.WriteLine($"Day 5 part 1: {day5.SolvePart1( )} ");
-            Console.WriteLine($"Day 5 part 2: {day5.SolvePart2( )} ");
+            //var day5 = new Day05(nameof(Day05));
+            //Console.WriteLine($"Day 5 part 1: {day5.SolvePart1( )} ");
+            //Console.WriteLine($"Day 5 part 2: {day5.SolvePart2( )} ");
+
+            var day6 = new Day06(nameof(Day06));
+            Console.WriteLine($"Day 6 part 1: {day6.SolvePart1( )} ");
+            Console.WriteLine($"Day 6 part 2: {day6.SolvePart2( )} ");
 
         }
     }

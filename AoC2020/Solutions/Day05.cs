@@ -9,8 +9,8 @@ namespace AoC2020.Solutions
         public override int SolvePart1( ) => Input.Select(PartitionString).Max(p => p.id);
 
         public override int SolvePart2( ) => 
-                Enumerable.Range(Input.Select(PartitionString).Min(p => p.id), Input.Count)
-                .Except(Input.Select(PartitionString).Select(p => p.id)).First( );
+                Enumerable.Range(0, Input.Select(PartitionString).Max(p => p.id))
+                .Except(Input.Select(PartitionString).Select(p => p.id)).Max( );
 
         public (int row, int col, int id) PartitionString(string s)
         {
