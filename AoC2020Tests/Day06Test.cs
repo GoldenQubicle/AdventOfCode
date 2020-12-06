@@ -23,6 +23,15 @@ namespace AoC2020Tests
         {
             var expected = 11;
             var actual = day6.SolvePart1( );
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Part2( )
+        {
+            var expected = 6;
+            var actual = day6.SolvePart2( );
+            Assert.AreEqual(expected, actual);
         }
     }
 }
