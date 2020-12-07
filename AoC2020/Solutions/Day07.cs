@@ -5,7 +5,7 @@ namespace AoC2020.Solutions
 {
     public class Day07 : Solution<int>
     {
-        private readonly Dictionary<string, List<(string bag, int no)>> bagRules = new( );
+        private readonly Dictionary<string, List<(string bag, int count)>> bagRules = new( );
         public Day07(string file) : base(file, ".")
         {
             Input.Select(i => i.Split("contain")).ToList( )
@@ -54,8 +54,9 @@ namespace AoC2020.Solutions
                 var current = queue.Dequeue( );
                 if ( bagRules.ContainsKey(current.bag) )
                 {
-                    count.Add(bagRules[current.bag].Sum(b => b.no) * current.count);
-                    bagRules[current.bag].ForEach(b => queue.Enqueue((b.bag, b.no * current.count)));
+                    count.Add(bagRules[current.bag].Sum(bag => bag.count) * current.count);
+                    bagRules[current.bag].ForEach(rule => 
+                        queue.Enqueue((rule.bag, rule.count * current.count)));
                 }
             }
             return count.Sum( );
