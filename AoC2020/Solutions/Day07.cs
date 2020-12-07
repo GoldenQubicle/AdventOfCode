@@ -9,55 +9,26 @@ namespace AoC2020.Solutions
         public Day07(string file) : base(file, ".")
         {
             Input.Select(i => i.Split("contain")).ToList( )
-                .ForEach(i =>
+                .ForEach(rule =>
                 {
-                    var contains = i[1].Split(",").ToList( );
-                    var current = i[0].Replace(" ", "");
-                    current = current.Remove(current.Length - 1);
-                    bagRules.Add(current, new List<(string, int)>( ));
-                    contains.ForEach(b =>
+                    var currentBag = rule[0].Trim( );
+                    bagRules.Add(currentBag, new List<(string, int)>( ));
+
+                    rule[1].Split(",").ToList( ).ForEach(content =>
                     {
-                        var bag = new string(b.Where(char.IsLetter).ToArray( ));
-                        var no = int.Parse(b.Where(char.IsDigit).ToArray( ));
-                        if ( bag.Last( ) == 's' )
-                            bag = bag.Remove(bag.Length - 1);
-                        bagRules[current].Add((bag, no));
+                        var bag = content.Trim( ).Substring(1, content.Trim( ).Length - 1).Trim( );
+                        var count = int.Parse(content.Trim( ).Substring(0, 1));
+                        if ( count == 1 ) bag = bag + "s";
+                        bagRules[currentBag].Add((bag, count));
                     });
                 });
-            bagRules.Add("nootherbag",new List<(string bag, int no)>());
         }
-        public override int SolvePart1( ) => TraceBag("shinygoldbag");
-
-        public override int SolvePart2( ) => CountBags("shinygoldbag").Sum( );     
-
-        public List<int> CountBags(string bag)
-        {
-            var queue = new Queue<(string bag, int prevCount)>( );
-            var count = new List<int>( );
-            
-            queue.Enqueue((bag: bag, prevCount: 1));
-
-            while(queue.Count > 0 )
-            {               
-                var current = queue.Dequeue( );
-                count.Add(bagRules[current.bag].Sum(b => b.no) * current.prevCount);
-
-                var next = bagRules[current.bag];
-                
-                foreach(var b in next )
-                {
-                    queue.Enqueue((b.bag, b.no * current.prevCount));
-                }               
-            }
-
-            return count;
-        }
-
-        public int TraceBag(string bag)
+        public override int SolvePart1( )
         {
             var endPoints = new List<string>( );
             var queue = new Queue<KeyValuePair<string, List<(string, int)>>>( );
-            queue.AddAll(bagRules.Where(b => b.Value.Contains(bag)));
+
+            queue.AddAll(bagRules.Where(b => b.Value.Contains("shiny gold bags")));
 
             while ( queue.Count > 0 )
             {
@@ -67,9 +38,28 @@ namespace AoC2020.Solutions
                 if ( bagRules.Any(b => b.Value.Contains(current)) )
                     queue.AddAll(bagRules.Where(b => b.Value.Contains(current)));
             }
+
             return endPoints.Distinct( ).Count( );
         }
 
+        public override int SolvePart2( )
+        {
+            var queue = new Queue<(string bag, int count)>( );
+            var count = new List<int>( );
+
+            queue.Enqueue(("shiny gold bags", 1));
+
+            while ( queue.Count > 0 )
+            {
+                var current = queue.Dequeue( );
+                if ( bagRules.ContainsKey(current.bag) )
+                {
+                    count.Add(bagRules[current.bag].Sum(b => b.no) * current.count);
+                    bagRules[current.bag].ForEach(b => queue.Enqueue((b.bag, b.no * current.count)));
+                }
+            }
+            return count.Sum( );
+        }
     }
 
     public static class Extensions
