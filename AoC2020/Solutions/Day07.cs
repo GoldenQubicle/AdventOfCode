@@ -8,9 +8,9 @@ namespace AoC2020.Solutions
         private readonly Dictionary<string, List<(string bag, int count)>> bagRules = new( );
         public Day07(string file) : base(file, ".")
         {
-            Input.Select(i => i.Split("contain")).ToList( )
+            Input.Select(i => i.Split("contain")).ToList( )                
                 .ForEach(rule =>
-                {
+                {                    
                     var currentBag = rule[0].Trim( );
                     bagRules.Add(currentBag, new List<(string, int)>( ));
 
@@ -18,7 +18,7 @@ namespace AoC2020.Solutions
                     {
                         var bag = content.Trim( ).Substring(1, content.Trim( ).Length - 1).Trim( );
                         var count = int.Parse(content.Trim( ).Substring(0, 1));
-                        if ( count == 1 ) bag = bag + "s";
+                        if ( count == 1 ) bag = bag + "s"; // add s to singular bags
                         bagRules[currentBag].Add((bag, count));
                     });
                 });
@@ -27,7 +27,6 @@ namespace AoC2020.Solutions
         {
             var endPoints = new List<string>( );
             var queue = new Queue<KeyValuePair<string, List<(string, int)>>>( );
-
             queue.AddAll(bagRules.Where(b => b.Value.Contains("shiny gold bags")));
 
             while ( queue.Count > 0 )
@@ -38,7 +37,6 @@ namespace AoC2020.Solutions
                 if ( bagRules.Any(b => b.Value.Contains(current)) )
                     queue.AddAll(bagRules.Where(b => b.Value.Contains(current)));
             }
-
             return endPoints.Distinct( ).Count( );
         }
 
@@ -46,8 +44,9 @@ namespace AoC2020.Solutions
         {
             var queue = new Queue<(string bag, int count)>( );
             var count = new List<int>( );
-
             queue.Enqueue(("shiny gold bags", 1));
+
+           
 
             while ( queue.Count > 0 )
             {
