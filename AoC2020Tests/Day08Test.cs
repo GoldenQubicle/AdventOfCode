@@ -26,5 +26,15 @@ namespace AoC2020Tests
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void Part2( )
+        {
+            day8 = new Day08("day08test1");
+            var expected = 8;
+            var actual = day8.SolvePart2( );
+            Assert.AreEqual(expected, actual);
+        }
+
+
     }
 }
