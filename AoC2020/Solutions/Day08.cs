@@ -28,7 +28,6 @@ namespace AoC2020.Solutions
                 visited.Add(idx);
                 idx = ExecuteInstruction(instructions[idx], idx);
             }
-
             return accumulator;
         }
 
