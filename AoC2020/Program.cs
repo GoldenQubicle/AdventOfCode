@@ -1,4 +1,5 @@
-﻿using AoC2020.Solutions;
+﻿using AdventOfCode._2020.Day11;
+using AoC2020.Solutions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -47,9 +48,13 @@ namespace AoC2020
             //Console.WriteLine($"Day 9 part 1: {day9.SolvePart1( )} ");
             //Console.WriteLine($"Day 9 part 2: {day9.SolvePart2( )} ");
 
-            var day10 = new Day10(nameof(Day10));
-            Console.WriteLine($"Day 10 part 1: {day10.SolvePart1( )} ");
-            Console.WriteLine($"Day 10 part 2: {day10.SolvePart2( )} ");
+            //var day10 = new Day10(nameof(Day10));
+            //Console.WriteLine($"Day 10 part 1: {day10.SolvePart1( )} ");
+            //Console.WriteLine($"Day 10 part 2: {day10.SolvePart2( )} ");
+
+            var day11 = new Day11(nameof(Day11));
+            Console.WriteLine($"Day 11 part 1: {day11.SolvePart1( )} ");
+            Console.WriteLine($"Day 11 part 2: {day11.SolvePart2( )} ");
 
         }
     }
