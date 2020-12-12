@@ -6,11 +6,25 @@ namespace AoC2020.Solutions
     public class Day09 : Solution<long>
     {
         private List<long> cypher;
+        private int preamble;
+        private long target;
         public Day09(string file) : base(file, "\r\n") => cypher = Input.Select(i => long.Parse(i)).ToList( );
 
-        public override long SolvePart1( )
+        public long SolvePart1(int preamb)
         {
-            var preamble = 25;
+            preamble = preamb;
+
+            return SolvePart1( );
+        }
+
+        public long SolvePart2(int preamb)
+        {
+            target = SolvePart1(preamb);
+            return SolvePart2( );
+        }
+
+        public override long SolvePart1( )
+        {            
             for ( int i = preamble ; i < cypher.Count ; i++ )
             {
                 var sums = GetCypherSums(i, preamble);
@@ -23,10 +37,7 @@ namespace AoC2020.Solutions
             return 0;
         }
         public override long SolvePart2( )
-        {
-            var target = 1639024365;
-            //var target = 127L;
-
+        {   
             for ( int i = 0 ; i < cypher.Count ; i++ )
             {
                 var sum = cypher[i];
@@ -46,8 +57,6 @@ namespace AoC2020.Solutions
                     };
                 }
             }
-
-
             return 0;
         }
 
@@ -61,7 +70,6 @@ namespace AoC2020.Solutions
                     sums.Add(cypher[j] + cypher[k]);
                 }
             }
-
             return sums.Distinct( ).ToList( );
         }
     }
