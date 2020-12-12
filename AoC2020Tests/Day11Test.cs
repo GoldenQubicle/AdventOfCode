@@ -36,7 +36,7 @@ namespace AoC2020Tests
         public void EmptyEight(string file, int expected, int x, int y )
         {
             day11 = new Day11(file);
-            var result = day11.GetNeighborsInSight(x, y, day11.seatingState);
+            var result = day11.GetNeighborsInSight(x, y, day11.GetInitialState( ));
             Assert.AreEqual(expected, result.Where(c => c == '#').Count( ));
         }
 
@@ -47,7 +47,7 @@ namespace AoC2020Tests
         public void GetNeighborsInSight(int x, int y, int occupied, int empty)
         {
             day11 = new Day11("day11test2");
-            var result = day11.GetNeighborsInSight(x, y, day11.seatingState);
+            var result = day11.GetNeighborsInSight(x, y, day11.GetInitialState( ));
             Assert.AreEqual(occupied, result.Where(c => c == '#').Count());
             Assert.AreEqual(empty, result.Where(c => c == 'L').Count());
         }
@@ -59,7 +59,7 @@ namespace AoC2020Tests
         public void GetNeighbors(int x, int y, int floor, int seat)
         {
 
-            var result = day11.GetNeighbors(x, y, day11.seatingState);
+            var result = day11.GetNeighbors(x, y, day11.GetInitialState( ));
             Assert.AreEqual(seat, result.Where(c => c == 'L').Count( ));
             Assert.AreEqual(floor, result.Where(c => c == '.').Count( ));
         }
