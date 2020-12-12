@@ -16,88 +16,46 @@ namespace AoC2020.Solutions
 
         public Day11(string file) : base(file) => seatingState = Input.Select(i => i.ToCharArray( )).ToList( );
 
-        public override int SolvePart1( )
-        {
-            var newState = GetNewStatePart1(seatingState);
+        public override int SolvePart1( ) => Solve(Input.Select(i => i.ToCharArray( )).ToList( ), true);
 
-            while ( !SameState(seatingState, newState) )
+        public override int SolvePart2( ) => Solve(Input.Select(i => i.ToCharArray( )).ToList( ), false);
+
+        private int Solve(List<char[ ]> state, bool part1)
+        {
+            var newState = GetNewState(state, part1 ? GetNeighbors : GetNeighborsInSight, part1 ? 4 : 5);
+
+            while ( !SameState(state, newState) )
             {
-                seatingState = newState;
-                newState = GetNewStatePart1(seatingState);
+                state = newState;
+                newState = GetNewState(state, part1 ? GetNeighbors : GetNeighborsInSight, part1 ? 4 : 5);
             }
 
-            return seatingState.Sum(c => c.Count(s => s == '#'));
+            return state.Sum(c => c.Count(s => s == '#'));
         }
 
-        public override int SolvePart2( )
-        {
-            seatingState = Input.Select(i => i.ToCharArray( )).ToList( );
-            var newState = GetNewStatePart2(seatingState);
-
-            while ( !SameState(seatingState, newState) )
+        private List<char[ ]> GetNewState(List<char[ ]> current,
+            Func<int, int, List<char[ ]>, List<char>> getNeighbors,
+            int threshold) => current.Select((row, y) => row.Select((c, x) =>
             {
-                seatingState = newState;
-                newState = GetNewStatePart2(seatingState);
-            }
-
-            return seatingState.Sum(c => c.Count(s => s == '#'));
-        }
-
-        private List<char[ ]> GetNewStatePart2(List<char[ ]> current)
-        {
-            var newState = current.Select(s => new char[s.Length]).ToList( );
-            for ( int y = 0 ; y < current.Count( ) ; y++ )
-            {
-                for ( int x = 0 ; x < current[0].Count( ) ; x++ )
+                var neighbors = getNeighbors(x, y, current);
+                return c switch
                 {
-                    var neighbors = GetNeighborsInSight(x, y, current);
+                    'L' when !neighbors.Any(c => c == '#') => '#',
+                    '#' when neighbors.Count(c => c == '#') >= threshold => 'L',
+                    _ => c
+                };
+            }).ToArray( )).ToList( );
 
-                    newState[y][x] = current[y][x];
 
-                    if ( current[y][x] == 'L' && !neighbors.Any(c => c == '#'))
-                        newState[y][x] = '#';
-                    if ( current[y][x] == '#' && neighbors.Count(c => c == '#') > 4 )
-                        newState[y][x] = 'L';
-                }
-            }
-            return newState;
-        }
-
-        private List<char[ ]> GetNewStatePart1(List<char[ ]> current)
-        {
-            var newState = current.Select(s => new char[s.Length]).ToList( );
-            for ( int y = 0 ; y < current.Count( ) ; y++ )
-            {
-                for ( int x = 0 ; x < current[0].Count( ) ; x++ )
-                {
-                    var neighbors = GetNeighbors(x, y, current);
-                    newState[y][x] = current[y][x];
-                    if ( current[y][x] == 'L' && !neighbors.Any(c => c == '#') )
-                        newState[y][x] = '#';
-                    if ( current[y][x] == '#' && neighbors.Count(c => c == '#') >= 4 )
-                        newState[y][x] = 'L';
-                }
-            }
-            return newState;
-        }
-
-        public bool SameState(List<char[ ]> old, List<char[ ]> update)
-        {
-            for ( int y = 0 ; y < old.Count( ) ; y++ )
-            {
-                for ( int x = 0 ; x < old[0].Count( ) ; x++ )
-                {
-                    if ( old[y][x] != update[y][x] )
-                        return false;
-                }
-            }
-            return true;
-        }
+        public bool SameState(List<char[ ]> old, List<char[ ]> update) => old
+                .Zip(update, (old, update) => old.Select((c, i) => c == update[i]))
+                .SelectMany(b => b)
+                .All(b => b);
 
         public List<char> GetNeighborsInSight(int x, int y, List<char[ ]> state)
         {
             var neighbors = new List<char>( );
-            
+
             offsets.ForEach(o =>
             {
                 var tx = x;
@@ -107,11 +65,11 @@ namespace AoC2020.Solutions
                 {
                     tx += o.x;
                     ty += o.y;
-                    if(state[ty][tx] != '.')
+                    if ( state[ty][tx] != '.' )
                     {
                         neighbors.Add(state[ty][tx]);
                         break;
-                    }                        
+                    }
                 }
             });
             return neighbors;
