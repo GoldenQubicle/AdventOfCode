@@ -4,15 +4,11 @@ namespace AoC2020
 {
     public class Day01 : Solution<int>
     {
-
-        public Day01(string day) : base(day)
-        {
-        }
+        public Day01(string day) : base(day) { }
 
         public override int SolvePart1( ) => Input.Select(int.Parse)
             .Where(i => Input.Contains(( 2020 - i ).ToString( )))
             .Select(i => i * ( 2020 - i )).First( );
-
 
         public override int SolvePart2( )
         {

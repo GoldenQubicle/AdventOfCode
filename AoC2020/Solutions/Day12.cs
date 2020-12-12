@@ -14,7 +14,6 @@ namespace AoC2020.Solutions
                 Value = int.Parse(i.Where(char.IsDigit).ToArray( ))
             }).ToList( );
 
-
         public override int SolvePart1( ) => instructions.Aggregate(
             (x: 0, y: 0, d: 90), (p, i) => i.Action switch
                 {
@@ -33,7 +32,6 @@ namespace AoC2020.Solutions
                     },
                 },
                 pos => Math.Abs(pos.x) + Math.Abs(pos.y));
-
 
         public override int SolvePart2( ) => instructions.Aggregate(
             (x: 0, y: 0, wx: 10, wy: 1), (p, i) => i switch

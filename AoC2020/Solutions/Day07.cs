@@ -44,9 +44,7 @@ namespace AoC2020.Solutions
         {
             var queue = new Queue<(string bag, int count)>( );
             var count = new List<int>( );
-            queue.Enqueue(("shiny gold bags", 1));
-
-           
+            queue.Enqueue(("shiny gold bags", 1));           
 
             while ( queue.Count > 0 )
             {

@@ -20,9 +20,9 @@ namespace AoC2020.Solutions
 
         public List<char[ ]> GetInitialState( ) => Input.Select(i => i.ToCharArray( )).ToList( );
 
-        public override int SolvePart1( ) => Solve(GetInitialState( ), true);
+        public override int SolvePart1( ) => Solve(GetInitialState( ), part1: true);
 
-        public override int SolvePart2( ) => Solve(GetInitialState( ), false);
+        public override int SolvePart2( ) => Solve(GetInitialState( ), part1: false);
 
         private int Solve(List<char[ ]> state, bool part1)
         {

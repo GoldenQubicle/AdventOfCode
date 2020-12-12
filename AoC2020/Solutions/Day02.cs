@@ -13,7 +13,7 @@ namespace AoC2020.Solutions
             .Select(t => new Policy
             {
                 Digit1 = int.Parse(t.Item1[0]),
-                Digit2 = int.Parse(t.Item1[1].Where(c => char.IsDigit(c)).ToArray()),
+                Digit2 = int.Parse(t.Item1[1].Where(char.IsDigit).ToArray()),
                 Letter = t.Item1[1].Last( ),
                 Password = t.Item2
             }).ToList( );
