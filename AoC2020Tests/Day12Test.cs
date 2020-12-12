@@ -32,28 +32,5 @@ namespace AoC2020Tests
             Assert.AreEqual(286, actual);
         }       
 
-        [TestCase('R', 90, Direction.South)]
-        [TestCase('L', 90, Direction.North)]
-        [TestCase('L', 270, Direction.South)]
-        [TestCase('R', 270, Direction.North)]
-        [TestCase('L', 180, Direction.West)]
-        public void ChangeDirection(char action, int value, Direction expected)
-        {
-            var ins = new Instruction { Action = action, Value = value };
-            var actual = day12.ChangeDirection(ins);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestCase('N', 5, 0, 5)]
-        [TestCase('E', 10, 10, 0)]
-        [TestCase('S', 15, 0, -15)]
-        [TestCase('W', 20, -20, 0)]
-        public void MoveAbsolute(char action, int value, int xe, int ye)
-        {
-            var ins = new Instruction { Action = action, Value = value };
-            var actual = day12.MoveAbsolute(ins);
-            Assert.AreEqual(xe, actual.x);
-            Assert.AreEqual(ye, actual.y);
-        }
     }
 }

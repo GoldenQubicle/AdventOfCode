@@ -6,132 +6,60 @@ namespace AoC2020.Solutions
 {
     public class Day12 : Solution<int>
     {
-        public List<Instruction> instructions;
-        public (int x, int y) position;
-        public Direction direction = Direction.East;
-        public Day12(string file) : base(file)
-        {
+        private List<Instruction> instructions;
+        public Day12(string file) : base(file) =>
             instructions = Input.Select(i => new Instruction
             {
                 Action = i.First(char.IsLetter),
                 Value = int.Parse(i.Where(char.IsDigit).ToArray( ))
             }).ToList( );
-        }
-
-        public override int SolvePart1( )
-        {
-            instructions.ForEach(i =>
-            {
-                if ( i.Action == 'F' )
-                    position = MoveForward(i);
-                if ( i.Action == 'L' || i.Action == 'R' )
-                    direction = ChangeDirection(i);
-                if ( i.Action == 'N' || i.Action == 'E' ||
-                     i.Action == 'S' || i.Action == 'W' )
-                    position = MoveAbsolute(i);
-            });
-
-            return Math.Abs(position.x) + Math.Abs(position.y);
-        }
-
-        public override int SolvePart2( )
-        {
-            var wayPoint = (x: 10, y: 1);
-            position = (0, 0);
-            instructions.ForEach(i =>
-            {
-                if ( i.Action == 'N' )
-                    wayPoint = (wayPoint.x, wayPoint.y + i.Value);
-                if ( i.Action == 'S' )
-                    wayPoint = (wayPoint.x, wayPoint.y - i.Value);
-                if ( i.Action == 'E' )
-                    wayPoint = (wayPoint.x + i.Value, wayPoint.y);
-                if ( i.Action == 'W' )
-                    wayPoint = (wayPoint.x - i.Value, wayPoint.y);
-
-                if ( (i.Action == 'L' && i.Value == 90 ) || ( i.Action == 'R' && i.Value == 270 ) )
-                    wayPoint = (-wayPoint.y, wayPoint.x);
-
-                if ( ( i.Action == 'R' && i.Value == 90 ) || ( i.Action == 'L' && i.Value == 270 ) )
-                    wayPoint = (wayPoint.y, -wayPoint.x);
-
-                if((i.Action == 'R' || i.Action == 'L') && i.Value == 180)
-                    wayPoint = (-wayPoint.x, -wayPoint.y);
-
-                if ( i.Action == 'F' )
-                    position = (position.x + ( wayPoint.x * i.Value ), position.y + ( wayPoint.y * i.Value ));
-
-            });
-
-            return Math.Abs(position.x) + Math.Abs(position.y);
-        }
 
 
-        public (int x, int y) MoveForward(Instruction ins)
-        {
-            return direction switch
-            {
-                Direction.North => (position.x, position.y + ins.Value),
-                Direction.East => (position.x + ins.Value, position.y),
-                Direction.South => (position.x, position.y - ins.Value),
-                Direction.West => (position.x - ins.Value, position.y),
-            };
-        }
+        public override int SolvePart1( ) => instructions.Aggregate(
+            (x: 0, y: 0, d: 90), (p, i) => i.Action switch
+                {
+                    'N' => (p.x, p.y + i.Value, p.d),
+                    'E' => (p.x + i.Value, p.y, p.d),
+                    'S' => (p.x, p.y - i.Value, p.d),
+                    'W' => (p.x - i.Value, p.y, p.d),
+                    'L' => (p.x, p.y, ( p.d - i.Value + 360 ) % 360),
+                    'R' => (p.x, p.y, ( p.d + i.Value ) % 360),
+                    'F' => p.d switch
+                    {
+                        0 => (p.x, p.y + i.Value, p.d),
+                        90 => (p.x + i.Value, p.y, p.d),
+                        180 => (p.x, p.y - i.Value, p.d),
+                        270 => (p.x - i.Value, p.y, p.d),
+                    },
+                },
+                pos => Math.Abs(pos.x) + Math.Abs(pos.y));
 
-        public (int x, int y) MoveAbsolute(Instruction ins)
-        {
-            return ins.Action switch
-            {
-                'N' => (position.x, position.y + ins.Value),
-                'E' => (position.x + ins.Value, position.y),
-                'S' => (position.x, position.y - ins.Value),
-                'W' => (position.x - ins.Value, position.y),
-            };
-        }
 
-        public Direction ChangeDirection(Instruction ins)
-        {
-            return ins.Action switch
-            {
-                'L' or 'R' when direction == Direction.North && ins.Value == 180 => Direction.South,
-                'L' or 'R' when direction == Direction.East && ins.Value == 180 => Direction.West,
-                'L' or 'R' when direction == Direction.South && ins.Value == 180 => Direction.North,
-                'L' or 'R' when direction == Direction.West && ins.Value == 180 => Direction.East,
+        public override int SolvePart2( ) => instructions.Aggregate(
+            (x: 0, y: 0, wx: 10, wy: 1), (p, i) => i switch
+               {
+                   ('N', var value) => (p.x, p.y, p.wx, p.wy + value),
+                   ('E', var value) => (p.x, p.y, p.wx + value, p.wy),
+                   ('S', var value) => (p.x, p.y, p.wx, p.wy - value),
+                   ('W', var value) => (p.x, p.y, p.wx - value, p.wy),
+                   ('L', 90) or ('R', 270) => (p.x, p.y, -p.wy, p.wx),
+                   ('R', 90) or ('L', 270) => (p.x, p.y, p.wy, -p.wx),
+                   ('R', 180) or ('L', 180) => (p.x, p.y, -p.wx, -p.wy),
+                   ('F', var value) => (p.x + ( p.wx * value ), p.y + ( p.wy * value ), p.wx, p.wy)
+               },
+              pos => Math.Abs(pos.x) + Math.Abs(pos.y));
 
-                'L' when direction == Direction.North && ins.Value == 90 => Direction.West,
-                'L' when direction == Direction.North && ins.Value == 270 => Direction.East,
-                'R' when direction == Direction.North && ins.Value == 90 => Direction.East,
-                'R' when direction == Direction.North && ins.Value == 270 => Direction.West,
-
-                'L' when direction == Direction.East && ins.Value == 90 => Direction.North,
-                'L' when direction == Direction.East && ins.Value == 270 => Direction.South,
-                'R' when direction == Direction.East && ins.Value == 90 => Direction.South,
-                'R' when direction == Direction.East && ins.Value == 270 => Direction.North,
-
-                'L' when direction == Direction.South && ins.Value == 90 => Direction.East,
-                'L' when direction == Direction.South && ins.Value == 270 => Direction.West,
-                'R' when direction == Direction.South && ins.Value == 90 => Direction.West,
-                'R' when direction == Direction.South && ins.Value == 270 => Direction.East,
-
-                'L' when direction == Direction.West && ins.Value == 90 => Direction.South,
-                'L' when direction == Direction.West && ins.Value == 270 => Direction.North,
-                'R' when direction == Direction.West && ins.Value == 90 => Direction.North,
-                'R' when direction == Direction.West && ins.Value == 270 => Direction.South,
-            };
-        }
-
-        public enum Direction
-        {
-            North = 0,
-            East = 90,
-            South = 180,
-            West = 270
-        }
 
         public record Instruction
         {
             public char Action;
             public int Value;
+
+            public void Deconstruct(out char a, out int v)
+            {
+                a = Action;
+                v = Value;
+            }
         }
-    }   
+    }
 }
