@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Numerics;
 
 namespace AoC2020.Solutions
 {
@@ -11,7 +9,7 @@ namespace AoC2020.Solutions
         public List<Instruction> instructions;
         public (int x, int y) position;
         public Direction direction = Direction.East;
-        public Day12(string file) : base(file, "\r\n")
+        public Day12(string file) : base(file)
         {
             instructions = Input.Select(i => new Instruction
             {

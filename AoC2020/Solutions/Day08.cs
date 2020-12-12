@@ -10,7 +10,7 @@ namespace AoC2020.Solutions
         public int accumulator = 0;
         public int idx = 0;
         public List<int> visited = new List<int>();
-        public Day08(string file) : base(file, "\r\n")
+        public Day08(string file) : base(file)
         {
             instructions = GetInstructions( );
         }

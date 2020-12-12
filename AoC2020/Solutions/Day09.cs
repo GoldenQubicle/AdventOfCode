@@ -8,7 +8,7 @@ namespace AoC2020.Solutions
         private List<long> cypher;
         private int preamble;
         private long target;
-        public Day09(string file) : base(file, "\r\n") => cypher = Input.Select(i => long.Parse(i)).ToList( );
+        public Day09(string file) : base(file) => cypher = Input.Select(i => long.Parse(i)).ToList( );
 
         public long SolvePart1(int preamb)
         {

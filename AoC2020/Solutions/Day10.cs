@@ -6,7 +6,7 @@ namespace AoC2020.Solutions
     public class Day10 : Solution<long>
     {
         private List<int> jolts;
-        public Day10(string file) : base(file, "\r\n") => jolts = Input.Select(i => int.Parse(i)).ToList( );
+        public Day10(string file) : base(file) => jolts = Input.Select(i => int.Parse(i)).ToList( );
         public override long SolvePart1( ) => CalculateJoltDifferenes( ).jd1 * CalculateJoltDifferenes( ).jd3;
         public override long SolvePart2( )
         {

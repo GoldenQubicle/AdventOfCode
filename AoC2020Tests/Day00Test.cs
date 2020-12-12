@@ -5,6 +5,7 @@ namespace AoC2020Tests
 {
     class Day00Test
     {
+        [Ignore("superceded")]
         [Test]
         public void AbstractSolutionShouldParseCorrectly( )
         {

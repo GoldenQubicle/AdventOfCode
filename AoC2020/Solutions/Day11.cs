@@ -14,7 +14,7 @@ namespace AoC2020.Solutions
             (-1, 1),  (0, 1),  (1, 1)
         };
 
-        public Day11(string file) : base(file, "\r\n") => seatingState = Input.Select(i => i.ToCharArray( )).ToList( );
+        public Day11(string file) : base(file) => seatingState = Input.Select(i => i.ToCharArray( )).ToList( );
 
         public override int SolvePart1( )
         {
