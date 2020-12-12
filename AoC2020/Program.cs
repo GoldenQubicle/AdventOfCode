@@ -1,16 +1,11 @@
-﻿using AdventOfCode._2020.Day11;
-using AoC2020.Solutions;
+﻿using AoC2020.Solutions;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 
 namespace AoC2020
 {
     internal class Program
     {
-        static void Main()
+        static void Main( )
         {
             //var day1 = new Day01(nameof(Day01));
             //Console.WriteLine($"Day 1 part 1: {day1.SolvePart1( )} ");
@@ -52,10 +47,13 @@ namespace AoC2020
             //Console.WriteLine($"Day 10 part 1: {day10.SolvePart1( )} ");
             //Console.WriteLine($"Day 10 part 2: {day10.SolvePart2( )} ");
 
-            var day11 = new Day11(nameof(Day11));
-            Console.WriteLine($"Day 11 part 1: {day11.SolvePart1( )} ");
-            Console.WriteLine($"Day 11 part 2: {day11.SolvePart2( )} ");
+            //var day11 = new Day11(nameof(Day11));
+            //Console.WriteLine($"Day 11 part 1: {day11.SolvePart1( )} ");
+            //Console.WriteLine($"Day 11 part 2: {day11.SolvePart2( )} ");
 
+            var day12 = new Day12(nameof(Day12));
+            Console.WriteLine($"Day 12 part 1: {day12.SolvePart1( )} ");
+            Console.WriteLine($"Day 12 part 2: {day12.SolvePart2( )} ");            
         }
     }
 }
