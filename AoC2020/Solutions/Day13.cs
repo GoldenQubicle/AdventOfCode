@@ -8,20 +8,18 @@ namespace AoC2020.Solutions
 {
     public class Day13 : Solution<long>
     {
-        private int timestap;
-        private List<int> buses;
+        private readonly int timestep;
+        private readonly List<int> buses;
         public Day13(string file) : base(file)
         {
-            timestap = int.Parse(Input[0]);
+            timestep = int.Parse(Input[0]);
             buses = Input[1].Split(',').Where(s => !s.Equals("x")).Select(int.Parse).ToList( );
         }
-        public override long SolvePart1( )
-        {
-            return buses.Select(id => (id: id, wait: MathF.Ceiling(( float ) timestap / id) * id))
+        public override long SolvePart1( ) =>
+                 buses.Select(id => (id: id, wait: MathF.Ceiling(( float ) timestep / id) * id))
                 .OrderBy(id => id.wait)
-                .Select(id => ( int ) ( id.wait - timestap ) * id.id)
+                .Select(id => ( int ) ( id.wait - timestep ) * id.id)
                 .First( );
-        }
 
         public override long SolvePart2( )
         {
