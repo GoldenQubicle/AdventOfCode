@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AoC2020.Solutions
 {
@@ -15,6 +13,7 @@ namespace AoC2020.Solutions
             timestep = int.Parse(Input[0]);
             buses = Input[1].Split(',').Where(s => !s.Equals("x")).Select(int.Parse).ToList( );
         }
+
         public override long SolvePart1( ) =>
                  buses.Select(id => (id: id, wait: MathF.Ceiling(( float ) timestep / id) * id))
                 .OrderBy(id => id.wait)

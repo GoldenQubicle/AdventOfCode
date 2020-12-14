@@ -55,9 +55,13 @@ namespace AoC2020
             //Console.WriteLine($"Day 12 part 1: {day12.SolvePart1( )} ");
             //Console.WriteLine($"Day 12 part 2: {day12.SolvePart2( )} ");
 
-            var day13 = new Day13(nameof(Day13));
-            Console.WriteLine($"Day 13 part 1: {day13.SolvePart1( )} ");
-            Console.WriteLine($"Day 13 part 2: {day13.SolvePart2( )} ");
+            //var day13 = new Day13(nameof(Day13));
+            //Console.WriteLine($"Day 13 part 1: {day13.SolvePart1( )} ");
+            //Console.WriteLine($"Day 13 part 2: {day13.SolvePart2( )} ");
+
+            var day14 = new Day14(nameof(Day14));
+            Console.WriteLine($"Day 14 part 1: {day14.SolvePart1( )} ");
+            Console.WriteLine($"Day 14 part 2: {day14.SolvePart2( )} ");
         }
     }
 }
