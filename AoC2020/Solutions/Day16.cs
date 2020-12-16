@@ -9,6 +9,7 @@ namespace AoC2020.Solutions
         private readonly List<(string name, List<int> valid)> fields = new( );
         private readonly List<List<int>> tickets = new( );
         private readonly List<int> myTicket = new( );
+
         public Day16(string file) : base(file, "\r\n\r\n")
         {
             var intermediate = Input.Select(i => i.Split("\r\n")).ToArray( );
@@ -25,14 +26,14 @@ namespace AoC2020.Solutions
 
         public override long SolvePart1( )
         {
-            var allValid = fields.SelectMany(f => f.valid).ToList( );
-            return tickets.Sum(t => t.Sum(n => !allValid.Contains(n) ? n : 0));
+            var validNumbers = fields.SelectMany(f => f.valid).ToList( );
+            return tickets.Sum(ticket => ticket.Sum(n => !validNumbers.Contains(n) ? n : 0));
         }
 
         public override long SolvePart2( )
         {
-            var allValid = fields.SelectMany(f => f.valid).ToList( );
-            var validTickets = tickets.Where(t => t.All(n => allValid.Contains(n))).ToList( );
+            var validNumbers = fields.SelectMany(f => f.valid).ToList( );
+            var validTickets = tickets.Where(ticket => ticket.All(n => validNumbers.Contains(n))).ToList( );
 
             validTickets.Add(myTicket);
 
@@ -40,12 +41,12 @@ namespace AoC2020.Solutions
 
             while ( fields.Count > 0 )
             {
-                for ( int i = 0 ; i < validTickets[0].Count ; i++ )
+                for ( int i = 0 ; i < myTicket.Count ; i++ )
                 {
                     if ( fieldOrder.Any(f => f.index == i) ) continue;
 
-                    var tNum = validTickets.Select(t => t[i]).ToList( );
-                    var matches = fields.Where(f => tNum.All(n => f.valid.Contains(n))).ToList( );
+                    var position = validTickets.Select(t => t[i]).ToList( );
+                    var matches = fields.Where(f => position.All(n => f.valid.Contains(n))).ToList( );
 
                     if ( matches.Count == 1 )
                     {
