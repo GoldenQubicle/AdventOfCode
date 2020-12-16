@@ -32,12 +32,9 @@ namespace AoC2020.Solutions
 
         public override long SolvePart2( )
         {
+            var fieldOrder = new List<(string name, int index)>( );
             var validNumbers = fields.SelectMany(f => f.valid).ToList( );
             var validTickets = tickets.Where(ticket => ticket.All(n => validNumbers.Contains(n))).ToList( );
-
-            validTickets.Add(myTicket);
-
-            var fieldOrder = new List<(string name, int index)>( );
 
             while ( fields.Count > 0 )
             {
