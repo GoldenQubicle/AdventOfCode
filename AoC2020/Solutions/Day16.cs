@@ -46,17 +46,18 @@ namespace AoC2020.Solutions
                     if ( fieldOrder.Any(f => f.index == i) ) continue;
 
                     var position = validTickets.Select(t => t[i]).ToList( );
-                    var matches = fields.Where(f => position.All(n => f.valid.Contains(n))).ToList( );
+                    var matches = fields.Where(f => position.All(n => f.valid.Contains(n)));
 
-                    if ( matches.Count == 1 )
-                    {
-                        fieldOrder.Add((matches[0].name, i));
-                        fields.Remove(matches[0]);
+                    if ( matches.Count() == 1 )
+                    {                        
+                        fieldOrder.Add((matches.First().name, i));
+                        fields.Remove(matches.First());
                     }
                 }
             }
 
-            return fieldOrder.Aggregate(1L, (sum, field) => field.name.StartsWith("departure") ? sum *= myTicket[field.index] : sum);
+            return fieldOrder.Aggregate(1L, (sum, field) => 
+                field.name.StartsWith("departure") ? sum *= myTicket[field.index] : sum);
         }
     }
 }
