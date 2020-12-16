@@ -45,7 +45,7 @@ namespace AoC2020.Solutions
                 {
                     if ( fieldOrder.Any(f => f.index == i) ) continue;
 
-                    var position = validTickets.Select(t => t[i]).ToList( );
+                    var position = validTickets.Select(t => t[i]);
                     var matches = fields.Where(f => position.All(n => f.valid.Contains(n)));
 
                     if ( matches.Count() == 1 )
