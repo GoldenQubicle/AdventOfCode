@@ -170,10 +170,7 @@ namespace AoC2020.Solutions
 
                     expansion.TryAddAll3D(neighbors);
                 }
-
-                var z0 = newState.Where(p => p.Key.z == 0);
-                var z1 = newState.Where(p => p.Key.z == 1);
-                var z01 = newState.Where(p => p.Key.z == -1);
+          
 
                 newState.TryAddAll3D(expansion);
                 grid3d = newState;
@@ -207,10 +204,6 @@ namespace AoC2020.Solutions
 
                     expansion.TryAddAll4D(neighbors);
                 }
-
-                var z0 = newState.Where(p => p.Key.z == 0);
-                var z1 = newState.Where(p => p.Key.z == 1);
-                var z01 = newState.Where(p => p.Key.z == -1);
 
                 newState.TryAddAll4D(expansion);
                 grid4d = newState;
