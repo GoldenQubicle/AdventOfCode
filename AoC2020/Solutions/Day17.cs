@@ -26,7 +26,6 @@ namespace AoC2020.Solutions
 
         public override int SolvePart1( )
         {
-
             for ( int i = 0 ; i < 6 ; i++ )
             {
                 var newState = new Dictionary<(int x, int y, int z), char>( );
