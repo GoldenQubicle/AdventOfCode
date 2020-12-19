@@ -36,27 +36,7 @@ namespace AoC2020.Solutions
             messages = Input[1].Split("\r\n").ToList( );
         }
 
-        public override int SolvePart1( ) => Solve( );
-
-        public override int SolvePart2( )
-        {
-            //  8: 42     | 42 8
-            // 11: 42 31  | 42 11 31
-            rules["8"].Clear( );
-            rules["8"].AddRange(new List<List<string>> { new List<string> { "42" }, new List<string> { "42", "8" } });
-            rules["11"].Clear( );
-            rules["11"].AddRange(new List<List<string>> { new List<string> { "42", "31" }, new List<string> { "42", "11", "31" } });
-
-            //valid message can now be of different length, since the rules have infinite solutions!
-            //thus, what we need to do, per rule, is generate a new iteration, and see if those match the message..?!
-
-            var r = RecurseRule(new List<string> { rules["0"][0][0] });
-          
-
-            return Solve();
-        }
-
-        private int Solve( )
+        public override int SolvePart1( )
         {
             var startIndex = 0;
             rules["0"][0].ForEach(d =>
@@ -70,17 +50,61 @@ namespace AoC2020.Solutions
             return messages.Count(m => m.Length == startIndex);
         }
 
+        public override int SolvePart2( )
+        {
+            messages = Input[1].Split("\r\n").ToList( );
+
+            var valid = new Dictionary<int, List<string>>
+            {
+                { 31, RecurseRule(new List<string> { "31" })
+                        .Select(l => new string(l.SelectMany(s => s.ToCharArray( )).ToArray( ))).ToList( ) },
+                { 42, RecurseRule(new List<string> { "42" })
+                        .Select(l => new string(l.SelectMany(s => s.ToCharArray( )).ToArray( ))).ToList( ) }
+            };
+
+            bool isBlockValid(string mssg, List<string> rule, int start, int end) => rule.Contains(mssg[start..end]);
+
+            var blockLength = valid[31][0].Length;
+            var maxLength = messages.Max(m => m.Length);
+            var iterate8 = ( maxLength - 2 * blockLength ) / blockLength;
+            var iterate11 = ( maxLength - blockLength ) / ( blockLength * 2 );
+
+            var rule8 = new List<int>( );
+            var rule11 = new List<int>( );
+            var count = 0;
+
+            for ( int i = 0 ; i <= iterate8 ; i++ )
+            {
+                rule8.Add(42);
+
+                for ( int j = 0 ; j <= iterate11 ; j++ )
+                {
+                    rule11.Insert(0, 42);
+                    rule11.Insert(rule11.Count, 31);
+
+                    var toCheck = rule8.Select((r, i) =>
+                    (rule: r, start: i * blockLength, end: i * blockLength + blockLength)).ToList( );
+
+                    var index = toCheck.Last( ).end;
+                    toCheck.AddRange(rule11.Select((r, i) =>
+                    (rule: r, start: index + i * blockLength, end: index + i * blockLength + blockLength)).ToList( ));
+
+                    count += messages.Where(m => m.Length == toCheck.Last( ).end)
+                        .Count(m => toCheck.All(b => isBlockValid(m, valid[b.rule], b.start, b.end)));
+                }
+                rule11.Clear( );
+            }
+            return count;
+        }
+
         public List<List<string>> RecurseRule(List<string> rule)
-        {      
+        {
             if ( rule.All(s => s.AllLetter( )) ) return new List<List<string>> { rule };
 
             var current = rule.First(s => s.IsDigit( ));
             var index = rule.IndexOf(current);
 
             var next = rules[current];
-
-            if ( next.Count == 2 && next[1].Count == 2 && next[1][1].Equals("8") )
-                next[1] = next[1].Take(1).ToList();
 
             if ( next.Count == 1 && !next[0][0].IsDigit( ) )
             {
@@ -106,10 +130,9 @@ namespace AoC2020.Solutions
             cr1.InsertRange(index, next[0]);
             cr2.RemoveAt(index);
             cr2.InsertRange(index, next[1]);
+
             return RecurseRule(cr1).Concat(RecurseRule(cr2)).ToList( );
-
         }
-
     }
 
     public static class StringExtensions
