@@ -153,7 +153,7 @@ namespace AoC2020Tests
         public void SearchSeaMonster( )
         {
             day20 = new Day20("day20test2");
-            var tile = day20.tiles.First( );
+            var tile = day20.tiles.Values.First( );
             tile.Rotate90AntiClockwise( );
             tile.FlipHorizontal( );
 
