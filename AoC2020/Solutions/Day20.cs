@@ -13,13 +13,20 @@ namespace AoC2020.Solutions
 
         List<Action<Tile>> tileConfigurations = new List<Action<Tile>>
             {
-                tile => tile.FlipVertical( ),
-                tile => tile.FlipHorizontal( ),
-                tile => tile.FlipVertical( ),
-                tile => tile.Rotate90Clockwise( ),
-                tile => tile.FlipVertical( ),
-                tile => tile.FlipHorizontal( ),
-                tile => tile.FlipVertical( ),
+                //tile => tile.FlipVertical( ),
+                //tile => tile.FlipHorizontal( ),
+                //tile => tile.FlipVertical( ),
+                //tile => tile.Rotate90Clockwise( ),
+                //tile => tile.FlipVertical( ),
+                //tile => tile.FlipHorizontal( ),
+                //tile => tile.FlipVertical( ),
+               tile => tile.Rotate90Clockwise(),
+               tile => tile.Rotate90Clockwise(),
+               tile => tile.Rotate90Clockwise(),
+               tile => tile.FlipVertical(),
+               tile => tile.Rotate90Clockwise(),
+               tile => tile.Rotate90Clockwise(),
+               tile => tile.Rotate90Clockwise(),
             };
 
         public Day20(string file) : base(file, "\r\n\r\n")
@@ -29,9 +36,13 @@ namespace AoC2020.Solutions
                 .ToDictionary(t => t.Id, t => t);
         }
 
-        public override long SolvePart1( ) => GetMatchedTiles( )
-            .Where(m => m.matches.Count == 2)
-            .Aggregate(1L, (sum, match) => sum *= match.tile.Id);
+        public override long SolvePart1( )
+        {
+            var corners = GetMatchedTiles( )
+            .Where(m => m.matches.Count == 2).ToList( );
+            return corners.Aggregate(1L, (sum, match) => sum *= match.tile.Id);
+            
+        }
 
         private List<(Tile tile, List<int> matches)> GetMatchedTiles( )
         {
@@ -112,7 +123,7 @@ namespace AoC2020.Solutions
             picture[0][1] = rightNeighbor;
             picture[1][0] = downNeighbor;
             placed.AddRange(new List<int> { topLeft.Id, rightNeighbor.Id, downNeighbor.Id });
-         
+
 
             var pos = (y: 0, x: 2);
             var current = rightNeighbor;
@@ -134,6 +145,14 @@ namespace AoC2020.Solutions
 
                     if ( tileAction < tileConfigurations.Count )
                     {
+                        if ( pos.x >= 1 && pos.y >= 1 )
+                        {
+                            var left = nextTile.GetEdgeLeft( ).Equals(picture[pos.y][pos.x-1].GetEdgeRight( ));
+                            var up = nextTile.GetEdgeUp( ).Equals(picture[pos.y - 1][pos.x].GetEdgeDown( ));
+                            Console.WriteLine($"next tile place valid left {left}, and valid up {up}");
+                            Console.WriteLine($"placed {placed.Count} of which distinct {placed.Distinct().Count()}");
+                        }
+                        
                         placed.Add(nextTile.Id);
                         picture[pos.y][pos.x] = nextTile;
                         current = nextTile;
@@ -141,10 +160,10 @@ namespace AoC2020.Solutions
                         break;
                     }
                 }
-                     
+
                 nextTiles = matches[current].Except(placed).Select(id => tiles[id]).ToList( );
                 matchEdges = (t1, t2) => t1.GetEdgeRight( ).Equals(t2.GetEdgeLeft( ));
-                
+
                 // reached end of the row, go to the next one
                 if ( pos.x == size )
                 {
@@ -167,21 +186,20 @@ namespace AoC2020.Solutions
                 }
             }
 
-            picture.ForEach(row => row.ForEach(t => t.TrimEdges()));
+            picture.ForEach(row => row.ForEach(t => t.TrimEdges( )));
 
-           
             var tileEntries = picture[0][0].Contents.Count;
 
-            var final = picture.Aggregate(new List<string>(), (list, row) =>
-            {                
-                list.AddRange(row.Aggregate(new List<string>(new string[tileEntries]),
-                     (list, tile) => list = list.Select((s, i) => s + tile.Contents[i]).ToList()));
-                return list;
-            });
+            var final = picture.Aggregate(new List<string>( ), (list, row) =>
+             {
+                 list.AddRange(row.Aggregate(new List<string>(new string[tileEntries]),
+                      (list, tile) => list = list.Select((s, i) => s + tile.Contents[i]).ToList( )));
+                 return list;
+             });
 
             var tile = new Tile(0, final);
-            
-            var upper = new Regex(".{18}#{1}.{1}#{1}");
+
+            var upper = new Regex(".{18}#{1}.");
             var middle = new Regex("#{1}.{4}#{2}.{4}#{2}.{4}#{3}");
             var lower = new Regex(".{1}#{1}.{2}#{1}.{2}#{1}.{2}#{1}.{2}#{1}.{2}#{1}.{3}");
 
@@ -193,14 +211,16 @@ namespace AoC2020.Solutions
                 .Count(b => b);
 
             var actions = 0;
-            while (  regexMatches(tile) == 0 )
+            var count = 0;
+            while ( actions < tileConfigurations.Count)
             {
+                count = regexMatches(tile) > count ? regexMatches(tile) : count;
                 DoTileAction(tile, actions);
                 actions++;
             }
 
-            return tile.Contents.Sum(s => s.Count(c => c == '#')) - ( regexMatches(tile) * 15 );       
-            
+            return tile.Contents.Sum(s => s.Count(c => c == '#')) - ( count * 15 );
+
         }
     }
 
