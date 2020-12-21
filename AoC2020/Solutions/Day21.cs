@@ -10,6 +10,7 @@ namespace AoC2020.Solutions
     {
         Dictionary<string, HashSet<string>> allergensIngredients = new( );
         List<(List<string> ingredients, List<string> allergens)> foods = new( );
+
         public Day21(string file) : base(file)
         {
             var list = Input.Select(i =>
@@ -44,7 +45,8 @@ namespace AoC2020.Solutions
 
         public override string SolvePart2( )
         {
-            var knownAllergens = new Dictionary<string, string>( );
+            var knownAllergens = new SortedDictionary<string, string>( );
+
             while ( allergensIngredients.Any(kvp => kvp.Value.Count( ) > 0) )
             {
                 var newKnown = allergensIngredients
@@ -59,14 +61,13 @@ namespace AoC2020.Solutions
                 }
             }
 
-            var sorted = new SortedDictionary<string, string>(knownAllergens);
-            return sorted.Values.Aggregate(string.Empty, (s, a) => s + "," + a)[1..]; // get rid of first ","
+            return knownAllergens.Values.Aggregate(string.Empty, (s, a) => s + "," + a)[1..]; 
         }
     }
 
     public static class DictionaryExtension
     {
-        public static Dictionary<string, string> AddRange(this Dictionary<string, string> dic,  Dictionary<string, string> other )
+        public static SortedDictionary<string, string> AddRange(this SortedDictionary<string, string> dic,  Dictionary<string, string> other )
         {
             foreach(var kvp in other )
             {
