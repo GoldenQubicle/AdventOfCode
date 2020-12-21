@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AoC2020.Solutions
 {
@@ -69,9 +66,9 @@ namespace AoC2020.Solutions
     {
         public static SortedDictionary<string, string> AddRange(this SortedDictionary<string, string> dic,  Dictionary<string, string> other )
         {
-            foreach(var kvp in other )
+            foreach(var (key, value) in other )
             {
-                dic.Add(kvp.Key, kvp.Value);
+                dic.Add(key, value);
             }
             return dic;
         }            
