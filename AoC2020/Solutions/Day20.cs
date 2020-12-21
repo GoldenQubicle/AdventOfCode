@@ -10,7 +10,7 @@ namespace AoC2020.Solutions
         public readonly Dictionary<int, Tile> tiles = new( );
 
         List<Action<Tile>> tileConfigurations = new List<Action<Tile>>
-            {            
+            {
                tile => tile.Rotate90Clockwise(),
                tile => tile.Rotate90Clockwise(),
                tile => tile.Rotate90Clockwise(),
@@ -32,7 +32,7 @@ namespace AoC2020.Solutions
             var corners = GetMatchedTiles( )
             .Where(m => m.matches.Count == 2).ToList( );
             return corners.Aggregate(1L, (sum, match) => sum *= match.tile.Id);
-            
+
         }
 
         private List<(Tile tile, List<int> matches)> GetMatchedTiles( )
@@ -68,10 +68,11 @@ namespace AoC2020.Solutions
             Enumerable.Range(0, size).ToList( ).ForEach(n => picture.Add(new List<Tile>(new Tile[size])));
             var matches = GetMatchedTiles( ).ToDictionary(m => m.tile, m => m.matches);
             var placed = new List<int>( );
+
             void DoTileAction(Tile tile, int i) => tileConfigurations[i](tile);
             Func<Tile, Tile, bool> matchEdges = (t1, t2) => t1.GetEdgeRight( ).Equals(t2.GetEdgeLeft( ));
 
-            //assume first corner is in top left, and the first match goes to the rigth
+            //assume first corner is in top left, and the first match goes to the right
             var (topLeft, neighbors) = matches.First(kvp => kvp.Value.Count == 2);
             var rightNeighbor = matches.First(kvp => kvp.Key.Id.Equals(neighbors.First( ))).Key;
 
@@ -110,10 +111,10 @@ namespace AoC2020.Solutions
                 }
             }
             // now we have the top left corner fixed in place
+            // however not placing the down neighbor to prevent special case in the while loop below
             picture[0][0] = topLeft;
             picture[0][1] = rightNeighbor;
-            picture[1][0] = downNeighbor;
-            placed.AddRange(new List<int> { topLeft.Id, rightNeighbor.Id, downNeighbor.Id });
+            placed.AddRange(new List<int> { topLeft.Id, rightNeighbor.Id });
 
 
             var pos = (y: 0, x: 2);
@@ -135,12 +136,6 @@ namespace AoC2020.Solutions
 
                     if ( tileAction < tileConfigurations.Count )
                     {
-                        if ( pos.x >= 1 && pos.y >= 1 )
-                        {
-                            var left = nextTile.GetEdgeLeft( ).Equals(picture[pos.y][pos.x-1].GetEdgeRight( ));
-                            var up = nextTile.GetEdgeUp( ).Equals(picture[pos.y - 1][pos.x].GetEdgeDown( ));
-                        }
-                        
                         placed.Add(nextTile.Id);
                         picture[pos.y][pos.x] = nextTile;
                         current = nextTile;
@@ -149,7 +144,7 @@ namespace AoC2020.Solutions
                     }
                 }
 
-                nextTiles = matches[current].Except(placed).Select(id => tiles[id]).ToList( );
+                // set matchEdges here because it can be overriden below in case of a new row
                 matchEdges = (t1, t2) => t1.GetEdgeRight( ).Equals(t2.GetEdgeLeft( ));
 
                 // reached end of the row, go to the next one
@@ -157,21 +152,11 @@ namespace AoC2020.Solutions
                 {
                     pos.x = 0;
                     pos.y++;
-
-                    //special case since we've already fixed the topleft corner
-                    if ( pos.y == 1 )
-                    {
-                        pos.x = 1;
-                        current = picture[1][0];
-                        nextTiles = matches[current].Except(placed).Select(id => tiles[id]).ToList( );
-                    }
-                    else
-                    {
-                        current = picture[pos.y - 1][pos.x];
-                        nextTiles = matches[current].Except(placed).Select(id => tiles[id]).ToList( );
-                        matchEdges = (t1, t2) => t1.GetEdgeDown( ).Equals(t2.GetEdgeUp( ));
-                    }
+                    current = picture[pos.y - 1][pos.x];
+                    matchEdges = (t1, t2) => t1.GetEdgeDown( ).Equals(t2.GetEdgeUp( )); // check from the row above
                 }
+
+                nextTiles = matches[current].Except(placed).Select(id => tiles[id]).ToList( );
             }
 
             picture.ForEach(row => row.ForEach(t => t.TrimEdges( )));
@@ -186,7 +171,6 @@ namespace AoC2020.Solutions
              });
 
             var tile = new Tile(0, final);
-
             var upper = new Regex(".{18}#{1}.");
             var middle = new Regex("#{1}.{4}#{2}.{4}#{2}.{4}#{3}");
             var lower = new Regex(".{1}#{1}.{2}#{1}.{2}#{1}.{2}#{1}.{2}#{1}.{2}#{1}.{3}");
@@ -201,8 +185,8 @@ namespace AoC2020.Solutions
             tile.Rotate90AntiClockwise( ); // total hack needed for the final picture (not the example though..)
 
             var actions = 0;
-            var count = regexMatches(tile) ;
-            while ( actions < tileConfigurations.Count)
+            var count = regexMatches(tile);
+            while ( actions < tileConfigurations.Count )
             {
                 count = regexMatches(tile) > count ? regexMatches(tile) : count;
                 DoTileAction(tile, actions);
