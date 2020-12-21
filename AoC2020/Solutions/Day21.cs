@@ -54,7 +54,7 @@ namespace AoC2020.Solutions
 
                 foreach ( var (allergen, ingredients) in allergensIngredients )
                 {
-                    allergensIngredients[allergen] = ingredients.Except(newKnown.Values.ToList()).ToHashSet( );
+                    allergensIngredients[allergen] = ingredients.Except(newKnown.Values).ToHashSet( );
                 }
             }
 
