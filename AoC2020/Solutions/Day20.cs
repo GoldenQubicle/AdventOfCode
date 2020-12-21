@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace AoC2020.Solutions
 {
@@ -12,14 +10,7 @@ namespace AoC2020.Solutions
         public readonly Dictionary<int, Tile> tiles = new( );
 
         List<Action<Tile>> tileConfigurations = new List<Action<Tile>>
-            {
-                //tile => tile.FlipVertical( ),
-                //tile => tile.FlipHorizontal( ),
-                //tile => tile.FlipVertical( ),
-                //tile => tile.Rotate90Clockwise( ),
-                //tile => tile.FlipVertical( ),
-                //tile => tile.FlipHorizontal( ),
-                //tile => tile.FlipVertical( ),
+            {            
                tile => tile.Rotate90Clockwise(),
                tile => tile.Rotate90Clockwise(),
                tile => tile.Rotate90Clockwise(),
@@ -131,7 +122,6 @@ namespace AoC2020.Solutions
 
             while ( nextTiles.Any( ) )
             {
-                Console.WriteLine($"checking {nextTiles.Count} for tile {current.Id} at position {pos}");
                 foreach ( var nextTile in nextTiles )
                 {
                     var tileAction = 0;
@@ -149,8 +139,6 @@ namespace AoC2020.Solutions
                         {
                             var left = nextTile.GetEdgeLeft( ).Equals(picture[pos.y][pos.x-1].GetEdgeRight( ));
                             var up = nextTile.GetEdgeUp( ).Equals(picture[pos.y - 1][pos.x].GetEdgeDown( ));
-                            Console.WriteLine($"next tile place valid left {left}, and valid up {up}");
-                            Console.WriteLine($"placed {placed.Count} of which distinct {placed.Distinct().Count()}");
                         }
                         
                         placed.Add(nextTile.Id);
@@ -210,8 +198,10 @@ namespace AoC2020.Solutions
                         lower.IsMatch(tile.Contents[i + 1]) ? true : false)
                 .Count(b => b);
 
+            tile.Rotate90AntiClockwise( ); // total hack needed for the final picture (not the example though..)
+
             var actions = 0;
-            var count = 0;
+            var count = regexMatches(tile) ;
             while ( actions < tileConfigurations.Count)
             {
                 count = regexMatches(tile) > count ? regexMatches(tile) : count;
@@ -220,7 +210,6 @@ namespace AoC2020.Solutions
             }
 
             return tile.Contents.Sum(s => s.Count(c => c == '#')) - ( count * 15 );
-
         }
     }
 
