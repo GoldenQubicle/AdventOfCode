@@ -102,11 +102,11 @@ namespace AoC2020.Solutions
         private bool OrderSeenBefore((List<int[ ]> player1, List<int[ ]> player2) state,
             Queue<int> player1, Queue<int> player2) =>
             state.player1
-                .Where(s => s.Length == player1.ToArray( ).Length)
+                .Where(s => s.Length == player1.Count)
                 .Select(s => s.Select((c, i) => player1.ToArray( )[i] == c))
                 .Any(s => s.All(b => b)) ||
             state.player2
-                .Where(s => s.Length == player2.ToArray( ).Length)
+                .Where(s => s.Length == player2.Count)
                 .Select(s => s.Select((c, i) => player2.ToArray( )[i] == c))
                 .Any(s => s.All(b => b));
 

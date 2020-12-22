@@ -1,6 +1,7 @@
 ﻿using AoC2020.Solutions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -96,8 +97,9 @@ namespace AoC2020
 
 
             var day22 = new Day22(nameof(Day22));
-            Console.WriteLine($"Day 22 part 1: {day22.SolvePart1( )} ");
+            Console.WriteLine($"Day 22 part 1: {day22.SolvePart1( )} ");            
             Console.WriteLine($"Day 22 part 2: {day22.SolvePart2( )} ");
+            
         }   
     }
 }
