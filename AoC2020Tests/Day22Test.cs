@@ -30,14 +30,6 @@ namespace AoC2020Tests
         {
             var actual = day22.SolvePart2( );
             Assert.AreEqual(291, actual);
-        }
-
-        [Test]
-        public void Part2StopLoop( )
-        {
-            day22 = new Day22("day22test2");
-            var actual = day22.SolvePart2( );
-            Assert.AreEqual(291, actual);
-        }
+        }       
     }
 }

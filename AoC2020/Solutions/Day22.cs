@@ -10,7 +10,7 @@ namespace AoC2020.Solutions
     {
         public Day22(string file) : base(file, "\r\n\r\n") { }
 
-        public (Queue<int> player1, Queue<int> player2) InitializeGame( )
+        public (Queue<int>, Queue<int>) InitializeGame( )
         {
             var p1 = new Queue<int>( );
             var p2 = new Queue<int>( );
@@ -22,6 +22,7 @@ namespace AoC2020.Solutions
         public override int SolvePart1( )
         {
             var (player1, player2) = InitializeGame( );
+
             while ( player1.Count > 0 && player2.Count > 0 )
             {
                 var c1 = player1.Dequeue( );
@@ -43,38 +44,38 @@ namespace AoC2020.Solutions
                 player2.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( ) :
                 player1.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( );
         }
+
         public override int SolvePart2( )
         {
             var (player1, player2) = InitializeGame( );
-            var result = RecurseGame(player1, player2);
+            var (player1Win, deck1, deck2) = RecurseGame(player1, player2);
 
-            return result.p1w ?
-                result.p1.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( ) :
-                result.p2.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( );
-
+            return player1Win ?
+                deck1.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( ) :
+                deck2.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( );
         }
 
-        private (bool p1w, Queue<int> p1, Queue<int> p2) RecurseGame(Queue<int> player1, Queue<int> player2)
+        private (bool player1Wins, Queue<int>, Queue<int>) RecurseGame(Queue<int> player1, Queue<int> player2)
         {
-            var state = (p1: new List<int[ ]>( ), p2: new List<int[ ]>( ));
+            var state = (new List<int[ ]>( ), new List<int[ ]>( ));
+            var player1Wins = false;
 
             while ( player1.Count > 0 && player2.Count > 0 )
             {
-                if ( OrderInState(state, player1, player2) )
+                if ( OrderSeenBefore(state, player1, player2) )
                 {
                     return (true, player1, player2);
                 }
 
                 CaptureState(state, player1, player2);
 
+                player1Wins = false;
                 var c1 = player1.Dequeue( );
                 var c2 = player2.Dequeue( );
 
-                var player1Wins = false;
-
                 if ( player1.Count >= c1 && player2.Count >= c2 )
                 {
-                    player1Wins = RecurseGame(player1.NewDeck(c1), player2.NewDeck(c2)).p1w;
+                    player1Wins = RecurseGame(player1.NewDeck(c1), player2.NewDeck(c2)).player1Wins;
                 }
                 else if ( c1 > c2 )
                 {
@@ -93,26 +94,27 @@ namespace AoC2020.Solutions
                 }
             }
 
-            return player2.Count == 0 ?
+            return player1Wins ?
                  (true, player1, player2) :
                  (false, player1, player2);
         }
 
-        private bool OrderInState((List<int[ ]> p1, List<int[ ]> p2) state, Queue<int> player1, Queue<int> player2) =>
-            state.p1
+        private bool OrderSeenBefore((List<int[ ]> player1, List<int[ ]> player2) state,
+            Queue<int> player1, Queue<int> player2) =>
+            state.player1
                 .Where(s => s.Length == player1.ToArray( ).Length)
                 .Select(s => s.Select((c, i) => player1.ToArray( )[i] == c))
                 .Any(s => s.All(b => b)) ||
-            state.p2
+            state.player2
                 .Where(s => s.Length == player2.ToArray( ).Length)
                 .Select(s => s.Select((c, i) => player2.ToArray( )[i] == c))
                 .Any(s => s.All(b => b));
 
-
-        void CaptureState((List<int[ ]> p1, List<int[ ]> p2) state, Queue<int> player1, Queue<int> player2)
+        private void CaptureState((List<int[ ]> player1, List<int[ ]> player2) state,
+            Queue<int> player1, Queue<int> player2)
         {
-            state.p1.Add(player1.ToArray( ));
-            state.p2.Add(player2.ToArray( ));
+            state.player1.Add(player1.ToArray( ));
+            state.player2.Add(player2.ToArray( ));
         }
     }
 
@@ -125,5 +127,4 @@ namespace AoC2020.Solutions
             return q;
         }
     }
-
 }
