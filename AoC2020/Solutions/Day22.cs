@@ -33,7 +33,7 @@ namespace AoC2020.Solutions
                 }
             }
 
-            return player1.Count == 0 ? player2.GetScore( ) : player1.GetScore( );
+            return player1.Count > 0 ? player1.GetScore( ) : player2.GetScore( );
         }
 
         public override int SolvePart2( )
