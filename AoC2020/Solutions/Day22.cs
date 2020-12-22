@@ -8,7 +8,7 @@ namespace AoC2020.Solutions
     {
         public Day22(string file) : base(file, "\r\n\r\n") { }
 
-        public (Queue<int>, Queue<int>) InitializeGame( ) =>
+        private (Queue<int>, Queue<int>) InitializeGame( ) =>
             (new Queue<int>(Input[0].Split("\r\n").Skip(1).Select(int.Parse)),
              new Queue<int>(Input[1].Split("\r\n").Skip(1).Select(int.Parse)));
 
@@ -33,9 +33,7 @@ namespace AoC2020.Solutions
                 }
             }
 
-            return player1.Count == 0 ?
-                player2.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( ) :
-                player1.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( );
+            return player1.Count == 0 ? player2.GetScore( ) : player1.GetScore( );
         }
 
         public override int SolvePart2( )
@@ -43,9 +41,7 @@ namespace AoC2020.Solutions
             var (player1, player2) = InitializeGame( );
             var (player1Win, deck1, deck2) = RecurseGame(player1, player2);
 
-            return player1Win ?
-                deck1.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( ) :
-                deck2.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( );
+            return player1Win ? deck1.GetScore( ) : deck2.GetScore( );
         }
 
         private (bool player1Wins, Queue<int>, Queue<int>) RecurseGame(Queue<int> player1, Queue<int> player2)
@@ -68,7 +64,7 @@ namespace AoC2020.Solutions
 
                 if ( player1.Count >= c1 && player2.Count >= c2 )
                 {
-                    player1Wins = RecurseGame(player1.NewDeck(c1), player2.NewDeck(c2)).player1Wins;                    
+                    player1Wins = RecurseGame(player1.NewDeck(c1), player2.NewDeck(c2)).player1Wins;
                 }
                 else if ( c1 > c2 )
                 {
@@ -113,6 +109,8 @@ namespace AoC2020.Solutions
 
     public static class QueueExtension
     {
-        public static Queue<int> NewDeck(this Queue<int> player, int take) => new Queue<int>(player.Take(take));
+        public static Queue<int> NewDeck(this Queue<int> deck, int amount) => new Queue<int>(deck.Take(amount));
+
+        public static int GetScore(this Queue<int> deck) => deck.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( );
     }
 }
