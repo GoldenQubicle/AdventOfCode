@@ -39,23 +39,19 @@ namespace AoC2020.Solutions
         public override int SolvePart2( )
         {
             var (player1, player2) = InitializeGame( );
-            var (player1Win, deck1, deck2) = RecurseGame(player1, player2);
-
-            return player1Win ? deck1.GetScore( ) : deck2.GetScore( );
+            
+            return RecurseGame(player1, player2) ? player1.GetScore( ) : player2.GetScore( );
         }
 
-        private (bool player1Wins, Queue<int>, Queue<int>) RecurseGame(Queue<int> player1, Queue<int> player2)
+        private bool RecurseGame(Queue<int> player1, Queue<int> player2)
         {
             var state = (new List<int[ ]>( ), new List<int[ ]>( ));
             var player1Wins = false;
 
             while ( player1.Count > 0 && player2.Count > 0 )
             {
-                if ( OrderSeenBefore(state, player1, player2) )
-                {
-                    return (true, player1, player2);
-                }
-
+                if ( OrderSeenBefore(state, player1, player2) ) return true;
+             
                 CaptureState(state, player1, player2);
 
                 player1Wins = false;
@@ -64,7 +60,7 @@ namespace AoC2020.Solutions
 
                 if ( player1.Count >= c1 && player2.Count >= c2 )
                 {
-                    player1Wins = RecurseGame(player1.NewDeck(c1), player2.NewDeck(c2)).player1Wins;
+                    player1Wins = RecurseGame(player1.NewDeck(c1), player2.NewDeck(c2));
                 }
                 else if ( c1 > c2 )
                 {
@@ -83,9 +79,7 @@ namespace AoC2020.Solutions
                 }
             }
 
-            return player1Wins ?
-                 (true, player1, player2) :
-                 (false, player1, player2);
+            return player1Wins;
         }
 
         private bool OrderSeenBefore((List<int[ ]> player1, List<int[ ]> player2) state,
