@@ -8,14 +8,9 @@ namespace AoC2020.Solutions
     {
         public Day22(string file) : base(file, "\r\n\r\n") { }
 
-        public (Queue<int>, Queue<int>) InitializeGame( )
-        {
-            var p1 = new Queue<int>( );
-            var p2 = new Queue<int>( );
-            Input[0].Split("\r\n").Skip(1).ToList( ).ForEach(n => p1.Enqueue(int.Parse(n)));
-            Input[1].Split("\r\n").Skip(1).ToList( ).ForEach(n => p2.Enqueue(int.Parse(n)));
-            return (p1, p2);
-        }
+        public (Queue<int>, Queue<int>) InitializeGame( ) =>
+            (new Queue<int>(Input[0].Split("\r\n").Skip(1).Select(int.Parse)),
+             new Queue<int>(Input[1].Split("\r\n").Skip(1).Select(int.Parse)));
 
         public override int SolvePart1( )
         {
@@ -73,7 +68,7 @@ namespace AoC2020.Solutions
 
                 if ( player1.Count >= c1 && player2.Count >= c2 )
                 {
-                    player1Wins = RecurseGame(player1.NewDeck(c1), player2.NewDeck(c2)).player1Wins;
+                    player1Wins = RecurseGame(player1.NewDeck(c1), player2.NewDeck(c2)).player1Wins;                    
                 }
                 else if ( c1 > c2 )
                 {
@@ -118,11 +113,6 @@ namespace AoC2020.Solutions
 
     public static class QueueExtension
     {
-        public static Queue<int> NewDeck(this Queue<int> player, int take)
-        {
-            var q = new Queue<int>( );
-            player.Take(take).ToList( ).ForEach(c => q.Enqueue(c));
-            return q;
-        }
+        public static Queue<int> NewDeck(this Queue<int> player, int take) => new Queue<int>(player.Take(take));
     }
 }
