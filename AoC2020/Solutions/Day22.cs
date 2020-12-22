@@ -38,8 +38,7 @@ namespace AoC2020.Solutions
 
         public override int SolvePart2( )
         {
-            var (player1, player2) = InitializeGame( );
-            
+            var (player1, player2) = InitializeGame( );            
             return RecurseGame(player1, player2) ? player1.GetScore( ) : player2.GetScore( );
         }
 
