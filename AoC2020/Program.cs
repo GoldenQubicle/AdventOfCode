@@ -100,9 +100,9 @@ namespace AoC2020
             //Console.WriteLine($"Day 22 part 2: {day22.SolvePart2( )} ");
 
             var day23 = new Day23(nameof(Day23));
-            //Console.WriteLine($"Day 23 part 1: {day23.SolvePart1(100)} ");
+            Console.WriteLine($"Day 23 part 1: {day23.SolvePart1(100)} ");
             Console.WriteLine($"Day 23 part 2: {day23.SolvePart2(10000000)} ");
 
-        }   
+        }      
     }
 }

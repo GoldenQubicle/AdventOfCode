@@ -26,6 +26,14 @@ namespace AoC2020Tests
             Assert.AreEqual(expected, actual);
         }
 
+        [TestCase(10, "92658374")]
+        [TestCase(100, "67384529")]
+        public void Part1WithLinkedList(int iterations, string expected)
+        {
+            var actual = day23.SolvePart2(iterations);
+            Assert.AreEqual(expected, actual);
+        }
+
         [Test]
         public void Part2( )
         {

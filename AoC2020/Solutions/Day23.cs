@@ -9,10 +9,11 @@ namespace AoC2020.Solutions
 {
     public class Day23 : Solution<string>
     {
-        private int[ ] cups;
         private int iterations;
-        public Day23(string file) : base(file) =>
-            cups = Input[0]
+        private int[ ] cups;
+        public Day23(string file) : base(file) => cups = GetCups( );           
+        
+        private int [] GetCups() => Input[0]
                     .Where(char.IsDigit)
                     .Select(c => int.Parse(c.ToString( ))).ToArray( );
 
@@ -29,28 +30,78 @@ namespace AoC2020.Solutions
         public string SolvePart2(int it)
         {
             iterations = it;
-            cups = cups.Concat(Enumerable.Range(cups.Max( ), 1000000 - cups.Length)).ToArray( );
-            var result = Iterate( );
-            var indexone = cups.ToList( ).IndexOf(1);
+            var cups = GetCups( );
+            cups = cups.Concat(Enumerable.Range(cups.Max( ) + 1, 1000000 - cups.Length)).ToArray( );
 
-            return ( result[indexone + 1] * result[indexone + 2] ).ToString( );
-        }
+            var dic = new Dictionary<int, LinkedListNode<int>>( ); // using list.Find() takes FOREVER hence a dictionary for faster retrieval
+            var llist = new LinkedList<int>( );
+            var first = new LinkedListNode<int>(cups[0]);
+            llist.AddFirst(first);
+            dic.Add(cups[0], first);
+            var current = first;
 
-        private int[ ] Iterate( )
-        {
+            for ( int i = 1 ; i < cups.Length ; i++ )
+            {
+                var next = new LinkedListNode<int>(cups[i]);
+                dic.Add(cups[i], next);
+                llist.AddAfter(current, next);
+                current = next;
+            }
 
-            var main = new Stopwatch( );
-            var loop = new Stopwatch( );
+            current = llist.First;
 
             for ( int i = 0 ; i < iterations ; i++ )
             {
-                main.Start( );
+                //Console.WriteLine($"{i}");
+                var setAside = new List<LinkedListNode<int>>
+                {
+                    current.WrapNext(),
+                    current.WrapNext().WrapNext(),
+                    current.WrapNext().WrapNext().WrapNext(),
+                };
+
+                setAside.ForEach(n => llist.Remove(n));
+
+                var next = current.Value == 1 ? cups.Count(): current.Value - 1;
+                while ( setAside.Select(n => n.Value).Contains(next) )
+                {
+                    next--;
+                    if ( next == 0 ) next = cups.Count( );
+                }
+
+                //var insert = llist.Find(next);
+                var insert = dic[next];
+                llist.AddAfter(insert, setAside[0]);
+                llist.AddAfter(setAside[0], setAside[1]);
+                llist.AddAfter(setAside[1], setAside[2]);
+
+                current = current.WrapNext();
+
+            }
+
+            var one = llist.Find(1);
+            var bla = one.WrapNext();
+            var result = string.Empty;
+            //while ( bla.Value != 1 )
+            //{
+            //    result += bla.Value.ToString( );
+            //    bla = bla.WrapNext( );
+            //}
+            //return result;
+            return ((long)one.WrapNext().Value * one.WrapNext( ).WrapNext( ).Value ).ToString();
+        }
+
+
+
+        private int[ ] Iterate( )
+        {
+            for ( int i = 0 ; i < iterations ; i++ )
+            {
                 var index = i % cups.Length;
                 var current = cups[index];
                 var setAside = cups.Concat(cups).ToArray( )[( index + 1 )..( index + 4 )];
                 var pickFrom = cups.Except(setAside).Except(new[ ] { current });
-                loop.Start( );
-       
+
                 var destination = -1;
 
                 while ( destination == -1 )
@@ -63,7 +114,6 @@ namespace AoC2020.Solutions
                     if ( current == 0 )
                         destination = pickFrom.Max( );
                 }
-                loop.Stop( );
                 var nextCups = cups.Except(setAside).ToList( );
                 var insert = nextCups.IndexOf(destination) + 1;
                 var offset = index + 1 + setAside.Length > cups.Length ? ( index + 1 + setAside.Length ) - cups.Length : 0;
@@ -75,11 +125,6 @@ namespace AoC2020.Solutions
                     nextCupsArr = nextCupsArr[( 3 - offset )..].Concat(nextCupsArr[..( 3 - offset )]).ToArray( );
 
                 cups = nextCupsArr;
-                main.Stop( );
-
-                Console.WriteLine($"main iteration took: {main.ElapsedMilliseconds}, while loop took: {loop.ElapsedMilliseconds}");
-                main.Reset( );
-                loop.Reset( );
             }
 
             return cups.Concat(cups).ToArray( );
@@ -88,5 +133,10 @@ namespace AoC2020.Solutions
         public override string SolvePart1( ) => throw new NotImplementedException( );
 
         public override string SolvePart2( ) => throw new NotImplementedException( );
+    }
+
+    public static class LinkedListExtension
+    {
+        public static LinkedListNode<T> WrapNext<T>(this LinkedListNode<T> node) => node.Next ?? node.List.First;
     }
 }
