@@ -8,46 +8,38 @@ namespace AoC2020.Solutions
     {
         private List<long> numbers;
         public Day15(string file) : base(file, ",") => numbers = Input.Select(long.Parse).ToList( );
-        public override long SolvePart1( )
+
+        public override long SolvePart1( ) => MemoryGame(2020);
+        public override long SolvePart2( ) => MemoryGame(30000000);
+
+        private long MemoryGame(int iterate )
         {
-            for ( int i = numbers.Count - 1 ; i < 2020 - 1 ; i++ )
+            var turns = numbers.Select((n, i) => (n, i)).ToDictionary(n => n.n, n => new List<int> { n.i });
+            var lastNumber = numbers.Last( );
+
+            for ( int i = numbers.Count ; i < iterate ; i++ )
             {
-                var lastNumber = numbers.Last( );
-                if ( numbers.Count(n => n == lastNumber) == 1 )
-                    numbers.Add(0);
+                if ( turns[lastNumber].Count == 1 )
+                {
+                    lastNumber = 0;
+
+                    turns[lastNumber].Add(i);
+                }
                 else
                 {
-                    var occurence = numbers.Select((n, i) => (n, i)).Where(n => n.n == lastNumber).OrderBy(n => n.i).ToList( );
-                    numbers.Add(occurence[occurence.Count( ) - 1].i - occurence[occurence.Count( ) - 2].i);
+                    lastNumber = turns[lastNumber][turns[lastNumber].Count - 1] - turns[lastNumber][turns[lastNumber].Count - 2];
+
+                    if ( turns.ContainsKey(lastNumber) )
+                    {
+                        turns[lastNumber].Add(i);
+                    }
+                    else
+                    {
+                        turns.Add(lastNumber, new List<int> { i });
+                    }
                 }
             }
-
-            return numbers.Last( );
-        }
-        public override long SolvePart2( )
-        {
-            var m = 0;
-
-            for ( int i = numbers.Count - 1 ; i < 30000000 - 1 ; i++ )
-            {
-                Console.WriteLine(i);
-                if ( i % 1000000 == 0 )
-                {
-                    m++;
-                    Console.WriteLine($"{DateTime.Now.ToShortTimeString()}: passed {i} million, only {30 - i} to go!");
-                }
-
-                var lastNumber = numbers.Last( );
-                if ( numbers.Count(n => n == lastNumber) == 1 )
-                    numbers.Add(0);
-                else
-                {
-                    var occurence = numbers.Select((n, i) => (n, i)).Where(n => n.n == lastNumber).OrderBy(n => n.i).ToList( );
-                    numbers.Add(occurence[occurence.Count( ) - 1].i - occurence[occurence.Count( ) - 2].i);
-                }
-            }
-
-            return numbers.Last( );
-        }
+            return lastNumber;
+        }      
     }
 }
