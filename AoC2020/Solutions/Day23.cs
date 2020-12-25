@@ -1,35 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AoC2020.Solutions
 {
     public class Day23 : Solution<string>
     {
-        private int iterations;
+        public int IteratePart1 { get; set; } = 100;
+        public int IteratePart2 { get; set; } = 10000000;
+
         private int[ ] cups;
-        public Day23(string file) : base(file) => cups = GetCups( );           
-        
-        private int [] GetCups() => Input[0]
+        public Day23(string file) : base(file) => cups = GetCups( );
+
+        private int[ ] GetCups( ) => Input[0]
                     .Where(char.IsDigit)
                     .Select(c => int.Parse(c.ToString( ))).ToArray( );
 
-        public string SolvePart1(int it)
+        public override string SolvePart1( )
         {
-            iterations = it;
-
             var result = Iterate( );
             var indexone = cups.ToList( ).IndexOf(1);
 
             return result.Skip(indexone + 1).Take(cups.Length - 1).Aggregate(string.Empty, (s, c) => s + c.ToString( )).ToString( );
         }
 
-        public string SolvePart2(int it)
+        public override string SolvePart2( )
         {
-            iterations = it;
             var cups = GetCups( );
             cups = cups.Concat(Enumerable.Range(cups.Max( ) + 1, 1000000 - cups.Length)).ToArray( );
 
@@ -50,9 +46,8 @@ namespace AoC2020.Solutions
 
             current = llist.First;
 
-            for ( int i = 0 ; i < iterations ; i++ )
+            for ( int i = 0 ; i < IteratePart2 ; i++ )
             {
-                //Console.WriteLine($"{i}");
                 var setAside = new List<LinkedListNode<int>>
                 {
                     current.WrapNext(),
@@ -62,40 +57,29 @@ namespace AoC2020.Solutions
 
                 setAside.ForEach(n => llist.Remove(n));
 
-                var next = current.Value == 1 ? cups.Count(): current.Value - 1;
+                var next = current.Value == 1 ? cups.Count( ) : current.Value - 1;
                 while ( setAside.Select(n => n.Value).Contains(next) )
                 {
                     next--;
                     if ( next == 0 ) next = cups.Count( );
                 }
 
-                //var insert = llist.Find(next);
                 var insert = dic[next];
                 llist.AddAfter(insert, setAside[0]);
                 llist.AddAfter(setAside[0], setAside[1]);
                 llist.AddAfter(setAside[1], setAside[2]);
 
-                current = current.WrapNext();
-
+                current = current.WrapNext( );
             }
 
-            var one = llist.Find(1);
-            var bla = one.WrapNext();
-            var result = string.Empty;
-            //while ( bla.Value != 1 )
-            //{
-            //    result += bla.Value.ToString( );
-            //    bla = bla.WrapNext( );
-            //}
-            //return result;
-            return ((long)one.WrapNext().Value * one.WrapNext( ).WrapNext( ).Value ).ToString();
+            var one = dic[1];
+
+            return ( ( long ) one.WrapNext( ).Value * one.WrapNext( ).WrapNext( ).Value ).ToString( );
         }
-
-
 
         private int[ ] Iterate( )
         {
-            for ( int i = 0 ; i < iterations ; i++ )
+            for ( int i = 0 ; i < IteratePart1 ; i++ )
             {
                 var index = i % cups.Length;
                 var current = cups[index];
@@ -126,13 +110,8 @@ namespace AoC2020.Solutions
 
                 cups = nextCupsArr;
             }
-
             return cups.Concat(cups).ToArray( );
         }
-
-        public override string SolvePart1( ) => throw new NotImplementedException( );
-
-        public override string SolvePart2( ) => throw new NotImplementedException( );
     }
 
     public static class LinkedListExtension

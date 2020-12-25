@@ -22,22 +22,16 @@ namespace AoC2020Tests
         [TestCase(100, "67384529")]
         public void Part1(int iterations, string expected )
         {
-            var actual = day23.SolvePart1(iterations);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestCase(10, "92658374")]
-        [TestCase(100, "67384529")]
-        public void Part1WithLinkedList(int iterations, string expected)
-        {
-            var actual = day23.SolvePart2(iterations);
+            day23.IteratePart1 = iterations;
+            var actual = day23.SolvePart1();
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
         public void Part2( )
         {
-            var actual = day23.SolvePart2(10000000);
+            day23.IteratePart2 = 10000000;
+            var actual = day23.SolvePart2();
             Assert.AreEqual("149245887792", actual);
         }
     }
