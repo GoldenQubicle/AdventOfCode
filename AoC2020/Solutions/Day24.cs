@@ -74,9 +74,8 @@ namespace AoC2020.Solutions
 
                 foreach ( var tile in expansion )
                 {
-                    var neighbors = GetNeighbors(tile.Key, expansion);
-                    var count = neighbors.Count(t => !t.Value);
-
+                    var count = GetNeighbors(tile.Key, expansion).Count(t => !t.Value); 
+                    
                     if ( !tile.Value && ( count == 0 || count > 2 ) )
                         newState.Add(tile.Key, true);
                     else if ( tile.Value && count == 2 )
@@ -97,7 +96,6 @@ namespace AoC2020.Solutions
                 var nPos = (pos.x + n.x, pos.y + n.y, pos.z + n.z);
                 if ( !hexgrid.ContainsKey(nPos) )
                     neighbors.Add(nPos, true);
-
             }
             return neighbors;
         }
