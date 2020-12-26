@@ -11,7 +11,7 @@ namespace Common
         protected Solution(string day, string split) => Input = ParseInput(day, split);
 
         public static List<string> ParseInput(string file, string split) =>
-            File.ReadAllText($"../../../../input/{file}.txt")
+            File.ReadAllText($"{Directory.GetCurrentDirectory()}/data/{file}.txt")
                 .Split(split)
                 .Select(s => s.Trim( ))
                 .Where(s => !string.IsNullOrEmpty(s))
