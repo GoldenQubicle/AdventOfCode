@@ -4,7 +4,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day16 : Solution<long>
+    public class Day16 : Solution
     {
         private readonly List<(string name, List<int> valid)> fields = new( );
         private readonly List<List<int>> tickets = new( );
@@ -24,13 +24,13 @@ namespace AoC2020
             myTicket = intermediate[1].Skip(1).SelectMany(i => i.Split(",")).Select(int.Parse).ToList( );
         }
 
-        public override long SolvePart1( )
+        public override string SolvePart1( )
         {
             var validNumbers = fields.SelectMany(f => f.valid).ToList( );
-            return tickets.Sum(ticket => ticket.Sum(n => !validNumbers.Contains(n) ? n : 0));
+            return tickets.Sum(ticket => ticket.Sum(n => !validNumbers.Contains(n) ? n : 0)).ToString( );
         }
 
-        public override long SolvePart2( )
+        public override string SolvePart2( )
         {
             var fieldOrder = new List<(string name, int index)>( );
             var validNumbers = fields.SelectMany(f => f.valid).ToList( );
@@ -54,7 +54,7 @@ namespace AoC2020
             }
 
             return fieldOrder.Aggregate(1L, (sum, field) => 
-                field.name.StartsWith("departure") ? sum *= myTicket[field.index] : sum);
+                field.name.StartsWith("departure") ? sum *= myTicket[field.index] : sum).ToString( );
         }
     }
 }

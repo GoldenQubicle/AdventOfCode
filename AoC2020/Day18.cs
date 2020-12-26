@@ -5,13 +5,13 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day18 : Solution<long>
+    public class Day18 : Solution
     {
         public Day18(string file) : base(file) { }
 
-        public override long SolvePart1( ) => Solve(isPart1: true);
+        public override string SolvePart1( ) => Solve(isPart1: true).ToString( );
 
-        public override long SolvePart2( ) => Solve(isPart1: false);
+        public override string SolvePart2( ) => Solve(isPart1: false).ToString( );
 
         private long Solve(bool isPart1)
         {

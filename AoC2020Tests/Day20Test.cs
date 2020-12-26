@@ -20,14 +20,14 @@ namespace AoC2020Tests
         public void Part1( )
         {
             var actual = day20.SolvePart1( );
-            Assert.AreEqual(20899048083289, actual);
+            Assert.AreEqual(20899048083289.ToString( ), actual);
         }
 
         [Test]
         public void Part2( )
         {
             var actual = day20.SolvePart2( );
-            Assert.AreEqual(273, actual);
+            Assert.AreEqual(273.ToString( ), actual);
         }
 
         [Test]

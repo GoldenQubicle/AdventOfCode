@@ -6,7 +6,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day20 : Solution<long>
+    public class Day20 : Solution
     {
         public readonly Dictionary<int, Tile> tiles = new( );
 
@@ -28,11 +28,11 @@ namespace AoC2020
                 .ToDictionary(t => t.Id, t => t);
         }
 
-        public override long SolvePart1( )
+        public override string SolvePart1( )
         {
             var corners = GetMatchedTiles( )
             .Where(m => m.matches.Count == 2).ToList( );
-            return corners.Aggregate(1L, (sum, match) => sum *= match.tile.Id);
+            return corners.Aggregate(1L, (sum, match) => sum *= match.tile.Id).ToString( );
 
         }
 
@@ -62,7 +62,7 @@ namespace AoC2020
             return matches.Select(m => (tile: m.Key, matches: m.Value.Where(v => v != 0).ToList( ))).ToList( );
         }
 
-        public override long SolvePart2( )
+        public override string SolvePart2( )
         {
             var size = ( int ) Math.Sqrt(tiles.Count);
             var picture = new List<List<Tile>>( );
@@ -194,7 +194,7 @@ namespace AoC2020
                 actions++;
             }
 
-            return tile.Contents.Sum(s => s.Count(c => c == '#')) - ( count * 15 );
+            return (tile.Contents.Sum(s => s.Count(c => c == '#')) - ( count * 15 )).ToString( );
         }
     }
 

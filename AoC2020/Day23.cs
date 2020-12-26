@@ -5,7 +5,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day23 : Solution<string>
+    public class Day23 : Solution
     {
         public int IteratePart1 { get; set; } = 100;
         public int IteratePart2 { get; set; } = 10000000;

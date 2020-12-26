@@ -3,15 +3,15 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day05 : Solution<int>
+    public class Day05 : Solution
     {
         public Day05(string file) : base(file) { }
 
-        public override int SolvePart1( ) => Input.Select(PartitionString).Max(p => p.id);
+        public override string SolvePart1( ) => Input.Select(PartitionString).Max(p => p.id).ToString( );
 
-        public override int SolvePart2( ) => 
+        public override string SolvePart2( ) => 
                 Enumerable.Range(0, Input.Select(PartitionString).Max(p => p.id))
-                .Except(Input.Select(PartitionString).Select(p => p.id)).Max( );
+                .Except(Input.Select(PartitionString).Select(p => p.id)).Max( ).ToString( );
 
         public (int row, int col, int id) PartitionString(string s)
         {

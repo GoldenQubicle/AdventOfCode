@@ -4,12 +4,12 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day10 : Solution<long>
+    public class Day10 : Solution
     {
         private List<int> jolts;
         public Day10(string file) : base(file) => jolts = Input.Select(i => int.Parse(i)).ToList( );
-        public override long SolvePart1( ) => CalculateJoltDifferenes( ).jd1 * CalculateJoltDifferenes( ).jd3;
-        public override long SolvePart2( )
+        public override string SolvePart1( ) => (CalculateJoltDifferenes( ).jd1 * CalculateJoltDifferenes( ).jd3).ToString( );
+        public override string SolvePart2( )
         {
             jolts.Add(0);
             jolts.Sort( );
@@ -27,7 +27,7 @@ namespace AoC2020
                     connections[jolts.IndexOf(jolts[i] + 3)] += count;
             }
 
-            return connections.Last( );
+            return connections.Last( ).ToString( );
         }
 
         public (int jd1, int jd3) CalculateJoltDifferenes( )

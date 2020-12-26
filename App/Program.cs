@@ -40,8 +40,8 @@ namespace App
             Console.WriteLine($"Day 8 part 2: {day8.SolvePart2( )} ");
 
             var day9 = new Day09(nameof(Day09));
-            Console.WriteLine($"Day 9 part 1: {day9.SolvePart1(25)} ");
-            Console.WriteLine($"Day 9 part 2: {day9.SolvePart2(25)} ");
+            Console.WriteLine($"Day 9 part 1: {day9.SolvePart1()} ");
+            Console.WriteLine($"Day 9 part 2: {day9.SolvePart2()} ");
 
             var day10 = new Day10(nameof(Day10));
             Console.WriteLine($"Day 10 part 1: {day10.SolvePart1( )} ");

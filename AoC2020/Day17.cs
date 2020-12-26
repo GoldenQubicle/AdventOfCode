@@ -5,7 +5,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day17 : Solution<int>
+    public class Day17 : Solution
     {
         private Dictionary<(int x, int y, int z), char> grid3d = new( );
         private Dictionary<(int x, int y, int z, int w), char> grid4d = new( );
@@ -25,7 +25,7 @@ namespace AoC2020
             grid4d.TryAddAll4D(n4d);
         }
 
-        public override int SolvePart1( )
+        public override string SolvePart1( )
         {
             for ( int i = 0 ; i < 6 ; i++ )
             {
@@ -56,10 +56,10 @@ namespace AoC2020
                 newState.TryAddAll3D(expansion);
                 grid3d = newState;
             }
-            return grid3d.Values.Count(c => c == '#');
+            return grid3d.Values.Count(c => c == '#').ToString( );
         }
 
-        public override int SolvePart2( )
+        public override string SolvePart2( )
         {
             for ( int i = 0 ; i < 6 ; i++ )
             {
@@ -89,7 +89,7 @@ namespace AoC2020
                 newState.TryAddAll4D(expansion);
                 grid4d = newState;
             }
-            return grid4d.Values.Count(c => c == '#');
+            return grid4d.Values.Count(c => c == '#').ToString( );
         }
 
         public Dictionary<(int x, int y, int z), char> GetNeighbors3D((int x, int y, int z) pos)

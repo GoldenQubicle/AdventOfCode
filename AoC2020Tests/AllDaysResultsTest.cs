@@ -29,7 +29,7 @@ namespace AoC2020Tests
             var dayType = assembly.GetType("AoC2020.Day01");
             var ctorType = new Type[ ] { typeof(string) };
             var ctor = dayType.GetConstructor(ctorType);
-            var newDay = ( Solution<int> ) ctor.Invoke(new object[ ] { "Day01" });
+            var newDay = ( Solution ) ctor.Invoke(new object[ ] { "Day01" });
 
             var actualPt1 = newDay.SolvePart1( );
             var actualPt2 = newDay.SolvePart2( );

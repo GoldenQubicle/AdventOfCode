@@ -17,15 +17,7 @@ namespace AoC2020Tests
         public void Part1( )
         {
             var actual = day16.SolvePart1( );
-            Assert.AreEqual(71, actual);
-        }
-
-        [Test]
-        public void Part2( )
-        {
-            day16 = new Day16("day16test1");
-            var actual = day16.SolvePart2( );
-            //Assert.AreEqual(71, actual);
+            Assert.AreEqual(71.ToString( ), actual);
         }
     }
 }

@@ -4,7 +4,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day07 : Solution<int>
+    public class Day07 : Solution
     {
         private readonly Dictionary<string, List<(string bag, int count)>> bagRules = new( );
         public Day07(string file) : base(file, ".")
@@ -24,7 +24,7 @@ namespace AoC2020
                     });
                 });
         }
-        public override int SolvePart1( )
+        public override string SolvePart1( )
         {
             var endPoints = new List<string>( );
             var queue = new Queue<KeyValuePair<string, List<(string, int)>>>( );
@@ -38,10 +38,10 @@ namespace AoC2020
                 if ( bagRules.Any(b => b.Value.Contains(current)) )
                     queue.AddAll(bagRules.Where(b => b.Value.Contains(current)));
             }
-            return endPoints.Distinct( ).Count( );
+            return endPoints.Distinct( ).Count( ).ToString( );
         }
 
-        public override int SolvePart2( )
+        public override string SolvePart2( )
         {
             var queue = new Queue<(string bag, int count)>( );
             var count = new List<int>( );
@@ -57,7 +57,7 @@ namespace AoC2020
                         queue.Enqueue((rule.bag, rule.count * current.count)));
                 }
             }
-            return count.Sum( );
+            return count.Sum( ).ToString( );
         }
     }
 

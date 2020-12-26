@@ -12,7 +12,7 @@ namespace AoC2020Tests
         {
             day15 = new Day15(file);
             var actual = day15.SolvePart1( );
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.ToString( ), actual);
         }
 
         [TestCase("day15test1", 175594)]
@@ -20,7 +20,7 @@ namespace AoC2020Tests
         {
             day15 = new Day15(file);
             var actual = day15.SolvePart2( );
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.ToString( ), actual);
         }
     }
 }

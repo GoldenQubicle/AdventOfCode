@@ -16,7 +16,7 @@ namespace AoC2020Tests
         [Test]
         public void Part1( )
         {
-            var expected = 11;
+            var expected = 11.ToString( );
             var actual = day6.SolvePart1( );
             Assert.AreEqual(expected, actual);
         }
@@ -24,7 +24,7 @@ namespace AoC2020Tests
         [Test]
         public void Part2( )
         {
-            var expected = 6;
+            var expected = 6.ToString( );
             var actual = day6.SolvePart2( );
             Assert.AreEqual(expected, actual);
         }

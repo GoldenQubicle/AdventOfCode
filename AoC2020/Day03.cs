@@ -4,7 +4,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day03 : Solution<long>
+    public class Day03 : Solution
     {
         public int Width;
         public int Height;
@@ -13,12 +13,12 @@ namespace AoC2020
             Height = Input.Count;
             Width = Input[0].Length;
         }
-        public override long SolvePart1( ) => TraverseSlope((3, 1));
+        public override string SolvePart1( ) => TraverseSlope((3, 1)).ToString( );
 
-        public override long SolvePart2( ) => new List<(int, int)>
+        public override string SolvePart2( ) => new List<(int, int)>
             { (1, 1), (3, 1), (5, 1), (7, 1), (1, 2) }
             .Select(s => TraverseSlope(s))
-            .Aggregate((s1, s2) => s1 * s2);
+            .Aggregate((s1, s2) => s1 * s2).ToString( );
 
         public long TraverseSlope((int, int) incr)
         {

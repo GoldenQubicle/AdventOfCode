@@ -29,7 +29,7 @@ namespace AoC2020Tests
         {
             day10 = new Day10(file);
             var actual = day10.SolvePart2( );
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.ToString( ), actual);
         }
     }
 }

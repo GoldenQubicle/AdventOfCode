@@ -5,7 +5,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day04 : Solution<int>
+    public class Day04 : Solution
     {
         private readonly List<Dictionary<string, string>> passports;
 
@@ -15,9 +15,9 @@ namespace AoC2020
                 .Select(i => i.SelectMany(f => f.Select(e => e.Split(" ")[0]))
                 .ToDictionary(kvp => kvp.Split(":")[0], kvp => kvp.Split(":")[1])).ToList( );
 
-        public override int SolvePart1( ) => passports.Count(IsValidPassport);
+        public override string SolvePart1( ) => passports.Count(IsValidPassport).ToString( );
 
-        public override int SolvePart2( ) => passports.Where(IsValidPassport).Count(p => p.All(IsValidField));
+        public override string SolvePart2( ) => passports.Where(IsValidPassport).Count(p => p.All(IsValidField)).ToString( );
 
         private bool IsValidPassport(Dictionary<string, string> p) =>
             p.Keys.Count == 8 || ( p.Keys.Count == 7 && !p.ContainsKey("cid") );

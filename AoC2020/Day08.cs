@@ -5,7 +5,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day08 : Solution<int>
+    public class Day08 : Solution
     {
         private List<Instruction> instructions;
         public int accumulator = 0;
@@ -22,17 +22,17 @@ namespace AoC2020
             argument = (i.Substring(4, 1), int.Parse(i.Where(char.IsDigit).ToArray( )))
         }).ToList( );
 
-        public override int SolvePart1( )
+        public override string SolvePart1( )
         {            
             while ( !visited.Contains(idx) )
             {
                 visited.Add(idx);
                 idx = ExecuteInstruction(instructions[idx], idx);
             }
-            return accumulator;
+            return accumulator.ToString( );
         }
 
-        public override int SolvePart2( )
+        public override string SolvePart2( )
         {
             var changed = new List<int>( );
             var hasChanged = false;
@@ -68,7 +68,7 @@ namespace AoC2020
                 }                
             }
 
-            return accumulator;            
+            return accumulator.ToString( );            
         }
 
         public int ExecuteInstruction(Instruction i, int idx)

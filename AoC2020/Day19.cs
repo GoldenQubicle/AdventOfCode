@@ -4,7 +4,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day19 : Solution<int>
+    public class Day19 : Solution
     {
         private Dictionary<string, List<List<string>>> rules;
         private List<string> messages;
@@ -34,7 +34,7 @@ namespace AoC2020
             messages = Input[1].Split("\r\n").ToList( );
         }
 
-        public override int SolvePart1( )
+        public override string SolvePart1( )
         {
             var startIndex = 0;
             rules["0"][0].ForEach(d =>
@@ -45,10 +45,10 @@ namespace AoC2020
                 messages = messages.Where(m => ruleCombos.Contains(m[startIndex..endIndex])).ToList( );
                 startIndex = endIndex;
             });
-            return messages.Count(m => m.Length == startIndex);
+            return messages.Count(m => m.Length == startIndex).ToString( );
         }
 
-        public override int SolvePart2( )
+        public override string SolvePart2( )
         {
             messages = Input[1].Split("\r\n").ToList( );
 
@@ -92,7 +92,7 @@ namespace AoC2020
                 }
                 rule11.Clear( );
             }
-            return count;
+            return count.ToString( );
         }
 
         public List<List<string>> RecurseRule(List<string> rule)

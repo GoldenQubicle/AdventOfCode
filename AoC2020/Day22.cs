@@ -5,7 +5,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day22 : Solution<int>
+    public class Day22 : Solution
     {
         public Day22(string file) : base(file, "\r\n\r\n") { }
 
@@ -13,7 +13,7 @@ namespace AoC2020
             (new Queue<int>(Input[0].Split("\r\n").Skip(1).Select(int.Parse)),
              new Queue<int>(Input[1].Split("\r\n").Skip(1).Select(int.Parse)));
 
-        public override int SolvePart1( )
+        public override string SolvePart1( )
         {
             var (player1, player2) = InitializeGame( );
 
@@ -30,7 +30,7 @@ namespace AoC2020
             return player1.Count > 0 ? player1.GetScore( ) : player2.GetScore( );
         }
 
-        public override int SolvePart2( )
+        public override string SolvePart2( )
         {
             var (player1, player2) = InitializeGame( );
             return RecurseGame(player1, player2) ? player1.GetScore( ) : player2.GetScore( );
@@ -85,7 +85,7 @@ namespace AoC2020
     {
         public static Queue<int> NewDeck(this Queue<int> deck, int amount) => new Queue<int>(deck.Take(amount));
 
-        public static int GetScore(this Queue<int> deck) => deck.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( );
+        public static string GetScore(this Queue<int> deck) => deck.Reverse( ).Select((c, i) => c * ( i + 1 )).Sum( ).ToString( );
 
         public static void AddCards(this Queue<int> deck, int c1, int c2)
         {

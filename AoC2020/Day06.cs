@@ -4,15 +4,15 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day06 : Solution<int>
+    public class Day06 : Solution
     {
         private readonly List<string[ ]> groups;
 
         public Day06(string file) : base(file, "\r\n\r\n") => groups = Input.Select(s => s.Split("\r\n")).ToList( );
 
-        public override int SolvePart1( ) => groups.Sum(g => g.SelectMany(p => p.ToCharArray( )).Distinct( ).Count( ));
+        public override string SolvePart1( ) => groups.Sum(g => g.SelectMany(p => p.ToCharArray( )).Distinct( ).Count( )).ToString( );
 
-        public override int SolvePart2( ) => groups.Sum(CountAnswers);
+        public override string SolvePart2( ) => groups.Sum(CountAnswers).ToString( );
 
         private int CountAnswers(string[ ] group)
         {

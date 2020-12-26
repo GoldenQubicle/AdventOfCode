@@ -4,41 +4,30 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day09 : Solution<long>
+    public class Day09 : Solution
     {
         private List<long> cypher;
-        private int preamble;
+        public int Preamble { get; set; } = 25;
         private long target;
         public Day09(string file) : base(file) => cypher = Input.Select(i => long.Parse(i)).ToList( );
 
-        public long SolvePart1(int preamb)
+        public override string SolvePart1( )
         {
-            preamble = preamb;
-
-            return SolvePart1( );
-        }
-
-        public long SolvePart2(int preamb)
-        {
-            target = SolvePart1(preamb);
-            return SolvePart2( );
-        }
-
-        public override long SolvePart1( )
-        {            
-            for ( int i = preamble ; i < cypher.Count ; i++ )
+            for ( int i = Preamble ; i < cypher.Count ; i++ )
             {
-                var sums = GetCypherSums(i, preamble);
+                var sums = GetCypherSums(i, Preamble);
                 if ( !sums.Contains(cypher[i]) )
                 {
-                    return cypher[i];
+                    return cypher[i].ToString( );
                 }
             }
-
-            return 0;
+            return string.Empty;
         }
-        public override long SolvePart2( )
-        {   
+
+        public override string SolvePart2( )
+        {
+            target = long.Parse(SolvePart1( ));
+
             for ( int i = 0 ; i < cypher.Count ; i++ )
             {
                 var sum = cypher[i];
@@ -50,15 +39,15 @@ namespace AoC2020
                     if ( sum == target )
                     {
                         var digits = new List<long>( );
-                        for(int k = i ; k < j ; k++ )
+                        for ( int k = i ; k < j ; k++ )
                         {
                             digits.Add(cypher[k]);
                         }
-                        return digits.Min() + digits.Max();
+                        return ( digits.Min( ) + digits.Max( ) ).ToString( );
                     };
                 }
             }
-            return 0;
+            return string.Empty;
         }
 
         public List<long> GetCypherSums(int i, int preamble)

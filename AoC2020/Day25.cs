@@ -2,7 +2,7 @@
 
 namespace AoC2020
 {
-    public class Day25 : Solution<long>
+    public class Day25 : Solution
     {
         long cardKey;
         long doorKey;
@@ -13,7 +13,7 @@ namespace AoC2020
             doorKey = long.Parse(Input[1]);
         }
 
-        public override long SolvePart1( )
+        public override string SolvePart1( )
         {
             long transform(long v, long s) => ( v * s ) % 20201227;
 
@@ -33,9 +33,9 @@ namespace AoC2020
                 key = transform(key, doorKey);
             }
 
-            return key;
+            return key.ToString( );
         }
 
-        public override long SolvePart2( ) => 0L;
+        public override string SolvePart2( ) => string.Empty;
     }
 }

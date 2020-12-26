@@ -18,7 +18,7 @@ namespace AoC2020Tests
         public void Part1( )
         {
             var actual = day5.SolvePart1( );
-            Assert.AreEqual(820, actual);
+            Assert.AreEqual(820.ToString( ), actual);
         }
 
         [TestCase("BFFFBBFRRR", 70, 7, 567)]

@@ -5,7 +5,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day11 : Solution<int>
+    public class Day11 : Solution
     {
         private const char seated = '#';
         private const char empty = 'L';
@@ -21,9 +21,9 @@ namespace AoC2020
 
         public List<char[ ]> GetInitialState( ) => Input.Select(i => i.ToCharArray( )).ToList( );
 
-        public override int SolvePart1( ) => Solve(GetInitialState( ), part1: true);
+        public override string SolvePart1( ) => Solve(GetInitialState( ), part1: true).ToString( );
 
-        public override int SolvePart2( ) => Solve(GetInitialState( ), part1: false);
+        public override string SolvePart2( ) => Solve(GetInitialState( ), part1: false).ToString( );
 
         private int Solve(List<char[ ]> state, bool part1)
         {

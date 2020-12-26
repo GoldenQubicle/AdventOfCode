@@ -4,7 +4,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day24 : Solution<int>
+    public class Day24 : Solution
     {
         List<List<(int x, int y, int z)>> moveSet = new( );
         Dictionary<(int x, int y, int z), bool> hexgrid = new( );
@@ -38,7 +38,7 @@ namespace AoC2020
                 return moves;
             }).ToList( );
 
-        public override int SolvePart1( )
+        public override string SolvePart1( )
         {
             moveSet.ForEach(move =>
             {
@@ -51,10 +51,10 @@ namespace AoC2020
                     hexgrid[pos] = !hexgrid[pos];
             });
 
-            return hexgrid.Values.Count(b => !b);
+            return hexgrid.Values.Count(b => !b).ToString( );
         }
 
-        public override int SolvePart2( )
+        public override string SolvePart2( )
         {
             hexgrid = new( );
             SolvePart1( );
@@ -86,7 +86,7 @@ namespace AoC2020
                 }
                 hexgrid = newState;
             }
-            return hexgrid.Values.Count(b => !b);
+            return hexgrid.Values.Count(b => !b).ToString( );
         }
 
         private Dictionary<(int, int, int), bool> GetNewNeighbors((int x, int y, int z) pos)

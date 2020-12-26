@@ -4,13 +4,13 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day15 : Solution<long>
+    public class Day15 : Solution
     {
         private List<long> numbers;
         public Day15(string file) : base(file, ",") => numbers = Input.Select(long.Parse).ToList( );
 
-        public override long SolvePart1( ) => MemoryGame(2020);
-        public override long SolvePart2( ) => MemoryGame(30000000);
+        public override string SolvePart1( ) => MemoryGame(2020).ToString( );
+        public override string SolvePart2( ) => MemoryGame(30000000).ToString( );
 
         private long MemoryGame(int iterate )
         {

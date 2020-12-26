@@ -5,13 +5,13 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day14 : Solution<long>
+    public class Day14 : Solution
     {
         private Dictionary<long, long> memory;
         private List<string[ ]> program;
         public Day14(string file) : base(file) => program = Input.Select(i => i.Split("=")).ToList( );
 
-        public override long SolvePart1( )
+        public override string SolvePart1( )
         {
             memory = new( );
             var currentMask = "0";
@@ -33,9 +33,9 @@ namespace AoC2020
                 }
             });
 
-            return memory.Sum(kvp => kvp.Value);
+            return memory.Sum(kvp => kvp.Value).ToString( );
         }
-        public override long SolvePart2( )
+        public override string SolvePart2( )
         {
             memory = new( );
 
@@ -63,7 +63,7 @@ namespace AoC2020
                 }
             });
 
-            return memory.Sum(kvp => kvp.Value);
+            return memory.Sum(kvp => kvp.Value).ToString( );
         }
 
         public List<string> GenerateFloatingAdresses(string adress)

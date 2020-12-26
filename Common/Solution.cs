@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Common
 {
-    public abstract class Solution<TOut>
+    public abstract class Solution
     {
         public List<string> Input { get; }
         protected Solution(string day) => Input = ParseInput(day, "\r\n");
@@ -17,7 +17,7 @@ namespace Common
                 .Where(s => !string.IsNullOrEmpty(s))
                 .ToList( );        
 
-        public abstract TOut SolvePart1( );
-        public abstract TOut SolvePart2( );
+        public abstract string SolvePart1( );
+        public abstract string SolvePart2( );
     }
 }

@@ -5,7 +5,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day13 : Solution<long>
+    public class Day13 : Solution
     {
         private readonly int timestep;
         private readonly List<int> buses;
@@ -15,13 +15,13 @@ namespace AoC2020
             buses = Input[1].Split(',').Where(s => !s.Equals("x")).Select(int.Parse).ToList( );
         }
 
-        public override long SolvePart1( ) =>
+        public override string SolvePart1( ) =>
                  buses.Select(id => (id: id, wait: MathF.Ceiling(( float ) timestep / id) * id))
                 .OrderBy(id => id.wait)
                 .Select(id => ( int ) ( id.wait - timestep ) * id.id)
-                .First( );
+                .First( ).ToString( );
 
-        public override long SolvePart2( )
+        public override string SolvePart2( )
         {
             var departure = Input[1].Split(',')
                 .Select((b, i) => (b, i))
@@ -45,7 +45,7 @@ namespace AoC2020
                 }
                 startTime += increment;
             }
-            return startTime;
+            return startTime.ToString( );
         }
     }
 }

@@ -16,13 +16,8 @@ namespace AoC2020Tests
         [Test]
         public void Part1( )
         {
-            var actual = day25.SolvePart1( );
-
-            var value = 7;
-            var div = 20201227;
-            var next = value % div;
-
-            Assert.AreEqual(14897079, actual);
+            var actual = day25.SolvePart1( );         
+            Assert.AreEqual(14897079.ToString( ), actual);
         }
     }
 }

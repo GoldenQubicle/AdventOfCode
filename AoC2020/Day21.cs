@@ -4,7 +4,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day21 : Solution<string>
+    public class Day21 : Solution
     {
         Dictionary<string, HashSet<string>> allergensIngredients = new( );
         List<(List<string> ingredients, List<string> allergens)> foods = new( );

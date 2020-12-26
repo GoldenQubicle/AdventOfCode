@@ -5,7 +5,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day12 : Solution<int>
+    public class Day12 : Solution
     {
         private List<Instruction> instructions;
         public Day12(string file) : base(file) =>
@@ -15,7 +15,7 @@ namespace AoC2020
                 Value = int.Parse(i.Where(char.IsDigit).ToArray( ))
             }).ToList( );
 
-        public override int SolvePart1( ) => instructions.Aggregate(
+        public override string SolvePart1( ) => instructions.Aggregate(
             (x: 0, y: 0, d: 90), (p, i) => i.Action switch
                 {
                     'N' => (p.x, p.y + i.Value, p.d),
@@ -32,9 +32,9 @@ namespace AoC2020
                         270 => (p.x - i.Value, p.y, p.d),
                     },
                 },
-                pos => Math.Abs(pos.x) + Math.Abs(pos.y));
+                pos => Math.Abs(pos.x) + Math.Abs(pos.y)).ToString( );
 
-        public override int SolvePart2( ) => instructions.Aggregate(
+        public override string SolvePart2( ) => instructions.Aggregate(
             (x: 0, y: 0, wx: 10, wy: 1), (p, i) => i switch
                {
                    ('N', var value) => (p.x, p.y, p.wx, p.wy + value),
@@ -46,7 +46,7 @@ namespace AoC2020
                    ('R', 180) or ('L', 180) => (p.x, p.y, -p.wx, -p.wy),
                    ('F', var value) => (p.x + ( p.wx * value ), p.y + ( p.wy * value ), p.wx, p.wy)
                },
-              pos => Math.Abs(pos.x) + Math.Abs(pos.y));
+              pos => Math.Abs(pos.x) + Math.Abs(pos.y)).ToString( );
 
 
         public record Instruction

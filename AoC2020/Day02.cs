@@ -4,7 +4,7 @@ using Common;
 
 namespace AoC2020
 {
-    public class Day02 : Solution<int>
+    public class Day02 : Solution
     {
         private List<Policy> Policies { get; }
         public Day02(string file) : base(file) =>
@@ -20,13 +20,13 @@ namespace AoC2020
             }).ToList( );
 
 
-        public override int SolvePart1( ) => Policies.Count(p =>
+        public override string SolvePart1( ) => Policies.Count(p =>
                 p.Password.Count(s => s == p.Letter) >= p.Digit1 &&
-                p.Password.Count(s => s == p.Letter) <= p.Digit2);
+                p.Password.Count(s => s == p.Letter) <= p.Digit2).ToString();
 
-        public override int SolvePart2( ) => Policies.Count(p =>
+        public override string SolvePart2( ) => Policies.Count(p =>
                 ( p.Password[p.Digit1 - 1] == p.Letter && p.Password[p.Digit2 - 1] != p.Letter ) ||
-                ( p.Password[p.Digit1 - 1] != p.Letter && p.Password[p.Digit2 - 1] == p.Letter ));
+                ( p.Password[p.Digit1 - 1] != p.Letter && p.Password[p.Digit2 - 1] == p.Letter )).ToString( );
 
         private struct Policy
         {
