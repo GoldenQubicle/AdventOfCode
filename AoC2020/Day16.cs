@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Common;
 
-namespace AoC2020.Solutions
+namespace AoC2020
 {
     public class Day16 : Solution<long>
     {

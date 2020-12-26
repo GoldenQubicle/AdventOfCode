@@ -1,6 +1,5 @@
-﻿using AoC2020.Solutions;
+﻿using AoC2020;
 using NUnit.Framework;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AoC2020Tests

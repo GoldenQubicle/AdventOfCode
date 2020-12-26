@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Common;
 
-namespace AoC2020.Solutions
+namespace AoC2020
 {
     public class Day25 : Solution<long>
     {

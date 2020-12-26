@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace AoC2020Tests
 {
-    public class Day01Test
+    class Day01Test
     {
         private Day01 day01;
 

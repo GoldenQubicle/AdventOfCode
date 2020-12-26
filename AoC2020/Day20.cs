@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Common;
 
-namespace AoC2020.Solutions
+namespace AoC2020
 {
     public class Day20 : Solution<long>
     {

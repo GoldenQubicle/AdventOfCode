@@ -1,10 +1,5 @@
-﻿using AoC2020.Solutions;
+﻿using AoC2020;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AoC2020Tests
 {
@@ -18,12 +13,12 @@ namespace AoC2020Tests
             day23 = new Day23("day23test1");
         }
 
-        [TestCase(10,  "92658374")]
+        [TestCase(10, "92658374")]
         [TestCase(100, "67384529")]
-        public void Part1(int iterations, string expected )
+        public void Part1(int iterations, string expected)
         {
             day23.IteratePart1 = iterations;
-            var actual = day23.SolvePart1();
+            var actual = day23.SolvePart1( );
             Assert.AreEqual(expected, actual);
         }
 
@@ -31,7 +26,7 @@ namespace AoC2020Tests
         public void Part2( )
         {
             day23.IteratePart2 = 10000000;
-            var actual = day23.SolvePart2();
+            var actual = day23.SolvePart2( );
             Assert.AreEqual("149245887792", actual);
         }
     }

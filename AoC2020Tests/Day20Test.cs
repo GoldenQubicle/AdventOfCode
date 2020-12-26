@@ -1,11 +1,8 @@
-﻿using AoC2020.Solutions;
+﻿using AoC2020;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace AoC2020Tests
 {

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace AoC2020
+namespace Common
 {
     public abstract class Solution<TOut>
     {

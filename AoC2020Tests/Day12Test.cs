@@ -1,10 +1,5 @@
-﻿using AoC2020.Solutions;
+﻿using AoC2020;
 using NUnit.Framework;
-using System;
-using System.Drawing;
-using System.Numerics;
-using static AoC2020.Solutions.Day12;
-using Instruction = AoC2020.Solutions.Day12.Instruction;
 
 namespace AoC2020Tests
 {

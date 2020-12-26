@@ -1,4 +1,4 @@
-﻿using AoC2020.Solutions;
+﻿using AoC2020;
 using NUnit.Framework;
 using System.Linq;
 
