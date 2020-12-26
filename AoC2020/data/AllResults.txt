@@ -47,4 +47,4 @@ Day 23 part 2: 12621748849
 Day 24 part 1: 320
 Day 24 part 2: 3777
 Day 25 part 1: 3803729
-Day 25 part 2: 0    
+Day 25 part 2: 
