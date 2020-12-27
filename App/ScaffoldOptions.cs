@@ -21,45 +21,20 @@ namespace App
         public string ExpectedValuePart1 { get; set; }
 
         public static string Run(ScaffoldOptions s)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-
-            if ( s.Year < 2015 || s.Year > 2020 )
-                return $"Error: year must be between 2015 and 2020.";
-
-            if ( s.Day < 1 || s.Day > 25 )
-                return $"Error: day must be between 1 and 25.";
-
-            var root = Directory.GetCurrentDirectory( ).Split("\\App")[0];
-            var dir = $"{root}\\AoC{s.Year}";
-            var path = $"{dir}\\Day{s.Day}.cs";
-            var testdir = $"{root}\\AoC{s.Year}Tests";
-            var testpath = $"{testdir}\\Day{s.Day}Test.cs";
-
-            if ( !Directory.Exists(dir) )
-                return $"Error: project for year {s.Year} could not be found at {dir}.";
-
-            if ( File.Exists(path) )
-                return $"Error: file for day {s.Day} year {s.Year} already exists at {path}.";
-
-            if ( s.HasUnitTest )
+        {          
+            var template = new SolutionTemplate
             {
-                if ( !Directory.Exists(testdir) )
-                    return $"Error: test project for year {s.Year} could not be found at {testdir}.";
+                Year = s.Year,
+                Day = s.Day,
+                HasUnitTest = s.HasUnitTest,
+                ExpectedValuePart1 = s.ExpectedValuePart1
+            };
 
-                if ( File.Exists(testpath) )
-                    return $"Error: test for day {s.Day} year {s.Year} already exists at {testpath}.";
-            }
+            var (isValid, message) = template.TryWrite( );
 
-            var template = new SolutionTemplate(s.Year, s.Day);
+            Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
 
-            File.WriteAllText(path, template.CreateSolution( ));
-
-            if ( s.HasUnitTest )
-                File.WriteAllText(testpath, template.CreateUnitTest(s.ExpectedValuePart1));
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            return $"Succes: created class for year {s.Year} day {s.Day} with {( s.HasUnitTest ? "additional" : "no" )} unit test.";
+            return message;
         }
     }
 }

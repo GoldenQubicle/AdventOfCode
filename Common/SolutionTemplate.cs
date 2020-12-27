@@ -1,17 +1,55 @@
-﻿namespace Common
+﻿using System.IO;
+
+namespace Common
 {
     public sealed class SolutionTemplate
     {
-        private string Year { get; }
-        private string Day { get; }
+        public int Year { get; init; }
+        public int Day { get; init; }
+        public bool HasUnitTest { get; init; }
+        public string ExpectedValuePart1 { get; init; }
+        private string ClassPath { get; set; }
+        private string TestPath { get; set; }
 
-        public SolutionTemplate(int year, int day)
+        public (bool isValid, string message) TryWrite( )
         {
-            Year = year.ToString( ); ;
-            Day = day < 10 ? day.ToString( ).PadLeft(2, '0') : day.ToString( );
+            if ( Year < 2015 || Year > 2020 )
+                return (false, $"Error: year must be between 2015 and 2020.");
+
+            if ( Day < 1 || Day > 25 )
+                return (false, $"Error: day must be between 1 and 25.");
+
+            var root = Directory.GetCurrentDirectory( ).Split("\\App")[0];
+            var day = Day < 10 ? Day.ToString( ).PadLeft(2, '0') : Day.ToString( );
+            var dir = $"{root}\\AoC{Year}";
+            ClassPath = $"{dir}\\Day{day}.cs";
+            var testdir = $"{root}\\AoC{Year}Tests";
+            TestPath = $"{testdir}\\Day{day}Test.cs";
+
+            if ( !Directory.Exists(dir) )
+                return (false, $"Error: project for year {Year} could not be found at {dir}.");
+
+            if ( File.Exists(ClassPath) )
+                return (false, $"Error: file for day {Day} year {Year} already exists at {ClassPath}.");
+
+            if ( HasUnitTest )
+            {
+                if ( !Directory.Exists(testdir) )
+                    return (false, $"Error: test project for year {Year} could not be found at {testdir}.");
+
+                if ( File.Exists(TestPath) )
+                    return (false, $"Error: test for day {Day} year {Year} already exists at {TestPath}.");
+            }
+
+            File.WriteAllText(ClassPath, CreateSolution( ));
+
+            if ( HasUnitTest )
+                File.WriteAllText(TestPath, CreateUnitTest(ExpectedValuePart1));
+
+            return (true, $"Succes: created class for year {Year} day {Day} with {( HasUnitTest ? "additional" : "no" )} unit test.");
         }
 
-        public string CreateSolution( ) =>
+        private string CreateSolution( ) =>
           $@"using System;
              using System.Collections.Generic;
              using System.Linq;
@@ -31,7 +69,7 @@
                  }}
              }}".Replace("             ", "");
 
-        public string CreateUnitTest(string part1Expected) =>
+        private string CreateUnitTest(string part1Expected) =>
             $@"using AoC{Year};
              using NUnit.Framework;
              using System.Collections.Generic;
