@@ -1,55 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-namespace Common
+﻿namespace Common
 {
     public sealed class SolutionTemplate
     {
+        private string Year { get; }
+        private string Day { get; }
+
         public SolutionTemplate(int year, int day)
         {
-            if ( year < 2015 || year > 2021 )
-                throw new ArgumentOutOfRangeException("Only year 2015 to 2020 are available");
-            if ( day < 0 || day > 25 )
-                throw new ArgumentOutOfRangeException("Only day 1 to 25 are part of the calendar");
-
             Year = year.ToString( ); ;
             Day = day < 10 ? day.ToString( ).PadLeft(2, '0') : day.ToString( );
-            Root = Directory.GetCurrentDirectory( ).Split("\\App")[0];
-            
-            var dir = $"{Root}\\AoC{Year}";
-            if ( !Directory.Exists(dir) )
-                throw new InvalidOperationException($"Project for year {Year} does not exist yet");
-
-            var path = $"{dir}\\Day{Day}.cs";
-            if ( File.Exists(path) )
-                throw new InvalidOperationException($"Solution for day {Day} already exists");
-
-            File.WriteAllText(path, CreateSolution( ));
         }
 
-        public SolutionTemplate WithUnitTest(int part1Expected)
-        {
-            var dir = $"{Root}\\AoC{Year}Tests";
-
-            if ( !Directory.Exists(dir) )
-                throw new InvalidOperationException($"Test Project for year {Year} does not exist yet");
-
-            var path = $"{dir}\\Day{Day}Test.cs";
-
-            if ( File.Exists(path) )
-                throw new InvalidOperationException($"Tests for day {Day} already exists");
-
-            File.WriteAllText(path, CreateUnitTest(part1Expected != 0 ? part1Expected.ToString( ) : string.Empty));
-
-            return this;
-        }
-
-        private string Year { get; }
-        private string Day { get; set; }
-        private string Root { get; }
-
-        private string CreateSolution( ) =>
+        public string CreateSolution( ) =>
           $@"using System;
              using System.Collections.Generic;
              using System.Linq;
@@ -69,8 +31,7 @@ namespace Common
                  }}
              }}".Replace("             ", "");
 
-
-        private string CreateUnitTest(string part1Expected) =>
+        public string CreateUnitTest(int? part1Expected) =>
             $@"using AoC{Year};
              using NUnit.Framework;
              using System.Collections.Generic;
@@ -91,8 +52,8 @@ namespace Common
                      [Test]
                      public void Part1( )
                      {{
-                     var actual = day{Day}.SolvePart1( );
-                     Assert.AreEqual(""{( string.IsNullOrEmpty(part1Expected) ? string.Empty : part1Expected )}"", actual);
+                         var actual = day{Day}.SolvePart1( );
+                         Assert.AreEqual(""{( part1Expected.HasValue ? part1Expected.Value : string.Empty )}"", actual);
                      }}
              
                      [Test]
