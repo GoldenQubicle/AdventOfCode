@@ -10,7 +10,7 @@ namespace Common
         public string ExpectedValuePart1 { get; init; }
         private string ClassPath { get; set; }
         private string TestPath { get; set; }
-
+        private string DayString { get; set; }
         public (bool isValid, string message) TryWrite( )
         {
             if ( Year < 2015 || Year > 2020 )
@@ -20,22 +20,22 @@ namespace Common
                 return (false, $"Error: day must be between 1 and 25.");
 
             var root = Directory.GetCurrentDirectory( ).Split("\\App")[0];
-            var day = Day < 10 ? Day.ToString( ).PadLeft(2, '0') : Day.ToString( );
-            var dir = $"{root}\\AoC{Year}";
-            ClassPath = $"{dir}\\Day{day}.cs";
-            var testdir = $"{root}\\AoC{Year}Tests";
-            TestPath = $"{testdir}\\Day{day}Test.cs";
+            DayString = Day < 10 ? Day.ToString( ).PadLeft(2, '0') : Day.ToString( );
+            var classDir = $"{root}\\AoC{Year}";
+            ClassPath = $"{classDir}\\Day{DayString}.cs";
+            var testDir = $"{root}\\AoC{Year}Tests";
+            TestPath = $"{testDir}\\Day{DayString}Test.cs";
 
-            if ( !Directory.Exists(dir) )
-                return (false, $"Error: project for year {Year} could not be found at {dir}.");
+            if ( !Directory.Exists(classDir) )
+                return (false, $"Error: project for year {Year} could not be found at {classDir}.");
 
             if ( File.Exists(ClassPath) )
                 return (false, $"Error: file for day {Day} year {Year} already exists at {ClassPath}.");
 
             if ( HasUnitTest )
             {
-                if ( !Directory.Exists(testdir) )
-                    return (false, $"Error: test project for year {Year} could not be found at {testdir}.");
+                if ( !Directory.Exists(testDir) )
+                    return (false, $"Error: test project for year {Year} could not be found at {testDir}.");
 
                 if ( File.Exists(TestPath) )
                     return (false, $"Error: test for day {Day} year {Year} already exists at {TestPath}.");
@@ -59,9 +59,9 @@ namespace Common
 
              namespace AoC{Year}
              {{
-                 public class Day{Day} : Solution
+                 public class Day{DayString} : Solution
                  {{
-                     public Day{Day}(string file) : base(file) {{ }}
+                     public Day{DayString}(string file) : base(file) {{ }}
 
                      public override string SolvePart1( ) => null;
 
@@ -77,27 +77,27 @@ namespace Common
              
              namespace AoC{Year}Tests
              {{
-                 public class Day{Day}Test
+                 public class Day{DayString}Test
                  {{
-                     Day{Day} day{Day};
+                     Day{DayString} day{DayString};
              
                      [SetUp]
                      public void Setup( )
                      {{
-                         day{Day} = new Day{Day}(""day{Day}test1"");
+                         day{DayString} = new Day{DayString}(""day{DayString}test1"");
                      }}
              
                      [Test]
                      public void Part1( )
                      {{
-                         var actual = day{Day}.SolvePart1( );
+                         var actual = day{DayString}.SolvePart1( );
                          Assert.AreEqual(""{( string.IsNullOrEmpty(part1Expected) ? string.Empty : part1Expected )}"", actual);
                      }}
              
                      [Test]
                      public void Part2( )
                      {{
-                         var actual = day{Day}.SolvePart2( );
+                         var actual = day{DayString}.SolvePart2( );
                          Assert.AreEqual("""", actual);
                      }}
                  }}
