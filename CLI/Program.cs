@@ -9,13 +9,6 @@ namespace CLI
 {
     public class Program
     {
-        /*
-         * U S A G E
-         * cd into project folder then run; 
-         * dotnet run --project .\CLI.csproj scaffold
-         * this will bring up help for the options
-         */
-
         public static async Task Main(string[ ] args) =>
                 await Parser.Default.ParseArguments(args, LoadVerbs( )).WithParsedAsync(Run);
 
