@@ -11,6 +11,7 @@ namespace Common
         private string ClassPath { get; set; }
         private string TestPath { get; set; }
         private string DayString { get; set; }
+
         public (bool isValid, string message) TryWrite( )
         {
             if ( Year < 2015 || Year > 2020 )

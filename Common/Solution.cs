@@ -1,21 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace Common
 {
     public abstract class Solution
     {
         public List<string> Input { get; }
-        protected Solution(string day) => Input = ParseInput(day, "\r\n");
-        protected Solution(string day, string split) => Input = ParseInput(day, split);
+        protected Solution(string file) => Input = ParseInput(file, "\r\n");
+        protected Solution(string file, string split) => Input = ParseInput(file, split);
 
-        public static List<string> ParseInput(string file, string split) =>
-            File.ReadAllText($"{Directory.GetCurrentDirectory()}/data/{file}.txt")
-                .Split(split)
-                .Select(s => s.Trim( ))
-                .Where(s => !string.IsNullOrEmpty(s))
-                .ToList( );        
+        public List<string> ParseInput(string file, string split)
+        {
+            // admittedly bit hacky solution 
+            // however the solution NUST be able to find the correct data folder,
+            // whether it was called from a test, or the app, or whatever
+            var aocYear = GetType( ).FullName.Split('.')[0];
+            var path = GetType( ).Assembly.Location.Replace($"{aocYear}.dll", "");
+
+            return File.ReadAllText($"{path}\\data\\{file}.txt")
+                   .Split(split)
+                   .Select(s => s.Trim( ))
+                   .Where(s => !string.IsNullOrEmpty(s))
+                   .ToList( );
+        }
 
         public abstract string SolvePart1( );
         public abstract string SolvePart2( );

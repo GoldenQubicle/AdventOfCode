@@ -22,8 +22,12 @@ public class Program
         ScaffoldOptions s => Task.Run(( ) => {
             Console.WriteLine(ScaffoldOptions.Run(s));
             Console.ResetColor( );
-        }) 
-
+        }) ,
+        RunDayOptions r => Task.Run(() =>
+        {
+            Console.WriteLine(RunDayOptions.Run(r));
+            Console.ResetColor( );
+        }),
     };
 
     private static Type[ ] LoadVerbs( ) => Assembly.GetExecutingAssembly( ).GetTypes( )
