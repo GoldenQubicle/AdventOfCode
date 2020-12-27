@@ -8,4 +8,14 @@
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="data\day01test1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
