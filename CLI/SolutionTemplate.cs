@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Common
+namespace CLI
 {
     public sealed class SolutionTemplate
     {
@@ -20,7 +20,7 @@ namespace Common
             if ( Day < 1 || Day > 25 )
                 return (false, $"Error: day must be between 1 and 25.");
 
-            var root = Directory.GetCurrentDirectory( ).Split("\\App")[0];
+            var root = Directory.GetCurrentDirectory( ).Split("\\CLI")[0];
             DayString = Day < 10 ? Day.ToString( ).PadLeft(2, '0') : Day.ToString( );
             var classDir = $"{root}\\AoC{Year}";
             ClassPath = $"{classDir}\\Day{DayString}.cs";

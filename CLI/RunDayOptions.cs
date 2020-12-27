@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace App
+namespace CLI
 {
     [Verb("runday", HelpText = "Run a single day")]
     public class RunDayOptions
@@ -29,7 +29,7 @@ namespace App
                 return $"Error: day must be between 1 and 25.";
 
             var dayString = r.Day < 10 ? r.Day.ToString( ).PadLeft(2, '0') : r.Day.ToString( );
-            var root = Assembly.GetExecutingAssembly( ).Location.Split("\\App")[0];
+            var root = Assembly.GetExecutingAssembly( ).Location.Split("\\CLI")[0];
             var dir = $"{root}\\AoC{r.Year}\\bin\\Debug\\net5.0";
             var path = $"{dir}\\AoC{r.Year}.dll";
 

@@ -1,8 +1,7 @@
 ﻿using CommandLine;
-using Common;
 using System;
 
-namespace App
+namespace CLI
 {
     [Verb("scaffold", HelpText = "Create class file for given day & year, with optional unit test")]
     public class ScaffoldOptions
