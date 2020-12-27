@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using CLI.Verbs;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -30,6 +31,11 @@ namespace CLI
                 Console.WriteLine(RunDayOptions.Run(r));
                 Console.ResetColor( );
             }),
+            GetInputOptions i => Task.Run(( ) =>
+           {
+               Console.WriteLine(GetInputOptions.Run(i));
+               Console.ResetColor( );
+           }),
         };
 
         private static Type[ ] LoadVerbs( ) => Assembly.GetExecutingAssembly( ).GetTypes( )
