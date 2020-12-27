@@ -7,17 +7,17 @@ namespace App
     [Verb("scaffold", HelpText = "Create class file for given day & year, with optional unit test")]
     public class ScaffoldOptions
     {
-        [Option(shortName: 'y', Required = true, HelpText = "The year, from 2015 to 2020")]
+        [Option(shortName: 'y', Required = true, HelpText = "The year, int from 2015 to 2020")]
         public int Year { get; set; }
 
-        [Option(shortName: 'd', Required = true, HelpText = "The day, from 1 to 25")]
+        [Option(shortName: 'd', Required = true, HelpText = "The day, int from 1 to 25")]
         public int Day { get; set; }
 
         [Option(shortName: 'u', HelpText = "Creates a unit test file")]
         public bool HasUnitTest { get; set; }
 
         [Option(shortName: 'e', HelpText = "Sets the expected value for example part 1")]
-        public int? ExpectedValuePart1 { get; set; }
+        public string ExpectedValuePart1 { get; set; }
 
         public static string Run(ScaffoldOptions s)
         {

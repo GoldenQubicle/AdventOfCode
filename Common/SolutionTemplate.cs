@@ -31,7 +31,7 @@
                  }}
              }}".Replace("             ", "");
 
-        public string CreateUnitTest(int? part1Expected) =>
+        public string CreateUnitTest(string part1Expected) =>
             $@"using AoC{Year};
              using NUnit.Framework;
              using System.Collections.Generic;
@@ -53,7 +53,7 @@
                      public void Part1( )
                      {{
                          var actual = day{Day}.SolvePart1( );
-                         Assert.AreEqual(""{( part1Expected.HasValue ? part1Expected.Value : string.Empty )}"", actual);
+                         Assert.AreEqual(""{( string.IsNullOrEmpty(part1Expected) ? string.Empty : part1Expected )}"", actual);
                      }}
              
                      [Test]
