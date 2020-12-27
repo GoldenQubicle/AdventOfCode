@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using Common;
+using System;
 using System.IO;
 
 namespace App
@@ -7,10 +8,10 @@ namespace App
     [Verb("scaffold", HelpText = "Create class file for given day & year, with optional unit test")]
     public class ScaffoldOptions
     {
-        [Option(shortName: 'y', Required = true, HelpText = "The year, int from 2015 to 2020")]
+        [Option(shortName: 'y', Required = true, HelpText = "The year, from 2015 to 2020")]
         public int Year { get; set; }
 
-        [Option(shortName: 'd', Required = true, HelpText = "The day, int from 1 to 25")]
+        [Option(shortName: 'd', Required = true, HelpText = "The day, from 1 to 25")]
         public int Day { get; set; }
 
         [Option(shortName: 'u', HelpText = "Creates a unit test file")]
@@ -21,6 +22,8 @@ namespace App
 
         public static string Run(ScaffoldOptions s)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
+
             if ( s.Year < 2015 || s.Year > 2020 )
                 return $"Error: year must be between 2015 and 2020.";
 
@@ -55,7 +58,8 @@ namespace App
             if ( s.HasUnitTest )
                 File.WriteAllText(testpath, template.CreateUnitTest(s.ExpectedValuePart1));
 
-            return $"Succesfully created class for year {s.Year} day {s.Day} with {( s.HasUnitTest ? "additional" : "no" )} unit test.";
+            Console.ForegroundColor = ConsoleColor.Green;
+            return $"Succes: created class for year {s.Year} day {s.Day} with {( s.HasUnitTest ? "additional" : "no" )} unit test.";
         }
     }
 }
