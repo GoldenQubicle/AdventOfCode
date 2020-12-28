@@ -1,7 +1,5 @@
 using AoC2015;
 using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AoC2015Tests
 {

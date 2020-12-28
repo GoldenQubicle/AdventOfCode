@@ -13,11 +13,12 @@ namespace CLI.Verbs
         public int Part { get; set; }
         public Type DayType { get; private set; }
 
-        public override (bool IsValid, string message) Validate( )
+        public override (bool isValid, string message) Validate( )
         {
             var result = base.Validate( );
 
-            if ( !result.IsValid ) return result;
+            if ( !result.isValid ) return result;
+
             //note we assume debug builds are present
             var dir = $"{RootPath}\\AoC{Year}\\bin\\Debug\\net5.0";
             var assemblyPath = $"{dir}\\AoC{Year}.dll";
@@ -32,7 +33,7 @@ namespace CLI.Verbs
                 result = (false, $"Error: malformed part flag");
 
             // return before loading assembly
-            if ( !result.IsValid ) return result;
+            if ( !result.isValid ) return result;
 
             var assembly = Assembly.LoadFrom(assemblyPath);
             DayType = assembly.GetType($"AoC{Year}.Day{DayString}");

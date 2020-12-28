@@ -15,11 +15,11 @@ namespace CLI.Verbs
         private string ClassPath { get; set; }
         private string TestPath { get; set; }
 
-        public override (bool IsValid, string message) Validate( )
+        public override (bool isValid, string message) Validate( )
         {
             var result = base.Validate( );
             
-            if ( !result.IsValid ) return result;
+            if ( !result.isValid ) return result;
 
             var classDir = $"{RootPath}\\AoC{Year}";
             ClassPath = $"{classDir}\\Day{DayString}.cs";
@@ -66,7 +66,6 @@ namespace CLI.Verbs
             }
 
             Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
-
             return message;
         }
     }

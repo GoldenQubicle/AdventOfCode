@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using CommandLine.Text;
 using System.Reflection;
 
 namespace CLI.Verbs
@@ -14,7 +13,7 @@ namespace CLI.Verbs
 
         public string DayString { get => Day < 10 ? Day.ToString("00") : Day.ToString( ); }
 
-        public virtual (bool IsValid, string message) Validate( )
+        public virtual (bool isValid, string message) Validate( )
         {
             if ( Year < 2015 || Year > 2020 )
                 return (false, $"Error: year must be between 2015 and 2020.");

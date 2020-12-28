@@ -14,12 +14,12 @@ namespace CLI.Verbs
         [Option(shortName: 's', Required = true, HelpText = "The session token for adventofcode.com")]
         public string SessionId { get; set; }
 
-        public override (bool IsValid, string message) Validate( )
+        public override (bool isValid, string message) Validate( )
         {
             var result = base.Validate( );
 
-            if ( !result.IsValid ) return result;
-
+            if ( !result.isValid ) return result;
+            Console.WriteLine(RootPath);
             var dataDir = $"{RootPath}\\AoC{Year}\\data";
             var dataPath = $"{dataDir}\\Day{DayString}.txt";
 
@@ -55,9 +55,11 @@ namespace CLI.Verbs
                 var inputFile = $"{RootPath}\\AoC{options.Year}\\data\\day{options.DayString}.txt";
                 var response = httpClient.GetAsync($"{options.Year}/day/{options.Day}/input").Result;
                 response.EnsureSuccessStatusCode( );
+
                 File.WriteAllText(inputFile, response.Content.ReadAsStringAsync( ).Result);
                 message = $"Succes: created input file for year {options.Year} day {options.Day}";
             }
+
             Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
             return message;
         }
