@@ -7,6 +7,7 @@ namespace AoC2015
     public class Day02 : Solution
     {
         public Day02(string file) : base(file, "\n") { }
+        public Day02(List<string> input) : base(input) { }
 
         public override string SolvePart1( ) => Input
             .Select(line => line.Split('x').Select(int.Parse).ToList( ))

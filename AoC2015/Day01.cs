@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Common;
 
@@ -6,6 +7,9 @@ namespace AoC2015
     public class Day01 : Solution
     {
         public Day01(string file) : base(file) { }
+
+        public Day01(List<string> input) : base(input) { }
+        
 
         public override string SolvePart1( ) => Input[0].Aggregate(0, (sum, c) =>
             c switch

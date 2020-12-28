@@ -20,6 +20,8 @@
                  public class Day{Day} : Solution
                  {{
                      public Day{Day}(string file) : base(file) {{ }}
+                     
+                     public Day{Day}(List<string> input) : base(input) {{ }}
 
                      public override string SolvePart1( ) => null;
 

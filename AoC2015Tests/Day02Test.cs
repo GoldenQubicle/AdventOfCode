@@ -1,30 +1,28 @@
 using AoC2015;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace AoC2015Tests
 {
     public class Day02Test
     {
-        Day02 day02;
 
-        [SetUp]
-        public void Setup( )
+        [TestCase("2x3x4", "58")]
+        [TestCase("1x1x10", "43")]
+        public void Part1(string input, string expected)
         {
-            day02 = new Day02("day02test1");
-        }
-
-        [Test]
-        public void Part1( )
-        {
+            var day02 = new Day02(new List<string> { input });
             var actual = day02.SolvePart1( );
-            Assert.AreEqual("58", actual);
+            Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        public void Part2( )
+        [TestCase("2x3x4", "34")]
+        [TestCase("1x1x10", "14")]
+        public void Part2(string input, string expected)
         {
+            var day02 = new Day02(new List<string> { input });
             var actual = day02.SolvePart2( );
-            Assert.AreEqual("48", actual);
+            Assert.AreEqual(expected, actual);
         }
     }
 }
