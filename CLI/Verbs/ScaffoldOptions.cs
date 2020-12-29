@@ -50,11 +50,11 @@ namespace CLI.Verbs
                 if ( Cases != null )
                 {
                     var valid = Cases.All(c => c.Contains(":"));
-                    result =  (valid, valid ? string.Empty : $"Error: test cases must be in format input:outcome");
+                    result = (valid, valid ? string.Empty : $"Error: test cases must be in format input:outcome");
 
                     if ( valid )
                     {
-                        TestCases = Cases.Select(c => c.Split(":")).Select(c => (input: c[0], outcome: c[1])).ToList();
+                        TestCases = Cases.Select(c => c.Split(":")).Select(c => (input: c[0], outcome: c[1])).ToList( );
                         var allValid = TestCases.All(c => !string.IsNullOrEmpty(c.input) && !string.IsNullOrEmpty(c.outcome));
                         result = (allValid, allValid ? string.Empty : $"Error: not all test cases have valid input and outcome");
                     }
@@ -81,7 +81,7 @@ namespace CLI.Verbs
                 File.WriteAllText(options.ClassPath, template.CreateSolution( ));
 
                 if ( options.HasUnitTest )
-                    File.WriteAllText(options.TestPath, template.CreateUnitTest());
+                    File.WriteAllText(options.TestPath, template.CreateUnitTest( ));
 
                 message = $"Succes: created class for year {options.Year} day {options.Day} with {( options.HasUnitTest ? "additional" : "no" )} unit test.";
             }

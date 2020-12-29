@@ -64,7 +64,7 @@ namespace CLI
                       (s, c) => s + @$"[TestCase(""{c.input}"",""{c.outcome}"")] {Environment.NewLine}        ").TrimEnd()}
                      public void Part1(string input, string expected )
                      {{
-                         day{Day} = new Day{Day}(new List<string> {{input}} );
+                         day{Day} = new Day{Day}(new List<string> {{ input }} );
                          var actual = day{Day}.SolvePart1( );
                          Assert.AreEqual(expected, actual);
                      }}")}
