@@ -3,7 +3,7 @@
 Repo for AoC, thusfar only 2020 complete (2019 half complete resides in seperate repo as of yet).
 
 Also contains small CLI for getting things up and running.<br>
-Example usage; `dotnet run -p .\CLI.csproj scaffold -y 2015 -d 2 -u -c hello:world` <br>
+Example usage; `.\CLI.exe scaffold -y 2015 -d 2 -u -c hello:world` <br>
 This command will create `Day02.cs` in the `AoC2015` project, 
 as well as create `Day02test.cs` in `AoC2015Test` project with a single test case is generate for part 1; `TestCase[("hello", "world")]`. 
 
