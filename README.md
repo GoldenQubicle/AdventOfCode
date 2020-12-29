@@ -5,7 +5,7 @@ Repo for AoC, thusfar only 2020 complete (2019 half complete resides in seperate
 Also contains small CLI for getting things up and running.<br>
 Example usage; `.\CLI.exe scaffold -y 2015 -d 2 -u -c hello:world` <br>
 This command will create `Day02.cs` in the `AoC2015` project, 
-as well as create `Day02test.cs` in `AoC2015Test` project with a single test case is generate for part 1; `TestCase[("hello", "world")]`. 
+as well as create `Day02test.cs` in `AoC2015Test` project with a single test case generated for part 1; `TestCase[("hello", "world")]`. 
 
 Available commands and their flags.
 - `scaffold`, create .cs file for day with option for unit test file<br>
