@@ -1,4 +1,8 @@
-﻿namespace CLI
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace CLI
 {
     public sealed class SolutionTemplate
     {
@@ -6,6 +10,7 @@
         public string Day { get; init; }
         public bool HasUnitTest { get; init; }
         public string ExpectedValuePart1 { get; init; }
+        public List<(string input, string outcome)> TestCases { get; init; }
 
         public string CreateSolution( ) =>
            $@"using System;
@@ -29,7 +34,7 @@
                  }}
              }}".Replace("             ", "");
 
-        public string CreateUnitTest(string part1Expected) =>
+        public string CreateUnitTest() =>
             $@"using AoC{Year};
              using NUnit.Framework;
              using System.Collections.Generic;
@@ -46,13 +51,23 @@
                      {{
                          day{Day} = new Day{Day}(""day{Day}test1"");
                      }}
-             
-                     [Test]
+                     
+                     {( TestCases.Count() == 0 ?
+                  @$"[Test]
                      public void Part1( )
                      {{
                          var actual = day{Day}.SolvePart1( );
-                         Assert.AreEqual(""{( string.IsNullOrEmpty(part1Expected) ? string.Empty : part1Expected )}"", actual);
-                     }}
+                         Assert.AreEqual(""{( string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1 )}"", actual);
+                     }}" 
+                    :
+                  $@"{TestCases.Aggregate(string.Empty, 
+                      (s, c) => s + @$"[TestCase(""{c.input}"",""{c.outcome}"")] {Environment.NewLine}        ").TrimEnd()}
+                     public void Part1(string input, string expected )
+                     {{
+                         day{Day} = new Day{Day}(new List<string> {{input}} );
+                         var actual = day{Day}.SolvePart1( );
+                         Assert.AreEqual(expected, actual);
+                     }}")}
              
                      [Test]
                      public void Part2( )

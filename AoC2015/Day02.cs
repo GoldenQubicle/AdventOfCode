@@ -26,7 +26,7 @@ namespace AoC2015
 
         public override string SolvePart2( ) => Input
             .Select(line => line.Split('x').Select(int.Parse).ToList( ))
-            .Aggregate(0l, (sum, list) =>
+            .Aggregate(0L, (sum, list) =>
             {
                 var order = list.OrderBy(i => i).ToList( );
                 sum += ( order[0] * 2 + order[1] * 2 + list[0] * list[1] * list[2] );

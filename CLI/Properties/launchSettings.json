@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "scaffold -y 2015 -d5 -u -c hello:world another:case"
+    }
+  }
+}
