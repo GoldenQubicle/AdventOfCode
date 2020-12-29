@@ -13,7 +13,7 @@ Available commands and their flags.
     -d           Required. The day, from 1 to 25<br>
     -u           Creates a unit test file<br>
     -e           Mutually exclusive with -c. Sets the expected value for example part 1 and reads input from file.<br>
-    -c           Mutually exclusive with -e. Generate test cases for part 1 in the format of input:outcome.<br>
+    -c           Mutually exclusive with -e. Generate test cases for part 1 in the format of `input:outcome`.<br>
 
 - `getinput`, retrieves input from site <br>
   -y           Required. The year, from 2015 to 2020<br>
