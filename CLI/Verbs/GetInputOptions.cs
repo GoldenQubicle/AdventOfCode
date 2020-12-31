@@ -19,7 +19,7 @@ namespace CLI.Verbs
             var result = base.Validate( );
 
             if ( !result.isValid ) return result;
-            Console.WriteLine(RootPath);
+            
             var dataDir = $"{RootPath}\\AoC{Year}\\data";
             var dataPath = $"{dataDir}\\Day{DayString}.txt";
 
