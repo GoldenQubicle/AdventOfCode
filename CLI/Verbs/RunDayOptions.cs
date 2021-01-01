@@ -32,8 +32,11 @@ namespace CLI.Verbs
             if ( Part > 2 )
                 result = (false, $"Error: malformed part flag");
 
+            if ( !File.Exists($"{RootPath}\\AoC{Year}\\data\\day{DayString}.txt") )
+                result = (false, $"Error: could not find input file for day {Day} at {RootPath}\\AoC{Year}\\data\\.");
+
             // return before loading assembly
-            if ( !result.isValid ) return result;
+                if ( !result.isValid ) return result;
 
             var assembly = Assembly.LoadFrom(assemblyPath);
             DayType = assembly.GetType($"AoC{Year}.Day{DayString}");

@@ -1,9 +1,12 @@
 ﻿using CommandLine;
+using Common;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
+using System.Threading.Tasks;
 
 namespace CLI.Verbs
 {
@@ -19,7 +22,7 @@ namespace CLI.Verbs
             var result = base.Validate( );
 
             if ( !result.isValid ) return result;
-            
+
             var dataDir = $"{RootPath}\\AoC{Year}\\data";
             var dataPath = $"{dataDir}\\Day{DayString}.txt";
 
@@ -32,7 +35,7 @@ namespace CLI.Verbs
             return result;
         }
 
-        public static string Run(GetInputOptions options)
+        public static async Task<string> Run(GetInputOptions options)
         {
             var (isValid, message) = options.Validate( );
 
@@ -52,15 +55,25 @@ namespace CLI.Verbs
                     BaseAddress = baseAddress,
                 };
 
-                var inputFile = $"{RootPath}\\AoC{options.Year}\\data\\day{options.DayString}.txt";
-                var response = httpClient.GetAsync($"{options.Year}/day/{options.Day}/input").Result;
+                var aocDir = $"{RootPath}\\AoC{options.Year}";
+                var inputFile = $"{aocDir}\\data\\day{options.DayString}.txt";
+                var response = await httpClient.GetAsync($"{options.Year}/day/{options.Day}/input");
+               
                 try
                 {
-                    response.EnsureSuccessStatusCode( );
-                    File.WriteAllText(inputFile, response.Content.ReadAsStringAsync( ).Result);
-                    message = $"Succes: created input file for year {options.Year} day {options.Day}";
+                    response = response.EnsureSuccessStatusCode( );
+                    var content = await response.Content.ReadAsStringAsync( );
+                    await File.WriteAllTextAsync(inputFile, content);
 
-                } catch(HttpRequestException e )
+                    var csprojPath = $"{aocDir}\\AoC{options.Year}.csproj";
+                    var csproj = await File.ReadAllLinesAsync(csprojPath)
+                        .ContinueWith(f => UpdateCsProjFile(f.Result.ToList( ), options.DayString));
+
+                    await File.WriteAllLinesAsync($"{csprojPath}", csproj);
+
+                    message = $"Succes: created input file for year {options.Year} day {options.Day}";
+                }
+                catch ( HttpRequestException e )
                 {
                     isValid = false;
                     message = $"Error: {e.Message} Probably session related, make sure token is still valid.";
@@ -70,5 +83,11 @@ namespace CLI.Verbs
             Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
             return message;
         }
+
+        //note the wonky string formatting is on purpose such that the tabs in the csproj file are actually alligned
+        private static List<string> UpdateCsProjFile(List<string> file, string dayNo) => file.InsertAt(file.Count - 2,
+            $@"    <None Update=""data\day{dayNo}.txt"">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>");
     }
 }

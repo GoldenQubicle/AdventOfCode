@@ -26,7 +26,7 @@ namespace CLI
             }),
             GetInputOptions i => Task.Run(( ) =>
            {
-               Console.WriteLine(GetInputOptions.Run(i));
+               Console.WriteLine(GetInputOptions.Run(i).Result);
                Console.ResetColor( );
            }),
         };

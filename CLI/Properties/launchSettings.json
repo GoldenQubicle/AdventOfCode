@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "getinput -y 2015 -d 6 -s 53616c7465645f5f526b32b357b9988a302ccf2550bc5e54fd9c025e74b2d7934cf97f8446118119b9590b09be2baa70"
+    }
+  }
+}

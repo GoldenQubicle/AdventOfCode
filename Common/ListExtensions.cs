@@ -13,5 +13,11 @@ namespace Common
             list.Add(item);
             return list;
         }
+
+        public static List<T> InsertAt<T>(this List<T> list, int idx, T item)
+        {
+            list.Insert(idx, item);
+            return list;
+        }
     }
 }
