@@ -54,10 +54,17 @@ namespace CLI.Verbs
 
                 var inputFile = $"{RootPath}\\AoC{options.Year}\\data\\day{options.DayString}.txt";
                 var response = httpClient.GetAsync($"{options.Year}/day/{options.Day}/input").Result;
-                response.EnsureSuccessStatusCode( );
+                try
+                {
+                    response.EnsureSuccessStatusCode( );
+                    File.WriteAllText(inputFile, response.Content.ReadAsStringAsync( ).Result);
+                    message = $"Succes: created input file for year {options.Year} day {options.Day}";
 
-                File.WriteAllText(inputFile, response.Content.ReadAsStringAsync( ).Result);
-                message = $"Succes: created input file for year {options.Year} day {options.Day}";
+                } catch(HttpRequestException e )
+                {
+                    isValid = false;
+                    message = $"Error: {e.Message} Probably session related, make sure token is still valid.";
+                }
             }
 
             Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
