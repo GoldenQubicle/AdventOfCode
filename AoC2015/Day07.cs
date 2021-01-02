@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Common;
 
@@ -14,51 +15,16 @@ namespace AoC2015
 
         public Day07(string file) : base(file, "\n")
         {
+            var expression = new Regex("((?<a>\\w{1,}.)?(?<gate>RSHIFT.|LSHIFT.|OR.|AND.|NOT.))?(?<b>\\w{1,})(.->.)(?<output>\\w{1,})");
             instructions = Input
-               .Select(line => line.Split(" -> "))
-               .Select(line =>
-               {
-                   var instruction = line[0];
-                   var parts = new string[2];
-                   var gate = string.Empty;
-                   if ( instruction.Contains("AND") )
-                   {
-                       gate = "AND";
-                       parts = instruction.Split(" AND ");
-                   }
-                   else if ( instruction.Contains("OR") )
-                   {
-                       gate = "OR";
-                       parts = instruction.Split(" OR ");
-                   }
-                   else if ( instruction.Contains("NOT") )
-                   {
-                       gate = "NOT";
-                       parts = instruction.Split("NOT ");
-                   }
-                   else if ( instruction.Contains("RSHIFT") )
-                   {
-                       gate = "RSHIFT";
-                       parts = instruction.Split(" RSHIFT ");
-                   }
-                   else if ( instruction.Contains("LSHIFT") )
-                   {
-                       gate = "LSHIFT";
-                       parts = instruction.Split(" LSHIFT ");
-                   }
-                   else
-                   {
-                       parts = new string[ ] { instruction, string.Empty };
-                   }
-                   var a = parts[0];
-                   var b = parts[1];
-                   var output = line[1].Trim( );
-                   return (a: a, b: b, gate: gate, output: output);
-               }).ToList( );
-
+                .Select(line => expression.Match(line))
+                .Select(match => (
+                        a: match.Groups["a"].Value.Trim( ),
+                        b: match.Groups["b"].Value.Trim( ),
+                        gate: match.Groups["gate"].Value.Trim( ),
+                        output: match.Groups["output"].Value.Trim( )
+                )).ToList( );
         }
-
-        public Day07(List<string> input) : base(input) { }
 
         public override string SolvePart1( ) => Solve( );
 
@@ -67,9 +33,10 @@ namespace AoC2015
             var newBValue = SolvePart1( );
             wires = new( );
             instructions.RemoveAt(334);
-            instructions.Insert(334, (a: newBValue, b: "", gate: "", output: "b"));
+            instructions.Insert(334, (a: "", b: newBValue, gate: "", output: "b"));
             return Solve( );
         }
+
         private string Solve( )
         {
             var start = instructions[6];
@@ -87,7 +54,7 @@ namespace AoC2015
                                      ( char.IsDigit(i.b[0]) ? true : wires.ContainsKey(i.b) ),
                     "LSHIFT" or "RSHIFT" => char.IsDigit(i.a[0]) ? true : wires.ContainsKey(i.a),
                     "NOT" => char.IsDigit(i.b[0]) ? true : wires.ContainsKey(i.b),
-                    _ => char.IsDigit(i.a[0]) ? true : wires.ContainsKey(i.a)
+                    _ => char.IsDigit(i.b[0]) ? true : wires.ContainsKey(i.b)
                 };
 
                 if ( !hasValue )
@@ -119,7 +86,7 @@ namespace AoC2015
             "NOT" => ( ushort ) ~b,
             "RSHIFT" => ( ushort ) ( a >> b ),
             "LSHIFT" => ( ushort ) ( a << b ),
-            _ => a
+            _ => b
         };
     }
 }
