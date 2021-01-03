@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -11,8 +7,6 @@ namespace AoC2015
     public class Day08 : Solution
     {
         public Day08(string file) : base(file, "\n") { }
-
-        public Day08(List<string> input) : base(input) { }
 
         public override string SolvePart1( )
         {
