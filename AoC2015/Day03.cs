@@ -41,8 +41,8 @@ namespace AoC2015
                 '<' => (x: -1, y: 0, i: i),
             }).Aggregate((sl: new List<(int x, int y)> { (0, 0) }, rl: new List<(int x, int y)> { (0, 0) }),
                 (a, i) => i.i % 2 == 0 ?
-                (sl: a.sl.AddTo((a.sl.Last( ).x + i.x, a.sl.Last( ).y + i.y)), rl: a.rl) :
-                (sl: a.sl, rl: a.rl.AddTo((a.rl.Last( ).x + i.x, a.rl.Last( ).y + i.y))));
+                (sl: a.sl.Expand((a.sl.Last( ).x + i.x, a.sl.Last( ).y + i.y)), rl: a.rl) :
+                (sl: a.sl, rl: a.rl.Expand((a.rl.Last( ).x + i.x, a.rl.Last( ).y + i.y))));
 
             agg.rl.AddRange(agg.sl);
 

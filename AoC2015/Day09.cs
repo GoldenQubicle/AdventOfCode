@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -34,31 +31,11 @@ namespace AoC2015
                 });
         }
 
-
-        public override string SolvePart1( )
-        {
-            var distances = new Dictionary<string, int>( );
-            foreach ( var key in graph.Keys )
-            {
-                var nodes = graph.Keys.ToList( );
-                var current = key;
-                nodes.RemoveAt(nodes.IndexOf(current));
-
-                var distance = 0;
-                while ( nodes.Count > 0 )
-                {
-                    var next = graph[current].OrderBy(d => d.dist).First(d => nodes.Contains(d.dest));
-                    nodes.RemoveAt(nodes.IndexOf(next.dest));
-                    current = next.dest;
-                    distance += next.dist;
-                }
-                distances.Add(key, distance);
-            }
-
-            return distances.Values.Min( ).ToString( );
-        }
-
-        public override string SolvePart2( )
+        public override string SolvePart1( ) => CalculateDistances( ).Values.Select(i => i.Min( )).Min( ).ToString( );
+        
+        public override string SolvePart2( ) => CalculateDistances( ).Values.Select(i => i.Max( )).Max( ).ToString( );
+      
+        private Dictionary<string, List<int>> CalculateDistances( )
         {
             var distances = new Dictionary<string, List<int>>( );
 
@@ -67,20 +44,19 @@ namespace AoC2015
                 distances.Add(key, new List<int>( ));
                 var stack = new Stack<(string node, List<string> visited, int distance)>( );
                 nodes.ForEach(n => stack.Push((n.dest, new List<string> { key, n.dest }, n.dist)));
-               
-                while(stack.Count > 0 )
+
+                while ( stack.Count > 0 )
                 {
                     var current = stack.Pop( );
                     var next = graph[current.node].Where(n => !current.visited.Contains(n.dest)).ToList( );
 
-                    if(next.Count == 0 )
+                    if ( next.Count == 0 )
                         distances[key].Add(current.distance);
-                    else 
-                        next.ForEach(n => stack.Push((n.dest, current.visited.AddTo(n.dest), current.distance + n.dist)));
+                    else
+                        next.ForEach(n => stack.Push((n.dest, current.visited.Expand(n.dest), current.distance + n.dist)));
                 }
             }
-
-            return distances.Values.Select(i => i.Max( )).Max( ).ToString();
+            return distances;
         }
     }
 }
