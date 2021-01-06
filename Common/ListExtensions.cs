@@ -10,8 +10,10 @@ namespace Common
     {
         public static List<T> AddTo<T>(this List<T> list, T item)
         {
-            list.Add(item);
-            return list;
+            var result = new List<T>( );
+            result.AddRange(list);
+            result.Add(item);
+            return result;
         }
 
         public static List<T> InsertAt<T>(this List<T> list, int idx, T item)

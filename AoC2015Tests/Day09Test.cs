@@ -12,7 +12,7 @@ namespace AoC2015Tests
         [SetUp]
         public void Setup( )
         {
-            day09 = new Day09("day09");
+            day09 = new Day09("day09test1");
         }
         
         [Test]
