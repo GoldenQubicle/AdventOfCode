@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -12,10 +8,8 @@ namespace AoC2015
     {
         private readonly List<int> containers;
         public int Liters { get; set; } = 150;
-        public Day17(string file) : base(file, "\n")
-        {
+        public Day17(string file) : base(file, "\n") => 
             containers = Input.Select(line => int.Parse(line)).ToList( );
-        }
 
         public override string SolvePart1( )
         {
@@ -26,10 +20,10 @@ namespace AoC2015
                 .Select(l => l.Select((d, i) => d == 1 ? i : -1))
                 .Select(l => l.Aggregate(0d, (sum, d) => d != -1 ? sum += containers[d] : sum))
                 .Count(sum => sum == Liters);
-
-
+            
             return permutations.ToString( );
         }
+
         public override string SolvePart2( )
         {
             var start = Enumerable.Range(0, containers.Count).Select(i => 9).ToList( );
@@ -41,7 +35,6 @@ namespace AoC2015
                 .Where(sum => sum.liters == Liters);
 
             var min = permutations.Min(sum => sum.containers);
-
 
             return permutations.Count(sum => sum.containers == min).ToString( );
         }
@@ -57,6 +50,5 @@ namespace AoC2015
 
             return GenerateCombinations(c1, result).Concat(GenerateCombinations(c2, result)).ToList();
         }
-
     }
 }
