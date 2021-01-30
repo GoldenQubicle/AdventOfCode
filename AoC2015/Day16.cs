@@ -46,7 +46,6 @@ namespace AoC2015
                 c => aunts.Where(a => a.ContainsKey(c.Key) && a[c.Key] == c.Value).Select(a => a["Sue"]).ToList( ));
 
             return aunts.Where(a => a.Keys.Skip(1).All(k => potential[k].Contains(a["Sue"]))).First( )["Sue"].ToString( );
-
         }
 
         public override string SolvePart2( )
