@@ -15,6 +15,12 @@ namespace AoC2015
         {
             var start = Enumerable.Range(0, containers.Count).Select(i => 9).ToList();
 
+            // not quite ready yet, need some way to also indicate I want only unique combinations
+            // that is to same, atm a-b is seen as different from b-a where this is not correct in this case
+            var perm = Combinator.Generate(new List<int> {0,1,2,3,4}, isFullSet: true)
+                .Select(l => l.Aggregate(0d, (sum, d) => sum += containers[d]))
+                .Count(sum => sum == Liters); 
+            
             var permutations = GenerateCombinations(start, new List<List<int>>( ))
                 .Where(l => l.Count(d => d == 1) >= 2) 
                 .Select(l => l.Select((d, i) => d == 1 ? i : -1))
