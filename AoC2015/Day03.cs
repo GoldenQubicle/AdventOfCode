@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Common;
+using Common.Extensions;
 
 namespace AoC2015
 {

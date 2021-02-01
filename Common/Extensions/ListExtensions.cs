@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace Common
+namespace Common.Extensions
 {
     public static class ListExtensions
     {
         /// <summary>
-        /// Add an item to the list and returns the result as a new List&lt;<typeparamref name="T"/>&gt;
+        /// Add an item to the list and return the result as a new List&lt;<typeparamref name="T"/>&gt;
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list">the list to be expanded</param>
@@ -20,7 +20,7 @@ namespace Common
         }
 
         /// <summary>
-        /// Replace an item at the specified index and returns the result as a new List&lt;<typeparamref name="T"/>&gt;
+        /// Replace an item at the specified index and return the result as a new List&lt;<typeparamref name="T"/>&gt;
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
@@ -37,7 +37,7 @@ namespace Common
         }
 
         /// <summary>
-        /// Insert an item at the specified index and returns the result as a new List&lt;<typeparamref name="T"/>&gt;
+        /// Insert an item at the specified index and return the result as a new List&lt;<typeparamref name="T"/>&gt;
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
