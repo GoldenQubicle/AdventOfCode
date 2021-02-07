@@ -83,10 +83,10 @@ namespace Common
         public bool IsOrdered { get; init; } = true;
     }
 
-    public class CombinatorResult<T> : IEnumerable<IList<T>>
+    public class CombinatorResult<T> : IEnumerable<List<T>>
     {
         public List<List<T>> Result { get; init; }
-        public IEnumerator<IList<T>> GetEnumerator( )
+        public IEnumerator<List<T>> GetEnumerator( )
         {
             foreach ( var r in Result )
             {

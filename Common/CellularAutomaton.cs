@@ -1,16 +1,63 @@
-﻿using System;
+﻿using Common.Extensions;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Common
 {
     public class CellularAutomaton
     {
-        Dictionary<Position, int> grid;
+        private Dictionary<Position, int> Grid { get; } = new();
+        private CombinatorResult<int> Offsets { get; }
+        private CellularAutomatonOptions Options { get; }
 
         public CellularAutomaton(CellularAutomatonOptions options)
         {
+            Options = options;
+            Offsets = Combinator.Generate(new List<int> { -1, 0, 1 },
+                new CombinatorOptions { Length = Options.Dimensions });
 
         }
+
+        public void Iterate(int steps)
+        {
+            for(var i = 0 ; i < steps ; i++)
+            {
+                Grid.ForEach(cell =>
+                {
+                    var neighors = GetNeighbors(cell.Key);
+                });
+            }
+        }
+
+        private List<int> GetNeighbors(Position pos)
+        {
+            var n = Offsets.Select(offset => new Position(pos.Values.Select((i, v) => v + offset[i]).ToArray()));
+            //TODO check for wrap around
+
+
+            return new List<int>();
+        }
+
+        public void GenerateGrid(List<string> input)
+        {
+            switch(Options.Dimensions)
+            {
+                case 2:
+                    for(var y = 0 ; y < input.Count ; y++)
+                    {
+                        for(var x = 0 ; x < input[y].Length ; x++)
+                        {
+                            Grid.Add(new Position(new int[ ] { x, y }), input[y][x]);
+                        }
+                    }
+                    break;
+
+                default: throw new ArgumentOutOfRangeException();
+            }
+        }
+        public string CountCells(char v) => Grid.Values.Count(c => c == v).ToString();
+
     }
 
     public class Position : IEquatable<Position>
@@ -18,7 +65,7 @@ namespace Common
         public int[ ] Values { get; init; }
         private int Dimensions;
 
-        public Position(int[] values)
+        public Position(int[ ] values)
         {
             Values = values;
             Dimensions = Values.Length;
@@ -46,7 +93,7 @@ namespace Common
 
             if(obj.GetType() != typeof(Position)) return false;
 
-            return Equals((Position)obj);
+            return Equals((Position) obj);
         }
 
         public override int GetHashCode( )
