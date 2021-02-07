@@ -50,6 +50,48 @@ namespace AoC2015
             return grid.Values.Count(v => v == '#').ToString();
         }
 
-        public override string SolvePart2( ) => null;
+        public override string SolvePart2( )
+        {
+            var dim = Input.Count -1;
+            grid[(0, 0)] = '#';
+            grid[(dim, 0)] = '#';
+            grid[(0, dim)] = '#';
+            grid[(dim, dim)] = '#';
+
+            for(var s = 0 ; s < Steps ; s++)
+            {
+                var newState = new Dictionary<(int, int), char>();
+                
+                foreach(var cell in grid)
+                {
+                    var neigbors = offsets.Select(o =>
+                    {
+                        var p = (cell.Key.x + o.x, cell.Key.y + o.y);
+
+                        if(grid.ContainsKey(p)) return grid[p];
+                        else return '.';
+                    });
+
+                    var active = neigbors.Count(c => c == '#');
+
+                    var state = active switch
+                    {
+                        < 2 or > 3 when cell.Value == '#' => '.',
+                        3 when cell.Value == '.' => '#',
+                        _ => cell.Value
+                    };
+
+                    if(cell.Key == (0, 0) || cell.Key == (0, dim) ||
+                       cell.Key == (dim, 0) || cell.Key == (dim, dim))
+                        state = '#';
+
+                    newState.Add(cell.Key, state);
+                };
+
+                grid = newState;
+            }
+
+            return grid.Values.Count(v => v == '#').ToString();
+        }
     }
 }

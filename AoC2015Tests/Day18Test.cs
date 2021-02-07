@@ -26,8 +26,9 @@ namespace AoC2015Tests
         [Test]
         public void Part2( )
         {
+            day18.Steps = 5;
             var actual = day18.SolvePart2( );
-            Assert.AreEqual("", actual);
+            Assert.AreEqual("17", actual);
         }
     }
 }

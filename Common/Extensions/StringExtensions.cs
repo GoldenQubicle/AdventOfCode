@@ -2,6 +2,13 @@
 {
     public static class StringExtensions
     {
+        public static string ReplaceAt(this string s, int idx, string n, int r)
+        {
+            s = s.Remove(idx, r);
+            s = s.Insert(idx, n);
+            return s;
+        }
+
         public static string ReplaceAt(this string s, int idx, string n)
         {
             s = s.Remove(idx, n.Length);
