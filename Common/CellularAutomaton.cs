@@ -9,6 +9,7 @@ namespace Common
     {
         public Func<int, char, char> ApplyGameOfLifeRules;
         public Func<Position, char, char> ApplyPositionalRules;
+
         private Dictionary<Position, char> Grid { get; set; } = new();
         private List<Position> Offsets { get; }
         private CellularAutomatonOptions Options { get; }
@@ -20,7 +21,7 @@ namespace Common
             Options = options;
             Offsets = Combinator.Generate(new List<int> { -1, 0, 1 },
                 new CombinatorOptions { Length = Options.Dimensions })
-                 .Where(r => !r.All(v => v == 0)).Select(r => new Position(r.ToArray())).ToList(); 
+                 .Where(r => !r.All(v => v == 0)).Select(r => new Position(r.ToArray())).ToList();
         }
 
         public void Iterate(int steps)
@@ -33,7 +34,7 @@ namespace Common
                     var neighors = GetNeighbors(position);
                     var active = neighors.Count(n => n == Active);//assuming AoC input treats # as active state
                     var newState = ApplyGameOfLifeRules(active, state);
-                    
+
                     if(ApplyPositionalRules != null)
                         newState = ApplyPositionalRules(position, newState);
 
@@ -43,18 +44,7 @@ namespace Common
             }
         }
 
-        public int CountCells(char state ) => Grid.Values.Count(s => s == state);
-        private List<char> GetNeighbors(Position pos)
-        {
-            return Offsets
-                .Select(offset => pos + offset)
-                .Select(n =>
-                {
-                    //TODO check for wrap around
-                    if(Grid.ContainsKey(n)) return Grid[n];
-                    else return InActive; //no wrap and assuming AoC input always treats '.' as inactive state for now
-                }).ToList();
-        }
+        public int CountCells(char state) => Grid.Values.Count(s => s == state);
 
         public void GenerateGrid(List<string> input)
         {
@@ -66,13 +56,25 @@ namespace Common
                     {
                         for(var x = 0 ; x < input[y].Length ; x++)
                         {
-                            Grid.Add(new Position(new int[ ] { x, y }), input[x][y]);
+                            Grid.Add(new Position(x, y), input[x][y]);
                         }
                     }
                     break;
 
                 default: throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private List<char> GetNeighbors(Position pos)
+        {
+            return Offsets
+                .Select(offset => pos + offset)
+                .Select(n =>
+                {
+                    //TODO check for wrap around
+                    if(Grid.ContainsKey(n)) return Grid[n];
+                    else return InActive; //no wrap and assuming AoC input always treats '.' as inactive state for now
+                }).ToList();
         }
     }
 
@@ -81,7 +83,7 @@ namespace Common
         public int[ ] Values { get; init; }
         private int Dimensions;
 
-        public Position(int[ ] values)
+        public Position(params int[ ] values)
         {
             Values = values;
             Dimensions = Values.Length;
@@ -127,7 +129,6 @@ namespace Common
 
         public static bool operator ==(Position left, Position right) => EqualityComparer<Position>.Default.Equals(left, right);
         public static bool operator !=(Position left, Position right) => !(left == right);
-
         public static Position operator +(Position left, Position right) => new Position(left.Values.Select((v, i) => v + right.Values[i]).ToArray());
     }
 }
