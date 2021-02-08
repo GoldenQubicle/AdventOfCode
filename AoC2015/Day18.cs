@@ -28,65 +28,42 @@ namespace AoC2015
                 DoesWrap = false,
                 IsInfinite = false
             });
-            automaton.GenerateGrid(Input);
-        }
 
-        public override string SolvePart1( )
-        {
-            automaton.ApplyGoLRules = (activeCount, currentState) => activeCount switch
+
+            automaton.ApplyGameOfLifeRules = (activeCount, currentState) => activeCount switch
             {
                 < 2 or > 3 when currentState == '#' => '.',
                 3 when currentState == '.' => '#',
                 _ => currentState
             };
+        }
 
-            automaton.Iterate(100);
-                       
-            return automaton.CountCellsWithState('#').ToString();
+        public override string SolvePart1( )
+        {
+            automaton.GenerateGrid(Input);
+            automaton.Iterate(Steps);
+            return automaton.CountCells('#').ToString();
         }
 
         public override string SolvePart2( )
         {
-            var dim = Input.Count -1;
-            grid[(0, 0)] = '#';
-            grid[(dim, 0)] = '#';
-            grid[(0, dim)] = '#';
-            grid[(dim, dim)] = '#';
+            var dim = Input.Count - 1;
 
-            for(var s = 0 ; s < Steps ; s++)
-            {
-                var newState = new Dictionary<(int, int), char>();
-                
-                foreach(var cell in grid)
-                {
-                    var neigbors = offsets.Select(o =>
-                    {
-                        var p = (cell.Key.x + o.x, cell.Key.y + o.y);
+            Input[0] = Input[0].ReplaceAt(0, '#');
+            Input[0] = Input[0].ReplaceAt(dim, '#');
+            Input[dim] = Input[dim].ReplaceAt(0, '#');
+            Input[dim] = Input[dim].ReplaceAt(dim, '#');
 
-                        if(grid.ContainsKey(p)) return grid[p];
-                        else return '.';
-                    });
+            var ul = new Position(new int[ ] { 0, 0 });
+            var ur = new Position(new int[ ] { dim, 0 });
+            var bl = new Position(new int[ ] { 0, dim });
+            var br = new Position(new int[ ] { dim, dim });
 
-                    var active = neigbors.Count(c => c == '#');
-
-                    var state = active switch
-                    {
-                        < 2 or > 3 when cell.Value == '#' => '.',
-                        3 when cell.Value == '.' => '#',
-                        _ => cell.Value
-                    };
-
-                    if(cell.Key == (0, 0) || cell.Key == (0, dim) ||
-                       cell.Key == (dim, 0) || cell.Key == (dim, dim))
-                        state = '#';
-
-                    newState.Add(cell.Key, state);
-                };
-
-                grid = newState;
-            }
-
-            return grid.Values.Count(v => v == '#').ToString();
+            automaton.ApplyPositionalRules = (pos, state) => pos == ul || pos == ur || pos == bl || pos == br ? '#' : state;
+            automaton.GenerateGrid(Input);
+            automaton.Iterate(Steps);
+           
+            return automaton.CountCells('#').ToString();
         }
     }
 }

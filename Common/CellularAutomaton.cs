@@ -7,7 +7,8 @@ namespace Common
 {
     public class CellularAutomaton
     {
-        public Func<int, char, char> ApplyGoLRules;
+        public Func<int, char, char> ApplyGameOfLifeRules;
+        public Func<Position, char, char> ApplyPositionalRules;
         private Dictionary<Position, char> Grid { get; set; } = new();
         private List<Position> Offsets { get; }
         private CellularAutomatonOptions Options { get; }
@@ -20,27 +21,29 @@ namespace Common
             Offsets = Combinator.Generate(new List<int> { -1, 0, 1 },
                 new CombinatorOptions { Length = Options.Dimensions })
                  .Where(r => !r.All(v => v == 0)).Select(r => new Position(r.ToArray())).ToList(); 
-
         }
 
         public void Iterate(int steps)
         {
             for(var i = 0 ; i < steps ; i++)
             {
-                var newState = new Dictionary<Position, char>();
-                Grid.ForEach(cell =>
+                var newGrid = new Dictionary<Position, char>();
+                foreach(var (position, state) in Grid)
                 {
-                    var neighors = GetNeighbors(cell.Key);
+                    var neighors = GetNeighbors(position);
                     var active = neighors.Count(n => n == Active);//assuming AoC input treats # as active state
-                    var state = ApplyGoLRules(active, cell.Value);
+                    var newState = ApplyGameOfLifeRules(active, state);
+                    
+                    if(ApplyPositionalRules != null)
+                        newState = ApplyPositionalRules(position, newState);
 
-                    newState.Add(cell.Key, state);
-                });
-                Grid = newState;
+                    newGrid.Add(position, newState);
+                };
+                Grid = newGrid;
             }
         }
 
-        public int CountCellsWithState(char state ) => Grid.Values.Count(s => s == state);
+        public int CountCells(char state ) => Grid.Values.Count(s => s == state);
         private List<char> GetNeighbors(Position pos)
         {
             return Offsets
@@ -63,7 +66,7 @@ namespace Common
                     {
                         for(var x = 0 ; x < input[y].Length ; x++)
                         {
-                            Grid.Add(new Position(new int[ ] { x, y }), input[y][x]);
+                            Grid.Add(new Position(new int[ ] { x, y }), input[x][y]);
                         }
                     }
                     break;
