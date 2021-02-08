@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common;
@@ -10,6 +11,8 @@ namespace AoC2015
         private Dictionary<(int x, int y), char> grid;
         private readonly List<(int x, int y)> offsets;
 
+        CellularAutomaton automaton;
+
         public int Steps { get; set; } = 100;
 
         public Day18(string file) : base(file, "\n")
@@ -18,36 +21,28 @@ namespace AoC2015
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             offsets = Combinator.Generate(new List<int> { -1, 0, 1 }, new CombinatorOptions { Length = 2 })
                 .Where(r => !r.All(v => v == 0)).Select(r => (r[0], r[1])).ToList();
+
+            automaton = new CellularAutomaton(new CellularAutomatonOptions
+            {
+                Dimensions = 2,
+                DoesWrap = false,
+                IsInfinite = false
+            });
+            automaton.GenerateGrid(Input);
         }
 
         public override string SolvePart1( )
         {
-            for(var s = 0 ; s < Steps ; s++)
+            automaton.ApplyGoLRules = (activeCount, currentState) => activeCount switch
             {
-                var newState = new Dictionary<(int, int), char>();
-                grid.ForEach(cell =>
-                {
-                    var neigbors = offsets.Select(o =>
-                    {
-                        var p = (cell.Key.x + o.x, cell.Key.y + o.y);
+                < 2 or > 3 when currentState == '#' => '.',
+                3 when currentState == '.' => '#',
+                _ => currentState
+            };
 
-                        if(grid.ContainsKey(p)) return grid[p];
-                        else return '.';
-                    });
-
-                    var active = neigbors.Count(c => c == '#');
-                    var state = active switch
-                    {
-                        < 2 or > 3 when cell.Value == '#' => '.',
-                        3 when cell.Value == '.' => '#',
-                        _ => cell.Value
-                    };
-                    newState.Add(cell.Key, state);
-                });
-                grid = newState;
-            }
-
-            return grid.Values.Count(v => v == '#').ToString();
+            automaton.Iterate(100);
+                       
+            return automaton.CountCellsWithState('#').ToString();
         }
 
         public override string SolvePart2( )

@@ -23,5 +23,17 @@ namespace CommonTests
 
             Assert.IsFalse(grid.Keys.First() == null);
         }
+
+        [Test]
+        public void PositionAddTest( )
+        {
+            var p1 = new Position(new int[ ] { 2, 7 });
+            var p2 = new Position(new int[ ] { 3, -2 });
+
+            var expected = new Position(new int[ ] { 5, 5 });
+            var actual = p1 + p2;
+
+            Assert.IsTrue(expected == actual);
+        }
     }
 }

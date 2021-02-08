@@ -7,15 +7,19 @@ namespace Common
 {
     public class CellularAutomaton
     {
-        private Dictionary<Position, int> Grid { get; } = new();
-        private CombinatorResult<int> Offsets { get; }
+        public Func<int, char, char> ApplyGoLRules;
+        private Dictionary<Position, char> Grid { get; set; } = new();
+        private List<Position> Offsets { get; }
         private CellularAutomatonOptions Options { get; }
+        private const char Active = '#';
+        private const char InActive = '.';
 
         public CellularAutomaton(CellularAutomatonOptions options)
         {
             Options = options;
             Offsets = Combinator.Generate(new List<int> { -1, 0, 1 },
-                new CombinatorOptions { Length = Options.Dimensions });
+                new CombinatorOptions { Length = Options.Dimensions })
+                 .Where(r => !r.All(v => v == 0)).Select(r => new Position(r.ToArray())).ToList(); 
 
         }
 
@@ -23,24 +27,35 @@ namespace Common
         {
             for(var i = 0 ; i < steps ; i++)
             {
+                var newState = new Dictionary<Position, char>();
                 Grid.ForEach(cell =>
                 {
                     var neighors = GetNeighbors(cell.Key);
+                    var active = neighors.Count(n => n == Active);//assuming AoC input treats # as active state
+                    var state = ApplyGoLRules(active, cell.Value);
+
+                    newState.Add(cell.Key, state);
                 });
+                Grid = newState;
             }
         }
 
-        private List<int> GetNeighbors(Position pos)
+        public int CountCellsWithState(char state ) => Grid.Values.Count(s => s == state);
+        private List<char> GetNeighbors(Position pos)
         {
-            var n = Offsets.Select(offset => new Position(pos.Values.Select((i, v) => v + offset[i]).ToArray()));
-            //TODO check for wrap around
-
-
-            return new List<int>();
+            return Offsets
+                .Select(offset => pos + offset)
+                .Select(n =>
+                {
+                    //TODO check for wrap around
+                    if(Grid.ContainsKey(n)) return Grid[n];
+                    else return InActive; //no wrap and assuming AoC input always treats '.' as inactive state for now
+                }).ToList();
         }
 
         public void GenerateGrid(List<string> input)
         {
+            Grid = new();
             switch(Options.Dimensions)
             {
                 case 2:
@@ -56,8 +71,6 @@ namespace Common
                 default: throw new ArgumentOutOfRangeException();
             }
         }
-        public string CountCells(char v) => Grid.Values.Count(c => c == v).ToString();
-
     }
 
     public class Position : IEquatable<Position>
@@ -111,5 +124,7 @@ namespace Common
 
         public static bool operator ==(Position left, Position right) => EqualityComparer<Position>.Default.Equals(left, right);
         public static bool operator !=(Position left, Position right) => !(left == right);
+
+        public static Position operator +(Position left, Position right) => new Position(left.Values.Select((v, i) => v + right.Values[i]).ToArray());
     }
 }
