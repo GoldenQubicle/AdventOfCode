@@ -13,7 +13,7 @@ namespace AoC2015
     {
         private string molecule;
         public Dictionary<string, List<string>> mappings = new();
-        public Day19(string file) : base(file, "\n") 
+        public Day19(string file) : base(file, "\n")
         {
             foreach(var line in Input)
             {
@@ -48,12 +48,36 @@ namespace AoC2015
                     .Where(m => m.Success)
                     .ForEach(m => result.Add(molecule.ReplaceAt(m.Index, map, mapping.Key.Length)));
                 }
-                
+
             }
 
             return result.Count.ToString();
         }
 
-        public override string SolvePart2( ) => null;
+        public override string SolvePart2( )
+        {
+            var steps = 0;
+            while(!molecule.Equals("e"))
+            {
+                var replacement = false;
+                Console.WriteLine(molecule);
+                foreach(var mapping in mappings)
+                {
+                    foreach(var map in mapping.Value)
+                    {
+                        if(molecule.Contains(map))
+                        {
+                            molecule = molecule.ReplaceAt(molecule.LastIndexOf(map), mapping.Key, map.Length);
+                            steps++;
+                            replacement = true;
+                            break;
+                        }
+                    }
+                    if(replacement) break;
+                }
+            }
+
+            return steps.ToString();
+        }        
     }
 }
