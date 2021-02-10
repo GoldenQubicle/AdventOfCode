@@ -26,8 +26,8 @@ namespace AoC2015Tests
         public void Part1(string input, string expected )
         {
             day19 = new Day19(new List<string> { input } );
-            day19.mappings.Add("H", new List<string> { "HO", "OH" });
-            day19.mappings.Add("O", new List<string> { "HH" });
+            day19.Mappings.Add("H", new List<string> { "HO", "OH" });
+            day19.Mappings.Add("O", new List<string> { "HH" });
             var actual = day19.SolvePart1( );
             Assert.AreEqual(expected, actual);
         }
@@ -37,9 +37,9 @@ namespace AoC2015Tests
         public void Part2(string input, string expected )
         {
             day19 = new Day19(new List<string> { input });
-            day19.mappings.Add("H", new List<string> { "HO", "OH" });
-            day19.mappings.Add("O", new List<string> { "HH" });
-            day19.mappings.Add("e", new List<string> { "H", "O" });
+            day19.Mappings.Add("H", new List<string> { "HO", "OH" });
+            day19.Mappings.Add("O", new List<string> { "HH" });
+            day19.Mappings.Add("e", new List<string> { "H", "O" });
 
             var actual = day19.SolvePart2( );
             Assert.AreEqual(expected, actual);

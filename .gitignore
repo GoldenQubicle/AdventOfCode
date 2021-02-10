@@ -2,6 +2,6 @@
 *bin
 *obj
 *input
+.idea
 
 .editorconfig
-.DotSettings.user

@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
+// ReSharper disable StringIndexOfIsCultureSpecific.1
 
 namespace AoC2015
 {
     public class Day19 : Solution
     {
-        private string molecule;
-        public Dictionary<string, List<string>> mappings = new();
+        private readonly string molecule;
+        public readonly Dictionary<string, List<string>> Mappings = new();
         public Day19(string file) : base(file, "\n")
         {
             foreach(var line in Input)
@@ -21,10 +20,10 @@ namespace AoC2015
                     .Where(m => m.Success)
                     .ForEach(m =>
                     {
-                        if(!mappings.ContainsKey(m.Groups[1].Value))
-                            mappings.Add(m.Groups[1].Value, new List<string> { m.Groups[3].Value });
+                        if(!Mappings.ContainsKey(m.Groups[1].Value))
+                            Mappings.Add(m.Groups[1].Value, new List<string> { m.Groups[3].Value });
                         else
-                            mappings[m.Groups[1].Value].Add(m.Groups[3].Value);
+                            Mappings[m.Groups[1].Value].Add(m.Groups[3].Value);
                     });
             }
 
@@ -40,7 +39,7 @@ namespace AoC2015
         {
             var result = new HashSet<string>();
 
-            foreach(var mapping in mappings)
+            foreach(var mapping in Mappings)
             {
                 foreach(var map in mapping.Value)
                 {
@@ -57,27 +56,48 @@ namespace AoC2015
         public override string SolvePart2( )
         {
             var steps = 0;
-            while(!molecule.Equals("e"))
+            var queue = new Queue<(string m, int s)>();
+            var current = (m: molecule, s: 1);
+            queue.Enqueue(current);
+            var maps = Mappings.SelectMany(kvp => kvp.Value.Select(v => (from: kvp.Key, to: v))).ToList();
+            
+            while(!queue.Peek().m.Equals("e"))
             {
+                current = queue.Dequeue();
+
+                var longest = maps.Where(m => current.m.Contains(m.to)).ToList();
+                var max = longest.Max(m => m.to.Length);
+                var picks = longest.Where(m => m.to.Length == max).First();
+                
                 var replacement = false;
-                Console.WriteLine(molecule);
-                foreach(var mapping in mappings)
-                {
-                    foreach(var map in mapping.Value)
-                    {
-                        if(molecule.Contains(map))
-                        {
-                            molecule = molecule.ReplaceAt(molecule.LastIndexOf(map), mapping.Key, map.Length);
-                            steps++;
-                            replacement = true;
-                            break;
-                        }
-                    }
-                    if(replacement) break;
-                }
+                Console.WriteLine(current.m);
+
+                //foreach (var (from, to) in picks)
+                //{
+                    var regex = new Regex(picks.to);
+                    var next = regex.Replace(current.m, picks.from, 1);
+                    queue.Enqueue((next, current.s + 1));
+                //}
+                
+
+                //foreach(var mapping in Mappings)
+                //{
+                //    foreach(var map in mapping.Value)
+                //    {
+                //        if(current.m.Contains(map))
+                //        {
+                //            var next = current.m.ReplaceAt(current.m.IndexOf(map), mapping.Key, map.Length);
+                //            queue.Enqueue((next, current.s + 1));
+                //            steps++;
+                //            replacement = true;
+                //            break;
+                //        }
+                //    }
+                //    if(replacement) break;
+                //}
             }
 
-            return steps.ToString();
+            return current.s.ToString();
         }        
     }
 }
