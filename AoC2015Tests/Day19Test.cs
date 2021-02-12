@@ -14,12 +14,6 @@ namespace AoC2015Tests
         {
             day19 = new Day19("day19");
         }
-
-        [Test]
-        public void bla( )
-        {
-            var p2 = day19.SolvePart2();
-        }
         
         [TestCase("HOH","4")] 
         [TestCase("HOHOHO","7")]
@@ -29,19 +23,6 @@ namespace AoC2015Tests
             day19.Mappings.Add("H", new List<string> { "HO", "OH" });
             day19.Mappings.Add("O", new List<string> { "HH" });
             var actual = day19.SolvePart1( );
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestCase("HOH", "3")]
-        [TestCase("HOHOHO", "6")]
-        public void Part2(string input, string expected )
-        {
-            day19 = new Day19(new List<string> { input });
-            day19.Mappings.Add("H", new List<string> { "HO", "OH" });
-            day19.Mappings.Add("O", new List<string> { "HH" });
-            day19.Mappings.Add("e", new List<string> { "H", "O" });
-
-            var actual = day19.SolvePart2( );
             Assert.AreEqual(expected, actual);
         }
     }

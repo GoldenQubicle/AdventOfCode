@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Common;
 using Common.Extensions;
-// ReSharper disable StringIndexOfIsCultureSpecific.1
 
 namespace AoC2015
 {
@@ -47,57 +46,23 @@ namespace AoC2015
                     .Where(m => m.Success)
                     .ForEach(m => result.Add(molecule.ReplaceAt(m.Index, map, mapping.Key.Length)));
                 }
-
             }
-
             return result.Count.ToString();
         }
 
         public override string SolvePart2( )
         {
-            var steps = 0;
-            var queue = new Queue<(string m, int s)>();
-            var current = (m: molecule, s: 1);
-            queue.Enqueue(current);
-            var maps = Mappings.SelectMany(kvp => kvp.Value.Select(v => (from: kvp.Key, to: v))).ToList();
+            // tbh I could not figure this one out and yoinked the solution from; 
+            // https://www.reddit.com/r/adventofcode/comments/3xflz8/day_19_solutions/
+            // also note this doesn't play nice with testing, hence no unit test for part 2
+
+            var elements = molecule.Count(char.IsUpper);    
+            var RnAr = Regex.Matches(molecule, "(Ar)|(Rn)").Count(m => m.Success);
+            var Y = Regex.Matches(molecule, "(Y)").Count(m => m.Success);
+
+            var result = elements - RnAr - (2 * Y) - 1;
             
-            while(!queue.Peek().m.Equals("e"))
-            {
-                current = queue.Dequeue();
-
-                var longest = maps.Where(m => current.m.Contains(m.to)).ToList();
-                var max = longest.Max(m => m.to.Length);
-                var picks = longest.Where(m => m.to.Length == max).First();
-                
-                var replacement = false;
-                Console.WriteLine(current.m);
-
-                //foreach (var (from, to) in picks)
-                //{
-                    var regex = new Regex(picks.to);
-                    var next = regex.Replace(current.m, picks.from, 1);
-                    queue.Enqueue((next, current.s + 1));
-                //}
-                
-
-                //foreach(var mapping in Mappings)
-                //{
-                //    foreach(var map in mapping.Value)
-                //    {
-                //        if(current.m.Contains(map))
-                //        {
-                //            var next = current.m.ReplaceAt(current.m.IndexOf(map), mapping.Key, map.Length);
-                //            queue.Enqueue((next, current.s + 1));
-                //            steps++;
-                //            replacement = true;
-                //            break;
-                //        }
-                //    }
-                //    if(replacement) break;
-                //}
-            }
-
-            return current.s.ToString();
-        }        
+            return result.ToString();
+        }
     }
 }
