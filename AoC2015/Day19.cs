@@ -52,8 +52,11 @@ namespace AoC2015
 
         public override string SolvePart2( )
         {
-            // tbh I could not figure this one out and yoinked the solution from; 
+            // after a week of frustration with BFS & combinatorial explosions and what not
+            // I finally had enough, admitted defeat and yoinked the solution from here; 
             // https://www.reddit.com/r/adventofcode/comments/3xflz8/day_19_solutions/
+            // not my proudest moment and still don't quite understand the solution tbh, which 
+            // bolster the argument for nicking it since I'd never-ever figured this one out on my own
             // also note this doesn't play nice with testing, hence no unit test for part 2
 
             var elements = molecule.Count(char.IsUpper);    
