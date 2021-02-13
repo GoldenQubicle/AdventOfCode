@@ -24,7 +24,6 @@ namespace AoC2015
             Target = int.Parse(input.First()) /10;
         }
         
-
         public override string SolvePart1( )
         {
             //awy yeah brute force trial and error optimization ftw!
@@ -51,7 +50,7 @@ namespace AoC2015
 
         public override string SolvePart2()
         {
-            //compute presents delivered for, say, a million houses
+            //compute presents delivered
             var houses = new Dictionary<int, int>();
             for (var h = 1; h < 1_000_000; h++)
             {
