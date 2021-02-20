@@ -34,7 +34,7 @@ namespace AoC2015Tests
         [Test]
         public void PlayGameTest()
         {
-            var player = new Player
+            var player = new Day21.Player
             {
                 Name = "Me",
                 HitPoints = 8,

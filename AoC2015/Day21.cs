@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -182,28 +178,30 @@ namespace AoC2015
             var playerGoesDownIn = Boss.Attack(player);
             return bossGoesDownIn > playerGoesDownIn ? Boss : player;
         }
-    }
 
-    public record Item
-    {
-        public string Name { get; init; }
-        public int Cost { get; init; }
-        public int Damage { get; init; }
-        public int Armor { get; init; }
-    }
-
-    public class Player
-    {
-        public string Name { get; set; }
-        public int HitPoints { get; set; }
-        public int Damage { get; set; }
-        public int Armor { get; set; }
-        private double AttackStrength { get; set; }
-
-        public int Attack(Player other)
+        public record Item
         {
-            AttackStrength = Damage > other.Armor ? Damage - other.Armor : 1;
-            return (int) Math.Ceiling(other.HitPoints / AttackStrength);
+            public string Name { get; init; }
+            public int Cost { get; init; }
+            public int Damage { get; init; }
+            public int Armor { get; init; }
+        }
+
+        public class Player
+        {
+            public string Name { get; set; }
+            public int HitPoints { get; set; }
+            public int Damage { get; set; }
+            public int Armor { get; set; }
+            private double AttackStrength { get; set; }
+
+            public int Attack(Player other)
+            {
+                AttackStrength = Damage > other.Armor ? Damage - other.Armor : 1;
+                return (int) Math.Ceiling(other.HitPoints / AttackStrength);
+            }
         }
     }
+
+    
 }
