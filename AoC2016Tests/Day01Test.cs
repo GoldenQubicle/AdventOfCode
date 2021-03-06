@@ -16,14 +16,6 @@ namespace AoC2016Tests
             day01 = new Day01(new List<string>());
         }
 
-        [Test]
-        public void TestInput( )
-        {
-            day01 = new Day01(nameof(Day01));
-            var actual = day01.SolvePart1();
-
-        }
-
         [TestCase("R2, L3", "5")]
         [TestCase("R2, R2, R2", "2")]
         [TestCase("R5, L5, R5, R3", "12")]
@@ -49,14 +41,6 @@ namespace AoC2016Tests
             day01 = new Day01(new List<string> { input });
             var actual = day01.SolvePart2();
             Assert.AreEqual(expected, actual);
-        }
-
-        public void LineIntersectsTest()
-        {
-            var l1 = (start: (0, 0), end: (8, 0));
-            var l2 = (start: (4, -4), end: (4, 4));
-            //var actual = day01.LineIntersects(l1, l2);
-            //Assert.IsTrue(actual);
         }
     }
 }

@@ -6,6 +6,7 @@
     &lt;TestId&gt;NUnit3x::D6CE69E4-8977-48AB-AF65-6AF5393949A7::net5.0::AoC2016Tests.Day01Test.Part1&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::D6CE69E4-8977-48AB-AF65-6AF5393949A7::net5.0::AoC2016Tests.Day01Test.TestInput&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::D6CE69E4-8977-48AB-AF65-6AF5393949A7::net5.0::AoC2016Tests.Day01Test.Part2&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D6CE69E4-8977-48AB-AF65-6AF5393949A7::net5.0::AoC2016Tests.Day01Test.LineIntersectsTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

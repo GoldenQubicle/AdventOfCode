@@ -51,20 +51,32 @@ namespace AoC2016
         {
             var current = Direction.North;
             var position = (x: 0, y: 0);
-            var visited = new List<(int x, int y)> { position };
+            (int x, int y) intersection = default;
+            var visited = new HashSet<(int, int)>();
 
-            foreach(var s in Input[0].Split(","))
+            foreach(var instruction in Input[0].Split(","))
             {
-                var turn = s.Contains("R") ? Turn.Right : Turn.Left;
+                var turn = instruction.Contains("R") ? Turn.Right : Turn.Left;
                 current = GetDirection(current, turn);
-                var distance = s.GetInteger();
-                var newposition = UpdatePosition(position, current, distance);
-                var twice = false;
-                
+                var distance = instruction.GetInteger();
+
+                for(var s = 0 ; s < distance ; s++)
+                {
+                    var step = UpdatePosition(position, current, s);
+
+                    if(visited.Add(step)) continue;
+
+                    intersection = step;
+                    break;
+                }
+
+                if(intersection != default)
+                    break;
+
+                position = UpdatePosition(position, current, distance);
+
             }
-
-
-            return (Math.Abs(position.x) + Math.Abs(position.y)).ToString();
+            return (Math.Abs(intersection.x) + Math.Abs(intersection.y)).ToString();
         }
 
 
@@ -90,5 +102,7 @@ namespace AoC2016
             (Direction.West, Turn.Right) or (Direction.East, Turn.Left) => Direction.North,
             _ => throw new NotSupportedException()
         };
+
+
     }
 }
