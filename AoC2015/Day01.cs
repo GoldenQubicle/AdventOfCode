@@ -22,7 +22,7 @@ namespace AoC2015
         public override string SolvePart2( )
         {
             var floor = 0;
-            for(int i = 0 ; i < Input[0].Length ; i++ )
+            for(var i = 0 ; i < Input[0].Length ; i++ )
             {
                 floor =  Input[0][i] switch
                 {

@@ -106,18 +106,16 @@ namespace Common
 
         public override bool Equals(object obj)
         {
-            if(obj == null || obj == default) return false;
+            if(obj == null) return false;
 
-            if(obj.GetType() != typeof(Position)) return false;
-
-            return Equals((Position) obj);
+            return obj.GetType() == typeof(Position) && Equals((Position) obj);
         }
 
         public override int GetHashCode( )
         {
             unchecked
             {
-                int hash = 17;
+                var hash = 17;
                 foreach(var item in Values)
                 {
                     hash = 31 * hash + item.GetHashCode();
