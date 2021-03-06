@@ -1,22 +1,13 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
-using IEnumerableExtensions = Common.Extensions.IEnumerableExtensions;
 
 namespace AoC2016
 {
     public class Day02 : Solution
     {
-        public Day02(string file) : base(file, "\n")
-        {
-
-        }
-
+        public Day02(string file) : base(file, "\n") { }
+        
         public override string SolvePart1()
         {
             var code = string.Empty;
