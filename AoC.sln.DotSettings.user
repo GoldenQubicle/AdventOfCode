@@ -1,13 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=37cf5b46_002D53b5_002D4f82_002D8ddf_002Dfa1d15e811e3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="PlayGameTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3a711b82_002D9bab_002D426e_002D9d47_002Df04dd6aea8a1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day23Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::52492C8D-52B2-4D86-8EBF-36909CE58B1C::net5.0::AoC2015Tests.Day22Test.PlayGameTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::52492C8D-52B2-4D86-8EBF-36909CE58B1C::net5.0::AoC2015Tests.Day23Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=666d1f15_002Da329_002D4782_002Db8ef_002D3db3dff11ba4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Part1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::52492C8D-52B2-4D86-8EBF-36909CE58B1C::net5.0::AoC2015Tests.Day22Test.Part1&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::52492C8D-52B2-4D86-8EBF-36909CE58B1C::net5.0::AoC2015Tests.Day22Test.Part2&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	</wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
