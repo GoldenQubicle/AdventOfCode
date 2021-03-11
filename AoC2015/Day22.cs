@@ -25,25 +25,50 @@ namespace AoC2015
 
         public override string SolvePart1( )
         {
-            var results = new List<(string winner, int manaSpend, int bossHitpoints)>();
-            for(var i = 0 ; i < 5000 ; i++)
-            {
-                spells.Values.ForEach(s => { s.IsActive = false; s.ActiveRounds = 0; });
-                ThePlayer = new Player { Name = nameof(ThePlayer), HitPoints = 50, Mana = 500 };
-                TheBoss = new Player { Name = nameof(TheBoss), HitPoints = 51, Damage = 9 };
-                results.Add(PlayGame());
-            }
+            var results = PlayGames(5000);
 
             return results.Where(r => r.winner.Equals("ThePlayer")).OrderBy(r => r.manaSpend).First().manaSpend.ToString();
         }
 
-        public (string winner, int manaSpend, int bossHitpoints) PlayGame(IReadOnlyList<string> scenario = null)
+        public override string SolvePart2( )
+        {
+            var results = PlayGames(5000, true);
+
+            return results.Where(r => r.winner.Equals("ThePlayer")).OrderBy(r => r.manaSpend).First().manaSpend.ToString();
+        }
+
+        private List<(string winner, int manaSpend, int bossHitpoints)> PlayGames(int games, bool isPart2 = false)
+        {
+            var results = new List<(string winner, int manaSpend, int bossHitpoints)>();
+            for (var i = 0; i < games; i++)
+            {
+                spells.Values.ForEach(s =>
+                {
+                    s.IsActive = false;
+                    s.ActiveRounds = 0;
+                });
+                ThePlayer = new Player {Name = nameof(ThePlayer), HitPoints = 50, Mana = 500};
+                TheBoss = new Player {Name = nameof(TheBoss), HitPoints = 51, Damage = 9};
+                results.Add(PlayGame(isPart2));
+            }
+
+            return results;
+        }
+
+        public (string winner, int manaSpend, int bossHitpoints) PlayGame(bool isPart2 = false, IReadOnlyList<string> scenario = null)
         {
             var playerTurn = 0;
             var manaSpend = 0;
 
             while(true)
             {
+
+                if (isPart2)
+                {
+                    ThePlayer.HitPoints -= 1;
+                    if (ThePlayer.HitPoints <= 0) return (TheBoss.Name, manaSpend, TheBoss.HitPoints);
+                }
+
                 //player turn
                 var activeSpells = spells.Values.Where(spell => spell.IsActive).ToList();
                 activeSpells.ForEach(spell => spell.Cast(ThePlayer, TheBoss));
@@ -58,19 +83,17 @@ namespace AoC2015
                 activeSpells = spells.Values.Where(spell => spell.IsActive).ToList();
                 activeSpells.ForEach(spell => spell.Cast(ThePlayer, TheBoss));
 
-                if(TheBoss.HitPoints <= 0)
-                    return (ThePlayer.Name, manaSpend, TheBoss.HitPoints);
+                if(TheBoss.HitPoints <= 0) return (ThePlayer.Name, manaSpend, TheBoss.HitPoints);
 
                 ThePlayer.HitPoints -= TheBoss.Damage - ThePlayer.Armor <= 0 ? 1 : TheBoss.Damage - ThePlayer.Armor;
 
-                if(ThePlayer.HitPoints <= 0 || ThePlayer.Mana < 53)
-                    return (TheBoss.Name, manaSpend, TheBoss.HitPoints);
+                if(ThePlayer.HitPoints <= 0 || ThePlayer.Mana < 53) return (TheBoss.Name, manaSpend, TheBoss.HitPoints);
             }
         }
 
         private Spell PickRandomSpell() => spells.Values.Where(spell => !spell.IsActive).ToList().Random();
 
-        public override string SolvePart2( ) => null;
+  
 
         public abstract class Spell
         {

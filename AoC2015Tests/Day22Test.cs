@@ -54,7 +54,7 @@ namespace AoC2015Tests
         {
             day22.TheBoss = testCase.boss;
             day22.ThePlayer = testCase.player;
-            var actual = day22.PlayGame(testCase.scenario);
+            var actual = day22.PlayGame(scenario: testCase.scenario);
             Assert.AreEqual(testCase.winner, actual.winner);
         }
 
