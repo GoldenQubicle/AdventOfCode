@@ -22,13 +22,5 @@ namespace AoC2015Tests
             var actual = day23.SolvePart1( );
             Assert.AreEqual("2", actual);
         }
-
-        [Test]
-        public void Part2( )
-        {
-            day23 = new Day23(nameof(Day23));
-            var actual = day23.SolvePart2( );
-            Assert.AreEqual("", actual);
-        }
     }
 }
