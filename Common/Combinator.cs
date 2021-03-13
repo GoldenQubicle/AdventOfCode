@@ -15,47 +15,105 @@ namespace Common
             int cLength = options.Length == 0 || options.IsElementUnique ? elements.Count : options.Length;
 
             // get the combinations. This returns a full set by default
-            var combos = GetCombinations(elements, cLength);
+            var combos = options.IsFullSet ? GetCombinationsFullSet(elements, cLength) : GetCombinationsSparseSet(elements, cLength);
 
-            // if not a full set, only return the combinations which are of the specified length
-            if ( !options.IsFullSet )
-                combos = combos.Where(r => r.Count == cLength).ToList( );
+            //// if not a full set, only return the combinations which are of the specified length
+            //if(!options.IsFullSet)
+            //    combos = combos.Where(r => r.Count == cLength).ToList();
 
             // filter out combinations which include duplicate elements
-            if ( options.IsElementUnique )
-                combos = combos.Where(r => r.GroupBy(e => e).All(g => g.Count( ) == 1)).ToList( );
+            if(options.IsElementUnique)
+                combos = combos.Where(r => r.GroupBy(e => e).All(g => g.Count() == 1)).ToList();
 
             // filter out combinations which contain the same elements, e.g. 'ab' is the same as 'ba'
             // note; identifying similar combinations by sum of hashcodes only works for strings. 
             // not ideal given the method is generic, would like to fix this.. maybe hashsets..?
-            if ( !options.IsOrdered )
-                combos = combos.Select(l => (l: l, h: l.Sum(e => ( long ) e.GetHashCode( ))))
+            if(!options.IsOrdered)
+                combos = combos.Select(l => (l: l, h: l.Sum(e => (long) e.GetHashCode())))
                                 .GroupBy(t => t.h)
-                                .Select(g => g.First( ).l).ToList( );
+                                .Select(g => g.First().l).ToList();
 
             return new CombinatorResult<T> { Result = combos };
         }
 
-        private static List<List<T>> GetCombinations<T>(List<T> elements, int cLength)
+        public static void TrySomethingNew(List<int> perm)
         {
-            var result = new List<List<T>>( );
+            var indexes = perm.Select(p => 0).ToList();
+            var n = perm.Count;
+            var sets = new HashSet<List<int>>();
+            sets.Add(perm);
+            var i = 0;
 
-            for ( var i = 0 ; i < cLength ; i++ )
+            while(i < n)
             {
-                for ( var j = 0 ; j < elements.Count ; j++ )
+                if(indexes[i] < i)
                 {
-                    if ( i == 0 )
+                    Swap(perm, i % 2 == 0 ? 0 : indexes[i], i);
+                    sets.Add(perm.Select(p => p).ToList());
+                    indexes[i]++;
+                    i = 0;
+                }
+                else
+                {
+                    indexes[i] = 0;
+                    i++;
+                }
+            }
+        }
+        private static void Swap(List<int> input, int a, int b)
+        {
+            var tmp = input[a];
+            input[a] = input[b];
+            input[b] = tmp;
+        }
+
+
+        private static List<List<T>> GetCombinationsSparseSet<T>(List<T> elements, int cLength)
+        {
+            var result = new List<List<T>>();
+
+            for(var i = 0 ; i < cLength ; i++)
+            {
+                var temp = new List<List<T>>();
+
+                for(var j = 0 ; j < elements.Count ; j++)
+                {
+                    if(i == 0)
+                    {
+                        temp.Add(new List<T> { elements[j] });
+                    }
+                    else
+                    {
+                        for(int k = 0; k < result.Count; k++)
+                            temp.Add(result[k].Expand(elements[j]));
+                    }
+                }
+                result = temp;
+            }
+
+            return result;
+        }
+
+        private static List<List<T>> GetCombinationsFullSet<T>(List<T> elements, int cLength)
+        {
+            var result = new List<List<T>>();
+
+            for(var i = 0 ; i < cLength ; i++)
+            {
+                for(var j = 0 ; j < elements.Count ; j++)
+                {
+                    if(i == 0)
                     {
                         result.Add(new List<T> { elements[j] });
                     }
                     else
                     {
-                        var prev = result.Where(r => r.Count == i).ToList( );
+                        var prev = result.Where(r => r.Count == i).ToList();
                         prev.ForEach(r => result.Add(r.Expand(elements[j])));
                     }
                 }
             }
-            return result.Where(r => r.Count != 1).ToList( );
+            return result.Where(r => r.Count != 1).ToList();
         }
     }
 
@@ -72,13 +130,13 @@ namespace Common
         /// </summary>
         public bool IsFullSet { get; init; }
         /// <summary>
-        /// Indicates elements can only occur once per combination. Given elements {a, b} this will exlude {aa, bb}. 
+        /// Indicates elements can only occur once per combination. Given elements {a, b} this will exclude {aa, bb}. 
         /// False by default. 
         /// </summary>
         public bool IsElementUnique { get; init; }
         /// <summary>
         /// Indicates whether the order of elements within a combination constitute a unique combination. 
-        /// Given elements {a, b} the combinations ab & ba are considered unique when true. which is the default.  
+        /// Given elements {a, b} the combinations ab & ba are considered unique when true, which is the default.  
         /// </summary>
         public bool IsOrdered { get; init; } = true;
     }
@@ -88,11 +146,11 @@ namespace Common
         public List<List<T>> Result { get; init; }
         public IEnumerator<List<T>> GetEnumerator( )
         {
-            foreach ( var r in Result )
+            foreach(var r in Result)
             {
                 yield return r;
             }
         }
-        IEnumerator IEnumerable.GetEnumerator( ) => GetEnumerator( );
+        IEnumerator IEnumerable.GetEnumerator( ) => GetEnumerator();
     }
 }

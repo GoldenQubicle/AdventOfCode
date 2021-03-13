@@ -19,7 +19,6 @@ namespace CommonTests
             public List<T> Elements { get; init; }
             public List<List<T>> Expected { get; init; }
             public CombinatorOptions Options { get; init; }
-            public bool isFullSet { get; init; }
         };
 
         private static List<CombinatorTestData<string>> CombinatorTestCases = new List<CombinatorTestData<string>>
