@@ -18,7 +18,7 @@ namespace AoC2015Tests
         [Test]
         public void Part1( )
         {
-            //day24 = new Day24(nameof(Day24));
+            day24 = new Day24(nameof(Day24));
             var actual = day24.SolvePart1( );
             Assert.AreEqual("99", actual);
         }
@@ -26,8 +26,9 @@ namespace AoC2015Tests
         [Test]
         public void Part2( )
         {
+            day24 = new Day24(nameof(Day24));
             var actual = day24.SolvePart2( );
-            Assert.AreEqual("", actual);
+            Assert.AreEqual("44", actual);
         }
     }
 }

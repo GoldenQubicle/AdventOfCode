@@ -5,6 +5,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Combinatorics.Collections;
 using Common;
 using Common.Extensions;
 using NUnit.Framework;
@@ -19,51 +20,22 @@ namespace AoC2015
 
         public Day24(List<string> input) : base(input) { }
 
-        public override string SolvePart1( )
+        public override string SolvePart1( ) => GetQE(3);
+        public override string SolvePart2( ) => GetQE(4);
+
+        private string GetQE(int groups)
         {
-            var targetWeight = packages.Sum() / 3;
-            var sets = new HashSet<List<long>>();
-
-            for(var i = packages.Count - 1 ; i >= 0 ; i--)
+            //note this will take a while to compute..
+            var targetWeight = packages.Sum() / groups;
+            var sets = new HashSet<IList<long>>();
+            for (var i = 2; i < packages.Count; i++)
             {
-                var sum = packages[i];
-                var cSet = new List<long> { packages[i] };
-                var n = i - 1;
-                var nP = n;
-
-                while(sum < targetWeight)
+                var combos = new Combinations<long>(packages, i);
+                foreach (var combo in combos)
                 {
-                    if(n < 0)
-                    {
-                        cSet = new List<long> { packages[i] };
-                        sum = packages[i];
-                        nP--;
-                        n = nP;
-                    }
-
-                    if(nP < 0) break;
-
-                    sum += packages[n];
-                    cSet.Add(packages[n]);
-
-                    if(sum == targetWeight)
-                    {
-                        sets.Add(cSet);
-                        cSet = new List<long> { packages[i] };
-                        sum = packages[i];
-                        nP--;
-                        n = nP;
-                    }
-
-                    if(sum > targetWeight)
-                    {
-                        sum -= packages[n];
-                        cSet.Remove(packages[n]);
-                    }
-                    n--;
+                    if (combo.Sum() == targetWeight)
+                        sets.Add(combo);
                 }
-
-                var t = "";
             }
 
             var result = sets.GroupBy(p => p.Count).OrderBy(g => g.Key).First();
@@ -71,8 +43,6 @@ namespace AoC2015
                 ? result.GroupBy(g => g.Aggregate(1L, (sum, v) => sum * v)).OrderBy(g => g.Key).First().Key
                 : result.First().Aggregate(1L, (sum, v) => sum * v);
             return quantumEntanglement.ToString();
-
-
         }
 
         private long OldCombinatorAlmostSolution( )
@@ -101,8 +71,5 @@ namespace AoC2015
                 : result.First().Aggregate(1L, (sum, v) => sum * v);
             return quantumEntanglement;
         }
-
-
-        public override string SolvePart2( ) => null;
     }
 }
