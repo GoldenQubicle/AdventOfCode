@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization.Formatters;
 using System.Text.RegularExpressions;
 using Common;
 
@@ -23,25 +22,22 @@ namespace AoC2016
 
             foreach(var (c, i) in ip.Select((c, i) => (c, i)))
             {
-                if(c == '[')
+                switch(c)
                 {
-                    inBrackets = true;
-                    continue;
-                }
-
-                if(c == ']')
-                {
-                    inBrackets = false;
-                    continue;
+                    case '[':
+                        inBrackets = true;
+                        continue;
+                    case ']':
+                        inBrackets = false;
+                        continue;
                 }
 
                 if(i > ip.Length - 4) continue;
 
-                if(c == ip[i + 3] && ip[i + 1] == ip[i + 2] && c != ip[i + 1])
-                {
-                    if(inBrackets) return false;
-                    isValid = true;
-                }
+                if(c != ip[i + 3] || ip[i + 1] != ip[i + 2] || c == ip[i + 1]) continue;
+
+                if(inBrackets) return false;
+                isValid = true;
             }
 
             return isValid;
@@ -55,42 +51,39 @@ namespace AoC2016
 
             foreach(var (c, i) in ip.Select((c, i) => (c, i)))
             {
-                if(c == '[')
+                switch(c)
                 {
-                    inBrackets = true;
-                    continue;
-                }
-
-                if(c == ']')
-                {
-                    inBrackets = false;
-                    continue;
+                    case '[':
+                        inBrackets = true;
+                        continue;
+                    case ']':
+                        inBrackets = false;
+                        continue;
                 }
 
                 if(inBrackets) continue;
 
                 if(i > ip.Length - 3) continue;
 
-                if(c == ip[i + 2] && c != ip[i+1] && (ip[i+1] != '[' && ip[i + 1] != ']'))
-                {
-                    hasAba = true;
-                    var lookFor = new string(new[ ] { ip[i + 1], c, ip[i + 1] });
+                if(c != ip[i + 2] || c == ip[i + 1] || ip[i + 1] == '[' || ip[i + 1] == ']') continue;
 
-                    foreach (Match match in Regex.Matches(ip, lookFor))
+                hasAba = true;
+                var lookFor = new string(new[ ] { ip[i + 1], c, ip[i + 1] });
+
+                foreach(Match match in Regex.Matches(ip, lookFor))
+                {
+                    if(match.Success)
                     {
-                        if (match.Success)
+                        var idx = match.Index;
+                        while(idx > 0)
                         {
-                            var idx = match.Index;
-                            while (idx > 0)
-                            {
-                                idx--;
-                                if (ip[idx] == ']') break;
-                                if (ip[idx] == '[') hasBab = true;
-                                if (hasBab) break;
-                            }
+                            idx--;
+                            if(ip[idx] == ']') break;
+                            if(ip[idx] == '[') hasBab = true;
+                            if(hasBab) break;
                         }
-                        if (hasBab) break;
                     }
+                    if(hasBab) break;
                 }
             }
             return hasAba && hasBab;
