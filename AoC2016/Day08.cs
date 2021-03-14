@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,52 +10,33 @@ namespace AoC2016
 {
     public class Day08 : Solution
     {
-        private IEnumerable<(string op, int, int)> instructions;
         public List<List<int>> Screen { get; set; }
-        private const string Rect = nameof(Rect);
-        private const string Col = nameof(Col);
-        private const string Row = nameof(Row);
-
 
         public Day08(string file) : base(file, "\n")
         {
+            InitializeScreen(50, 6);
+
             var regex = new Regex(@"(?<col>column.x=(?<x>\d+) by (?<d1>\d+))|(?<row>row.y=(?<y>\d+) by (?<d2>\d+))|(?<rect>rect (?<w>\d+)x(?<h>\d+))");
-            instructions = Input.Select(line =>
+
+            Input.ForEach(line =>
             {
                 foreach(Match match in regex.Matches(line))
                 {
-                    if(match.Groups["rect"].Success) return (op: Rect, int.Parse(match.Groups["w"].Value), int.Parse(match.Groups["h"].Value));
-                    if(match.Groups["col"].Success) return (op: Col, int.Parse(match.Groups["x"].Value), int.Parse(match.Groups["d1"].Value));
-                    if(match.Groups["row"].Success) return (op: Row, int.Parse(match.Groups["y"].Value), int.Parse(match.Groups["d2"].Value));
+                    if(match.Groups["rect"].Success)
+                        AddRect(int.Parse(match.Groups["w"].Value), int.Parse(match.Groups["h"].Value));
+
+                    if(match.Groups["col"].Success) 
+                        ShiftColumn(int.Parse(match.Groups["x"].Value), int.Parse(match.Groups["d1"].Value));
+
+                    if(match.Groups["row"].Success) 
+                        ShiftRow(int.Parse(match.Groups["y"].Value), int.Parse(match.Groups["d2"].Value));
                 }
-                return (op: "", 0, 0);
             });
         }
 
         public Day08(List<string> input) : base(input) { }
 
-        public override string SolvePart1( )
-        {
-            InitializeScreen(50, 6);
-
-            instructions.ForEach(i =>
-            {
-                switch(i.op)
-                {
-                    case Rect:
-                        AddRect(i.Item2, i.Item3);
-                        break;
-                    case Col:
-                        ShiftColumn(i.Item2, i.Item3);
-                        break;
-                    case Row:
-                        ShiftRow(i.Item2, i.Item3);
-                        break;
-                }
-            });
-
-            return Screen.Sum(row => row.Count(p => p == 1)).ToString();
-        }
+        public override string SolvePart1() => Screen.Sum(row => row.Count(p => p == 1)).ToString();
 
         public override string SolvePart2( )
         {

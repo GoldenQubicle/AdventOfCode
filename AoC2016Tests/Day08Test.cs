@@ -1,7 +1,6 @@
 using AoC2016;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AoC2016Tests
 {
@@ -20,17 +19,8 @@ namespace AoC2016Tests
         {
             day08 = new Day08(nameof(Day08));
             var actual = day08.SolvePart1();
-            Assert.AreEqual("", actual);
+            Assert.AreEqual("121", actual);
         }
-
-        [Test]
-        public void Part2( )
-        {
-            day08 = new Day08(nameof(Day08));
-            var actual = day08.SolvePart2();
-            Assert.AreEqual("", actual);
-        }
-
 
         [Test]
         public void UseCaseTest( )
