@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common;
 using Common.Extensions;
-using NUnit.Framework;
 
 namespace AoC2015
 {
@@ -17,41 +15,33 @@ namespace AoC2015
             { nameof(Poison), new Poison() },
             { nameof(Recharge), new Recharge() },
         };
+
         public Player TheBoss { get; set; }
         public Player ThePlayer { get; set; }
-        public Day22(string file) : base(file) { }
+
+        private const int NumberOfGames = 15000;
 
         public Day22(List<string> input) : base(input) { }
 
-        public override string SolvePart1( )
-        {
-            var results = PlayGames(5000);
+        public override string SolvePart1( ) => PlayGames(NumberOfGames)
+            .Where(r => r.winner.Equals("ThePlayer"))
+            .OrderBy(r => r.manaSpend).First().manaSpend.ToString();
 
-            return results.Where(r => r.winner.Equals("ThePlayer")).OrderBy(r => r.manaSpend).First().manaSpend.ToString();
-        }
-
-        public override string SolvePart2( )
-        {
-            var results = PlayGames(5000, true);
-
-            return results.Where(r => r.winner.Equals("ThePlayer")).OrderBy(r => r.manaSpend).First().manaSpend.ToString();
-        }
+        public override string SolvePart2( ) => PlayGames(NumberOfGames, true)
+            .Where(r => r.winner.Equals("ThePlayer"))
+            .OrderBy(r => r.manaSpend).First().manaSpend.ToString();
 
         private List<(string winner, int manaSpend, int bossHitpoints)> PlayGames(int games, bool isPart2 = false)
         {
             var results = new List<(string winner, int manaSpend, int bossHitpoints)>();
-            for (var i = 0; i < games; i++)
+            for(var i = 0 ; i < games ; i++)
             {
-                spells.Values.ForEach(s =>
-                {
-                    s.IsActive = false;
-                    s.ActiveRounds = 0;
-                });
-                ThePlayer = new Player {Name = nameof(ThePlayer), HitPoints = 50, Mana = 500};
-                TheBoss = new Player {Name = nameof(TheBoss), HitPoints = 51, Damage = 9};
+                spells.Values.ForEach(s => s.Reset());
+
+                ThePlayer = new Player { Name = nameof(ThePlayer), HitPoints = 50, Mana = 500 };
+                TheBoss = new Player { Name = nameof(TheBoss), HitPoints = 51, Damage = 9 };
                 results.Add(PlayGame(isPart2));
             }
-
             return results;
         }
 
@@ -62,11 +52,10 @@ namespace AoC2015
 
             while(true)
             {
-
-                if (isPart2)
+                if(isPart2)
                 {
                     ThePlayer.HitPoints -= 1;
-                    if (ThePlayer.HitPoints <= 0) return (TheBoss.Name, manaSpend, TheBoss.HitPoints);
+                    if(ThePlayer.HitPoints <= 0) return (TheBoss.Name, manaSpend, TheBoss.HitPoints);
                 }
 
                 //player turn
@@ -91,19 +80,24 @@ namespace AoC2015
             }
         }
 
-        private Spell PickRandomSpell() => spells.Values.Where(spell => !spell.IsActive).ToList().Random();
-
-  
+        private Spell PickRandomSpell( ) => spells.Values.Where(spell => !spell.IsActive).ToList().Random();
 
         public abstract class Spell
         {
             public bool IsActive { get; set; }
+            protected int ActiveRounds { get; set; }
             public abstract int Cost { get; }
             public abstract int Duration { get; }
-            public int ActiveRounds;
+
             public abstract void Cast(Player caster, Player target);
 
-            public void Tick( )
+            public void Reset( )
+            {
+                IsActive = false;
+                ActiveRounds = 0;
+            }
+
+            protected void Tick( )
             {
                 ActiveRounds += 1;
 
@@ -112,8 +106,6 @@ namespace AoC2015
                 IsActive = false;
                 ActiveRounds = 0;
             }
-
-            public abstract Spell Copy( );
         }
 
         public class MagicMissile : Spell
@@ -125,9 +117,6 @@ namespace AoC2015
                 Tick();
                 target.HitPoints -= 4;
             }
-
-            public override Spell Copy( ) => new MagicMissile { IsActive = IsActive, ActiveRounds = ActiveRounds };
-
         }
 
         public class Drain : Spell
@@ -140,8 +129,6 @@ namespace AoC2015
                 caster.HitPoints += 2;
                 target.HitPoints -= 2;
             }
-            public override Spell Copy( ) => new Drain { IsActive = IsActive, ActiveRounds = ActiveRounds };
-
         }
 
         public class Shield : Spell
@@ -154,8 +141,6 @@ namespace AoC2015
                 if(ActiveRounds == 1) caster.Armor += 7;
                 if(ActiveRounds == 0) caster.Armor -= 7; // tick resets active rounds to 0 when Duration is reached
             }
-            public override Spell Copy( ) => new Shield { IsActive = IsActive, ActiveRounds = ActiveRounds };
-
         }
 
         public class Poison : Spell
@@ -167,9 +152,6 @@ namespace AoC2015
                 Tick();
                 target.HitPoints -= 3;
             }
-
-            public override Spell Copy( ) => new Poison { IsActive = IsActive, ActiveRounds = ActiveRounds };
-
         }
 
         public class Recharge : Spell
@@ -181,9 +163,6 @@ namespace AoC2015
                 Tick();
                 caster.Mana += 101;
             }
-
-            public override Spell Copy( ) => new Recharge { IsActive = IsActive, ActiveRounds = ActiveRounds };
-
         }
 
         public class Player

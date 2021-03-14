@@ -1,14 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.WebSockets;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Combinatorics.Collections;
 using Common;
 using Common.Extensions;
-using NUnit.Framework;
 
 namespace AoC2015
 {
@@ -16,10 +10,7 @@ namespace AoC2015
     {
         private readonly List<long> packages;
         public Day24(string file) : base(file, "\n") => packages = Input.Select(long.Parse).ToList();
-
-
-        public Day24(List<string> input) : base(input) { }
-
+        
         public override string SolvePart1( ) => GetQE(3);
         public override string SolvePart2( ) => GetQE(4);
 

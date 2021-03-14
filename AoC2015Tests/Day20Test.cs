@@ -1,7 +1,6 @@
 using AoC2015;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AoC2015Tests
 {
@@ -14,9 +13,7 @@ namespace AoC2015Tests
         {
             //day20 = new Day20("day20test1");
         }
-        
-        [TestCase("100","6")] 
-        [TestCase("140","8")]
+
         [TestCase("29000000", "665280")]
         public void Part1(string input, string expected )
         {
