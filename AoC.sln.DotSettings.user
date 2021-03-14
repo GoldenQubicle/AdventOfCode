@@ -1,19 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=508d5348_002D270a_002D43e9_002Dbf71_002D6265d7e9940f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Part1 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cd56a1e0_002D6ae0_002D4c71_002D9c3f_002D75306fb9d953/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Part1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::52492C8D-52B2-4D86-8EBF-36909CE58B1C::net5.0::AoC2015Tests.Day25Test.Part1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D6CE69E4-8977-48AB-AF65-6AF5393949A7::net5.0::AoC2016Tests.Day07Test.Part1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D6CE69E4-8977-48AB-AF65-6AF5393949A7::net5.0::AoC2016Tests.Day07Test.Part2&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e53d74ef_002De30c_002D45ba_002D96a1_002Dfde846f18d89/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;AoC2015Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\Erik\source\repos\AoC\AoC2015Tests" Presentation="&amp;lt;AoC2015Tests&amp;gt;" /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e6c00935_002De4ad_002D4b43_002Dba86_002D6df61cb355f7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;And&gt;&#xD;
-    &lt;Project Location="C:\Users\Erik\source\repos\AoC\AoC2015Tests" Presentation="&amp;lt;AoC2015Tests&amp;gt;" /&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;NUnit3x::52492C8D-52B2-4D86-8EBF-36909CE58B1C::net5.0::AoC2015Tests.Day22Test&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-  &lt;/And&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	</wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
