@@ -1,59 +1,83 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
+using Common.Extensions;
 
 namespace AoC2016
 {
     public class Day09 : Solution
     {
-        public Day09(string file) : base(file) { }
-
-        public Day09(List<string> input) : base(input) { }
-
-        public override string SolvePart1( )
-        {
-            var markers = Input
+        private Dictionary<int, (int take, int repeat, int length)> markers;
+        public Day09(string file) : base(file) => InitializeMarkers();
+        public Day09(List<string> input) : base(input) => InitializeMarkers();
+        private void InitializeMarkers( ) => markers = Input
                 .Select(line => Regex.Matches(line, @"(?<marker>\((?<take>\d+)x(?<repeat>\d+)\))"))
                 .SelectMany(m => m.Where(g => g.Groups["marker"].Success))
                 .ToDictionary(m => m.Groups["marker"].Index,
-                    m => (take: int.Parse(m.Groups["take"].Value), repeat: int.Parse(m.Groups["repeat"].Value), length: m.Length));
+                    m => (take: int.Parse(m.Groups["take"].Value), repeat: int.Parse(m.Groups["repeat"].Value),
+                        length: m.Length));
 
-            var counts = Input.Select(line =>
+        public override string SolvePart1( )
+        {
+            var line = Input[0];
+            var idx = 0;
+            var count = 0;
+
+            while(idx < line.Length)
             {
-                var idx = 0;
-                var count = 0;
-                while (idx < line.Length)
+                if(line[idx] == '(')
                 {
-                    if (line[idx] == '(')
-                    {
-                        count += (markers[idx].take * markers[idx].repeat);
-                        idx += markers[idx].length + markers[idx].take;
-                    }
-                    else
-                    {
-                        idx++;
-                        count++;
-                    }
+                    count += (markers[idx].take * markers[idx].repeat);
+                    idx += markers[idx].length + markers[idx].take;
                 }
+                else
+                {
+                    idx++;
+                    count++;
+                }
+            }
 
-                return count;
-
-            });
-
-            return counts.Sum().ToString();
+            return count.ToString();
         }
 
-        public override string SolvePart2( ) => null;
 
-        public int Decompress(string input)
+        public override string SolvePart2( )
         {
+            var markerEnds = new Dictionary<int, int>();
 
+            markers.ForEach(kvp =>
+            {
+                var idx = kvp.Key + kvp.Value.length + kvp.Value.take;
+                if(!markerEnds.ContainsKey(idx))
+                    markerEnds.Add(idx, kvp.Value.repeat);
+                else
+                    markerEnds[idx] *= kvp.Value.repeat;
+            });
 
-            return 0;
+            var line = Input[0];
+            var idx = 0;
+            long count = 0;
+            var multiplier = 1;
+
+            while(idx < line.Length)
+            {
+                if(markerEnds.ContainsKey(idx))
+                    multiplier /= markerEnds[idx];
+
+                if(line[idx] == '(')
+                {
+                    multiplier *= markers[idx].repeat;
+                    idx += markers[idx].length;
+                }
+                else
+                {
+                    count += multiplier;
+                    idx++;
+                }
+            }
+
+            return count.ToString();
         }
     }
 }

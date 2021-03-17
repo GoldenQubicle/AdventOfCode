@@ -1,7 +1,6 @@
 using AoC2016;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AoC2016Tests
 {
@@ -12,7 +11,7 @@ namespace AoC2016Tests
         [SetUp]
         public void Setup( )
         {
-            //day09 = new Day09(new List<string>());
+            day09 = new Day09(nameof(Day09));
         }
         
         [TestCase("ADVENT","6")] 
@@ -28,11 +27,16 @@ namespace AoC2016Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        public void Part2( )
+        [TestCase("(3x3)XYZ", "9")]
+        [TestCase("X(8x2)(3x3)ABCY", "20")]
+        [TestCase("(27x12)(20x12)(13x14)(7x10)(1x12)A", "241920")]
+        [TestCase("(25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN", "445")]
+        public void Part2(string input, string expected)
         {
+            day09 = new Day09(new List<string> { input });
+
             var actual = day09.SolvePart2( );
-            Assert.AreEqual("", actual);
+            Assert.AreEqual(expected, actual);
         }
     }
 }
