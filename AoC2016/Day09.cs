@@ -48,11 +48,11 @@ namespace AoC2016
 
             markers.ForEach(kvp =>
             {
-                var idx = kvp.Key + kvp.Value.length + kvp.Value.take;
-                if(!markerEnds.ContainsKey(idx))
-                    markerEnds.Add(idx, kvp.Value.repeat);
+                var end = kvp.Key + kvp.Value.length + kvp.Value.take;
+                if(!markerEnds.ContainsKey(end))
+                    markerEnds.Add(end, kvp.Value.repeat);
                 else
-                    markerEnds[idx] *= kvp.Value.repeat;
+                    markerEnds[end] *= kvp.Value.repeat;
             });
 
             var line = Input[0];
