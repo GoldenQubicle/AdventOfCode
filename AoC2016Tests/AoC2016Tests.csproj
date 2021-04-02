@@ -16,4 +16,10 @@
     <ProjectReference Include="..\AoC2016\AoC2016.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Day10Test.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
 </Project>
