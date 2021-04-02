@@ -1,7 +1,5 @@
 using AoC2016;
 using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AoC2016Tests
 {
@@ -26,7 +24,7 @@ namespace AoC2016Tests
         public void Part2( )
         {
             var actual = day12.SolvePart2( );
-            Assert.AreEqual("", actual);
+            Assert.AreEqual("42", actual);
         }
     }
 }

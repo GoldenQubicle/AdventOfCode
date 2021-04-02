@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -18,8 +14,6 @@ namespace AoC2016
             registers.Add("c", 0);
             registers.Add("d", 0);
         }
-
-        public Day12(List<string> input) : base(input) { }
 
         public override string SolvePart1( ) => ParseInstructions();
 
@@ -61,9 +55,7 @@ namespace AoC2016
                         break;
                 }
             }
-
             return registers["a"].ToString();
         }
-
     }
 }
