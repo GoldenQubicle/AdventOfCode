@@ -1,8 +1,6 @@
 using AoC2016;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace AoC2016Tests
 {

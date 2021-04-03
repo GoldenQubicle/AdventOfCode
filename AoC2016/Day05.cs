@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 using Common;
 using Common.Extensions;
 
@@ -16,24 +14,16 @@ namespace AoC2016
         {
             var password = string.Empty;
             var count = 0;
-            using var md5 = MD5.Create();
+            
             while(password.Length < 8)
             {
-                var bytes = Encoding.ASCII.GetBytes(Input[0] + count);
-                var hashBytes = md5.ComputeHash(bytes);
-                var sb = new StringBuilder();
-                foreach(var h in hashBytes)
-                {
-                    sb.Append(h.ToString("X2"));
-                }
-
-                var hash = sb.ToString();
+                var hash = Md5.HashToHexadecimal(Input[0] + count);
+                
                 if(hash.StartsWith("00000"))
                     password += hash[5];
 
                 count++;
             }
-
             return password;
         }
 
@@ -41,18 +31,11 @@ namespace AoC2016
         {
             var password = "________";
             var count = 0;
-            using var md5 = MD5.Create();
+
             while(password.Contains("_"))
             {
-                var bytes = Encoding.ASCII.GetBytes(Input[0] + count);
-                var hashBytes = md5.ComputeHash(bytes);
-                var sb = new StringBuilder();
-                foreach(var h in hashBytes)
-                {
-                    sb.Append(h.ToString("X2"));
-                }
-
-                var hash = sb.ToString();
+                var hash = Md5.HashToHexadecimal(Input[0] + count);
+                
                 if(hash.StartsWith("00000") && char.IsDigit(hash[5]))
                 {
                     var idx = int.Parse(hash[5].ToString());
@@ -62,7 +45,6 @@ namespace AoC2016
                 }
                 count++;
             }
-
             return password;
         }
     }

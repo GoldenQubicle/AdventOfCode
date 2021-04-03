@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
 using Common;
 
@@ -47,17 +45,12 @@ namespace AoC2016
 
         private string ComputeHash(int idx, bool isPart2)
         {
-            using var md5 = MD5.Create();
-            var bytes = Encoding.UTF8.GetBytes(Salt + idx);
-            var hashBytes = md5.ComputeHash(bytes);
-            var hash = string.Concat(hashBytes.Select(b => b.ToString("X2"))).ToLowerInvariant();
+            var hash = Md5.HashToHexadecimal(Salt + idx).ToLowerInvariant();
             if(isPart2)
             {
                 for(var i = 0 ; i < 2016 ; i++)
                 {
-                    bytes = Encoding.UTF8.GetBytes(hash);
-                    hashBytes = md5.ComputeHash(bytes);
-                    hash = string.Concat(hashBytes.Select(b => b.ToString("X2"))).ToLowerInvariant();
+                    hash = Md5.HashToHexadecimal(hash).ToLowerInvariant();
                 }
             }
             return hash;

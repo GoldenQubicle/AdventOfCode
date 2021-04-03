@@ -16,17 +16,14 @@ namespace AoC2015
 
         public override string SolvePart2( ) => SolveHash("000000");
 
-        private string SolveHash(string lookinFor )
+        private string SolveHash(string lookingFor )
         {
             var result = string.Empty;
             var count = 0;
-            using var md5 = MD5.Create( );
-            while ( !result.StartsWith(lookinFor) )
+            while ( !result.StartsWith(lookingFor) )
             {
                 count++;
-                var sourceBytes = Encoding.UTF8.GetBytes($"{Input[0]}{count}");
-                var hashBytes = md5.ComputeHash(sourceBytes);
-                result = BitConverter.ToString(hashBytes).Replace("-", string.Empty);
+                result = Md5.HashToHexadecimal($"{Input[0]}{count}");
             }
             return count.ToString( );
         }
