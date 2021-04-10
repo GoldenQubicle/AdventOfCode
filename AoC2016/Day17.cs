@@ -33,11 +33,10 @@ namespace AoC2016
 
                 GetMoves(current).ForEach(move => queue.Enqueue(move));
             }
-
             return current.path;
         }
 
-        public override string SolvePart2()
+        public override string SolvePart2( )
         {
             var current = (room: (x: 0, y: 0), path: string.Empty);
             var queue = new Queue<((int x, int y) room, string path)>();
@@ -48,7 +47,7 @@ namespace AoC2016
             while(queue.Any())
             {
                 current = queue.Dequeue();
-                if (current.room.x == 3 && current.room.y == 3)
+                if(current.room.x == 3 && current.room.y == 3)
                 {
                     paths.Add(current.path.Length);
                     continue;
@@ -56,7 +55,6 @@ namespace AoC2016
 
                 GetMoves(current).ForEach(move => queue.Enqueue(move));
             }
-
             return paths.Max().ToString();
         }
 
@@ -72,10 +70,6 @@ namespace AoC2016
             currentRoom.x + offset.x >= 0 && currentRoom.x + offset.x < 4 &&
             currentRoom.y + offset.y >= 0 && currentRoom.y + offset.y < 4;
 
-
         private bool isOpen(char c) => c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f';
-
-
-
     }
 }
