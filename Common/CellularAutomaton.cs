@@ -80,20 +80,20 @@ namespace Common
     public class Position : IEquatable<Position>
     {
         public int[ ] Values { get; init; }
-        private int Dimensions;
+        private readonly int dimensions;
 
         public Position(params int[ ] values)
         {
             Values = values;
-            Dimensions = Values.Length;
+            dimensions = Values.Length;
         }
 
         public bool Equals(Position other)
         {
-            if(other.Dimensions != Dimensions) return false;
+            if(other.dimensions != dimensions) return false;
 
             bool EqualValue = true;
-            for(var i = 0 ; i < Dimensions ; i++)
+            for(var i = 0 ; i < dimensions ; i++)
             {
                 if(other.Values[i] != Values[i])
                 {
@@ -106,7 +106,7 @@ namespace Common
 
         public override bool Equals(object obj)
         {
-            if(obj == null) return false;
+            if(obj is null) return false;
 
             return obj.GetType() == typeof(Position) && Equals((Position) obj);
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Common;
+using Common.Extensions;
 
 namespace AoC2020
 {
@@ -36,9 +37,4 @@ namespace AoC2020
         public char GetTerrainTile((int x, int y) i) => Input[i.y][i.x >= Width ? i.x % Width : i.x];
 
     }
-    public static class TupleExtension
-    {
-        public static (int, int) Add(this (int x, int y) a, (int x, int y) b) => (a.x + b.x, a.y + b.y);
-    }
-
 }
