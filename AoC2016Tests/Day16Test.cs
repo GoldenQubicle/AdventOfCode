@@ -44,7 +44,7 @@ namespace AoC2016Tests
         public void Part2( )
         {
             var actual = day16.SolvePart2( );
-            Assert.AreEqual("", actual);
+            Assert.AreEqual("10111110011110111", actual);
         }
     }
 }

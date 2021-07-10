@@ -39,10 +39,10 @@ namespace AoC2016
             var steps = 0;
             
 
-            while (floors.Last().chips.Count != elementCount && floors.Last().generators.Count != elementCount)
-            {
+            //while (floors.Last().chips.Count != elementCount && floors.Last().generators.Count != elementCount)
+            //{
 
-            }
+            //}
 
             return string.Empty;
         }
