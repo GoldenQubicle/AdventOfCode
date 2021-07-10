@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Day01.fs" />
     <Compile Include="Library.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="data\" />
   </ItemGroup>
 
 </Project>
