@@ -11,9 +11,8 @@
 
   <ItemGroup>
     <Folder Include="data\" />
-  </ItemGroup>
     <None Update="data\day01.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-
+  </ItemGroup>
 </Project>

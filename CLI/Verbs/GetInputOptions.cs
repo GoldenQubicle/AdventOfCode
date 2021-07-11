@@ -67,11 +67,11 @@ namespace CLI.Verbs
                     await File.WriteAllTextAsync(inputFile, content);
 
                     var projExtension = options.IsFSharp ? ".fsproj" : ".csproj";
-                    var csprojPath = $"{aocDir}\\AoC{options.Year}{projExtension}";
-                    var csproj = await File.ReadAllLinesAsync(csprojPath)
-                        .ContinueWith(f => UpdateCsProjFile(f.Result.ToList( ), options.DayString));
+                    var projPath = $"{aocDir}\\AoC{options.Year}{projExtension}";
+                    var projFile = await File.ReadAllLinesAsync(projPath)
+                        .ContinueWith(f => UpdateProjFile(f.Result.ToList( ), options.DayString));
 
-                    await File.WriteAllLinesAsync($"{csprojPath}", csproj);
+                    await File.WriteAllLinesAsync($"{projPath}", projFile);
 
                     message = $"Succes: created input file for year {options.Year} day {options.Day}";
                 }
@@ -86,8 +86,8 @@ namespace CLI.Verbs
             return message;
         }
 
-        //note the wonky string formatting is on purpose such that the tabs in the csproj file are actually alligned
-        private static List<string> UpdateCsProjFile(List<string> file, string dayNo) => file.InsertAt(file.Count - 2,
+        //note the wonky string formatting is on purpose such that the tabs in the proj file are actually alligned
+        private static List<string> UpdateProjFile(List<string> file, string dayNo) => file.InsertAt(file.Count - 2,
             $@"    <None Update=""data\day{dayNo}.txt"">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>");
