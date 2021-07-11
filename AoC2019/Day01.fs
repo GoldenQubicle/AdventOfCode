@@ -5,7 +5,9 @@ open System.IO
 
 module Day01 = 
 
-    let input file = File.ReadLines(AppContext.BaseDirectory + file) |> Seq.map(fun line -> line |> int )
+    let basePath : string = AppContext.BaseDirectory.Replace("CLI", "AoC2019") // check to make sure when getting called from cli .. could probably be nicer
+
+    let input file = File.ReadLines(basePath + file) |> Seq.map(fun line -> line |> int )
 
     let GetFuel (mass : int) : int = Math.Floor((float mass) / 3.0 ) - 2.0 |> int
 

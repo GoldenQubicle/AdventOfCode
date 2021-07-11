@@ -16,7 +16,7 @@ namespace Common
         public List<string> ParseInput(string file, string split)
         {
             // admittedly bit hacky solution 
-            // however the solution NUST be able to find the correct data folder,
+            // however the solution MUST be able to find the correct data folder,
             // whether it was called from a test, the cli or whatever. 
             var aocYear = GetType( ).FullName.Split('.')[0];
             var path = GetType( ).Assembly.Location.Replace($"{aocYear}.dll", "");

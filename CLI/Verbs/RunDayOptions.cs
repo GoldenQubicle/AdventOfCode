@@ -3,7 +3,7 @@ using Common;
 using System;
 using System.IO;
 using System.Reflection;
-using AoC2019;
+//using AoC2019;
 
 namespace CLI.Verbs
 {

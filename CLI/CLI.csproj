@@ -8,10 +8,10 @@
   <ItemGroup>
     <PackageReference Include="Combinatorics" Version="1.1.0.19" />
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="FSharp.Core" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AoC2019\AoC2019.fsproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
