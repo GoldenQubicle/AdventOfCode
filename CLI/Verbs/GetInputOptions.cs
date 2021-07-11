@@ -18,19 +18,19 @@ namespace CLI.Verbs
         [Option(shortName: 's', Required = true, HelpText = "The session token for adventofcode.com")]
         public string SessionId { get; set; }
 
-        public override (bool isValid, string message) Validate( )
+        public override (bool isValid, string message) Validate()
         {
-            var result = base.Validate( );
+            var result = base.Validate();
 
-            if ( !result.isValid ) return result;
+            if (!result.isValid) return result;
 
             var dataDir = $"{RootPath}\\AoC{Year}\\data";
             var dataPath = $"{dataDir}\\Day{DayString}.txt";
 
-            if ( !Directory.Exists(dataDir) )
+            if (!Directory.Exists(dataDir))
                 result = (false, $"Error: data folder for year {Year} could not be found at {dataDir}.");
 
-            if ( File.Exists(dataPath) )
+            if (File.Exists(dataPath))
                 result = (false, $"Error: input file for day {Day} year {Year} already exists at {dataPath}.");
 
             return result;
@@ -38,12 +38,12 @@ namespace CLI.Verbs
 
         public static async Task<string> Run(GetInputOptions options)
         {
-            var (isValid, message) = options.Validate( );
+            var (isValid, message) = options.Validate();
 
-            if ( isValid )
+            if (isValid)
             {
                 var baseAddress = new Uri("https://adventofcode.com");
-                var cookieContainer = new CookieContainer( );
+                var cookieContainer = new CookieContainer();
                 cookieContainer.Add(baseAddress, new Cookie("session", options.SessionId));
 
                 using var httpClientHandler = new HttpClientHandler
@@ -59,23 +59,23 @@ namespace CLI.Verbs
                 var aocDir = $"{RootPath}\\AoC{options.Year}";
                 var inputFile = $"{aocDir}\\data\\day{options.DayString}.txt";
                 var response = await httpClient.GetAsync($"{options.Year}/day/{options.Day}/input");
-               
+
                 try
                 {
-                    response = response.EnsureSuccessStatusCode( );
-                    var content = await response.Content.ReadAsStringAsync( );
+                    response = response.EnsureSuccessStatusCode();
+                    var content = await response.Content.ReadAsStringAsync();
                     await File.WriteAllTextAsync(inputFile, content);
 
                     var projExtension = options.IsFSharp ? ".fsproj" : ".csproj";
                     var projPath = $"{aocDir}\\AoC{options.Year}{projExtension}";
                     var projFile = await File.ReadAllLinesAsync(projPath)
-                        .ContinueWith(f => UpdateProjFile(f.Result.ToList( ), options.DayString));
+                        .ContinueWith(f => UpdateProjFile(f.Result.ToList(), options.DayString, options.IsFSharp));
 
                     await File.WriteAllLinesAsync($"{projPath}", projFile);
 
                     message = $"Success: created input file for year {options.Year} day {options.Day}";
                 }
-                catch ( HttpRequestException e )
+                catch (HttpRequestException e)
                 {
                     isValid = false;
                     message = $"Error: {e.Message} Probably session related, make sure token is still valid.";
@@ -87,7 +87,12 @@ namespace CLI.Verbs
         }
 
         //note the wonky string formatting is on purpose such that the tabs in the proj file are actually aligned
-        private static List<string> UpdateProjFile(List<string> file, string dayNo) => file.InsertAt(file.Count - 2,
+        private static List<string> UpdateProjFile(List<string> file, string dayNo, bool isFSharp) =>
+            file.InsertAt(file.Count - 2, isFSharp ?
+            $@"    <Content Include=""data\day{dayNo}.txt"">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>"
+            :
             $@"    <None Update=""data\day{dayNo}.txt"">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>");
