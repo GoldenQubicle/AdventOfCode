@@ -66,7 +66,8 @@ namespace CLI.Verbs
                     var content = await response.Content.ReadAsStringAsync( );
                     await File.WriteAllTextAsync(inputFile, content);
 
-                    var csprojPath = $"{aocDir}\\AoC{options.Year}.csproj";
+                    var projExtension = options.IsFSharp ? ".fsproj" : ".csproj";
+                    var csprojPath = $"{aocDir}\\AoC{options.Year}{projExtension}";
                     var csproj = await File.ReadAllLinesAsync(csprojPath)
                         .ContinueWith(f => UpdateCsProjFile(f.Result.ToList( ), options.DayString));
 

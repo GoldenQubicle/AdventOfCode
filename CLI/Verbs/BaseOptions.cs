@@ -13,6 +13,8 @@ namespace CLI.Verbs
 
         public string DayString { get => Day < 10 ? Day.ToString("00") : Day.ToString( ); }
 
+        public bool IsFSharp { get; private set; }
+
         public virtual (bool isValid, string message) Validate( )
         {
             if ( Year < 2015 || Year > 2020 )
@@ -20,6 +22,8 @@ namespace CLI.Verbs
 
             if ( Day < 1 || Day > 25 )
                 return (false, $"Error: day must be between 1 and 25.");
+
+            IsFSharp = Year == 2019;
 
             return (true, string.Empty);
         }

@@ -8,6 +8,6 @@ module Day01 =
 
     let SolvePart2 : string = "part 2"
 
-    let GetFuel (mass : float32): float32 =  MathF.Floor( mass / 3f) - 2f
+    let GetFuel (mass : float32) : float32 =  MathF.Floor( mass / 3f) - 2f
 
 
