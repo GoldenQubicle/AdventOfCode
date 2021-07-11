@@ -88,7 +88,8 @@ namespace AoC2016
                 Direction.North => (x: position.x, y: position.y + distance),
                 Direction.East => (x: position.x + distance, y: position.y),
                 Direction.South => (x: position.x, y: position.y - distance),
-                Direction.West => (x: position.x - distance, y: position.y)
+                Direction.West => (x: position.x - distance, y: position.y),
+                _ => throw new ArgumentOutOfRangeException()
             };
             return position;
         }

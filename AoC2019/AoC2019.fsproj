@@ -7,12 +7,8 @@
   <ItemGroup>
     <Compile Include="Day01.fs" />
     <Compile Include="Library.fs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="data\" />
-    <None Update="data\day01.txt">
+    <Content Include="data\day01.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
 </Project>

@@ -73,7 +73,7 @@ namespace CLI.Verbs
 
                     await File.WriteAllLinesAsync($"{projPath}", projFile);
 
-                    message = $"Succes: created input file for year {options.Year} day {options.Day}";
+                    message = $"Success: created input file for year {options.Year} day {options.Day}";
                 }
                 catch ( HttpRequestException e )
                 {
@@ -86,7 +86,7 @@ namespace CLI.Verbs
             return message;
         }
 
-        //note the wonky string formatting is on purpose such that the tabs in the proj file are actually alligned
+        //note the wonky string formatting is on purpose such that the tabs in the proj file are actually aligned
         private static List<string> UpdateProjFile(List<string> file, string dayNo) => file.InsertAt(file.Count - 2,
             $@"    <None Update=""data\day{dayNo}.txt"">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
