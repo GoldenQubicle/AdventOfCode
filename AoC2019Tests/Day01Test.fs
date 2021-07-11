@@ -1,7 +1,6 @@
 ﻿module Day01Test
 
 open AoC2019
-
 open NUnit.Framework
 
 [<Test>]

@@ -16,7 +16,7 @@ namespace CLI
         {
             ScaffoldOptions s => Task.Run(( ) =>
             {
-                Console.WriteLine(ScaffoldOptions.Run(s));
+                Console.WriteLine(ScaffoldOptions.Run(s).Result);
                 Console.ResetColor( );
             }),
             RunDayOptions r => Task.Run(( ) =>

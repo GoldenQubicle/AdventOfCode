@@ -20,7 +20,7 @@ namespace Common
             // whether it was called from a test, the cli or whatever. 
             var aocYear = GetType( ).FullName.Split('.')[0];
             var path = GetType( ).Assembly.Location.Replace($"{aocYear}.dll", "");
-
+            
             return File.ReadAllText($"{path}\\data\\{file}.txt")
                    .Split(split)
                    .Select(s => s.Trim( ))

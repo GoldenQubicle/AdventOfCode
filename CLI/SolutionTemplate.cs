@@ -10,10 +10,30 @@ namespace CLI
         public string Day { get; init; }
         public bool HasUnitTest { get; init; }
         public string ExpectedValuePart1 { get; init; }
+        public bool IsFSharp { get; init; }
         public List<(string input, string outcome)> TestCases { get; init; }
 
-        public string CreateSolution( ) =>
-           $@"using System;
+        public string CreateSolution() => IsFSharp ? FSharpSolution() : CSharpSolution();
+        public string CreateUnitTest() => IsFSharp ? FSharpUnitTest() : CSharpUnitTest();
+
+        private string FSharpSolution() => 
+            $@"namespace AoC{Year}
+
+             open System
+             open System.IO
+
+             module Day{Day} = 
+
+                let input file = File.ReadLines(file)
+
+                let SolvePart1 : string = """"
+
+                let SolvePart2 : string = """" ".Replace("             ", "");
+
+        private string FSharpUnitTest() => $@"";
+
+        private string CSharpSolution() => 
+            $@"using System;
              using System.Collections.Generic;
              using System.Linq;
              using System.Text;
@@ -35,7 +55,7 @@ namespace CLI
                  }}
              }}".Replace("             ", "");
 
-        public string CreateUnitTest() =>
+        private string CSharpUnitTest() =>
             $@"using AoC{Year};
              using NUnit.Framework;
              using System.Collections.Generic;
@@ -53,16 +73,16 @@ namespace CLI
                          day{Day} = new Day{Day}(""day{Day}test1"");
                      }}
                      
-                     {( TestCases.Count() == 0 ?
-                  @$"[Test]
+                     {(TestCases.Count == 0 ?
+                @$"[Test]
                      public void Part1( )
                      {{
                          var actual = day{Day}.SolvePart1( );
-                         Assert.AreEqual(""{( string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1 )}"", actual);
-                     }}" 
-                    :
-                  $@"{TestCases.Aggregate(string.Empty, 
-                      (s, c) => s + @$"[TestCase(""{c.input}"",""{c.outcome}"")] {Environment.NewLine}        ").TrimEnd()}
+                         Assert.AreEqual(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}"", actual);
+                     }}"
+                :
+                $@"{TestCases.Aggregate(string.Empty,
+                    (s, c) => s + @$"[TestCase(""{c.input}"",""{c.outcome}"")] {Environment.NewLine}        ").TrimEnd()}
                      public void Part1(string input, string expected )
                      {{
                          day{Day} = new Day{Day}(new List<string> {{ input }} );

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Common.Extensions;
 
 namespace CLI.Verbs
 {
@@ -20,6 +22,7 @@ namespace CLI.Verbs
 
         private string ClassPath { get; set; }
         private string TestPath { get; set; }
+
         public List<(string input, string outcome)> TestCases { get; private set; }
 
         public override (bool isValid, string message) Validate( )
@@ -28,10 +31,11 @@ namespace CLI.Verbs
 
             if ( !result.isValid ) return result;
 
+            var extension = IsFSharp ? ".fs" : ".cs";
             var classDir = $"{RootPath}\\AoC{Year}";
-            ClassPath = $"{classDir}\\Day{DayString}.cs";
+            ClassPath = $"{classDir}\\Day{DayString}{extension}";
             var testDir = $"{RootPath}\\AoC{Year}Tests";
-            TestPath = $"{testDir}\\Day{DayString}Test.cs";
+            TestPath = $"{testDir}\\Day{DayString}Test{extension}";
 
             if ( !Directory.Exists(classDir) )
                 return (false, $"Error: project for year {Year} could not be found at {classDir}.");
@@ -63,7 +67,7 @@ namespace CLI.Verbs
             return result;
         }
 
-        public static string Run(ScaffoldOptions options)
+        public static async Task<string> Run(ScaffoldOptions options)
         {
             var (isValid, message) = options.Validate( );
 
@@ -75,19 +79,36 @@ namespace CLI.Verbs
                     Day = options.DayString,
                     HasUnitTest = options.HasUnitTest,
                     ExpectedValuePart1 = options.ExpectedValuePart1,
-                    TestCases = options.TestCases
+                    TestCases = options.TestCases,
+                    IsFSharp = options.IsFSharp
                 };
 
-                File.WriteAllText(options.ClassPath, template.CreateSolution( ));
+                await File.WriteAllTextAsync(options.ClassPath, template.CreateSolution( ));
 
                 if ( options.HasUnitTest )
-                    File.WriteAllText(options.TestPath, template.CreateUnitTest( ));
+                    await File.WriteAllTextAsync(options.TestPath, template.CreateUnitTest( ));
 
-                message = $"Succes: created class for year {options.Year} day {options.Day} with {( options.HasUnitTest ? "additional" : "no" )} unit test.";
+                if (options.IsFSharp)
+                {
+                    //TODO update unit test project
+                    var aocDir = $"{RootPath}\\AoC{options.Year}";
+                    var projPath = $"{aocDir}\\AoC{options.Year}.fsproj";
+                    var projFile = await File.ReadAllLinesAsync(projPath)
+                        .ContinueWith(f => UpdateProjFile(f.Result.ToList(), options.DayString));
+
+                    await File.WriteAllLinesAsync($"{projPath}", projFile);
+                }
+
+                message = $"Succes: created file for year {options.Year} day {options.Day} with {( options.HasUnitTest ? "additional" : "no" )} unit test.";
             }
 
             Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
             return message;
         }
+
+        //skip 6 first lines in project file
+        private static List<string> UpdateProjFile(List<string> file, string dayNo) => 
+            file.InsertAt(6 + int.Parse(dayNo), $@"    <Compile Include=""Day{dayNo}.fs"" />");
+
     }
 }

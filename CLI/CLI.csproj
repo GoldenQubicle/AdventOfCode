@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AoC2019\AoC2019.fsproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 

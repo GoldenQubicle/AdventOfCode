@@ -5,7 +5,7 @@ open System.IO
 
 module Day01 = 
 
-    let input file = File.ReadLines(file) |> Seq.map(fun line -> line |> int )
+    let input file = File.ReadLines(AppContext.BaseDirectory + file) |> Seq.map(fun line -> line |> int )
 
     let GetFuel (mass : int) : int = Math.Floor((float mass) / 3.0 ) - 2.0 |> int
 
@@ -18,6 +18,7 @@ module Day01 =
             | _ -> acc
 
         loop mass 0
+
 
     let SolvePart1 : string = input("data/day01.txt") |> Seq.map(fun i -> GetFuel(i) ) |> Seq.sum |> string
 

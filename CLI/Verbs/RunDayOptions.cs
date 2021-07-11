@@ -3,6 +3,7 @@ using Common;
 using System;
 using System.IO;
 using System.Reflection;
+using AoC2019;
 
 namespace CLI.Verbs
 {
@@ -40,7 +41,7 @@ namespace CLI.Verbs
 
             var assembly = Assembly.LoadFrom(assemblyPath);
             DayType = assembly.GetType($"AoC{Year}.Day{DayString}");
-            //final check if day actually exists.. could probably just check the .cs file..?
+            //final check if day actually exists.. could probably just check the .cs or .fs file..?
             //though could be present while not in dll in case it hasn't build in a while
             if ( DayType == null )
                 result = (false, $"Error: could not find day {Day} for year {Year} in assembly at {assemblyPath}.");
@@ -52,22 +53,35 @@ namespace CLI.Verbs
         {
             var (isValid, message) = options.Validate( );
 
-            if ( isValid )
+            if (isValid)
             {
-                var ctorType = new Type[ ] { typeof(string) };
-                var ctor = options.DayType.GetConstructor(ctorType);
-                var dayToRun = ( Solution ) ctor.Invoke(new object[ ] { $"day{options.DayString}" });
+                var (part1, part2) = GetSolutions(options);
 
                 message = options.Part switch
                 {
-                    1 => $"Year {options.Year}\nDay {options.DayString} Part 1: {dayToRun.SolvePart1( )}",
-                    2 => $"Year {options.Year}\nDay {options.DayString} Part 2: {dayToRun.SolvePart2( )}",
-                    _ => $"Year {options.Year}\nDay {options.DayString} Part 1: {dayToRun.SolvePart1( )} \nDay {options.DayString} Part 2: {dayToRun.SolvePart2( )}",
+                    1 => $"Year {options.Year}\nDay {options.DayString} Part 1: {part1}",
+                    2 => $"Year {options.Year}\nDay {options.DayString} Part 2: {part2}",
+                    _ => $"Year {options.Year}\nDay {options.DayString} Part 1: {part1} \nDay {options.DayString} Part 2: {part2}",
                 };
             }
 
             Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
             return message;
+        }
+
+        private static (string part1, string part2) GetSolutions(RunDayOptions options)
+        {
+            if (options.IsFSharp)
+            {
+                var part1 = options.DayType.GetMethod("get_SolvePart1")?.Invoke(new object(), new object[] { });
+                var part2 = options.DayType.GetMethod("get_SolvePart2")?.Invoke(new object(), new object[] { });
+                return ((string) part1, (string) part2);
+            }
+
+            var ctorType = new[] { typeof(string) };
+            var ctor = options.DayType.GetConstructor(ctorType);
+            var dayToRun = (Solution)ctor.Invoke(new object[] { $"day{options.DayString}" });
+            return (dayToRun.SolvePart1(), dayToRun.SolvePart2());
         }
     }
 }
