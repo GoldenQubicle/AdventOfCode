@@ -14,6 +14,7 @@ namespace CLI
         public List<(string input, string outcome)> TestCases { get; init; }
 
         public string CreateSolution() => IsFSharp ? FSharpSolution() : CSharpSolution();
+
         public string CreateUnitTest() => IsFSharp ? FSharpUnitTest() : CSharpUnitTest();
 
         private string FSharpSolution() => 
@@ -29,8 +30,6 @@ namespace CLI
                 let SolvePart1 : string = """"
 
                 let SolvePart2 : string = """" ".Replace("             ", "");
-
-        private string FSharpUnitTest() => $@"";
 
         private string CSharpSolution() => 
             $@"using System;
@@ -54,6 +53,29 @@ namespace CLI
                      public override string SolvePart2( ) => null;
                  }}
              }}".Replace("             ", "");
+
+        private string FSharpUnitTest() => 
+            $@"module Day{Day}Test
+
+            open AoC{Year}
+            open NUnit.Framework
+
+            {(TestCases.Count == 0 ? 
+            @$"[<Test>]
+            let Part1 () =
+                let actual = Day{Day}.SolvePart1
+                Assert.AreEqual(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}"", actual)"
+            : 
+            @$"{TestCases.Aggregate(string.Empty,
+                (s, c) => s + @$"[<TestCase(""{c.input}"",""{c.outcome}"")>] {Environment.NewLine}        ").TrimEnd()}
+            let Part1 (input: string, expected : string) =
+                let actual = Day{Day}.SolvePart1 input
+                Assert.AreEqual(expected, actual)")}
+            
+            [<Test>]
+            let Part2 () = 
+                let actual = Day{Day}.SolvePart2
+                Assert.AreEqual("""", actual)".Replace("            ", "");
 
         private string CSharpUnitTest() =>
             $@"using AoC{Year};

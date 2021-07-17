@@ -12,13 +12,11 @@ module Day01 =
     let GetFuel (mass : int) : int = Math.Floor((float mass) / 3.0 ) - 2.0 |> int
 
     let GetFuelRecursive(mass : int) : int = 
-        let rec loop mass acc =
-            match mass with 
-            | var1 when var1 > 6 -> 
-                let newMass = GetFuel mass
-                loop newMass (acc + newMass)
-            | _ -> acc
-
+        let rec loop mass total =
+            if mass > 6 then
+                let fuelMass = GetFuel mass
+                loop fuelMass total + fuelMass
+            else total
         loop mass 0
 
 

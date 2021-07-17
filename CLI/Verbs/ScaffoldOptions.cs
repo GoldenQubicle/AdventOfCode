@@ -25,11 +25,11 @@ namespace CLI.Verbs
 
         public List<(string input, string outcome)> TestCases { get; private set; }
 
-        public override (bool isValid, string message) Validate( )
+        public override (bool isValid, string message) Validate()
         {
-            var result = base.Validate( );
+            var result = base.Validate();
 
-            if ( !result.isValid ) return result;
+            if (!result.isValid) return result;
 
             var extension = IsFSharp ? ".fs" : ".cs";
             var classDir = $"{RootPath}\\AoC{Year}";
@@ -37,41 +37,39 @@ namespace CLI.Verbs
             var testDir = $"{RootPath}\\AoC{Year}Tests";
             TestPath = $"{testDir}\\Day{DayString}Test{extension}";
 
-            if ( !Directory.Exists(classDir) )
+            if (!Directory.Exists(classDir))
                 return (false, $"Error: project for year {Year} could not be found at {classDir}.");
 
-            if ( File.Exists(ClassPath) )
+            if (File.Exists(ClassPath))
                 return (false, $"Error: file for day {Day} year {Year} already exists at {ClassPath}.");
 
-            if ( HasUnitTest )
-            {
-                if ( !Directory.Exists(testDir) )
-                    return (false, $"Error: test project for year {Year} could not be found at {testDir}.");
+            if (!HasUnitTest) return result;
 
-                if ( File.Exists(TestPath) )
-                    return (false, $"Error: test for day {Day} year {Year} already exists at {TestPath}.");
+            if (!Directory.Exists(testDir))
+                return (false, $"Error: test project for year {Year} could not be found at {testDir}.");
 
-                if ( Cases != null )
-                {
-                    var valid = Cases.All(c => c.Contains(":"));
-                    result = (valid, valid ? string.Empty : $"Error: test cases must be in format input:outcome");
+            if (File.Exists(TestPath))
+                return (false, $"Error: test for day {Day} year {Year} already exists at {TestPath}.");
 
-                    if ( valid )
-                    {
-                        TestCases = Cases.Select(c => c.Split(":")).Select(c => (input: c[0], outcome: c[1])).ToList( );
-                        var allValid = TestCases.All(c => !string.IsNullOrEmpty(c.input) && !string.IsNullOrEmpty(c.outcome));
-                        result = (allValid, allValid ? string.Empty : $"Error: not all test cases have valid input and outcome");
-                    }
-                }
-            }
+            if (Cases == null) return result;
+
+            var valid = Cases.All(c => c.Contains(":"));
+            result = (valid, valid ? string.Empty : $"Error: test cases must be in format input:outcome");
+
+            if (!valid) return result;
+
+            TestCases = Cases.Select(c => c.Split(":")).Select(c => (input: c[0], outcome: c[1])).ToList();
+            var allValid = TestCases.All(c => !string.IsNullOrEmpty(c.input) && !string.IsNullOrEmpty(c.outcome));
+            result = (allValid, allValid ? string.Empty : $"Error: not all test cases have valid input and outcome");
+
             return result;
         }
 
         public static async Task<string> Run(ScaffoldOptions options)
         {
-            var (isValid, message) = options.Validate( );
+            var (isValid, message) = options.Validate();
 
-            if ( isValid )
+            if (isValid)
             {
                 var template = new SolutionTemplate
                 {
@@ -83,32 +81,52 @@ namespace CLI.Verbs
                     IsFSharp = options.IsFSharp
                 };
 
-                await File.WriteAllTextAsync(options.ClassPath, template.CreateSolution( ));
+                await File.WriteAllTextAsync(options.ClassPath, template.CreateSolution());
 
-                if ( options.HasUnitTest )
-                    await File.WriteAllTextAsync(options.TestPath, template.CreateUnitTest( ));
+                if (options.HasUnitTest)
+                    await File.WriteAllTextAsync(options.TestPath, template.CreateUnitTest());
 
                 if (options.IsFSharp)
                 {
-                    //TODO update unit test project
-                    var aocDir = $"{RootPath}\\AoC{options.Year}";
-                    var projPath = $"{aocDir}\\AoC{options.Year}.fsproj";
-                    var projFile = await File.ReadAllLinesAsync(projPath)
-                        .ContinueWith(f => UpdateProjFile(f.Result.ToList(), options.DayString));
+                    var (projPath, compileLine, insertAt) = GetFsharpProjectInfo(options.Year, options.DayString);
 
-                    await File.WriteAllLinesAsync($"{projPath}", projFile);
+                    await UpdateFSharpProjectFile(projPath, compileLine, insertAt);
+
+                    if (options.HasUnitTest)
+                    {
+                        (projPath, compileLine, insertAt) = GetFsharpProjectInfo(options.Year, options.DayString, isTestProject: true);
+                        await UpdateFSharpProjectFile(projPath, compileLine, insertAt);
+                    }
+
+                    ////TODO update unit test project
+                    //var aocDir = $"{RootPath}\\AoC{options.Year}";
+                    //var compile = $@"    <Compile Include=""Day{options.Day}.fs"" />";
+
+                    //var projPath = $"{aocDir}\\AoC{options.Year}.fsproj";
+                    //var projFile = await File.ReadAllLinesAsync(projPath)
+                    //    .ContinueWith(f => UpdateProjFile(f.Result.ToList(), options.DayString));
+
+                    //await File.WriteAllLinesAsync($"{projPath}", projFile);
                 }
 
-                message = $"Succes: created file for year {options.Year} day {options.Day} with {( options.HasUnitTest ? "additional" : "no" )} unit test.";
+                message = $"Succes: created file for year {options.Year} day {options.Day} with {(options.HasUnitTest ? "additional" : "no")} unit test.";
             }
 
             Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
             return message;
         }
 
-        //skip 6 first lines in project file
-        private static List<string> UpdateProjFile(List<string> file, string dayNo) => 
-            file.InsertAt(6 + int.Parse(dayNo), $@"    <Compile Include=""Day{dayNo}.fs"" />");
+        private static async Task UpdateFSharpProjectFile(string projPath, string compileLine, int idx)
+        {
+            var projFile = await File.ReadAllLinesAsync(projPath)
+                .ContinueWith(t => t.Result.ToList().InsertAt(idx, compileLine));
+            await File.WriteAllLinesAsync($"{projPath}", projFile);
+        }
+        
 
+        private static (string projPath, string compileLine, int insertAt) GetFsharpProjectInfo(int year, string day, bool isTestProject = false) =>
+            (@$"{RootPath}\\AoC{year}{(isTestProject ? "Tests" : string.Empty)}\\AoC{year}{(isTestProject ? "Tests" : string.Empty)}.fsproj",
+                $@"    <Compile Include=""Day{day}{(isTestProject ? "Test" : string.Empty)}.fs"" />",
+                isTestProject ? 15 + int.Parse(day): 4 + int.Parse(day));
     }
 }
