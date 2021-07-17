@@ -12,17 +12,17 @@ namespace AoC2015
         {
             automaton = new CellularAutomaton(new CellularAutomatonOptions
             {
-                Dimensions = 2,
-                DoesWrap = false,
-                IsInfinite = false
-            });
-
-            automaton.ApplyGameOfLifeRules = (activeCount, currentState) => activeCount switch
+                Dimensions = 2, DoesWrap = false, IsInfinite = false
+            })
             {
-                < 2 or > 3 when currentState == '#' => '.',
-                3 when currentState == '.' => '#',
-                _ => currentState
+                ApplyGameOfLifeRules = (activeCount, currentState) => activeCount switch
+                {
+                    < 2 or > 3 when currentState == '#' => '.',
+                    3 when currentState == '.' => '#',
+                    _ => currentState
+                }
             };
+
         }
 
         public override string SolvePart1( )

@@ -32,7 +32,7 @@ namespace AoC2016
             registers["b"] = 0;
             registers["c"] = 0;
             registers["d"] = 0;
-            //so basically there are repeating loops in lines 5,6,7, and later 10 which increment register A a LOT of times
+            //so basically there are repeating loops in input lines 5,6,7, and later 10 which increment register A a LOT of times
             //to circumvent long running operation we simply replace the looping instructions with new nope instruction
             //and at the end do a multiplication instead (also new)
             //could probably not bother with nope instructions at all but offset jumps are too fiddly to figure that one out

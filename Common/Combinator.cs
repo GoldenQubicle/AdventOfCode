@@ -12,7 +12,7 @@ namespace Common
         {
             // figure out what is the combinations' length? If not specified, or each element can only occur once
             // per combination, we use the elements count. Otherwise as specified per the options. 
-            int cLength = options.Length == 0 || options.IsElementUnique ? elements.Count : options.Length;
+            var cLength = options.Length == 0 || options.IsElementUnique ? elements.Count : options.Length;
 
             // get the combinations. This returns a full set by default
             var combos = options.IsFullSet ? GetCombinationsFullSet(elements, cLength) : GetCombinationsSparseSet(elements, cLength);
@@ -35,38 +35,6 @@ namespace Common
 
             return new CombinatorResult<T> { Result = combos };
         }
-
-        public static void TrySomethingNew(List<int> perm)
-        {
-            var indexes = perm.Select(p => 0).ToList();
-            var n = perm.Count;
-            var sets = new HashSet<List<int>>();
-            sets.Add(perm);
-            var i = 0;
-
-            while(i < n)
-            {
-                if(indexes[i] < i)
-                {
-                    Swap(perm, i % 2 == 0 ? 0 : indexes[i], i);
-                    sets.Add(perm.Select(p => p).ToList());
-                    indexes[i]++;
-                    i = 0;
-                }
-                else
-                {
-                    indexes[i] = 0;
-                    i++;
-                }
-            }
-        }
-        private static void Swap(List<int> input, int a, int b)
-        {
-            var tmp = input[a];
-            input[a] = input[b];
-            input[b] = tmp;
-        }
-
 
         private static List<List<T>> GetCombinationsSparseSet<T>(List<T> elements, int cLength)
         {
