@@ -5,7 +5,9 @@ namespace Common.Extensions
     public static class StringExtensions
     {
         public static int GetInteger(this string s) => int.Parse(new string(s.Where(char.IsDigit).ToArray()));
-       
+
+        public static bool HasInteger(this string s) => s.Any(char.IsDigit);
+
         public static string ReplaceAt(this string s, int idx, string n, int r)
         {
             s = s.Remove(idx, r);

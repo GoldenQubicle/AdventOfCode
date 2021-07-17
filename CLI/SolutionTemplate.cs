@@ -25,7 +25,7 @@ namespace CLI
 
              module Day{Day} = 
 
-                let input file = File.ReadLines(file)
+                let mutable input = fun file -> File.ReadLines(file) 
 
                 let SolvePart1 : string = """"
 
@@ -67,9 +67,10 @@ namespace CLI
                 Assert.AreEqual(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}"", actual)"
             : 
             @$"{TestCases.Aggregate(string.Empty,
-                (s, c) => s + @$"[<TestCase(""{c.input}"",""{c.outcome}"")>] {Environment.NewLine}        ").TrimEnd()}
+                (s, c) => s + @$"[<TestCase(""{c.input}"",""{c.outcome}"")>] {Environment.NewLine}").TrimEnd()}
             let Part1 (input: string, expected : string) =
-                let actual = Day{Day}.SolvePart1 input
+                Day{Day}.input <- fun _ -> input.Split(',') :> seq<string>
+                let actual = Day{Day}.SolvePart1
                 Assert.AreEqual(expected, actual)")}
             
             [<Test>]

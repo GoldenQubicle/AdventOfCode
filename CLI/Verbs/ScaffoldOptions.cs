@@ -97,16 +97,6 @@ namespace CLI.Verbs
                         (projPath, compileLine, insertAt) = GetFsharpProjectInfo(options.Year, options.DayString, isTestProject: true);
                         await UpdateFSharpProjectFile(projPath, compileLine, insertAt);
                     }
-
-                    ////TODO update unit test project
-                    //var aocDir = $"{RootPath}\\AoC{options.Year}";
-                    //var compile = $@"    <Compile Include=""Day{options.Day}.fs"" />";
-
-                    //var projPath = $"{aocDir}\\AoC{options.Year}.fsproj";
-                    //var projFile = await File.ReadAllLinesAsync(projPath)
-                    //    .ContinueWith(f => UpdateProjFile(f.Result.ToList(), options.DayString));
-
-                    //await File.WriteAllLinesAsync($"{projPath}", projFile);
                 }
 
                 message = $"Succes: created file for year {options.Year} day {options.Day} with {(options.HasUnitTest ? "additional" : "no")} unit test.";
@@ -123,10 +113,9 @@ namespace CLI.Verbs
             await File.WriteAllLinesAsync($"{projPath}", projFile);
         }
         
-
         private static (string projPath, string compileLine, int insertAt) GetFsharpProjectInfo(int year, string day, bool isTestProject = false) =>
             (@$"{RootPath}\\AoC{year}{(isTestProject ? "Tests" : string.Empty)}\\AoC{year}{(isTestProject ? "Tests" : string.Empty)}.fsproj",
                 $@"    <Compile Include=""Day{day}{(isTestProject ? "Test" : string.Empty)}.fs"" />",
-                isTestProject ? 15 + int.Parse(day): 4 + int.Parse(day));
+                isTestProject ? 15 + int.Parse(day): 4 + int.Parse(day)); //yes hardcoded line numbers at which to insert, would probably be nicer to parse project file as proper xml 
     }
 }
