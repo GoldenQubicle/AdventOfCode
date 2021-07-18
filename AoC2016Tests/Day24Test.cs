@@ -26,7 +26,7 @@ namespace AoC2016Tests
         public void Part2( )
         {
             var actual = day24.SolvePart2( );
-            Assert.AreEqual("", actual);
+            Assert.AreEqual("20", actual);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Common;
 using Common.Extensions;
 
@@ -5,34 +6,25 @@ namespace AoC2015
 {
     public class Day18 : Solution
     {
-        readonly CellularAutomaton automaton;
         public int Steps { get; set; } = 100;
 
-        public Day18(string file) : base(file, "\n")
+        private readonly Func<int, Grid2d.Cell, Grid2d.Cell> gameOfLifeRules = (activeCount, cell) => activeCount switch
         {
-            automaton = new CellularAutomaton(new CellularAutomatonOptions
-            {
-                Dimensions = 2, DoesWrap = false, IsInfinite = false
-            })
-            {
-                ApplyGameOfLifeRules = (activeCount, currentState) => activeCount switch
-                {
-                    < 2 or > 3 when currentState == '#' => '.',
-                    3 when currentState == '.' => '#',
-                    _ => currentState
-                }
-            };
+            < 2 or > 3 when cell.Character == '#' => cell.ChangeCharacter('.'),
+            3 when cell.Character == '.' => cell.ChangeCharacter('#'),
+            _ => cell
+        };
 
+        public Day18(string file) : base(file, "\n") { }
+
+        public override string SolvePart1()
+        {
+            var ca = new CellularAutomaton2d(Input) { GameOfLifeRules = gameOfLifeRules };
+            ca.Iterate(Steps);
+            return ca.CountCells('#').ToString();
         }
 
-        public override string SolvePart1( )
-        {
-            automaton.GenerateGrid(Input);
-            automaton.Iterate(Steps);
-            return automaton.CountCells('#').ToString();
-        }
-
-        public override string SolvePart2( )
+        public override string SolvePart2()
         {
             var dim = Input.Count - 1;
 
@@ -41,16 +33,19 @@ namespace AoC2015
             Input[dim] = Input[dim].ReplaceAt(0, '#');
             Input[dim] = Input[dim].ReplaceAt(dim, '#');
 
-            var ul = new Position( 0, 0 );
-            var ur = new Position( dim, 0 );
-            var bl = new Position( 0, dim );
-            var br = new Position( dim, dim );
+            var ul = new Position(0, 0);
+            var ur = new Position(dim, 0);
+            var bl = new Position(0, dim);
+            var br = new Position(dim, dim);
 
-            automaton.ApplyPositionalRules = (pos, state) => pos == ul || pos == ur || pos == bl || pos == br ? '#' : state;
-            automaton.GenerateGrid(Input);
-            automaton.Iterate(Steps);
-           
-            return automaton.CountCells('#').ToString();
+            var ca = new CellularAutomaton2d(Input)
+            {
+                GameOfLifeRules = gameOfLifeRules,
+                AdditionalRules = cell  => cell.Position == ul || cell.Position == ur || cell.Position == bl || cell.Position == br ? cell.ChangeCharacter('#') : cell
+            };
+
+            ca.Iterate(Steps);
+            return ca.CountCells('#').ToString();
         }
     }
 }

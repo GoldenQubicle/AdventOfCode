@@ -1,30 +1,19 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Combinatorics.Collections;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace Common
 {
-    public class Grid2d
+    public class Grid2d : IEnumerable<Grid2d.Cell>
     {
-        private Dictionary<Position, GridCell> Cells { get; } = new();
+        private Dictionary<Position, Cell> Cells { get; } = new();
 
         private List<Position> Offsets { get; }
 
-        public Grid2d(List<string> input, bool diagonalAllowed = true)
+        public Grid2d(bool diagonalAllowed = true)
         {
-            for (var y = 0; y < input.Count; y++)
-            {
-                for (var x = 0; x < input[y].Length; x++)
-                {
-                    var gc = new GridCell { Position = new Position(x, y), Character = input[y][x] };
-                    Cells.Add(gc.Position, gc);
-                }
-            }
-
             var filter = diagonalAllowed
                 ? new List<Position> { new(0, 0) }
                 : new List<Position> { new(-1, -1), new(-1, 1), new(1, -1), new(1, 1), new(0, 0) };
@@ -33,40 +22,61 @@ namespace Common
                 .Select(v => new Position(v[0], v[1]))
                 .Where(p => !filter.Contains(p))
                 .ToList();
-
         }
 
-        public List<GridCell> GetNeighbors(Position pos, Func<GridCell, bool> query) =>
+        public Grid2d(List<string> input, bool diagonalAllowed = true) : this(diagonalAllowed)
+        {
+            for (var y = 0; y < input.Count; y++)
+            {
+                for (var x = 0; x < input[y].Length; x++)
+                {
+                    var gc = new Cell { Position = new Position(x, y), Character = input[y][x] };
+                    Cells.Add(gc.Position, gc);
+                }
+            }
+        }
+        
+        public List<Cell> GetNeighbors(Position pos, Func<Cell, bool> query) =>
             GetNeighbors(pos).Where(query).ToList();
 
-        public List<GridCell> GetNeighbors(Position pos) => Offsets
+        public List<Cell> GetNeighbors(Position pos) => Offsets
             .Select(o => o + pos)
             .Where(np => Cells.ContainsKey(np))
             .Select(np => Cells[np]).ToList();
 
-        public List<GridCell> QueryCells(Func<GridCell, bool> query) => Cells.Values.Where(query).ToList();
+        public List<Cell> QueryCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList();
 
-        public void AddGridCell(GridCell gridCell) => Cells.Add(gridCell.Position, gridCell);
+        public void Add(Cell cell) => Cells.Add(cell.Position, cell);
 
+        public IEnumerator<Cell> GetEnumerator()
+        {
+            foreach (var cell in Cells.Values)
+                yield return cell;
+        }
 
-        public struct GridCell : IEquatable<GridCell>
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public struct Cell : IEquatable<Cell>
         {
             public Position Position { get; init; }
             public char Character { get; init; }
 
-            public GridCell ChangeCharacter(char newChar) => new() { Position = Position, Character = newChar };
+            /// <summary>
+            /// returns a new Cell with same position but new character
+            /// </summary>
+            /// <param name="newChar"></param>
+            /// <returns></returns>
+            public Cell ChangeCharacter(char newChar) => new() { Position = Position, Character = newChar };
 
-            public bool Equals(GridCell other) => Equals(Position, other.Position) && Character == other.Character;
+            public bool Equals(Cell other) => Equals(Position, other.Position) && Character == other.Character;
 
-            public override bool Equals(object obj) => obj is GridCell other && Equals(other);
+            public override bool Equals(object obj) => obj is Cell other && Equals(other);
 
             public override int GetHashCode() => HashCode.Combine(Position, Character);
 
-            public static bool operator ==(GridCell left, GridCell right) => EqualityComparer<GridCell>.Default.Equals(left, right);
-            public static bool operator !=(GridCell left, GridCell right) => !(left == right);
+            public static bool operator ==(Cell left, Cell right) => EqualityComparer<Cell>.Default.Equals(left, right);
+            public static bool operator !=(Cell left, Cell right) => !(left == right);
 
         }
-
-
     }
 }

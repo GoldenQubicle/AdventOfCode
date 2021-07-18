@@ -16,19 +16,17 @@ namespace AoC2016
 
         public Day24(List<string> input) : base(input) { }
 
-        public override string SolvePart1()
+        public override string SolvePart1() => GetMinimalPathLength();
+        public override string SolvePart2() => GetMinimalPathLength(true);
+
+        private string GetMinimalPathLength(bool isPart2 = false)
         {
-            //foreach digit find paths to all other digits (if possible)
-            //keep track of path length 
-            //for all found paths go over all valid combinations (i.e. digit visited once) and calculated total length
-
             var paths = GetPaths();
-
             var pathLengths = new List<int>();
 
             var start = '0';
             var queue = new Queue<(char cell, List<char> visited, int length)>();
-            queue.Enqueue((start, new List<char> { start }, 0));
+            queue.Enqueue((start, new List<char> {start}, 0));
 
             while (queue.Count > 0)
             {
@@ -39,9 +37,8 @@ namespace AoC2016
                     foreach (var option in options)
                         queue.Enqueue((option.end, visited.Expand(option.end), length + option.length));
                 else
-                    pathLengths.Add(length);
+                    pathLengths.Add(isPart2 ? length + paths[start].First(p => p.end == cell).length : length);
             }
-
 
             return pathLengths.Min().ToString();
         }
@@ -53,14 +50,15 @@ namespace AoC2016
 
             foreach (var digitCell in digitCells)
             {
-                var visited = new HashSet<Grid2d.GridCell>();
-                var queue = new Queue<(Grid2d.GridCell cell, int steps)>();
+                var visited = new HashSet<Grid2d.Cell>();
+                var queue = new Queue<(Grid2d.Cell cell, int steps)>();
                 queue.Enqueue((digitCell, 0));
 
                 while (queue.Count > 0)
                 {
                     var (cell, length) = queue.Dequeue();
                     var openCells = Grid.GetNeighbors(cell.Position, c => !visited.Contains(c) && c.Character != '#');
+                   
                     foreach (var openCell in openCells)
                     {
                         if (char.IsDigit(openCell.Character))
@@ -72,10 +70,9 @@ namespace AoC2016
                 }
             }
 
-            return paths.GroupBy(path => path.start)
-                .ToDictionary(group => group.Key, group => group.GroupBy(p => p.end).Select(g => (end: g.Key, length: g.Min(p => p.length))).ToList()); ;
+            return paths.GroupBy(path => path.start).ToDictionary(group => group.Key,
+                    group => group.GroupBy(p => p.end).Select(g => (end: g.Key, length: g.Min(p => p.length))).ToList()); 
         }
 
-        public override string SolvePart2() => null;
     }
 }

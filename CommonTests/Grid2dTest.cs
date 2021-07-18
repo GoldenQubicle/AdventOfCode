@@ -38,7 +38,7 @@ namespace CommonTests
         public void GetCellByQueryTest()
         {
             var actual = grid.QueryCells(gc => gc.Character == 'q').First();
-            var expected = new Grid2d.GridCell {Position = new Position(1, 3), Character = 'q'};
+            var expected = new Grid2d.Cell {Position = new Position(1, 3), Character = 'q'};
             Assert.AreEqual(expected, actual);
         }
     }
