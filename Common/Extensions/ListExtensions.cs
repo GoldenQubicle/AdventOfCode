@@ -4,8 +4,9 @@ namespace Common.Extensions
 {
     public static class ListExtensions
     {
+
         public static T Random<T>(this List<T> list) =>
-            list[new Random().Next(list.Count)];
+                 list[new Random().Next(list.Count)];
 
 
         /// <summary>
@@ -17,7 +18,7 @@ namespace Common.Extensions
         /// <returns>A new list</returns>
         public static List<T> Expand<T>(this List<T> list, T item)
         {
-            var result = new List<T>( );
+            var result = new List<T>();
             result.AddRange(list);
             result.Add(item);
             return result;
@@ -33,7 +34,7 @@ namespace Common.Extensions
         /// <returns></returns>
         public static List<T> ReplaceAt<T>(this List<T> list, int idx, T item)
         {
-            var result = new List<T>( );
+            var result = new List<T>();
             result.AddRange(list);
             result.RemoveAt(idx);
             result.Insert(idx, item);
@@ -50,7 +51,7 @@ namespace Common.Extensions
         /// <returns></returns>
         public static List<T> InsertAt<T>(this List<T> list, int idx, T item)
         {
-            var result = new List<T>( );
+            var result = new List<T>();
             result.AddRange(list);
             result.Insert(idx, item);
             return result;

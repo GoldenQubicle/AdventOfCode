@@ -17,33 +17,30 @@ namespace Common
 
         public bool Equals(Position other)
         {
-            if(other.dimensions != dimensions) return false;
+            if (other?.Values is null) return false;
 
-            bool EqualValue = true;
-            for(var i = 0 ; i < dimensions ; i++)
+            if (other.dimensions != dimensions) return false;
+            
+            var equalValue = true;
+
+            for (var i = 0; i < dimensions; i++)
             {
-                if(other.Values[i] != Values[i])
-                {
-                    EqualValue = false;
-                    break;
-                }
+                if (other.Values[i] == Values[i]) continue;
+
+                equalValue = false;
+                break;
             }
-            return EqualValue;
+            return equalValue;
         }
 
-        public override bool Equals(object obj)
-        {
-            if(obj is null) return false;
-
-            return obj.GetType() == typeof(Position) && Equals((Position) obj);
-        }
-
-        public override int GetHashCode( )
+        public override bool Equals(object obj) => obj is Position other && Equals(other);
+        
+        public override int GetHashCode()
         {
             unchecked
             {
                 var hash = 17;
-                foreach(var item in Values)
+                foreach (var item in Values)
                 {
                     hash = 31 * hash + item.GetHashCode();
                 }
@@ -54,5 +51,7 @@ namespace Common
         public static bool operator ==(Position left, Position right) => EqualityComparer<Position>.Default.Equals(left, right);
         public static bool operator !=(Position left, Position right) => !(left == right);
         public static Position operator +(Position left, Position right) => new(left.Values.Select((v, i) => v + right.Values[i]).ToArray());
+
+       
     }
 }

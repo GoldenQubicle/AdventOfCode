@@ -24,4 +24,9 @@
     <ProjectReference Include="..\AoC2019\AoC2019.fsproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="5.0.2" />
+  </ItemGroup>
+
 </Project>

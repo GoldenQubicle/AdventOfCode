@@ -17,7 +17,7 @@ namespace AoC2015
         {
             //note this will take a while to compute..
             var targetWeight = packages.Sum() / groups;
-            var sets = new HashSet<IList<long>>();
+            var sets = new HashSet<IReadOnlyList<long>>();
             for (var i = 2; i < packages.Count; i++)
             {
                 var combos = new Combinations<long>(packages, i);

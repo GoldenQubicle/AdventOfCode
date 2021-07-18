@@ -6,6 +6,7 @@ using Common.Extensions;
 
 namespace Common
 {
+    [Obsolete("Use Combinatorics nuget pacakge")]
     public static class Combinator
     {
         public static CombinatorResult<T> Generate<T>(List<T> elements, CombinatorOptions options)
