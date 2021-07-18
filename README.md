@@ -1,6 +1,6 @@
 # AdventOfCode
 
-Repo for AoC, thusfar only 2020 complete (2019 half complete resides in seperate repo as of yet).
+Repo for AoC, thusfar 2015 & 2020 are complete. 
 
 Also contains small CLI for getting things up and running.<br>
 Example usage; `.\CLI.exe scaffold -y 2015 -d 2 -u -c hello:world` <br>
