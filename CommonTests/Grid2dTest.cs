@@ -28,6 +28,7 @@ namespace CommonTests
         public void GetNeighborTest(int x, int y, params char[] expected)
         {
             var cells = grid.GetNeighbors(new Position(x, y));
+            
             var c = cells.Select(n => n.Character).ToArray();
             
             Assert.AreEqual(expected, c);

@@ -39,6 +39,13 @@ namespace Common
         public List<Cell> GetNeighbors(Position pos, Func<Cell, bool> query) =>
             GetNeighbors(pos).Where(query).ToList();
 
+        /// <summary>
+        /// Returns the neighbors for the given position.
+        /// Does not wrap around the grid by default (i.e. a corner cell returns 3 neighbors max)
+        /// For a connected cell returns 8 neighbors when diagonal is allowed (default), returns 4 neighbors otherwise. 
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
         public List<Cell> GetNeighbors(Position pos) => Offsets
             .Select(o => o + pos)
             .Where(np => Cells.ContainsKey(np))

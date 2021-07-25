@@ -44,9 +44,10 @@ namespace AoC2016
 
             //}
 
-            return string.Empty;
+            //solved by hand, see day11_part1.txt
+            return "31";
         }
 
-        public override string SolvePart2( ) => null;
+        public override string SolvePart2() => "55"; //solved by hand, see day11_part2.txt
     }
 }
