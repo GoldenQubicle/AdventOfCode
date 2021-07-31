@@ -41,12 +41,10 @@ namespace CLI.Verbs
 
             var assembly = Assembly.LoadFrom(assemblyPath);
             DayType = assembly.GetType($"AoC{Year}.Day{DayString}");
-            //final check if day actually exists.. could probably just check the .cs or .fs file..?
-            //though could be present while not in dll in case it hasn't build in a while
-            if ( DayType == null )
-                result = (false, $"Error: could not find day {Day} for year {Year} in assembly at {assemblyPath}.");
 
-            return result;
+           //final check if day actually exists.. could probably just check the .cs or .fs file..?
+           //though could be present while not in dll in case it hasn't build in a while
+            return DayType == null ? (false, $"Error: could not find day {Day} for year {Year} in assembly at {assemblyPath}.") : result;
         }
 
         public static string Run(RunDayOptions options)
@@ -70,14 +68,7 @@ namespace CLI.Verbs
         }
 
         private static (string part1, string part2) GetSolutions(RunDayOptions options)
-        {
-            if (options.IsFSharp)
-            {
-                var part1 = options.DayType.GetMethod("get_SolvePart1")?.Invoke(new object(), new object[] { });
-                var part2 = options.DayType.GetMethod("get_SolvePart2")?.Invoke(new object(), new object[] { });
-                return ((string) part1, (string) part2);
-            }
-
+        { 
             var ctorType = new[] { typeof(string) };
             var ctor = options.DayType.GetConstructor(ctorType);
             var dayToRun = (Solution)ctor.Invoke(new object[] { $"day{options.DayString}" });

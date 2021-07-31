@@ -12,7 +12,7 @@ namespace Common
         protected Solution(string file) => Input = ParseInput(file, "\r\n");
         protected Solution(string file, string split) => Input = ParseInput(file, split);
         protected Solution(List<string> input) => Input = input;
-
+        protected Solution() { }
         public List<string> ParseInput(string file, string split)
         {
             // admittedly bit hacky solution 

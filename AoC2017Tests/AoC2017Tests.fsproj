@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Program.fs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="NUnit" Version="3.13.1" />
     <Compile Include="Day01Test.fs" />
