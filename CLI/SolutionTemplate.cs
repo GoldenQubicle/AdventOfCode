@@ -17,17 +17,19 @@ namespace CLI
 
         public string CreateUnitTest() => IsFSharp ? FSharpUnitTest() : CSharpUnitTest();
 
-        private string FSharpSolution() => 
+        private string FSharpSolution() =>
             $@"namespace AoC{Year}
 
-             open System
-             open System.IO
+             open Common
+             open System.Collections.Generic
+             open System.Linq 
 
-             module Day{Day} = 
-
-                let SolvePart1 : string = """"
-
-                let SolvePart2 : string = """" ".Replace("             ", "");
+             type Day{Day} = 
+                 inherit Solution
+                 new (file:string) = {{ inherit Solution(file) }}
+                 new (input : List<string>) = {{ inherit Solution(input) }}
+                 override this.SolvePart1() = """"
+                 override this.SolvePart2() = """" ".Replace("             ", "");
 
         private string CSharpSolution() => 
             $@"using System;
@@ -57,22 +59,26 @@ namespace CLI
 
             open AoC{Year}
             open NUnit.Framework
+            open Common.Extensions
 
             {(TestCases.Count == 0 ? 
             @$"[<Test>]
             let Part1 () =
-                let actual = Day{Day}.SolvePart1
+                let day = new Day{Day}(""day{Day}"")
+                let actual = day.SolvePart1()
                 Assert.AreEqual(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}"", actual)"
             : 
             @$"{TestCases.Aggregate(string.Empty,
                 (s, c) => s + @$"[<TestCase(""{c.input}"",""{c.outcome}"")>] {Environment.NewLine}").TrimEnd()}
             let Part1 (input: string, expected : string) =
-                let actual = Day{Day}.SolvePart1
+                let day = new Day{Day}(input.ToList())
+                let actual = day.SolvePart1()
                 Assert.AreEqual(expected, actual)")}
             
             [<Test>]
             let Part2 () = 
-                let actual = Day{Day}.SolvePart2
+                let day = new Day{Day}(""day{Day}"")
+                let actual = day.SolvePart2()
                 Assert.AreEqual("""", actual)".Replace("            ", "");
 
         private string CSharpUnitTest() =>

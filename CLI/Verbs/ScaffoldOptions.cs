@@ -116,6 +116,6 @@ namespace CLI.Verbs
         private static (string projPath, string compileLine, int insertAt) GetFsharpProjectInfo(int year, string day, bool isTestProject = false) =>
             (@$"{RootPath}\\AoC{year}{(isTestProject ? "Tests" : string.Empty)}\\AoC{year}{(isTestProject ? "Tests" : string.Empty)}.fsproj",
                 $@"    <Compile Include=""Day{day}{(isTestProject ? "Test" : string.Empty)}.fs"" />",
-                isTestProject ? 15 + int.Parse(day): 4 + int.Parse(day)); //yes hardcoded line numbers at which to insert, would probably be nicer to parse project file as proper xml 
+                isTestProject ? 12 + int.Parse(day): 4 + int.Parse(day)); //yes hardcoded line numbers at which to insert, would probably be nicer to parse project file as proper xml 
     }
 }

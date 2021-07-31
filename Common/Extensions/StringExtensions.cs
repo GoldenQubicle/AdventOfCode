@@ -1,9 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Common.Extensions
 {
     public static class StringExtensions
     {
+        public static List<string> ToList(this string s) => new() { s };
+
         public static int GetInteger(this string s) => int.Parse(new string(s.Where(char.IsDigit).ToArray()));
 
         public static bool HasInteger(this string s) => s.Any(char.IsDigit);

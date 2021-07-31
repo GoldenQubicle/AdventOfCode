@@ -3,7 +3,6 @@ using Common;
 using System;
 using System.IO;
 using System.Reflection;
-//using AoC2019;
 
 namespace CLI.Verbs
 {
@@ -34,7 +33,7 @@ namespace CLI.Verbs
                 result = (false, $"Error: malformed part flag");
 
             if ( !File.Exists($"{RootPath}\\AoC{Year}\\data\\day{DayString}.txt") )
-                result = (false, $"Error: could not find input file for day {Day} at {RootPath}\\AoC{Year}\\data\\.");
+                result = (false, $"Error: could not find input file for day {Day} at {RootPath}\\AoC{Year}\\data");
 
             // return before loading assembly
                 if ( !result.isValid ) return result;

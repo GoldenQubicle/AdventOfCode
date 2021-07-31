@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace Common
 {
@@ -13,7 +11,7 @@ namespace Common
         protected Solution(string file, string split) => Input = ParseInput(file, split);
         protected Solution(List<string> input) => Input = input;
         protected Solution() { }
-        public List<string> ParseInput(string file, string split)
+        private List<string> ParseInput(string file, string split)
         {
             // admittedly bit hacky solution 
             // however the solution MUST be able to find the correct data folder,

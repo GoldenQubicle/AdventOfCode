@@ -20,7 +20,15 @@ type Day01 =
         
         sum.ToString()
 
-    override this.SolvePart2() = ""
+    override this.SolvePart2() = 
+        let input = this.Input.First()
+        let length = input.Length 
+        let mutable sum = 0.0
+        for i in 0..length-1 do
+            let next = input.[(i + length/2) % length]
+            if input.[i] = next then sum <-  sum + System.Char.GetNumericValue input.[i]
+        
+        sum.ToString()
  
 
 
