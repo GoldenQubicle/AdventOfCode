@@ -1,11 +1,9 @@
-namespace AoC2019
+namespace AoC2017
 
 open System
 open System.IO
 
-module Day02 = 
-
-   let mutable input = fun file -> File.ReadLines(file) 
+module Day01 = 
 
    let SolvePart1 : string = ""
 

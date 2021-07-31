@@ -25,8 +25,6 @@ namespace CLI
 
              module Day{Day} = 
 
-                let mutable input = fun file -> File.ReadLines(file) 
-
                 let SolvePart1 : string = """"
 
                 let SolvePart2 : string = """" ".Replace("             ", "");
@@ -69,7 +67,6 @@ namespace CLI
             @$"{TestCases.Aggregate(string.Empty,
                 (s, c) => s + @$"[<TestCase(""{c.input}"",""{c.outcome}"")>] {Environment.NewLine}").TrimEnd()}
             let Part1 (input: string, expected : string) =
-                Day{Day}.input <- fun _ -> input.Split(',') :> seq<string>
                 let actual = Day{Day}.SolvePart1
                 Assert.AreEqual(expected, actual)")}
             

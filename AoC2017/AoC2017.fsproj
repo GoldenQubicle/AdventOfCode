@@ -4,16 +4,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Day01.fs" />
-    <Compile Include="Day02.fs" />
     <Compile Include="Library.fs" />
-    <Content Include="data\day01.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>  
-    <Content Include="data\day02.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="5.0.2" />
+    <Folder Include="data\" />
+    <Content Include="data\day01.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

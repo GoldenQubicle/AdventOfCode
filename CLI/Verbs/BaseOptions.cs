@@ -23,7 +23,7 @@ namespace CLI.Verbs
             if ( Day < 1 || Day > 25 )
                 return (false, $"Error: day must be between 1 and 25.");
 
-            IsFSharp = Year == 2019;
+            IsFSharp = Year == 2017;
 
             return (true, string.Empty);
         }
