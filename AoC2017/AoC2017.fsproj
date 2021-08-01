@@ -5,6 +5,7 @@
   <ItemGroup>
     <Compile Include="Day01.fs" />
     <Compile Include="Day02.fs" />
+    <Compile Include="Day03.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -21,6 +22,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <Content Include="data\day02.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\day03.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
