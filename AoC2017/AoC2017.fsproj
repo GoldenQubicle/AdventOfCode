@@ -4,15 +4,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Day01.fs" />
+    <Compile Include="Day02.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="data\" />
+    <Content Include="data\day02test2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\day02test1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="data\day01.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
+    <Content Include="data\day02.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

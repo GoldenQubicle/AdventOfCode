@@ -26,9 +26,12 @@ namespace CLI
 
              type Day{Day} = 
                  inherit Solution
+
                  new (file:string) = {{ inherit Solution(file) }}
                  new (input : List<string>) = {{ inherit Solution(input) }}
+
                  override this.SolvePart1() = """"
+
                  override this.SolvePart2() = """" ".Replace("             ", "");
 
         private string CSharpSolution() => 
@@ -64,7 +67,7 @@ namespace CLI
             {(TestCases.Count == 0 ? 
             @$"[<Test>]
             let Part1 () =
-                let day = new Day{Day}(""day{Day}"")
+                let day = new Day{Day}(""day{Day}test1"")
                 let actual = day.SolvePart1()
                 Assert.AreEqual(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}"", actual)"
             : 

@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Day02Test.fs" />
     <Compile Include="Day01Test.fs" />
   </ItemGroup>
 </Project>
