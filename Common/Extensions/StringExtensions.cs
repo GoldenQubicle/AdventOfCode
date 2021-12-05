@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Common.Extensions
 {
@@ -32,5 +33,7 @@ namespace Common.Extensions
             s = s.Insert(idx, c.ToString());
             return s;
         }
+
+        public static long ToDecimal(this StringBuilder sb) => Convert.ToInt64(sb.ToString(), 2);
     }
 }
