@@ -18,7 +18,7 @@ namespace AoC2020
 
         public override string SolvePart2( ) => new List<(int, int)>
             { (1, 1), (3, 1), (5, 1), (7, 1), (1, 2) }
-            .Select(s => TraverseSlope(s))
+            .Select(TraverseSlope)
             .Aggregate((s1, s2) => s1 * s2).ToString( );
 
         public long TraverseSlope((int, int) incr)
