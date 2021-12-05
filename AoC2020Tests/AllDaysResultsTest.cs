@@ -50,7 +50,7 @@ namespace AoC2020Tests
         private Solution GetSolutionForDay(string day)
         {
             var dayType = assembly.GetType($"AoC2020.{day}");
-            var ctorType = new Type[ ] { typeof(string) };
+            var ctorType = new[ ] { typeof(string) };
             var ctor = dayType.GetConstructor(ctorType);
             return ( Solution ) ctor.Invoke(new object[ ] { day });
         }
