@@ -13,4 +13,8 @@
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AoC2021\AoC2021.csproj" />
+  </ItemGroup>
+
 </Project>
