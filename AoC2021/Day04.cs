@@ -9,7 +9,7 @@ namespace AoC2021
     {
         private readonly List<int> numbers;
         private List<(int number, bool marked)[][]> Boards { get; set; }
-
+        public const int BoardDim = 5;
         public Day04(string file) : base(file)
         {
             numbers = Input.First().Split(',').Select(int.Parse).ToList();
@@ -20,9 +20,9 @@ namespace AoC2021
             Boards = new();
             var digit = new Regex("\\d+");
 
-            for (var idx = 1; idx < Input.Count() - 2; idx += 5)
+            for (var idx = 1; idx < Input.Count - 2; idx += BoardDim)
             {
-                Boards.Add(Input.Skip(idx).Take(5)
+                Boards.Add(Input.Skip(idx).Take(BoardDim)
                     .Select(i => digit.Matches(i).Select(m => (int.Parse(m.Value), false)).ToArray()).ToArray());
             }
         }
@@ -43,10 +43,10 @@ namespace AoC2021
 
                 if (winners.Any())
                 {
-                    winners.ForEach(winner =>
+                    winners.ForEach(w =>
                     {
-                        winSums.Add(winner.SelectMany(c => c).Where(c => !c.marked).Sum(c => c.number) * n);
-                        Boards.Remove(winner);
+                        winSums.Add(w.SelectMany(c => c).Where(c => !c.marked).Sum(c => c.number) * n);
+                        Boards.Remove(w);
                     });
                 }
             });
@@ -56,12 +56,11 @@ namespace AoC2021
 
     public static class BoardExtension
     {
-        private const int dim = 5;
         public static void MarkNumber(this (int number, bool marked)[][] board, int n)
         {
-            for (var r = 0; r < dim; r++)
+            for (var r = 0; r < Day04.BoardDim; r++)
             {
-                for (var c = 0; c < dim; c++)
+                for (var c = 0; c < Day04.BoardDim; c++)
                 {
                     if (board[r][c].number == n)
                         board[r][c].marked = true;
@@ -71,7 +70,7 @@ namespace AoC2021
 
         public static bool HasBingo(this (int number, bool marked)[][] board)
         {
-            for (var i = 0; i < dim; i++)
+            for (var i = 0; i < Day04.BoardDim; i++)
             {
                 var col = board[i].All(c => c.marked);
                 var row = board.Select(b => b[i]).All(c => c.marked);
