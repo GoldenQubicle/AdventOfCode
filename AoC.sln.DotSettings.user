@@ -1,16 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=07ef0910_002Dc57d_002D404f_002D883f_002Df9eeb83ab592/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Part2 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c0702330_002D6a7d_002D4bcd_002Db2dd_002D93b62cbb06d1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day04Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net5.0::AoC2021Tests.Day03Test.Part2&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=378a06ce_002D3c31_002D48ee_002D9907_002D90dca736ae35/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Part2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net5.0::AoC2021Tests.Day02Test.Part2&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9cb3776d_002D57ae_002D406b_002Da18e_002Da841fa1cc35e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Part1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net5.0::AoC2021Tests.Day03Test.Part1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net5.0::AoC2021Tests.Day04Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
