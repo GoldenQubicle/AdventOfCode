@@ -52,15 +52,18 @@ namespace AoC2021
                        var y = l.start.y > l.end.y ? l.start.y - s : l.start.y + s;
                        AddPoint(x, y);
                    }));
+
         private void AddVerticalPoints() =>
             lines.Where(l => l.start.y == l.end.y).ForEach(l =>
                 Enumerable.Range(l.start.x > l.end.x ? l.end.x : l.start.x, Math.Abs(l.start.x - l.end.x) + 1)
                     .ForEach(x => AddPoint(x, l.start.y)));
 
+
         private void AddHorizontalPoints() =>
             lines.Where(l => l.start.x == l.end.x).ForEach(l =>
                 Enumerable.Range(l.start.y > l.end.y ? l.end.y : l.start.y, Math.Abs(l.start.y - l.end.y) + 1)
                     .ForEach(y => AddPoint(l.start.x, y)));
+
 
         private void AddPoint(int x, int y)
         {
