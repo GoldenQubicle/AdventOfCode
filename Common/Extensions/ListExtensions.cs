@@ -5,6 +5,14 @@ namespace Common.Extensions
     public static class ListExtensions
     {
 
+        public static void RemoveAll<T>(this List<T> list, List<T> toBeRemoved)
+        {
+            foreach (var item in toBeRemoved)
+            {
+                list.Remove(item);
+            }
+        }
+
         public static T Random<T>(this List<T> list) =>
                  list[new Random().Next(list.Count)];
 

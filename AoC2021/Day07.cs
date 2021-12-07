@@ -9,32 +9,14 @@ namespace AoC2021
     {
         private readonly List<int> numbers;
 
-        public Day07(string file) : base(file)
-        {
-            numbers = Input.First().Split(',').Select(int.Parse).ToList();
-        }
-        
+        public Day07(string file) : base(file) => numbers = Input.First().Split(',').Select(int.Parse).ToList();
 
-        public override string SolvePart1( )
-        {
-            var cheapest = int.MaxValue;
-            for (var i = 0; i < numbers.Count; i++)
-            {
-                var cost = numbers.Select(n => Math.Abs(n - i)).Sum();
-                cheapest = cost < cheapest ? cost : cheapest;
-            }
-            return cheapest.ToString();
-        }
+        public override string SolvePart1( ) => numbers.Select((t, idx) => 
+            numbers.Select(n => Math.Abs(n - idx)).Sum())
+                .Prepend(int.MaxValue).Min().ToString();
 
-        public override string SolvePart2()
-        {
-            var cheapest = int.MaxValue;
-            for (var i = 0; i < numbers.Count; i++)
-            {
-                var cost = numbers.Select(n => Math.Abs(n - i)).Select(c => Enumerable.Range(1, c).Sum()).Sum();
-                cheapest = cost < cheapest ? cost : cheapest;
-            }
-            return cheapest.ToString();
-        }
+        public override string SolvePart2() => numbers.Select((t, idx) => 
+            numbers.Select(n => Math.Abs(n - idx)).Select(c => Enumerable.Range(1, c).Sum()).Sum())
+                .Prepend(int.MaxValue).Min().ToString();
     }
 }

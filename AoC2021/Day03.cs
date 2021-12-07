@@ -39,12 +39,13 @@ namespace AoC2021
         {
             var idx = 0;
 
-            while (bits.Count() > 1)
+            while (bits.Count > 1)
             {
                 var (most, least) = GetMostAndLeastCommonBit(bits.Select(i => i[idx]));
                 bits = bits.Where(i => i[idx] == (criteria == One ? most : least)).ToList();
                 idx++;
             }
+
             return Convert.ToInt64(bits.First(), 2);
         }
 

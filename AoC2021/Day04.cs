@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Common;
+using Common.Extensions;
 
 namespace AoC2021
 {
@@ -41,21 +42,21 @@ namespace AoC2021
                 Boards.ForEach(b => b.MarkNumber(n));
                 var winners = Boards.Where(b => b.HasBingo()).ToList();
 
-                if (winners.Any())
-                {
-                    winners.ForEach(w =>
-                    {
-                        winSums.Add(w.SelectMany(c => c).Where(c => !c.marked).Sum(c => c.number) * n);
-                        Boards.Remove(w);
-                    });
-                }
+                if (!winners.Any()) return;
+
+                winSums.AddRange(winners.Select(b => b.GetSum(n)));
+                Boards.RemoveAll(winners);
             });
+
             return winSums;
         }
     }
 
     public static class BoardExtension
     {
+        public static long GetSum(this (int number, bool marked)[][] board, int n) =>
+            board.SelectMany(c => c).Where(c => !c.marked).Sum(c => c.number) * n;
+
         public static void MarkNumber(this (int number, bool marked)[][] board, int n)
         {
             for (var r = 0; r < Day04.BoardDim; r++)
