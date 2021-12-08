@@ -12,15 +12,11 @@ namespace AoC2021
 
         public Day08(string file) : base(file) => digits = Input.Select(i =>
                 {
-                    var parts = i.Split('|');
-                    return (parts[0].Split(' ').Where(s => !string.IsNullOrEmpty(s)).ToList(),
-                        parts[1].Split(' ').Where(s => !string.IsNullOrEmpty(s)).ToList());
-
+                    var parts = i.Split(" | ");
+                    return (parts[0].Split(' ').ToList(), parts[1].Split(' ').ToList());
                 }).ToList();
 
-        
-
-        public override string SolvePart1() => digits.Sum(d => 
+        public override string SolvePart1() => digits.Sum(d =>
             d.output.Count(s => s.Length == 2 || s.Length == 3 || s.Length == 4 || s.Length == 7)).ToString();
 
         public override string SolvePart2() => digits.Select(DetermineWireSegments).Sum().ToString();
@@ -34,7 +30,7 @@ namespace AoC2021
                 { "7", i.patterns.First(s => s.Length == 3) },
                 { "8", i.patterns.First(s => s.Length == 7) },
             };
-            
+
             i.patterns.Where(s => s.Length == 6).Distinct().ForEach(s =>
             {
                 var segment = decode["8"].Except(s).First();
