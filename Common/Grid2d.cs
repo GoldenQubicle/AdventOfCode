@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Combinatorics.Collections;
+using Common.Extensions;
 
 namespace Common
 {
@@ -67,6 +68,7 @@ namespace Common
         {
             public Position Position { get; init; }
             public char Character { get; init; }
+            public long Value => Character.ToInt();
 
             /// <summary>
             /// returns a new Cell with same position but new character
