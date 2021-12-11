@@ -57,7 +57,7 @@ namespace AoC2016
                 while (queue.Count > 0)
                 {
                     var (cell, length) = queue.Dequeue();
-                    var openCells = Grid.GetNeighbors(cell.Position, c => !visited.Contains(c) && c.Character != '#');
+                    var openCells = Grid.GetNeighbors(cell, c => !visited.Contains(c) && c.Character != '#');
                    
                     foreach (var openCell in openCells)
                     {

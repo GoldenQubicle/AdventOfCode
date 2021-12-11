@@ -10,12 +10,12 @@ namespace AoC2021
         public Day09(string file) : base(file) => grid = new Grid2d(Input, diagonalAllowed: false);
 
         public override string SolvePart1() => grid
-            .Where(c => grid.GetNeighbors(c.Position).All(n => n.Value > c.Value))
+            .Where(c => grid.GetNeighbors(c).All(n => n.Value > c.Value))
             .Sum(c => c.Value + 1).ToString();
 
         public override string SolvePart2()
         {
-            var lowPoints = grid.Where(c => grid.GetNeighbors(c.Position).All(n => n.Value > c.Value));
+            var lowPoints = grid.Where(c => grid.GetNeighbors(c).All(n => n.Value > c.Value));
             var visited = new HashSet<Position>();
 
             return lowPoints.Aggregate(new List<long>(), (basins, cell) =>
@@ -28,7 +28,7 @@ namespace AoC2021
                 while (cells.Any())
                 {
                     var c = cells.Dequeue();
-                    var neighbors = grid.GetNeighbors(c.Position, n => n.Value != 9 && !visited.Contains(n.Position));
+                    var neighbors = grid.GetNeighbors(c, n => n.Value != 9 && !visited.Contains(n.Position));
                     neighbors.ForEach(n =>
                     {
                         visited.Add(n.Position);

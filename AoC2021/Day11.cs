@@ -36,7 +36,7 @@ namespace AoC2021
                 flashers.ForEach(c =>
                 {
                     hasFlashed.Add(c);
-                    grid.GetNeighbors(c.Position).ForEach(n => n.Value++);
+                    grid.GetNeighbors(c).ForEach(n => n.Value++);
                 });
                 flashers = grid.GetCells(c => c.Value > 9 && !hasFlashed.Contains(c));
             }

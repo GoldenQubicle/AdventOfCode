@@ -39,18 +39,18 @@ namespace Common
 
         public List<Cell> GetCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList();
 
-        public List<Cell> GetNeighbors(Position pos, Func<Cell, bool> query) =>
-            GetNeighbors(pos).Where(query).ToList();
+        public List<Cell> GetNeighbors(Cell cell, Func<Cell, bool> query) =>
+            GetNeighbors(cell).Where(query).ToList();
 
         /// <summary>
         /// Returns the neighbors for the given position.
         /// Does not wrap around the grid by default (i.e. a corner cell returns 3 neighbors max)
         /// For a connected cell returns 8 neighbors when diagonal is allowed (default), returns 4 neighbors otherwise. 
         /// </summary>
-        /// <param name="pos"></param>
+        /// <param name="cell"></param>
         /// <returns></returns>
-        public List<Cell> GetNeighbors(Position pos) => Offsets
-            .Select(o => o + pos)
+        public List<Cell> GetNeighbors(Cell cell) => Offsets
+            .Select(o => o + cell.Position)
             .Where(np => Cells.ContainsKey(np))
             .Select(np => Cells[np]).ToList();
 
@@ -76,7 +76,7 @@ namespace Common
             {
                 Position = position;
                 Character = character;
-                Value = Character.ToInt();
+                Value = char.IsDigit(Character) ? Character.ToInt() : -1;
             }
 
             /// <summary>

@@ -27,7 +27,8 @@ namespace CommonTests
         [TestCase(4, 4, 's', 'x', 't')]
         public void GetNeighborTest(int x, int y, params char[] expected)
         {
-            var cells = grid.GetNeighbors(new Position(x, y));
+            var cell = new Grid2d.Cell(new Position(x, y), 'c');
+            var cells = grid.GetNeighbors(cell);
             
             var c = cells.Select(n => n.Character).ToArray();
             

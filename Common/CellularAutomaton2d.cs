@@ -22,7 +22,7 @@ namespace Common
                 var newGrid = new Grid2d();
                 foreach (var cell in grid)
                 {
-                    var activeCount = grid.GetNeighbors(cell.Position, c => c.Character == Active).Count; //assuming AoC input treats # as active state
+                    var activeCount = grid.GetNeighbors(cell, c => c.Character == Active).Count; //assuming AoC input treats # as active state
                     var newCell = GameOfLifeRules(activeCount, cell);
 
                     if (AdditionalRules is not null)
