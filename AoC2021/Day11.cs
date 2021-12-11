@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -26,7 +22,6 @@ namespace AoC2021
 
         public override string SolvePart2()
         {
-            grid = new Grid2d(Input, diagonalAllowed: true);
             var step = 0;
 
             while (grid.GetCells(c => c.Value == 0).Count != 100)
