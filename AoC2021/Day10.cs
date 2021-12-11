@@ -26,6 +26,7 @@ namespace AoC2021
 
         public override string SolvePart1() => Input.Select(IsCorrupted).Sum(r => r.Item2).ToString();
 
+        //meh copy pasta
         public override string SolvePart2()
         {
             var completionScores = Input.Where(l => !IsCorrupted(l).Item1).Aggregate(new List<long>(),
