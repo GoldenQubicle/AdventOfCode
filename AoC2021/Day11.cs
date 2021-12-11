@@ -7,18 +7,10 @@ namespace AoC2021
 {
     public class Day11 : Solution
     {
-        private Grid2d grid;
+        private readonly Grid2d grid;
         public Day11(string file) : base(file) => grid = new Grid2d(Input, diagonalAllowed: true);
 
-        public override string SolvePart1()
-        {
-            var flashes = 0L;
-            for (var i = 0; i < 100; i++)
-            {
-                flashes += DoFlashes();
-            }
-            return flashes.ToString();
-        }
+        public override string SolvePart1() => Enumerable.Range(0, 100).Aggregate(0L, (flashes, _) => flashes += DoFlashes()).ToString();
 
         public override string SolvePart2()
         {
@@ -36,16 +28,17 @@ namespace AoC2021
         private int DoFlashes()
         {
             var hasFlashed = new HashSet<Grid2d.Cell>();
-
             grid.ForEach(c => c.Value++);
+            var flashers = grid.GetCells(c => c.Value > 9 && !hasFlashed.Contains(c));
 
-            while (grid.GetCells(c => c.Value > 9 && !hasFlashed.Contains(c)).Any())
+            while (flashers.Any())
             {
-                grid.GetCells(c => c.Value > 9 && !hasFlashed.Contains(c)).ForEach(c =>
+                flashers.ForEach(c =>
                 {
                     hasFlashed.Add(c);
                     grid.GetNeighbors(c.Position).ForEach(n => n.Value++);
                 });
+                flashers = grid.GetCells(c => c.Value > 9 && !hasFlashed.Contains(c));
             }
 
             hasFlashed.ForEach(c => c.Value = 0);
