@@ -31,12 +31,14 @@ namespace Common
             {
                 for (var x = 0; x < input[y].Length; x++)
                 {
-                    var gc = new Cell { Position = new Position(x, y), Character = input[y][x] };
+                    var gc = new Cell( new Position(x, y), input[y][x]);
                     Cells.Add(gc.Position, gc);
                 }
             }
         }
-        
+
+        public List<Cell> GetCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList();
+
         public List<Cell> GetNeighbors(Position pos, Func<Cell, bool> query) =>
             GetNeighbors(pos).Where(query).ToList();
 
@@ -64,18 +66,25 @@ namespace Common
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public struct Cell : IEquatable<Cell>
+        public class Cell : IEquatable<Cell>
         {
             public Position Position { get; init; }
             public char Character { get; init; }
-            public long Value => Character.ToInt();
+            public long Value { get; set; }
+
+            public Cell(Position position, char character)
+            {
+                Position = position;
+                Character = character;
+                Value = Character.ToInt();
+            }
 
             /// <summary>
             /// returns a new Cell with same position but new character
             /// </summary>
             /// <param name="newChar"></param>
             /// <returns></returns>
-            public Cell ChangeCharacter(char newChar) => new() { Position = Position, Character = newChar };
+            public Cell ChangeCharacter(char newChar) => new(Position,  newChar);
 
             public bool Equals(Cell other) => Equals(Position, other.Position) && Character == other.Character;
 
