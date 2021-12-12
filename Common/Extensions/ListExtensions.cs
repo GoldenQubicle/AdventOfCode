@@ -16,6 +16,13 @@ namespace Common.Extensions
         public static T Random<T>(this List<T> list) =>
                  list[new Random().Next(list.Count)];
 
+        public static List<T> AsNew<T>(this List<T> list)
+        {
+            var l = new List<T>();
+            l.AddRange(list);
+            return l;
+        }
+
 
         /// <summary>
         /// Add an item to the list and return the result as a new List&lt;<typeparamref name="T"/>&gt;
