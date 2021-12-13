@@ -25,8 +25,9 @@ namespace AoC2021Tests
         [Test]
         public void Part2( )
         {
+            var expected = "\r\n#####\r\n#...#\r\n#...#\r\n#...#\r\n#####";
             var actual = day13.SolvePart2( );
-            Assert.AreEqual("", actual);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

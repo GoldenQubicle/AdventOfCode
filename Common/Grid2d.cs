@@ -9,6 +9,7 @@ namespace Common
 {
     public class Grid2d : IEnumerable<Grid2d.Cell>
     {
+        public int Count => Cells.Count;
         private Dictionary<Position, Cell> Cells { get; } = new();
 
         private List<Position> Offsets { get; }

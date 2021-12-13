@@ -16,7 +16,7 @@ namespace AoC2021
         {
             var step = 0;
 
-            while (grid.GetCells(c => c.Value == 0).Count != 100)
+            while (grid.GetCells(c => c.Value == 0).Count != grid.Count)
             {
                 DoFlashes();
                 step++;
