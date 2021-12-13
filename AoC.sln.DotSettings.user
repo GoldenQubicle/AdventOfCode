@@ -1,26 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=62c1eaf0_002D55cf_002D4f24_002D9473_002Dc16f37315df5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Part1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6f5f9f25_002Dc416_002D40ad_002D9333_002Dfe1f85bfb5d3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Part2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net5.0::AoC2021Tests.Day12Test.Part1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net5.0::AoC2021Tests.Day13Test.Part2&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7d98367e_002D6af1_002D4788_002D8b2b_002D8c203869fa88/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day12Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fe842650_002Db6f8_002D4e59_002D9309_002Df53a773ee9eb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Part1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net5.0::AoC2021Tests.Day12Test&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net5.0::AoC2021Tests.Day13Test.Part1&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7f3641a8_002D7cf8_002D4237_002Db339_002Da529ea924181/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Part2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net5.0::AoC2021Tests.Day12Test.Part2&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	
-	
-	
-	
-	
-	
-	
-	</wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
