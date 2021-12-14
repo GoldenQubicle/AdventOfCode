@@ -66,7 +66,7 @@ namespace AoC2021
 
                     var isSmallCave = char.IsLower(n[0]);
 
-                    if (isSmallCave && !current.seenTwice)
+                    if (isSmallCave && !current.path.Contains(n))
                     {
                         queue.Enqueue((current.path.Expand(n), current.visited, true));
                         queue.Enqueue((current.path.Expand(n), current.visited.Expand(n), false));

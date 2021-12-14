@@ -27,11 +27,11 @@ namespace AoC2021
             });
         }
 
-        public override string SolvePart1() => Fold(dots, instructions.First()).Count.ToString();
+        public override string SolvePart1() => DoFold(dots, instructions.First()).Count.ToString();
 
         public override string SolvePart2()
         {
-            instructions.ForEach(i => dots = Fold(dots, i));
+            instructions.ForEach(i => dots = DoFold(dots, i));
         
             return Enumerable.Range(0, dots.Max(d => d.y) + 1).Aggregate(new StringBuilder(), (sb, y) =>
               {
@@ -41,7 +41,7 @@ namespace AoC2021
               }).ToString();
         }
 
-        private HashSet<(int x, int y)> Fold(HashSet<(int x, int y)> dots, (char dim, int v) op) =>
+        private static HashSet<(int x, int y)> DoFold(IEnumerable<(int x, int y)> dots, (char dim, int v) op) =>
             dots.Aggregate(new List<(int x, int y)>(), (set, dot) => set.Expand(
                     op.dim == 'x' && dot.x >= op.v ?
                     dot.Add(-((dot.x - op.v) * 2), 0) :
