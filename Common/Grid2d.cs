@@ -9,6 +9,7 @@ namespace Common
 {
     public class Grid2d : IEnumerable<Grid2d.Cell>
     {
+        public (int x, int y) Dimensions { get; init; }
         public int Count => Cells.Count;
         private Dictionary<Position, Cell> Cells { get; } = new();
 
@@ -28,6 +29,7 @@ namespace Common
 
         public Grid2d(List<string> input, bool diagonalAllowed = true) : this(diagonalAllowed)
         {
+            Dimensions = (input.Count, input[0].Length);
             for (var y = 0; y < input.Count; y++)
             {
                 for (var x = 0; x < input[y].Length; x++)
@@ -37,6 +39,8 @@ namespace Common
                 }
             }
         }
+
+        public Cell GetCell(Cell c) => Cells[c.Position];
 
         public List<Cell> GetCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList();
 

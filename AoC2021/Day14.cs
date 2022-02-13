@@ -57,26 +57,26 @@ namespace AoC2021
             for (var i = 0; i < 40; i++)
             {
                 var newPairs = new Dictionary<string, long>();
-                foreach (var kvp in pairs)
+                foreach (var (s, v) in pairs)
                 {
-                    var np = (insertions[kvp.Key][..2], insertions[kvp.Key][1..3]);
+                    var np = (insertions[s][..2], insertions[s][1..3]);
 
-                    if (newPairs.ContainsKey(np.Item1)) newPairs[np.Item1] += kvp.Value;
-                    else newPairs.Add(np.Item1, kvp.Value);
-                    if (newPairs.ContainsKey(np.Item2)) newPairs[np.Item2] += kvp.Value;
-                    else newPairs.Add(np.Item2, kvp.Value);
+                    if (newPairs.ContainsKey(np.Item1)) newPairs[np.Item1] += v;
+                    else newPairs.Add(np.Item1, v);
+                    if (newPairs.ContainsKey(np.Item2)) newPairs[np.Item2] += v;
+                    else newPairs.Add(np.Item2, v);
                 }
                 pairs = newPairs;
             }
 
-            foreach (var (s, value) in pairs)
+            foreach (var (s, v) in pairs)
             {
-                if (chars.ContainsKey(s[0])) chars[s[0]] += value;
-                else chars.Add(s[0], value);
-                if (chars.ContainsKey(s[1])) chars[s[1]] += value;
-                else chars.Add(s[1], value);
+                if (chars.ContainsKey(s[0])) chars[s[0]] += v;
+                else chars.Add(s[0], v);
+                if (chars.ContainsKey(s[1])) chars[s[1]] += v;
+                else chars.Add(s[1], v);
             }
-
+            //what a shit show somewhere counting twice but.. too tired to fix now
             return ((chars.Values.Max() - chars.Values.Min()) / 2 ).ToString();
         }
     }
