@@ -22,7 +22,7 @@ namespace Common
 
             //TODO somehow the files for 20201 use a different line ending..?
             //not sure what is going on but needed different split characters in order to parse the input for 2021
-            split = aocYear.GetInteger() == 2021 ? "\n" : "\r\n";
+            split = aocYear.GetInteger() == 2021 || aocYear.GetInteger() == 2019 ? "\n" : "\r\n";
 
             var path = GetType().Assembly.Location.Replace($"{aocYear}.dll", "");
 
