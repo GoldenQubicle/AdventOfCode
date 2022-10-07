@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 
 namespace AoC2019
@@ -11,8 +6,6 @@ namespace AoC2019
     public class Day01 : Solution
     {
         public Day01(string file) : base(file) { }
-
-        public Day01(List<string> input) : base(input) { }
 
         public override string SolvePart1() => Input.Select(int.Parse).Select(GetFuelPerModule).Sum().ToString();
 
@@ -25,7 +18,6 @@ namespace AoC2019
                     fuelMass = GetFuelPerModule(fuelMass);
                     if (fuelMass > 0) total += fuelMass;
                 }
-            
                 return total;
             }).Sum().ToString();
 
