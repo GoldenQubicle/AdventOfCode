@@ -14,7 +14,7 @@ namespace AoC2015
         private Dictionary<string, ushort> wires = new( );
         private List<(string a, string b, string gate, string output)> instructions;
 
-        public Day07(string file) : base(file, "\n")
+        public Day07(string file) : base(file)
         {
             var expression = new Regex("((?<a>\\w{1,}.)?(?<gate>RSHIFT.|LSHIFT.|OR.|AND.|NOT.))?(?<b>\\w{1,})(.->.)(?<output>\\w{1,})");
             instructions = Input
@@ -51,11 +51,11 @@ namespace AoC2015
                 // figure out if the input wire(s) for this gate have value
                 var hasValue = i.gate switch
                 {
-                    "AND" or "OR" => ( char.IsDigit(i.a[0]) ? true : wires.ContainsKey(i.a) ) &&
-                                     ( char.IsDigit(i.b[0]) ? true : wires.ContainsKey(i.b) ),
-                    "LSHIFT" or "RSHIFT" => char.IsDigit(i.a[0]) ? true : wires.ContainsKey(i.a),
-                    "NOT" => char.IsDigit(i.b[0]) ? true : wires.ContainsKey(i.b),
-                    _ => char.IsDigit(i.b[0]) ? true : wires.ContainsKey(i.b)
+                    "AND" or "OR" => ( char.IsDigit(i.a[0]) || wires.ContainsKey(i.a) ) &&
+                                     ( char.IsDigit(i.b[0]) || wires.ContainsKey(i.b) ),
+                    "LSHIFT" or "RSHIFT" => char.IsDigit(i.a[0]) || wires.ContainsKey(i.a),
+                    "NOT" => char.IsDigit(i.b[0]) || wires.ContainsKey(i.b),
+                    _ => char.IsDigit(i.b[0]) || wires.ContainsKey(i.b)
                 };
 
                 if ( !hasValue )
