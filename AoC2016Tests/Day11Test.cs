@@ -12,21 +12,21 @@ namespace AoC2016Tests
         [SetUp]
         public void Setup( )
         {
-            day11 = new Day11("day11test1");
+            day11 = new Day11("day11");
         }
         
         [Test]
         public void Part1( )
         {
             var actual = day11.SolvePart1( );
-            Assert.AreEqual("11", actual);
+            Assert.AreEqual("31", actual);
         }
 
         [Test]
         public void Part2( )
         {
             var actual = day11.SolvePart2( );
-            Assert.AreEqual("", actual);
+            Assert.AreEqual("55", actual);
         }
     }
 }

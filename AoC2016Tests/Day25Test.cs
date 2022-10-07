@@ -19,7 +19,7 @@ namespace AoC2016Tests
         public void Part1( )
         {
             var actual = day25.SolvePart1( );
-            Assert.AreEqual("bla", actual);
+            Assert.AreEqual("158", actual);
         }
 
         [Test]

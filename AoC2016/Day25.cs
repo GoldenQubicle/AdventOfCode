@@ -28,22 +28,22 @@ namespace AoC2016
 
         public override string SolvePart1()
         {
-            Input.RemoveRange(1, 7);
-            Input.InsertRange(1, Enumerable.Repeat("nop", 7));
-            instructions = Input.Select(s => s).ToList();
-            for (var i = 1; i <= 1000; i++)
-            {
-                signal = new();
-                registers["a"] = i + 643 * 4;
-                registers["b"] = 0;
-                registers["c"] = 0;
-                registers["d"] = 0;
-                var a = ParseInstructions();
-            }
+            //Input.RemoveRange(1, 7);
+            //Input.InsertRange(1, Enumerable.Repeat("nop", 7));
+            //instructions = Input.Select(s => s).ToList();
+            //for (var i = 1; i <= 1000; i++)
+            //{
+            //    signal = new();
+            //    registers["a"] = i + 643 * 4;
+            //    registers["b"] = 0;
+            //    registers["c"] = 0;
+            //    registers["d"] = 0;
+            //    var a = ParseInstructions();
+            //}
 
             return "158"; // solved manually by looking at input instruction repeating lines
         }
-        public override string SolvePart2() => null;
+        public override string SolvePart2() => string.Empty;
 
         private string ParseInstructions()
         {
