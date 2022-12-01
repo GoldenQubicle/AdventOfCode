@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Common.Extensions
 {
@@ -19,6 +20,18 @@ namespace Common.Extensions
             {
                 action(kvp);
             }
+        }
+
+        public static Dictionary<TKey, TValue> AddNew<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key, TValue value)
+        {
+            dic.Add(key, value);
+            return dic;
+        }
+
+        public static Dictionary<TKey, TValue> AddTo<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key, Func<TValue, TValue> addAction)
+        {
+            dic[key] = addAction(dic[key]);
+            return dic;
         }
     }
 }
