@@ -28,9 +28,9 @@ namespace Common.Extensions
             return dic;
         }
 
-        public static Dictionary<TKey, TValue> AddTo<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key, Func<TValue, TValue> addAction)
+        public static Dictionary<TKey, TValue> AddTo<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key, Func<TValue, TValue> func)
         {
-            dic[key] = addAction(dic[key]);
+            dic[key] = func(dic[key]);
             return dic;
         }
     }

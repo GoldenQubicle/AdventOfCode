@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace CLI.Verbs
@@ -50,11 +51,14 @@ namespace CLI.Verbs
                 {
                     CookieContainer = cookieContainer,
                     AutomaticDecompression = DecompressionMethods.All,
+                   
                 };
                 using var httpClient = new HttpClient(httpClientHandler)
                 {
                     BaseAddress = baseAddress,
                 };
+                //added user agent because: reddit.com/r/adventofcode/comments/z9dhtd/please_include_your_contact_info_in_the_useragent/
+                httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("(+github.com/GoldenQubicle/AdventOfCode)"));
 
                 var aocDir = $"{RootPath}\\AoC{options.Year}";
                 var inputFile = $"{aocDir}\\data\\day{options.DayString}.txt";
