@@ -20,7 +20,7 @@ namespace CLI.Verbs
             if ( !result.isValid ) return result;
 
             //note we assume debug builds are present
-            var dir = $"{RootPath}\\AoC{Year}\\bin\\Debug\\net5.0";
+            var dir = $"{RootPath}\\AoC{Year}\\bin\\Debug\\net6.0";
             var assemblyPath = $"{dir}\\AoC{Year}.dll";
 
             if ( !Directory.Exists(dir) )

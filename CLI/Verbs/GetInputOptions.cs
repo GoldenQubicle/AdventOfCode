@@ -66,12 +66,16 @@ namespace CLI.Verbs
                     var content = await response.Content.ReadAsStringAsync();
                     await File.WriteAllTextAsync(inputFile, content);
 
-                    var projExtension = options.IsFSharp ? ".fsproj" : ".csproj";
-                    var projPath = $"{aocDir}\\AoC{options.Year}{projExtension}";
-                    var projFile = await File.ReadAllLinesAsync(projPath)
-                        .ContinueWith(f => UpdateProjFile(f.Result.ToList(), options.DayString, options.IsFSharp));
+                    // NOTE: as per 2022 we're no longer updating the csproj file on day to day basis.
+                    // Instead we include the data folder wholesale in the project file, much easier and less error prone.
+                    // TODO update project files of previous years to include the data folder
 
-                    await File.WriteAllLinesAsync($"{projPath}", projFile);
+                    //var projExtension = options.IsFSharp ? ".fsproj" : ".csproj";
+                    //var projPath = $"{aocDir}\\AoC{options.Year}{projExtension}";
+                    //var projFile = await File.ReadAllLinesAsync(projPath)
+                    //    .ContinueWith(f => UpdateProjFile(f.Result.ToList(), options.DayString, options.IsFSharp));
+
+                    //await File.WriteAllLinesAsync($"{projPath}", projFile);
 
                     message = $"Success: created input file for year {options.Year} day {options.Day}";
                 }
