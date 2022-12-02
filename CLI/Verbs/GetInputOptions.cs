@@ -57,6 +57,7 @@ namespace CLI.Verbs
                 {
                     BaseAddress = baseAddress,
                 };
+
                 //added user agent because: reddit.com/r/adventofcode/comments/z9dhtd/please_include_your_contact_info_in_the_useragent/
                 httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("(+github.com/GoldenQubicle/AdventOfCode)"));
 
