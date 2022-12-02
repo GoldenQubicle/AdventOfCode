@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace CLI.Verbs
@@ -50,11 +51,15 @@ namespace CLI.Verbs
                 {
                     CookieContainer = cookieContainer,
                     AutomaticDecompression = DecompressionMethods.All,
+                   
                 };
                 using var httpClient = new HttpClient(httpClientHandler)
                 {
                     BaseAddress = baseAddress,
                 };
+
+                //added user agent because: reddit.com/r/adventofcode/comments/z9dhtd/please_include_your_contact_info_in_the_useragent/
+                httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("(+github.com/GoldenQubicle/AdventOfCode)"));
 
                 var aocDir = $"{RootPath}\\AoC{options.Year}";
                 var inputFile = $"{aocDir}\\data\\day{options.DayString}.txt";
@@ -66,12 +71,16 @@ namespace CLI.Verbs
                     var content = await response.Content.ReadAsStringAsync();
                     await File.WriteAllTextAsync(inputFile, content);
 
-                    var projExtension = options.IsFSharp ? ".fsproj" : ".csproj";
-                    var projPath = $"{aocDir}\\AoC{options.Year}{projExtension}";
-                    var projFile = await File.ReadAllLinesAsync(projPath)
-                        .ContinueWith(f => UpdateProjFile(f.Result.ToList(), options.DayString, options.IsFSharp));
+                    // NOTE: as per 2022 we're no longer updating the csproj file on day to day basis.
+                    // Instead we include the data folder wholesale in the project file, much easier and less error prone.
+                    // TODO update project files of previous years to include the data folder
 
-                    await File.WriteAllLinesAsync($"{projPath}", projFile);
+                    //var projExtension = options.IsFSharp ? ".fsproj" : ".csproj";
+                    //var projPath = $"{aocDir}\\AoC{options.Year}{projExtension}";
+                    //var projFile = await File.ReadAllLinesAsync(projPath)
+                    //    .ContinueWith(f => UpdateProjFile(f.Result.ToList(), options.DayString, options.IsFSharp));
+
+                    //await File.WriteAllLinesAsync($"{projPath}", projFile);
 
                     message = $"Success: created input file for year {options.Year} day {options.Day}";
                 }
