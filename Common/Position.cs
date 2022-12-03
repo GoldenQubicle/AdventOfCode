@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Common
@@ -52,6 +53,11 @@ namespace Common
         public static bool operator !=(Position left, Position right) => !(left == right);
         public static Position operator +(Position left, Position right) => new(left.Values.Select((v, i) => v + right.Values[i]).ToArray());
 
-       
+       public static bool operator <(Position left, Position right) => left.Values[0] < right.Values[0] && left.Values[1] < right.Values[1];
+       public static bool operator >(Position left, Position right) => left.Values[0] > right.Values[0] && left.Values[1] > right.Values[1];
+
+       public static bool operator <=(Position left, Position right) =>left.Values[0] <= right.Values[0] && left.Values[1] <= right.Values[1];
+       public static bool operator >=(Position left, Position right) => left.Values[0] >= right.Values[0] && left.Values[1] >= right.Values[1];
+
     }
 }

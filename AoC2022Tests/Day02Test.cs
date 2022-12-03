@@ -1,8 +1,3 @@
-using AoC2022;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AoC2022Tests
 {
     public class Day02Test

@@ -40,6 +40,8 @@ namespace Common
             }
         }
 
+        public Cell this[int x, int y] => Cells[new Position(x, y)];
+        
         public Cell GetCell(Cell c) => Cells[c.Position];
 
         public List<Cell> GetCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList();
@@ -100,6 +102,10 @@ namespace Common
             public static bool operator ==(Cell left, Cell right) => EqualityComparer<Cell>.Default.Equals(left, right);
             public static bool operator !=(Cell left, Cell right) => !(left == right);
 
+            
+
         }
+
+       
     }
 }

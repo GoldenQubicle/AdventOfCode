@@ -1,43 +1,42 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common;
-
+using Common.Extensions;
 namespace AoC2021
 {
     public class Day15 : Solution
     {
         private Grid2d grid;
-        public Day15(string file) : base(file) => grid = new Grid2d(Input, diagonalAllowed: false);
+        public Day15(string file) : base(file) =>
+            grid = new Grid2d(Input, diagonalAllowed: false);
 
         public override string SolvePart1()
         {
-            var risks = new List<long>();
-            var queue = new List<(Grid2d.Cell cell, long risk)>();
-            var visited = new List<Grid2d.Cell>();
-            var start = grid.First(c => c.Position.Values[0] == 0 && c.Position.Values[1] == 0);
-            var end = grid.First(c => c.Position.Values[0] == grid.Dimensions.x - 1 && c.Position.Values[1] == grid.Dimensions.y - 1);
-            queue.Add((start, 0L));
+            var queue = new PriorityQueue<(Grid2d.Cell ptr, List<Grid2d.Cell> visited), long>();
+            var paths = new List<(List<Grid2d.Cell> path, long risk)>();
+            var end = grid[grid.Dimensions.x - 1, grid.Dimensions.y - 1];
 
-            while (queue.Any())
+            var start = (ptr: grid[0, 0], visited: new List<Grid2d.Cell>());
+            queue.Enqueue(start, 0l);
+
+            while (queue.Count > 0)
             {
-                var current = queue.First();
-                queue.RemoveAt(0);
-                visited.Add(current.cell);
+                queue.TryDequeue(out var current, out var risk);
 
-                if (current.cell == end)
+                if (current.ptr == end)
                 {
-                    risks.Add(current.risk);
-                    continue;
+                    return risk.ToString();
                 }
-                grid.GetNeighbors(current.cell, n => !visited.Contains(n))
-                    .ForEach(n => queue.Add((n, current.risk + n.Value)));
 
-                queue = queue.OrderBy(q => q.risk).ToList();
+                grid.GetNeighbors(current.ptr, n => !current.visited.Contains(n))
+                    .ForEach( n => queue.Enqueue((n, current.visited.Expand(current.ptr)), risk + n.Value));
+                
             }
 
-            return risks.Min().ToString();
+            return string.Empty;
         }
 
-        public override string SolvePart2() => null;
+        public override string SolvePart2() => string.Empty;
     }
 }

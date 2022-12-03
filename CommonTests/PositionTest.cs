@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using Common;
 using NUnit.Framework;
 
@@ -35,6 +36,27 @@ namespace CommonTests
             var actual = p1 + p2;
 
             Assert.IsTrue(expected == actual);
+        }
+
+        [Test]
+        public void PositionEqualsTest( )
+        {
+            var p1 = new Position(0, 0);
+            var p2 = new Position(1, 1);
+            var p3 = new Position(-1, -1);
+
+            Assert.IsTrue(p1 < p2);
+            Assert.IsTrue(p1 <= p2);
+            Assert.IsFalse(p1 > p2);
+            Assert.IsFalse(p1 >= p2);
+
+            Assert.IsFalse(p1 > p2);
+            Assert.IsFalse(p1 >= p2);
+            Assert.IsTrue(p1 < p2);
+            Assert.IsTrue(p1 <= p2);
+
+            Assert.IsTrue(p2 <= new Position(1,1));
+            Assert.IsFalse(p2 < new Position(1,1));
         }
     }
 }

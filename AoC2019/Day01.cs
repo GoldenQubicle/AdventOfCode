@@ -5,7 +5,7 @@ namespace AoC2019
 {
     public class Day01 : Solution
     {
-        public Day01(string file) : base(file) { }
+        public Day01(string file) : base(file, "\n") { }
 
         public override string SolvePart1() => Input.Select(int.Parse).Select(GetFuelPerModule).Sum().ToString();
 

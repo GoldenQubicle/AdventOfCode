@@ -66,15 +66,19 @@ namespace AoC2021
 
                     var isSmallCave = char.IsLower(n[0]);
 
-                    if (isSmallCave && !current.path.Contains(n))
+                    switch (isSmallCave)
                     {
-                        queue.Enqueue((current.path.Expand(n), current.visited, true));
-                        queue.Enqueue((current.path.Expand(n), current.visited.Expand(n), false));
+                        case true when !current.path.Contains(n):
+                            queue.Enqueue((current.path.Expand(n), current.visited, true));
+                            queue.Enqueue((current.path.Expand(n), current.visited.Expand(n), false));
+                            break;
+                        case true:
+                            queue.Enqueue((current.path.Expand(n), current.visited.Expand(n), true));
+                            break;
+                        default:
+                            queue.Enqueue((current.path.Expand(n), current.visited, current.seenTwice));
+                            break;
                     }
-                    else if(isSmallCave)
-                        queue.Enqueue((current.path.Expand(n), current.visited.Expand(n), true));
-                    else
-                        queue.Enqueue((current.path.Expand(n), current.visited, current.seenTwice));
 
                 });
             }
