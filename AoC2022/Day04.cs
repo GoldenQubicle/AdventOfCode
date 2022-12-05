@@ -14,7 +14,7 @@ namespace AoC2022
                         (p.p2Start >= p.p1Start && p.p2End <= p.p1End)).ToString();
 
         public override string SolvePart2() => pairs
-            .Count(p => (p.p1Start <= p.p2End && p.p1End >= p.p2Start)).ToString();
+            .Count(p => p.p1Start <= p.p2End && p.p1End >= p.p2Start).ToString();
 
 
     }

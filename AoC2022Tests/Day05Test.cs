@@ -7,7 +7,7 @@ namespace AoC2022Tests
         [SetUp]
         public void Setup( )
         {
-            day05 = new Day05("day05test1");
+            day05 = new Day05("day05test2");
         }
         
         [Test]

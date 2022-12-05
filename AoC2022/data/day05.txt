@@ -1,12 +1,13 @@
-HLRFBCJM
-DCZ
-WGNCFJH
-BSTMDJP
-JRDCN
-ZGJPQDLW
-HRFTZP
-GMVL
-JRQFPGBC
+[H]                 [Z]         [J]
+[L]     [W] [B]     [G]         [R]
+[R]     [G] [S]     [J] [H]     [Q]
+[F]     [N] [T] [J] [P] [R]     [F]
+[B]     [C] [M] [R] [Q] [F] [G] [P]
+[C] [D] [F] [D] [D] [D] [T] [M] [G]
+[J] [C] [J] [J] [C] [L] [Z] [V] [B]
+[M] [Z] [H] [P] [N] [W] [P] [L] [C]
+ 1   2   3   4   5   6   7   8   9 
+
 move 3 from 2 to 1
 move 8 from 6 to 4
 move 4 from 8 to 2
