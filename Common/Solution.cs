@@ -28,7 +28,7 @@ namespace Common
 
             return File.ReadAllText($"{path}\\data\\{file}.txt")
                    .Split(split)
-                   .Select(s => s.Trim())
+                   //.Select(s => s.Trim())
                    .Where(s => !string.IsNullOrEmpty(s))
                    .ToList();
         }
