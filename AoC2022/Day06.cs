@@ -9,9 +9,9 @@ namespace AoC2022
         public override string SolvePart2() => FindFirstMarker(14);
 
         private string FindFirstMarker(int markerLength) => Enumerable.Range(0, Input[0].Length - markerLength)
-            .Aggregate(new List<int>(), (ints, i) =>
-                    Input[0][i..(i + markerLength)].Distinct().Count() == markerLength
-                        ? ints.Expand(i + markerLength) 
-                        : ints).First().ToString();
+            .Aggregate(new List<int>(), (markers, idx) =>
+                    Input[0][idx..(idx + markerLength)].Distinct().Count() == markerLength
+                        ? markers.Expand(idx + markerLength) 
+                        : markers).First().ToString();
     }
 }
