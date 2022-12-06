@@ -9,7 +9,7 @@ namespace Common.Extensions
     {
         public static List<string> ToList(this string s) => new() { s };
 
-        public static int GetInteger(this string s) => int.Parse(new string(s.Where(char.IsDigit).ToArray()));
+        public static int AsInteger(this string s) => int.Parse(new(s.Where(char.IsDigit).ToArray()));
 
         public static bool HasInteger(this string s) => s.Any(char.IsDigit);
 
