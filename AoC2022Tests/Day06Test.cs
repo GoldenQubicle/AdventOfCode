@@ -4,21 +4,15 @@ namespace AoC2022Tests
     {
         Day06 day06;
 
-        [SetUp]
-        public void Setup( )
-        {
-            //day06 = new Day06("day06test1");
-        }
-        
         [TestCase("mjqjpqmgbljsphdztnvjfqwrcgsmlb", "7")]
         [TestCase("bvwbjplbgvbhsrlpgdmjqwftvncz", "5")]
-        [TestCase("nppdvjthqldpwncqszvftbrmjlhg","6")] 
-        [TestCase("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg","10")] 
-        [TestCase("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw","11")]
-        public void Part1(string input, string expected )
+        [TestCase("nppdvjthqldpwncqszvftbrmjlhg", "6")]
+        [TestCase("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", "10")]
+        [TestCase("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", "11")]
+        public void Part1(string input, string expected)
         {
-            day06 = new Day06(new List<string> { input } );
-            var actual = day06.SolvePart1( );
+            day06 = new Day06(new List<string> { input });
+            var actual = day06.SolvePart1();
             Assert.AreEqual(expected, actual);
         }
 
@@ -30,7 +24,7 @@ namespace AoC2022Tests
         public void Part2(string input, string expected)
         {
             day06 = new Day06(new List<string> { input });
-            var actual = day06.SolvePart2( );
+            var actual = day06.SolvePart2();
             Assert.AreEqual(expected, actual);
         }
     }
