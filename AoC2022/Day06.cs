@@ -4,22 +4,14 @@ namespace AoC2022
     {
         public Day06(string input) : base(input) { }
         public Day06(List<string> input) : base(input) { }
-        
-        public override string SolvePart1() => FindMarker(4);
-        public override string SolvePart2() => FindMarker(14);
 
-        private string FindMarker(int markerLength)
-        {
+        public override string SolvePart1() => FindFirstMarker(4);
+        public override string SolvePart2() => FindFirstMarker(14);
 
-            for (var i = 0; i < Input[0].Length; i++)
-            {
-                if (Input[0].Substring(i, markerLength).Distinct().Count() == markerLength)
-                {
-                    return (i + markerLength).ToString();
-                }
-            }
-
-            return string.Empty;
-        }
+        private string FindFirstMarker(int markerLength) => Enumerable.Range(0, Input[0].Length - markerLength)
+            .Aggregate(new List<int>(), (ints, i) =>
+                    Input[0][i..(i + markerLength)].Distinct().Count() == markerLength
+                        ? ints.Expand(i + markerLength) 
+                        : ints).First().ToString();
     }
 }
