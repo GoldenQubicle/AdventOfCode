@@ -17,13 +17,10 @@ namespace AoC2022
 
             public Directory Up() => Parent;
 
-            public Directory Down(string name) => name.Equals("/")
-                ? this
-                : Children.First(d => d.Name.Equals(name));
+            public Directory Down(string name) => Children.First(d => d.Name.Equals(name));
 
-            public int GetSize() => Children.Any()
-                ? Children.Select(c => c.GetSize()).Sum() + Files.Select(f => f.size).Sum()
-                : Files.Select(f => f.size).Sum();
+            public int GetSize() => Files.Select(f => f.size).Sum() + 
+                                    Children.Select(c => c.GetSize()).Sum();
 
         }
 
@@ -34,7 +31,7 @@ namespace AoC2022
             var current = new Directory(null, "/");
             directories.Add(current);
 
-            foreach (var line in Input)
+            foreach (var line in Input.Skip(1))
             {
                 if (line.StartsWith("$ cd"))
                 {
@@ -72,8 +69,8 @@ namespace AoC2022
             var toFree = 30000000 - unused;
 
             return directories
+                .Where(d => d.GetSize() > toFree)
                 .Select(d => d.GetSize())
-                .Where(d => d > toFree)
                 .Min().ToString();
         }
     }
