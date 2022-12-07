@@ -5,9 +5,9 @@ namespace AoC2022
         internal class Directory
         {
             public string Name { get; }
-            public Directory Parent { get; }
-            public List<Directory> Children { get; } = new();
-            public List<(string name, int size)> Files { get; } = new();
+            private Directory Parent { get; }
+            private Dictionary<string, Directory> Children { get; } = new();
+            private Dictionary<string, int> Files { get; } = new();
 
             public Directory(Directory parent, string name)
             {
@@ -15,12 +15,13 @@ namespace AoC2022
                 Name = name;
             }
 
-            public Directory Up() => Parent;
+            public Directory MoveTo(string name) => name.Equals("..") ? Parent : Children[name];
 
-            public Directory Down(string name) => Children.First(d => d.Name.Equals(name));
+            public int GetSize() => Files.Values.Sum() + Children.Values.Select(c => c.GetSize()).Sum();
 
-            public int GetSize() => Files.Select(f => f.size).Sum() + 
-                                    Children.Select(c => c.GetSize()).Sum();
+            public void AddChild(Directory dir) => Children.Add(dir.Name, dir);
+
+            public void AddFile(string name, int size) => Files.Add(name, size);
 
         }
 
@@ -35,8 +36,7 @@ namespace AoC2022
             {
                 if (line.StartsWith("$ cd"))
                 {
-                    var part = line.Split(' ')[2];
-                    current = part.Equals("..") ? current.Up() : current.Down(part);
+                    current = current.MoveTo(line.Split(' ')[2]);
                     continue;
                 }
 
@@ -47,12 +47,12 @@ namespace AoC2022
                 {
                     var dir = new Directory(current, line.Split(" ")[1]);
                     directories.Add(dir);
-                    current.Children.Add(dir);
+                    current.AddChild(dir);
                 }
                 else
                 {
                     var parts = line.Split(" ");
-                    current.Files.Add((parts[1], int.Parse(parts[0])));
+                    current.AddFile(parts[1], int.Parse(parts[0]));
                 }
             }
         }
