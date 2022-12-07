@@ -15,11 +15,11 @@ namespace AoC2022
                 Name = name;
             }
 
-            public Directory MoveTo(string name) => name.Equals("..") ? Parent : Children[name];
+            public Directory ChangeDirectory(string name) => name.Equals("..") ? Parent : Children[name];
 
             public int GetSize() => Files.Values.Sum() + Children.Values.Select(c => c.GetSize()).Sum();
 
-            public void AddChild(Directory dir) => Children.Add(dir.Name, dir);
+            public void AddDirectory(Directory dir) => Children.Add(dir.Name, dir);
 
             public void AddFile(string name, int size) => Files.Add(name, size);
 
@@ -36,7 +36,7 @@ namespace AoC2022
             {
                 if (line.StartsWith("$ cd"))
                 {
-                    current = current.MoveTo(line.Split(' ')[2]);
+                    current = current.ChangeDirectory(line.Split(' ')[2]);
                     continue;
                 }
 
@@ -47,7 +47,7 @@ namespace AoC2022
                 {
                     var dir = new Directory(current, line.Split(" ")[1]);
                     directories.Add(dir);
-                    current.AddChild(dir);
+                    current.AddDirectory(dir);
                 }
                 else
                 {
