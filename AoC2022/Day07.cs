@@ -6,7 +6,7 @@ namespace AoC2022
         {
             public string Name { get; }
             private Directory Parent { get; }
-            private Dictionary<string, Directory> Children { get; } = new();
+            private Dictionary<string, Directory> Subs { get; } = new();
             private Dictionary<string, int> Files { get; } = new();
 
             public Directory(Directory parent, string name)
@@ -15,11 +15,11 @@ namespace AoC2022
                 Name = name;
             }
 
-            public Directory ChangeDirectory(string name) => name.Equals("..") ? Parent : Children[name];
+            public Directory ChangeDirectory(string name) => name.Equals("..") ? Parent : Subs[name];
 
-            public int GetSize() => Files.Values.Sum() + Children.Values.Select(c => c.GetSize()).Sum();
+            public int GetSize() => Files.Values.Sum() + Subs.Values.Select(c => c.GetSize()).Sum();
 
-            public void AddDirectory(Directory dir) => Children.Add(dir.Name, dir);
+            public void AddDirectory(Directory dir) => Subs.Add(dir.Name, dir);
 
             public void AddFile(string name, int size) => Files.Add(name, size);
 

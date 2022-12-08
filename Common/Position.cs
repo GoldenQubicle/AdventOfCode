@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using static Common.Grid2d;
 
 namespace Common
 {
@@ -48,6 +49,9 @@ namespace Common
                 return hash;
             }
         }
+
+        public int this[int idx] => Values[idx];
+
 
         public static bool operator ==(Position left, Position right) => EqualityComparer<Position>.Default.Equals(left, right);
         public static bool operator !=(Position left, Position right) => !(left == right);

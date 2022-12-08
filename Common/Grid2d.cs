@@ -79,6 +79,9 @@ namespace Common
             public char Character { get; init; }
             public long Value { get; set; }
 
+            public int X => Position[0];
+            public int Y => Position[1];
+
             public Cell(Position position, char character)
             {
                 Position = position;
