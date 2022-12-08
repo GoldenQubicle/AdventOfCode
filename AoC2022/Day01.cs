@@ -3,8 +3,7 @@ namespace AoC2022
     public class Day01 : Solution
     {
         private Dictionary<int, long> elfs;
-        public Day01(string file) : base(file) => elfs =
-            File.ReadAllLines(Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), $"data/{file}.txt"))
+        public Day01(string file) : base(file, doRemoveEmptyLines: false) => elfs = Input
              .Aggregate(new Dictionary<int, long> { { 1, 0 } }, (result, line) => line switch
              {
                  "" => result.AddNew(result.Count + 1, 0L),

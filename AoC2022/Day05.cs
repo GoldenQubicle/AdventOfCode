@@ -5,7 +5,7 @@ namespace AoC2022
         private List<string> stacks;
         private List<(int q, int from, int to)> moves;
 
-        public Day05(string file) : base(file) => Input.GroupBy(l => l.StartsWith("move")).ForEach(g =>
+        public Day05(string file) : base(file, doTrim: false) => Input.GroupBy(l => l.StartsWith("move")).ForEach(g =>
         {
             if (g.Key == false)
             {

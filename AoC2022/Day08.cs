@@ -35,8 +35,8 @@ namespace AoC2022
             grid.GetCells(direction).Any(c => c.Value >= value);
 
         private bool FilterEdge(Cell cell) =>
-            cell.X >= 1 && cell.X < grid.Dimensions.x &&
-            cell.Y >= 1 && cell.Y < grid.Dimensions.y;
+            cell.X >= 1 && cell.X < grid.Width &&
+            cell.Y >= 1 && cell.Y < grid.Height;
 
         private int WalkLine(Func<int, (int x, int y)> getNextPosition, long value)
         {
@@ -46,8 +46,8 @@ namespace AoC2022
             while (!isBlocked)
             {
                 var (x, y) = getNextPosition(step);
-                if (x < 0 || x >= grid.Dimensions.x ||
-                    y < 0 || y >= grid.Dimensions.y)
+                if (x < 0 || x >= grid.Width ||
+                    y < 0 || y >= grid.Height)
                     return step - 1;
 
                 if (grid[x, y].Value < value) step++;

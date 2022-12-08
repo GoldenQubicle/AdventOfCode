@@ -34,6 +34,6 @@ namespace Common
             }
         }
 
-        public int CountCells(char state) => grid.QueryCells(c => c.Character == state).Count;
+        public int CountCells(char state) => grid.GetCells(c => c.Character == state).Count;
     }
 }

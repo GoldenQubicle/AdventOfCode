@@ -45,7 +45,7 @@ namespace AoC2016
 
         private Dictionary<char, List<(char end, int length)>> GetPaths()
         {
-            var digitCells = Grid.QueryCells(c => char.IsDigit(c.Character));
+            var digitCells = Grid.GetCells(c => char.IsDigit(c.Character));
             var paths = new List<(char start, char end, int length)>();
 
             foreach (var digitCell in digitCells)

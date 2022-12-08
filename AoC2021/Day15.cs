@@ -15,7 +15,7 @@ namespace AoC2021
         {
             var queue = new PriorityQueue<(Grid2d.Cell ptr, List<Grid2d.Cell> visited), long>();
             var paths = new List<(List<Grid2d.Cell> path, long risk)>();
-            var end = grid[grid.Dimensions.x - 1, grid.Dimensions.y - 1];
+            var end = grid[grid.Width- 1, grid.Height - 1];
 
             var start = (ptr: grid[0, 0], visited: new List<Grid2d.Cell>());
             queue.Enqueue(start, 0l);

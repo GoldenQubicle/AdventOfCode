@@ -11,10 +11,49 @@
     &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net7.0::AoC2022Tests.Day07Test.Part2&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=66f6c28e_002Dae50_002D4909_002Dad67_002De34d60446d5c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day04Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::E9722CB8-1BB4-4F96-812B-9A32E080DE30::net6.0::AoC2020Tests.Day04Test&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b92366e0_002D4522_002D4dc8_002D8f60_002D7812dc1a0ae7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day08Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net7.0::AoC2022Tests.Day08Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c4c832cb_002D5cb1_002D4316_002D84e6_002D8332890248ae/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;CommonTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\CommonTests" Presentation="&amp;lt;CommonTests&amp;gt;" /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d0b3a9a1_002D9645_002D4b46_002Db4d1_002D2cde1a3136dc/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day05Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net7.0::AoC2022Tests.Day05Test&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d6c34c98_002D0eb8_002D494d_002Dbe0f_002D74c629984bf1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day01Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net7.0::AoC2022Tests.Day01Test&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e75ee741_002D272d_002D4530_002Dbcc3_002D026cca24005c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Grid2dTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;And&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::2B58D939-8993-4BE1-A2D6-DD1D8B6F43EC::net6.0::CommonTests.Grid2dTest&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net6.0::AoC2021Tests.Day09Test&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::D6CE69E4-8977-48AB-AF65-6AF5393949A7::net6.0::AoC2016Tests.Day24Test&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::52492C8D-52B2-4D86-8EBF-36909CE58B1C::net6.0::AoC2015Tests.Day18Test&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net6.0::AoC2021Tests.Day11Test&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net6.0::AoC2021Tests.Day15Test&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+    &lt;Not&gt;&#xD;
+      &lt;And&gt;&#xD;
+        &lt;TestAncestor&gt;&#xD;
+          &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net6.0::AoC2021Tests.Day15Test.Part2&lt;/TestId&gt;&#xD;
+        &lt;/TestAncestor&gt;&#xD;
+        &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2021Tests" Presentation="&amp;lt;AoC2021Tests&amp;gt;" /&gt;&#xD;
+        &lt;Namespace&gt;AoC2021Tests&lt;/Namespace&gt;&#xD;
+      &lt;/And&gt;&#xD;
+    &lt;/Not&gt;&#xD;
+  &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
 	

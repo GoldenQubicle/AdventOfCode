@@ -9,7 +9,8 @@ namespace Common
 {
     public class Grid2d : IEnumerable<Grid2d.Cell>
     {
-        public (int x, int y) Dimensions { get; init; }
+        public int Width { get; init; }
+        public int Height { get; init; }
         public int Count => Cells.Count;
         private Dictionary<Position, Cell> Cells { get; } = new();
 
@@ -27,22 +28,22 @@ namespace Common
                 .ToList();
         }
 
-        public Grid2d(List<string> input, bool diagonalAllowed = true) : this(diagonalAllowed)
+        public Grid2d(IReadOnlyList<string> input, bool diagonalAllowed = true) : this(diagonalAllowed)
         {
-            Dimensions = (input.Count, input[0].Length);
-            for (var y = 0; y < input.Count; y++)
+            Width = input[0].Length;
+            Height = input.Count;
+
+            for (var y = 0; y < Height; y++)
             {
-                for (var x = 0; x < input[y].Length; x++)
+                for (var x = 0; x < Width; x++) // assuming all lines are equal length
                 {
-                    var gc = new Cell( new Position(x, y), input[y][x]);
+                    var gc = new Cell(new Position(x, y), input[y][x]); //yes really input[y][x], it reads wrong but is right - still dealing with a list here. 
                     Cells.Add(gc.Position, gc);
                 }
             }
         }
 
         public Cell this[int x, int y] => Cells[new Position(x, y)];
-        
-        public Cell GetCell(Cell c) => Cells[c.Position];
 
         public List<Cell> GetCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList();
 
@@ -61,15 +62,9 @@ namespace Common
             .Where(np => Cells.ContainsKey(np))
             .Select(np => Cells[np]).ToList();
 
-        public List<Cell> QueryCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList();
-
         public void Add(Cell cell) => Cells.Add(cell.Position, cell);
 
-        public IEnumerator<Cell> GetEnumerator()
-        {
-            foreach (var cell in Cells.Values)
-                yield return cell;
-        }
+        public IEnumerator<Cell> GetEnumerator() => ((IEnumerable<Cell>)Cells.Values).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -94,7 +89,7 @@ namespace Common
             /// </summary>
             /// <param name="newChar"></param>
             /// <returns></returns>
-            public Cell ChangeCharacter(char newChar) => new(Position,  newChar);
+            public Cell ChangeCharacter(char newChar) => new(Position, newChar);
 
             public bool Equals(Cell other) => Equals(Position, other.Position) && Character == other.Character;
 
@@ -105,10 +100,10 @@ namespace Common
             public static bool operator ==(Cell left, Cell right) => EqualityComparer<Cell>.Default.Equals(left, right);
             public static bool operator !=(Cell left, Cell right) => !(left == right);
 
-            
+
 
         }
 
-       
+
     }
 }
