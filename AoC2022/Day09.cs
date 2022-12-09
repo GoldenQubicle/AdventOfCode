@@ -15,7 +15,7 @@ namespace AoC2022
         private string SimulateRope(List<(int x, int y)> rope) =>
             motions.Aggregate(new HashSet<(int, int)> { rope.Last() }, (visited, motion) =>
             {
-                for (var s = 0; s < motion.steps; s++)
+                Enumerable.Range(0, motion.steps).ForEach(s =>
                 {
                     rope[0] = motion.direction switch
                     {
@@ -25,11 +25,12 @@ namespace AoC2022
                         "D" => rope[0].Add(0, -1),
                     };
 
-                    for (var k = 1; k < rope.Count; k++)
-                        rope[k] = UpdateKnot(rope[k - 1], rope[k]);
+                    Enumerable.Range(1, rope.Count - 1)
+                        .ForEach(k => rope[k] = UpdateKnot(rope[k - 1], rope[k]));
 
                     visited.Add(rope.Last());
-                }
+                });
+
                 return visited;
             }).Count.ToString();
 
