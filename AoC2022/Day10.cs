@@ -7,8 +7,10 @@ namespace AoC2022
         private readonly List<int> cyclesToCheck = new() { 20, 60, 100, 140, 180, 220 };
         private readonly List<int> signals = new();
         private readonly StringBuilder crt = new();
+
         public Day10(string file) : base(file) => instructions = Input.Select(l =>
             l.StartsWith("noop") ? ("noop", 0) : (l.Split(" ")[0], int.Parse(l.Split(" ")[1])));
+
 
         public override string SolvePart1() => DoCycles((c, x) =>
         {
@@ -32,6 +34,7 @@ namespace AoC2022
         }, 
             () => crt.ToString());
 
+
         private string DoCycles(Func<int, int, int> doCycle, Func<string> result)
         {
             var x = 1;
@@ -52,7 +55,6 @@ namespace AoC2022
             return result();
         }
 
-        private static List<long> GetSpritePosition(long idx) => new() { idx - 1, idx, idx + 1 };
-
+        private static List<int> GetSpritePosition(int idx) => new() { idx - 1, idx, idx + 1 };
     }
 }
