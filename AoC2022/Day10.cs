@@ -3,7 +3,6 @@ namespace AoC2022
     public class Day10 : Solution
     {
         private readonly IEnumerable<(string, int)> instructions;
-
         private readonly List<int> cyclesToCheck = new() { 20, 60, 100, 140, 180, 220 };
         private readonly List<int> signals = new();
         private readonly StringBuilder crt = new();
@@ -20,8 +19,8 @@ namespace AoC2022
                 signals.Add(c * x);
 
             return c;
-        }, 
-            () => signals.Sum().ToString());
+        }, () => signals.Sum().ToString());
+
 
         public override string SolvePart2() => DoCycles((c, x) =>
         {
@@ -31,8 +30,7 @@ namespace AoC2022
             crt.Append(GetSpritePosition(x).Contains(c % 40) ? "#" : ".");
 
             return ++c;
-        }, 
-            () => crt.ToString());
+        }, () => crt.ToString());
 
 
         private string DoCycles(Func<int, int, int> doCycle, Func<string> result)
@@ -54,6 +52,7 @@ namespace AoC2022
 
             return result();
         }
+
 
         private static List<int> GetSpritePosition(int idx) => new() { idx - 1, idx, idx + 1 };
     }
