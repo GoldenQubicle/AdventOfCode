@@ -10,48 +10,46 @@ namespace AoC2022
         public Day10(string file) : base(file) => instructions = Input.Select(l =>
             l.StartsWith("noop") ? ("noop", 0) : (l.Split(" ")[0], int.Parse(l.Split(" ")[1])));
 
-        public override string SolvePart1() => DoCycles(isPart1: true);
+        public override string SolvePart1() => DoCycles((c, x) =>
+        {
+            c++;
 
-        public override string SolvePart2() => DoCycles(isPart1: false);
+            if (cyclesToCheck.Contains(c))
+                signals.Add(c * x);
 
-        private string DoCycles(bool isPart1)
+            return c;
+        }, 
+            () => signals.Sum().ToString());
+
+        public override string SolvePart2() => DoCycles((c, x) =>
+        {
+            if (c % 40 == 0)
+                crt.Append(Environment.NewLine);
+
+            crt.Append(GetSpritePosition(x).Contains(c % 40) ? "#" : ".");
+
+            return ++c;
+        }, 
+            () => crt.ToString());
+
+        private string DoCycles(Func<int, int, int> doCycle, Func<string> result)
         {
             var x = 1;
             var cycle = 0;
 
             foreach (var (op, v) in instructions)
             {
-                cycle = isPart1 ? DoCyclePart1(cycle, x) : DoCyclePart2(cycle, x);
+                cycle = doCycle(cycle, x);
 
                 if (op.Equals("noop"))
                     continue;
 
-                cycle = isPart1 ? DoCyclePart1(cycle, x) : DoCyclePart2(cycle, x);
+                cycle = doCycle(cycle, x);
 
                 x += v;
             }
 
-            return isPart1 ? signals.Sum().ToString() : crt.ToString();
-        }
-
-        private int DoCyclePart1(int cycle, int x)
-        {
-            cycle++;
-
-            if (cyclesToCheck.Contains(cycle))
-                signals.Add(cycle * x);
-
-            return cycle;
-        }
-
-        private int DoCyclePart2(int cycle, int x)
-        {
-            if (cycle % 40 == 0)
-                crt.Append(Environment.NewLine);
-
-            crt.Append(GetSpritePosition(x).Contains(cycle % 40) ? "#" : ".");
-
-            return ++cycle;
+            return result();
         }
 
         private static List<long> GetSpritePosition(long idx) => new() { idx - 1, idx, idx + 1 };
