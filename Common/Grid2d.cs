@@ -116,7 +116,7 @@ namespace Common
         {
             public Position Position { get; init; }
             public char Character { get; init; }
-            public long Value { get; init; }
+            public long Value { get; set; }
             public Cell Parent { get; init; }
             public long Cost { get; init; }
             public long Distance { get; set; }
@@ -128,7 +128,7 @@ namespace Common
             {
                 Position = position;
                 Character = character;
-                Value = char.IsDigit(Character) ? Character.ToInt() : -1;
+                Value = char.IsDigit(Character) ? Character.ToLong() : -1;
             }
 
             /// <summary>

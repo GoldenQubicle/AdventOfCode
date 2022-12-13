@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Common.Extensions
+﻿namespace Common.Extensions
 {
     public static class CharExtensions
     {
-        public static long ToInt(this char c) => int.Parse(new string(c, 1));
+        public static long ToLong(this char c) => int.Parse(new(c, 1));
+        public static int ToInt(this char c) => int.Parse(new(c, 1));
     }
 }
