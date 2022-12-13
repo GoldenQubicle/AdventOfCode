@@ -25,7 +25,7 @@ namespace Common.Extensions
 
 
         /// <summary>
-        /// Add an item to the list and return the result as a new List&lt;<typeparamref name="T"/>&gt;
+        /// AddOrReplace an item to the list and return the result as a new List&lt;<typeparamref name="T"/>&gt;
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list">the list to be expanded</param>

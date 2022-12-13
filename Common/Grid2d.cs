@@ -33,11 +33,20 @@ namespace Common
             Width = input[0].Length;
             Height = input.Count;
 
-            for (var y = 0; y < Height; y++)
+            //for (var y = 0; y < Height; y++)
+            //{
+            //    for (var x = 0; x < Width; x++) // assuming all lines are equal length
+            //    {
+            //        var gc = new Cell(new Position(x, y), input[y][x]); //yes really input[y][x], it reads wrong but is right - still dealing with a list here. 
+            //        Cells.Add(gc.Position, gc);
+            //    }
+            //}
+
+            for (var y = 0; y < input.Count; y++)
             {
-                for (var x = 0; x < Width; x++) // assuming all lines are equal length
+                for (var x = 0; x < input[y].Length; x++)
                 {
-                    var gc = new Cell(new Position(x, y), input[y][x]); //yes really input[y][x], it reads wrong but is right - still dealing with a list here. 
+                    var gc = new Cell(new Position(x, y), input[y][x]);
                     Cells.Add(gc.Position, gc);
                 }
             }
