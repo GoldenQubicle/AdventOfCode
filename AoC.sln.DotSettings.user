@@ -1,22 +1,32 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=47669c49_002Daf63_002D4385_002D8f8e_002De0949681b471/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day09Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net7.0::AoC2022Tests.Day09Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4595e5ad_002Da6af_002D4e22_002Dba09_002D851aa613a7cd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;CommonTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;And&gt;&#xD;
+    &lt;Project Location="C:\Users\Erik\source\repos\AoC\CommonTests" Presentation="&amp;lt;CommonTests&amp;gt;" /&gt;&#xD;
+    &lt;Not&gt;&#xD;
+      &lt;Or&gt;&#xD;
+        &lt;And&gt;&#xD;
+          &lt;TestAncestor&gt;&#xD;
+            &lt;TestId&gt;NUnit3x::2B58D939-8993-4BE1-A2D6-DD1D8B6F43EC::net6.0::CommonTests.CombinatorTest&lt;/TestId&gt;&#xD;
+          &lt;/TestAncestor&gt;&#xD;
+          &lt;Project Location="C:\Users\Erik\source\repos\AoC\CommonTests" Presentation="&amp;lt;CommonTests&amp;gt;" /&gt;&#xD;
+          &lt;Namespace&gt;CommonTests&lt;/Namespace&gt;&#xD;
+        &lt;/And&gt;&#xD;
+        &lt;And&gt;&#xD;
+          &lt;TestAncestor&gt;&#xD;
+            &lt;TestId&gt;NUnit3x::2B58D939-8993-4BE1-A2D6-DD1D8B6F43EC::net6.0::CommonTests.CellularAutomatonTest&lt;/TestId&gt;&#xD;
+          &lt;/TestAncestor&gt;&#xD;
+          &lt;Project Location="C:\Users\Erik\source\repos\AoC\CommonTests" Presentation="&amp;lt;CommonTests&amp;gt;" /&gt;&#xD;
+          &lt;Namespace&gt;CommonTests&lt;/Namespace&gt;&#xD;
+        &lt;/And&gt;&#xD;
+      &lt;/Or&gt;&#xD;
+    &lt;/Not&gt;&#xD;
+  &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=544782f1_002D11bd_002D4923_002D92dc_002D195afbdae285/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day12Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net7.0::AoC2022Tests.Day12Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=67f1f9fc_002D8713_002D4679_002Da3b4_002D6541b70948d8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day11Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net7.0::AoC2022Tests.Day11Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ec33cea0_002D153b_002D4d9c_002D84d5_002Dbb34ca579bfb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day10Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net7.0::AoC2022Tests.Day10Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5289eb02_002D062d_002D4d9a_002D8bbb_002Dd1d5aefd48ce/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;And&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net7.0::AoC2022Tests.Day12Test&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+    &lt;Project Location="C:\Users\Erik\source\repos\AoC\AoC2022Tests" Presentation="&amp;lt;AoC2022Tests&amp;gt;" /&gt;&#xD;
+  &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

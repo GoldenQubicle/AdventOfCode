@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Combinatorics.Collections;
 using Common.Extensions;
 
@@ -18,9 +19,9 @@ namespace Common
 
         public Grid2d(bool diagonalAllowed = true)
         {
-            var filter = diagonalAllowed
-                ? new List<Position> { new(0, 0) }
-                : new List<Position> { new(-1, -1), new(-1, 1), new(1, -1), new(1, 1), new(0, 0) };
+            List<Position> filter = diagonalAllowed
+                ? new() { new(0, 0) }
+                : new() { new(-1, -1), new(-1, 1), new(1, -1), new(1, 1), new(0, 0) };
 
             Offsets = new Variations<int>(new[] { -1, 0, 1 }, 2, GenerateOption.WithRepetition)
                 .Select(v => new Position(v[0], v[1]))
@@ -33,31 +34,18 @@ namespace Common
             Width = input[0].Length;
             Height = input.Count;
 
-            //for (var y = 0; y < Height; y++)
-            //{
-            //    for (var x = 0; x < Width; x++) // assuming all lines are equal length
-            //    {
-            //        var gc = new Cell(new Position(x, y), input[y][x]); //yes really input[y][x], it reads wrong but is right - still dealing with a list here. 
-            //        Cells.Add(gc.Position, gc);
-            //    }
-            //}
-
-            for (var y = 0; y < input.Count; y++)
+            for (var y = 0; y < Height; y++)
             {
-                for (var x = 0; x < input[y].Length; x++)
+                for (var x = 0; x < Width; x++) // assuming all lines are equal length
                 {
-                    var gc = new Cell(new Position(x, y), input[y][x]);
+                    var gc = new Cell(new(x, y), input[y][x]); //yes really input[y][x], it reads wrong but is right - still dealing with a list here. 
                     Cells.Add(gc.Position, gc);
                 }
             }
         }
 
-        public Cell this[int x, int y] => Cells[new Position(x, y)];
-
-        public List<Cell> GetCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList();
-
-        public List<Cell> GetNeighbors(Cell cell, Func<Cell, bool> query) =>
-            GetNeighbors(cell).Where(query).ToList();
+        public Cell this[int x, int y] => Cells[new(x, y)];
+        public Cell this[Cell c] => Cells[c.Position];
 
         /// <summary>
         /// Returns the neighbors for the given position.
@@ -71,17 +59,69 @@ namespace Common
             .Where(np => Cells.ContainsKey(np))
             .Select(np => Cells[np]).ToList();
 
+        public List<Cell> GetNeighbors(Cell cell, Func<Cell, bool> query) =>
+            GetNeighbors(cell).Where(query).ToList();
+
+        public List<Cell> GetCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList();
+
         public void Add(Cell cell) => Cells.Add(cell.Position, cell);
 
         public IEnumerator<Cell> GetEnumerator() => ((IEnumerable<Cell>)Cells.Values).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public class Cell : IEquatable<Cell>
+        /// <summary>
+        /// Simple shortest path solver using a priority queue.
+        /// Note it operates on the instanced grid, i.e. multiple calls are not possible and require new grid2d. Kinda sucky, I know. 
+        /// </summary>
+        /// <param name="start">The Start Cell</param>
+        /// <param name="target">The Target Cell</param>
+        /// <param name="constraint">Predicate used when getting neighbors for the dequeued cell. Current cell is the 1st argument, neighbor cell the 2nd.</param>
+        /// <param name="targetCondition">Predicate used to break out of while loop. Current cell is the 1st argument, target cell the 2nd.</param>
+        /// <returns></returns>
+        public List<Cell> GetShortestPath(Cell start, Cell target, Func<Cell, Cell, bool> constraint, Func<Cell, Cell, bool> targetCondition)
+        {
+            Cells.Values.ForEach(c => c.Distance = Math.Abs(target.X - c.X) + Math.Abs(target.Y - c.Y));
+            var path = new List<Cell>();
+            var visited = new Dictionary<Position, bool>();
+            var queue = new PriorityQueue<Cell, long>();
+
+            queue.Enqueue(start, start.GetOverallCost);
+
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+                visited[current.Position] = true;
+
+                if (targetCondition(current, target))
+                {
+                    while (current.Parent is not null)
+                    {
+                        path.Add(current.Parent);
+                        current = current.Parent;
+                    }
+                    break;
+                }
+
+                GetNeighbors(current, n => !visited.ContainsKey(n.Position) && constraint(current, n))
+                    .Select(n => n with { Parent = current, Cost = current.Cost + 1 })
+                    .ForEach(n => queue.Enqueue(n, n.GetOverallCost));
+
+            }
+
+            return path;
+        }
+
+
+        public record Cell
         {
             public Position Position { get; init; }
             public char Character { get; init; }
             public long Value { get; set; }
+            public Cell Parent { get; set; }
+            public long Cost { get; set; }
+            public long Distance { get; set; }
+            public long GetOverallCost => Cost + Distance;
 
             public int X => Position[0];
             public int Y => Position[1];
@@ -100,19 +140,7 @@ namespace Common
             /// <returns></returns>
             public Cell ChangeCharacter(char newChar) => new(Position, newChar);
 
-            public bool Equals(Cell other) => Equals(Position, other.Position) && Character == other.Character;
-
-            public override bool Equals(object obj) => obj is Cell other && Equals(other);
-
-            public override int GetHashCode() => HashCode.Combine(Position, Character);
-
-            public static bool operator ==(Cell left, Cell right) => EqualityComparer<Cell>.Default.Equals(left, right);
-            public static bool operator !=(Cell left, Cell right) => !(left == right);
-
-
-
         }
-
 
     }
 }

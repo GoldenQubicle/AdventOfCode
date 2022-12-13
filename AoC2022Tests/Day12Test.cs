@@ -21,7 +21,7 @@ namespace AoC2022Tests
         public void Part2( )
         {
             var actual = day12.SolvePart2( );
-            Assert.AreEqual("", actual);
+            Assert.AreEqual("29", actual);
         }
     }
 }
