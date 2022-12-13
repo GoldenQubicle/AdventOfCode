@@ -2,23 +2,14 @@ namespace AoC2022
 {
     public class Day13 : Solution
     {
-        private readonly List<string[]> pairs;
-        public Day13(string file) : base(file) => pairs = Input.Chunk(2).ToList();
+        private readonly List<(Packet left, Packet right)> pairs;
+        public Day13(string file) : base(file) => pairs = Input.Chunk(2)
+            .Select(p => (ParsePackets(p[0][1..^1]), ParsePackets(p[1][1..^1]))).ToList();
 
-        public override string SolvePart1()
-        {
-            var result = pairs.Select((p, idx) =>
-            {
-                var left = ParsePackets(p[0][1..^1]);
-                var right = ParsePackets(p[1][1..^1]);
-
-                return (rightOrder: ComparePackets(left, right), idx: idx + 1);
-
-            }).Where(r => r.rightOrder == 1).ToList();
-
-            return result.Sum(r => r.idx).ToString();
-
-        }
+        public override string SolvePart1() => pairs
+            .Select((p, idx) => (result: ComparePackets(p.left, p.right), idx: idx + 1))
+            .Where(r => r.result == 1)
+            .Sum(r => r.idx).ToString();
 
         private int ComparePackets(Packet left, Packet right)
         {
