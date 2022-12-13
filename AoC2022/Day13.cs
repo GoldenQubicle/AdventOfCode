@@ -9,8 +9,8 @@ namespace AoC2022
         {
             var result = pairs.Select((p, idx) =>
             {
-                var left = ParseData(p[0][1..^1]);
-                var right = ParseData(p[1][1..^1]);
+                var left = ParsePackets(p[0][1..^1]);
+                var right = ParsePackets(p[1][1..^1]);
 
                 return (rightOrder: ComparePackets(left, right), idx: idx + 1);
 
@@ -20,7 +20,7 @@ namespace AoC2022
 
         }
 
-        private int ComparePackets(Data left, Data right)
+        private int ComparePackets(Packet left, Packet right)
         {
             if (left.IsValue && right.IsValue)
             {
@@ -29,88 +29,72 @@ namespace AoC2022
                 if (left.Value > right.Value) return -1;
             }
 
-            // wrap single value in 'list' in order to compare
-            var ldl = left.IsValue ? new(left.Value) : left;
-            var rdl = right.IsValue ? new(right.Value) : right;
+            // wrap single value in new packet in order to compare it
+            var lp = left.IsValue ? new(left.Value) : left;
+            var rp = right.IsValue ? new(right.Value) : right;
+
             var i = 0;
-            while (i < ldl.Count && i < rdl.Count)
+            while (i < lp.Count && i < rp.Count)
             {
-                var result = ComparePackets(ldl[i], rdl[i]);
+                var result = ComparePackets(lp[i], rp[i]);
                 if (result != 0) return result;
                 i++;
             }
 
-            // a list ran out of items, however the values were inconclusive so now check list lengths
-            if (ldl.Count == rdl.Count)
-                return 0;
+            // a packet ran out of items, however the values were inconclusive so now check packet lengths
+            if (lp.Count < rp.Count) return 1;
 
-            if (ldl.Count < rdl.Count)
-                return 1;
+            if (lp.Count == rp.Count) return 0;
 
             return -1;
 
         }
 
-
-
         public override string SolvePart2() => null;
 
 
-        private Data ParseData(string data)
+        private Packet ParsePackets(string line)
         {
-            var current = new Data(null);
+            var current = new Packet(null);
             var idx = -1;
-            while (idx++ < data.Length - 1)
+            while (idx++ < line.Length - 1)
             {
-                if (data[idx] == '[')
+                current = line[idx] switch
                 {
-                    current = current.AddData();
-                    continue;
-                }
+                    '[' => current.Push(),
+                    ']' => current.Pop(),
+                    _ => current
+                };
 
-                if (data[idx] == ']')
-                {
-                    current = current.Parent;
-                    continue;
-                }
+                if (!char.IsDigit(line[idx])) continue;
 
-                if (!char.IsDigit(data[idx]))
-                {
-                    continue;
-                }
-
-                var (_, close) = data.Select((c, i) => (c, i)).FirstOrDefault(t => t.c is ',' or ']' && t.i > idx);
-                var value = close == default ? data[idx..] : data[idx..close];
+                //dealing with integers when we get here, just need to find the first separator after it to parse it
+                var (_, close) = line.Select((c, i) => (c, i)).FirstOrDefault(t => t.c is ',' or ']' && t.i > idx);
+                var value = close == default ? line[idx..] : line[idx..close];
                 current.AddValue(int.Parse(value));
             }
 
             return current;
         }
 
-        internal class Data
+        internal class Packet
         {
-            public int Value { get; init; } = -1;
-            private List<Data> NestedData { get; } = new();
-            public Data Parent { get; init; }
-
-            public Data(Data data) => Parent = data;
-
-            public Data(int value) => AddValue(value);
-
+            public int Count => Packets.Count;
             public bool IsValue => Value != -1;
-
-            public void AddValue(int v) => NestedData.Add(new(this) { Value = v });
-
-            public Data this[int i] => NestedData[i];
-
-            public int Count => NestedData.Count;
-
-            public Data AddData()
+            public int Value { get; init; } = -1;
+            private Packet Parent { get; }
+            private List<Packet> Packets { get; } = new();
+            public Packet(Packet packet) => Parent = packet;
+            public Packet(int value) => AddValue(value);
+            public Packet this[int i] => Packets[i];
+            public void AddValue(int v) => Packets.Add(new(this) { Value = v });
+            public Packet Pop() => Parent;
+            public Packet Push()
             {
-                var newData = new Data(this);
-                NestedData.Add(newData);
-                return newData;
+                var newPacket = new Packet(this);
+                Packets.Add(newPacket);
+                return newPacket;
             }
-        };
+        }
     }
 }
