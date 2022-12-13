@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Combinatorics.Collections;
 using Common.Extensions;
 
@@ -117,12 +116,11 @@ namespace Common
         {
             public Position Position { get; init; }
             public char Character { get; init; }
-            public long Value { get; set; }
-            public Cell Parent { get; set; }
-            public long Cost { get; set; }
+            public long Value { get; init; }
+            public Cell Parent { get; init; }
+            public long Cost { get; init; }
             public long Distance { get; set; }
             public long GetOverallCost => Cost + Distance;
-
             public int X => Position[0];
             public int Y => Position[1];
 
@@ -141,6 +139,5 @@ namespace Common
             public Cell ChangeCharacter(char newChar) => new(Position, newChar);
 
         }
-
     }
 }
