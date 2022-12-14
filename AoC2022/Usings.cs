@@ -9,3 +9,5 @@ global using System.Collections.Generic;
 global using System.Linq;
 global using Common.Extensions;
 global using System.IO;
+global using static Common.Grid2d;
+global using System.Diagnostics;

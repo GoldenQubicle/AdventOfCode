@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Combinatorics.Collections;
 using Common.Extensions;
 
@@ -46,6 +47,7 @@ namespace Common
         public Cell this[int x, int y] => Cells[new(x, y)];
         public Cell this[Cell c] => Cells[c.Position];
 
+        public Cell this[Position p] => Cells[p];
         /// <summary>
         /// Returns the neighbors for the given position.
         /// Does not wrap around the grid by default (i.e. a corner cell returns 3 neighbors max)
@@ -58,12 +60,28 @@ namespace Common
             .Where(np => Cells.ContainsKey(np))
             .Select(np => Cells[np]).ToList();
 
+        public List<Cell> GetNeighbors(Position position) => Offsets
+            .Select(o => o + position)
+            .Where(np => Cells.ContainsKey(np))
+            .Select(np => Cells[np]).ToList();
+
         public List<Cell> GetNeighbors(Cell cell, Func<Cell, bool> query) =>
             GetNeighbors(cell).Where(query).ToList();
+
+        public List<Cell> GetNeighbors(Position p, Func<Cell, bool> query) =>
+            GetNeighbors(p).Where(query).ToList();
 
         public List<Cell> GetCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList();
 
         public void Add(Cell cell) => Cells.Add(cell.Position, cell);
+
+        public void AddOrUpdate(Cell cell)
+        {
+            if (Cells.ContainsKey(cell.Position))
+                Cells[cell.Position] = cell;
+            else
+                Cells.Add(cell.Position, cell);
+        }
 
         public IEnumerator<Cell> GetEnumerator() => ((IEnumerable<Cell>)Cells.Values).GetEnumerator();
 
@@ -138,6 +156,48 @@ namespace Common
             /// <returns></returns>
             public Cell ChangeCharacter(char newChar) => new(Position, newChar);
 
+        }
+
+        public override string ToString()
+        {
+            var minx = Cells.Values.Min(c => c.X);
+            var maxx = Cells.Values.Max(c => c.X);
+            var miny = Cells.Values.Min(c => c.Y);
+            var maxy = Cells.Values.Max(c => c.Y);
+
+            var sb = new StringBuilder();
+
+            for (var y = miny; y <= maxy; y++)
+            {
+                for (var x = minx; x <= maxx; x++)
+                {
+                    var p = new Position(x, y);
+                    sb.Append(Cells[p].Character);
+                }
+                sb.Append("\n");
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Helper method to fill out the grid in case the input is sparse. 
+        /// </summary>
+        /// <param name="blank">The character to use for empty cells</param>
+        public void Fill(char blank)
+        {
+            var minx = Cells.Values.Min(c => c.X);
+            var maxx = Cells.Values.Max(c => c.X);
+            var miny = 0;//Cells.Values.Min(c => c.Y);//2022 day 14 hack
+            var maxy = Cells.Values.Max(c => c.Y);
+
+            for (var y = miny; y <= maxy; y++)
+            {
+                for (var x = minx; x <= maxx; x++)
+                {
+                    var c = new Cell(new(x, y), blank);
+                    Cells.TryAdd(c.Position, c);
+                }
+            }
         }
     }
 }
