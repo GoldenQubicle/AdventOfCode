@@ -30,7 +30,12 @@
     &lt;Project Location="C:\Users\Erik\source\repos\AoC\AoC2022Tests" Presentation="&amp;lt;AoC2022Tests&amp;gt;" /&gt;&#xD;
   &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b99fc60c_002D5b78_002D4144_002D8691_002Dd646e2028715/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day14Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=99ae31d7_002Dfa38_002D4d80_002Dbb57_002D912f7999aa6c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day15Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net7.0::AoC2022Tests.Day15Test&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b99fc60c_002D5b78_002D4144_002D8691_002Dd646e2028715/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day14Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net7.0::AoC2022Tests.Day14Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;

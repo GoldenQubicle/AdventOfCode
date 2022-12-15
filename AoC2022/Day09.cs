@@ -30,7 +30,6 @@ namespace AoC2022
 
                     visited.Add(rope.Last());
                 });
-
                 return visited;
             }).Count.ToString();
 
