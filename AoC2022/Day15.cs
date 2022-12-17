@@ -30,8 +30,8 @@ namespace AoC2022
 
                 foreach (var p in WalkPerimeter(s.s, s.d))
                 {
-                    if (p.x <= SearchArea.min || p.x >= SearchArea.max ||
-                        p.y <= SearchArea.min || p.y >= SearchArea.max) continue;
+                    if (p.x < SearchArea.min || p.x > SearchArea.max ||
+                        p.y < SearchArea.min || p.y > SearchArea.max) continue;
 
                     if (toCheck.Any(s => GetDistance(s.s, p) <= s.d)) continue;
 
