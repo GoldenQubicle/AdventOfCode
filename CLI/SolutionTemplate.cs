@@ -107,7 +107,7 @@ namespace CLI
                      public void Part1( )
                      {{
                          var actual = day{Day}.SolvePart1( );
-                         Assert.AreEqual(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}"", actual);
+                         Assert.That(actual, Is.EqualTo(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}""));
                      }}"
                 :
                 $@"{TestCases.Aggregate(string.Empty,
@@ -116,14 +116,15 @@ namespace CLI
                      {{
                          day{Day} = new Day{Day}(new List<string> {{ input }} );
                          var actual = day{Day}.SolvePart1( );
-                         Assert.AreEqual(expected, actual);
+                         Assert.That(actual, Is.EqualTo(expected));
                      }}")}
              
                      [Test]
                      public void Part2( )
                      {{
+                         var expected = string.Empty;
                          var actual = day{Day}.SolvePart2( );
-                         Assert.AreEqual("""", actual);
+                         Assert.That(actual, Is.EqualTo(expected));
                      }}
                  }}
              }}".Replace("             ", "");
