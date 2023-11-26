@@ -18,6 +18,7 @@ namespace AoC2018Tests
         [Test]
         public void Part1( )
         {
+	        Console.SetOut(TestContext.Out);
             var actual = day06.SolvePart1( );
             Assert.That(actual, Is.EqualTo("17"));
         }

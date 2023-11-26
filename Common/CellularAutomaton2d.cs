@@ -4,17 +4,15 @@ using static Common.Grid2d;
 
 namespace Common
 {
-    public class CellularAutomaton2d
+    public class CellularAutomaton2d(List<string> input)
     {
         public Func<int, Cell, Cell> GameOfLifeRules { get; init; }
         public Func<Cell, Cell> AdditionalRules { get; init; }
 
-        private Grid2d grid;
+        private Grid2d grid = new(input);
         private const char Active = '#';
         private const char InActive = '.';
-            
-        public CellularAutomaton2d(List<string> input) => grid = new Grid2d(input);
-        
+
         public void Iterate(int steps)
         {
             for (var i = 0; i < steps; i++)

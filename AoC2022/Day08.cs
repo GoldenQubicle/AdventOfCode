@@ -45,12 +45,12 @@ namespace AoC2022
 
             while (!isBlocked)
             {
-                var (x, y) = getNextPosition(step);
-                if (x < 0 || x >= grid.Width ||
-                    y < 0 || y >= grid.Height)
+                var pos = getNextPosition(step);
+                if (pos.x < 0 || pos.x >= grid.Width ||
+                    pos.y < 0 || pos.y >= grid.Height)
                     return step - 1;
 
-                if (grid[x, y].Value < value) step++;
+                if (grid[pos].Value < value) step++;
                 else isBlocked = true;
             }
 

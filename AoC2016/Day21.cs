@@ -23,7 +23,7 @@ namespace AoC2016
                 var parts = line.Split(' ');
                 switch((parts[0], parts[1]))
                 {
-                    case ("swap", "position"):
+                    case ("swap", "Position"):
                         PassWord = SwapPosition(PassWord, int.Parse(parts[2]), int.Parse(parts.Last()));
                         break;
                     case ("swap", "letter"):
@@ -41,7 +41,7 @@ namespace AoC2016
                     case ("reverse", "positions"):
                         PassWord = Reverse(PassWord, int.Parse(parts[2]), int.Parse(parts.Last()));
                         break;
-                    case ("move", "position"):
+                    case ("move", "Position"):
                         PassWord = Move(PassWord, int.Parse(parts[2]), int.Parse(parts.Last()));
                         break;
                 }
@@ -72,7 +72,7 @@ namespace AoC2016
                 var parts = line.Split(' ');
                 switch((parts[0], parts[1]))
                 {
-                    case ("swap", "position"):
+                    case ("swap", "Position"):
                         Scrambled = SwapPosition(Scrambled, int.Parse(parts.Last()), int.Parse(parts[2]));
                         break;
                     case ("swap", "letter"):
@@ -90,7 +90,7 @@ namespace AoC2016
                     case ("reverse", "positions"):
                         Scrambled = Reverse(Scrambled, int.Parse(parts[2]), int.Parse(parts.Last()));
                         break;
-                    case ("move", "position"):
+                    case ("move", "Position"):
                         Scrambled = Move(Scrambled, int.Parse(parts.Last()), int.Parse(parts[2]));
                         break;
                 }

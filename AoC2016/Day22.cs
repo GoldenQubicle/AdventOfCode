@@ -38,7 +38,7 @@ namespace AoC2016
             //and there's a wall in our way. 
 
             var empty = nodes.First(n => n.Used == 0);
-            //how many steps it takes to position the empty cell to the goal cell
+            //how many steps it takes to Position the empty cell to the goal cell
             var width = nodes.Max(n => n.Position.x) + 1 ;
             var steps = empty.Position.x + empty.Position.y + width-1;
             //now the empty cell is in front of our goal cell, and it takes 5 steps to complete a cycle and move it over
