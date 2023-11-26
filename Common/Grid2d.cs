@@ -13,18 +13,18 @@ namespace Common
         public int Width { get; init; }
         public int Height { get; init; }
         public int Count => Cells.Count;
-        private Dictionary<Position, Cell> Cells { get; } = new();
+        private Dictionary<(int x, int y), Cell> Cells { get; } = new();
 
-        private List<Position> Offsets { get; }
+        private List<(int x, int y)> Offsets { get; }
 
         public Grid2d(bool diagonalAllowed = true)
         {
-            List<Position> filter = diagonalAllowed
+            List<(int x, int y)> filter = diagonalAllowed
                 ? new() { new(0, 0) }
                 : new() { new(-1, -1), new(-1, 1), new(1, -1), new(1, 1), new(0, 0) };
 
             Offsets = new Variations<int>(new[] { -1, 0, 1 }, 2, GenerateOption.WithRepetition)
-                .Select(v => new Position(v[0], v[1]))
+                .Select(v => (v[0], v[1]))
                 .Where(p => !filter.Contains(p))
                 .ToList();
         }
@@ -47,7 +47,7 @@ namespace Common
         public Cell this[int x, int y] => Cells[new(x, y)];
         public Cell this[Cell c] => Cells[c.Position];
 
-        public Cell this[Position p] => Cells[p];
+        public Cell this[(int x, int y) p] => Cells[p];
         /// <summary>
         /// Returns the neighbors for the given position.
         /// Does not wrap around the grid by default (i.e. a corner cell returns 3 neighbors max)
@@ -56,19 +56,19 @@ namespace Common
         /// <param name="cell"></param>
         /// <returns></returns>
         public List<Cell> GetNeighbors(Cell cell) => Offsets
-            .Select(o => o + cell.Position)
+            .Select(o => o.Add(cell.Position))
             .Where(np => Cells.ContainsKey(np))
             .Select(np => Cells[np]).ToList();
 
-        public List<Cell> GetNeighbors(Position position) => Offsets
-            .Select(o => o + position)
+        public List<Cell> GetNeighbors((int x, int y) position) => Offsets
+            .Select(o => o.Add( position))
             .Where(np => Cells.ContainsKey(np))
             .Select(np => Cells[np]).ToList();
 
         public List<Cell> GetNeighbors(Cell cell, Func<Cell, bool> query) =>
             GetNeighbors(cell).Where(query).ToList();
 
-        public List<Cell> GetNeighbors(Position p, Func<Cell, bool> query) =>
+        public List<Cell> GetNeighbors((int x, int y) p, Func<Cell, bool> query) =>
             GetNeighbors(p).Where(query).ToList();
 
         public List<Cell> GetCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList();
@@ -100,7 +100,7 @@ namespace Common
         {
             Cells.Values.ForEach(c => c.Distance = Math.Abs(target.X - c.X) + Math.Abs(target.Y - c.Y));
             var path = new List<Cell>();
-            var visited = new Dictionary<Position, bool>();
+            var visited = new Dictionary<(int x, int y), bool>();
             var queue = new PriorityQueue<Cell, long>();
 
             queue.Enqueue(start, start.GetOverallCost);
@@ -132,17 +132,17 @@ namespace Common
 
         public record Cell
         {
-            public Position Position { get; init; }
+            public (int x , int y) Position { get; init; }
             public char Character { get; init; }
             public long Value { get; set; }
             public Cell Parent { get; init; }
             public long Cost { get; init; }
             public long Distance { get; set; }
             public long GetOverallCost => Cost + Distance;
-            public int X => Position[0];
-            public int Y => Position[1];
+            public int X => Position.x;
+            public int Y => Position.y;
 
-            public Cell(Position position, char character)
+            public Cell((int, int) position, char character)
             {
                 Position = position;
                 Character = character;
@@ -171,7 +171,7 @@ namespace Common
             {
                 for (var x = minx; x <= maxx; x++)
                 {
-                    var p = new Position(x, y);
+                    var p = (x, y);
                     sb.Append(Cells[p].Character);
                 }
                 sb.Append("\n");

@@ -33,10 +33,10 @@ namespace AoC2015
             Input[dim] = Input[dim].ReplaceAt(0, '#');
             Input[dim] = Input[dim].ReplaceAt(dim, '#');
 
-            var ul = new Position(0, 0);
-            var ur = new Position(dim, 0);
-            var bl = new Position(0, dim);
-            var br = new Position(dim, dim);
+            var ul = (0, 0);
+            var ur = (dim, 0);
+            var bl = (0, dim);
+            var br = (dim, dim);
 
             var ca = new CellularAutomaton2d(Input)
             {

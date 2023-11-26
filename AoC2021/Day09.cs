@@ -16,7 +16,7 @@ namespace AoC2021
         public override string SolvePart2()
         {
             var lowPoints = grid.Where(c => grid.GetNeighbors(c).All(n => n.Value > c.Value));
-            var visited = new HashSet<Position>();
+            var visited = new HashSet<(int x, int y)>();
 
             return lowPoints.Aggregate(new List<long>(), (basins, cell) =>
             {

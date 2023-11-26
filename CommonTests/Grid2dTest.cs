@@ -27,7 +27,7 @@ namespace CommonTests
         [TestCase(4, 4, 's', 'x', 't')]
         public void GetNeighborTest(int x, int y, params char[] expected)
         {
-            var cell = new Grid2d.Cell(new Position(x, y), 'c');
+            var cell = new Grid2d.Cell((x, y), 'c');
             var cells = grid.GetNeighbors(cell);
             
             var c = cells.Select(n => n.Character).ToArray();
@@ -40,7 +40,7 @@ namespace CommonTests
         public void GetCellByQueryTest()
         {
             var actual = grid.GetCells(gc => gc.Character == 'q').First();
-            var expected = new Grid2d.Cell (new Position(1, 3), 'q');
+            var expected = new Grid2d.Cell ((1, 3), 'q');
             Assert.AreEqual(expected, actual);
         }
     }
