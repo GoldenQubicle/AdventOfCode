@@ -7,6 +7,8 @@ namespace Common.Extensions
 {
     public static class StringExtensions
     {
+	    public static string AsString(this IEnumerable<char> c) => new (c.ToArray());
+
         public static List<string> ToList(this string s) => new() { s };
 
         public static int AsInteger(this string s) => int.Parse(new(s.Where(char.IsDigit).ToArray()));

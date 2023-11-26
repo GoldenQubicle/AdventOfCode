@@ -94,8 +94,7 @@ namespace AoC2018
 						});
 						return acc;
 					}).MaxBy(kvp => kvp.Value)))
-				.MaxBy(g => g.Item2.Value)
-					;
+				.MaxBy(g => g.Item2.Value);
 
 			return (guard.Key * guard.Item2.Key).ToString();
 		} 
