@@ -1,7 +1,4 @@
 using AoC2018;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AoC2018Tests
 {
@@ -18,7 +15,6 @@ namespace AoC2018Tests
         [Test]
         public void Part1( )
         {
-	        Console.SetOut(TestContext.Out);
             var actual = day06.SolvePart1( );
             Assert.That(actual, Is.EqualTo("17"));
         }
@@ -26,9 +22,9 @@ namespace AoC2018Tests
         [Test]
         public void Part2( )
         {
-            var expected = string.Empty;
+	        day06.Threshold = 32;
             var actual = day06.SolvePart2( );
-            Assert.That(actual, Is.EqualTo(expected));
+            Assert.That(actual, Is.EqualTo("16"));
         }
     }
 }

@@ -1,10 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -13,6 +6,7 @@ namespace AoC2018
 	public class Day06 : Solution
 	{
 		private readonly Dictionary<int, (int x, int y)> locations;
+		public int Threshold { get; set; } = 10000;
 
 		public Day06(string file) : base(file) => locations = Input.Select((s, idx) =>
 		{
@@ -30,7 +24,7 @@ namespace AoC2018
 
 
 			var grid = new Grid2d(maxx, maxy);
-			
+
 			foreach (var cell in grid)
 			{
 				var closest = locations.Select(l => (l.Key, d: GetManhattanDistance(l.Value, cell.Position))).GroupBy(l => l.d).MinBy(g => g.Key);
@@ -48,9 +42,25 @@ namespace AoC2018
 				.Count( ).ToString( );
 		}
 
+		public override string SolvePart2()
+		{
+			var maxx = locations.Values.MaxBy(c => c.x).x;
+			var maxy = locations.Values.MaxBy(c => c.y).y;
+
+			var grid = new Grid2d(maxx, maxy);
+
+			foreach (var cell in grid)
+			{
+				var sum = locations.Select(l => (l.Key, d: GetManhattanDistance(l.Value, cell.Position))).Sum(l => l.d);
+
+				if (sum < Threshold)
+					cell.Character = 'r';
+			}
+
+			return grid.Count(c => c.Character == 'r').ToString( );
+		}
+
 		private int GetManhattanDistance((int x, int y) one, (int x, int y) two) =>
 			Math.Abs(two.x - one.x) + Math.Abs(two.y - one.y);
-
-		public override string SolvePart2() => null;
 	}
 }
