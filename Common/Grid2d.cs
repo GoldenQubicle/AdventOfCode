@@ -145,7 +145,7 @@ namespace Common
 
 		public record Cell((int, int) Position)
 		{
-			public (int x, int y) Position { get; init; } = Position;
+			public (int x, int y) Position { get; set; } = Position;
 			public char Character { get; set; }
 			public long Value { get; set; }
 			public Cell Parent { get; init; }

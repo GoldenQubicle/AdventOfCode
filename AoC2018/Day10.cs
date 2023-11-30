@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -14,7 +10,6 @@ namespace AoC2018
 		public (int x, int y) Position { get; private set; } = Position;
 
 		public void Update() => Position = Position.Add(Velocity);
-
 	}
 
 	public class Day10 : Solution
@@ -30,14 +25,13 @@ namespace AoC2018
 		{
 			for (var i = 0 ;i <= 10942 ;i++)
 			{
-				var minx = points.MinBy(p => p.Position.x).Position.x;
-				var maxx = points.MaxBy(p => p.Position.x).Position.x;
-				var miny = points.MinBy(p => p.Position.y).Position.y;
-				var maxy = points.MaxBy(p => p.Position.y).Position.y;
-				var current = points.Select(p => p.Position);
-
 				if (i == 10942)
 				{
+					var minx = points.MinBy(p => p.Position.x).Position.x;
+					var maxx = points.MaxBy(p => p.Position.x).Position.x;
+					var miny = points.MinBy(p => p.Position.y).Position.y;
+					var maxy = points.MaxBy(p => p.Position.y).Position.y;
+					var current = points.Select(p => p.Position);
 					var sb = new StringBuilder( );
 
 					for (var y = miny ;y <= maxy ;y++)
@@ -56,10 +50,7 @@ namespace AoC2018
 				}
 				
 				points.ForEach(p => p.Update( ));
-				//var k = Console.ReadKey( );
 			}
-
-
 
 			return string.Empty;
 		}
