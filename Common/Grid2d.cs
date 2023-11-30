@@ -92,10 +92,8 @@ namespace Common
 
 		public void AddOrUpdate(Cell cell)
 		{
-			if (Cells.ContainsKey(cell.Position))
+			if (!Cells.TryAdd(cell.Position, cell))
 				Cells[cell.Position] = cell;
-			else
-				Cells.Add(cell.Position, cell);
 		}
 
 		public IEnumerator<Cell> GetEnumerator() => ((IEnumerable<Cell>)Cells.Values).GetEnumerator( );

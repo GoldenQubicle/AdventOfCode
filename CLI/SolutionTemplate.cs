@@ -51,9 +51,15 @@ namespace CLI
                      
                      public Day{Day}(List<string> input) : base(input) {{ }}
 
-                     public override string SolvePart1( ) => null;
+                     public override string SolvePart1( ) 
+                     {{
+                     	return string.Empty;
+                     }}
 
-                     public override string SolvePart2( ) => null;
+                     public override string SolvePart2( )
+                     {{
+                     	return string.Empty;
+                     }}
                  }}
              }}".Replace("             ", "");
 
