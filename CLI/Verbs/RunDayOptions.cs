@@ -70,8 +70,15 @@ namespace CLI.Verbs
         { 
             var ctorType = new[] { typeof(string) };
             var ctor = options.DayType.GetConstructor(ctorType);
-            var part1 = ((Solution)ctor.Invoke(new object[] { $"day{options.DayString}" })).SolvePart1();
-            var part2 = ((Solution)ctor.Invoke(new object[] { $"day{options.DayString}" })).SolvePart2();
+
+            var part1 = options.Part is 1 or 0
+	            ? ((Solution)ctor.Invoke(new object[] { $"day{options.DayString}" })).SolvePart1()
+	            : string.Empty;
+
+            var part2 = options.Part is 2 or 0
+	            ? ((Solution)ctor.Invoke(new object[] { $"day{options.DayString}" })).SolvePart2()
+	            : string.Empty;
+
             return (part1, part2);
         }
     }

@@ -64,11 +64,18 @@ namespace CommonTests
 		{
 			sut.ResetHead();
 			sut.MoveRight(2);
-
 			sut.Insert(7, test.after);
 
 			Assert.That(sut.ToList( ), Is.EqualTo(test.expected));
 
+		}
+
+		[TestCase(0, false)]
+		[TestCase(2, true)]
+		public void TryRemoveShouldNotThrow(int test, bool expected)
+		{
+			var result = sut.TryRemove(test);
+			Assert.That(result, Is.EqualTo(expected));
 		}
 
 		private static List<(bool, List<int>)> GetInsertTestCases() => new( )
