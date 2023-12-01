@@ -48,7 +48,8 @@ namespace AoC2023
 					idx++;
 				}
 				return sb.ToString( );
-			}).Select(s => s.Where(char.IsDigit).AsString( ))
+			})
+			.Select(s => s.Where(char.IsDigit).AsString( ))
 			.Select(s => s.Length == 1 ? $"{s[0]}{s[0]}" : $"{s[0]}{s[^1]}")
 			.Select(int.Parse)
 			.Sum( ).ToString( );
