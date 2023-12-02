@@ -12,14 +12,15 @@ public static class RegexExtensions
 	}
 
     public static int AsInt(this Match m, string group) => int.Parse(m.Groups[group].Success ? m.Groups[group].Value : "0");
+
     public static long AsLong(this Match m, string group) => long.Parse(m.Groups[group].Success ? m.Groups[group].Value : "0");
 
-	public static int TryGetGroup(this MatchCollection mc, string group)
+	public static int GetGroup(this MatchCollection mc, string group)
 	{
 		foreach (Match match in mc)
 		{
 			if (match.Groups[group].Success)
-				return match.AsInt(group);
+				return int.Parse(match.Groups[group].Value);
 		}
 
 		return 0;

@@ -12,7 +12,7 @@ namespace AoC2023
 			.Select((l, idx) => (idx, l.Split(':')[1]))
 			.ToDictionary(t => t.idx + 1, t => t.Item2.Split(';')
 				.Select(s => Regex.Matches(s, @"(?<r>\d+.(?=red))|(?<g>\d+.(?=green))|(?<b>\d+.(?=blue))"))
-				.Select(m => (r: m.TryGetGroup("r"), g: m.TryGetGroup("g"), b: m.TryGetGroup("b"))).ToList());
+				.Select(m => (r: m.GetGroup("r"), g: m.GetGroup("g"), b: m.GetGroup("b"))).ToList());
 
 
 		public override string SolvePart1() => games
@@ -20,9 +20,9 @@ namespace AoC2023
 			.Sum(g => g.Key).ToString();
 
 
-		public override string SolvePart2() => games
-			.Select(g => (g.Value.MaxBy(s => s.r).r, g.Value.MaxBy(s => s.g).g, g.Value.MaxBy(s => s.b).b))
-			.Select(g => g.r * g.g * g.b)
+		public override string SolvePart2() => games.Values
+			.Select(sets => (sets.MaxBy(s => s.r).r, sets.MaxBy(s => s.g).g, sets.MaxBy(s => s.b).b))
+			.Select(s => s.r * s.g * s.b)
 			.Sum().ToString();
 	}
 }
