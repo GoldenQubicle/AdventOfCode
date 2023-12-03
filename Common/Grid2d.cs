@@ -86,7 +86,64 @@ namespace Common
 		public List<Cell> GetNeighbors((int x, int y) p, Func<Cell, bool> query) =>
 			GetNeighbors(p).Where(query).ToList( );
 
+		/// <summary>
+		/// Gets cells according to specified query.
+		/// </summary>
+		/// <remarks><b>NOTE:</b> there is NO range check, staying within bounds of the grid is responsibility of the caller!</remarks>
+		/// <param name="query"></param>
+		/// <returns></returns>
 		public List<Cell> GetCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList( );
+
+		public bool TryGetCell((int x, int y) p, out Cell cell)
+		{
+			if (Cells.TryGetValue(p, out var c))
+			{
+				cell = c;
+				return true;
+			}
+
+			cell = null;
+			return false;
+		}
+			
+
+
+		public List<Cell> GetRange((int x, int y) topLeft, (int x, int y) bottomRight)
+		{
+			var range = new List<Cell>();
+			if (topLeft.y == bottomRight.y)
+			{
+				for (var x = topLeft.x; x <= bottomRight.x; x++)
+				{
+					if (Cells.ContainsKey((x, topLeft.y)))
+						range.Add(Cells[(x, topLeft.y)]);
+				}
+
+				return range;
+			}
+
+			if (topLeft.x == bottomRight.x)
+			{
+				for (var y = topLeft.y ;y <= bottomRight.y ;y++)
+				{
+					if (Cells.ContainsKey((topLeft.x, y)))
+						range.Add(Cells[(topLeft.x, y)]);
+				}
+
+				return range;
+			}
+
+			for (var x = topLeft.x; x <= bottomRight.x; x++)
+			{
+				for (var y = topLeft.y; y <= bottomRight.y; y++)
+				{
+					if(Cells.ContainsKey((x,y)))
+						range.Add(Cells[(x,y)]);
+				}
+			}
+
+			return range;
+		}
 
 		public void Add(Cell cell) => Cells.Add(cell.Position, cell);
 
