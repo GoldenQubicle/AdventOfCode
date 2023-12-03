@@ -84,16 +84,23 @@ namespace AoC2023
 						.Select(d => int.Parse(new string(d.Where(c => char.IsDigit(c.Character)).Select(c => c.Character).ToArray())))
 						.Distinct().ToList();
 					
-					//bug! if 2 of the same digit appear left/right & up/down from the gear we do NOT find them because of the select!
-					//273
-					if(digits.Count < 2) continue;
+					//bug! if 2 of the same digit appear left/right & up/down from the gear we do NOT find them because of the distinct!
+					// after inspecting ALL the gear ranges it turns out to be the case for 273
+					//if(digits.Count < 2) continue;
+
+					if (digits.Count == 1 && neighbors.Select(n => cell.Position.y).Distinct( ).Count( ) == 2)
+					{
+						digits.Add(digits.First( ));
+					}
+				
+
 					Console.WriteLine($"Found: {digits[0]} and {digits[1]}");
 					Console.WriteLine();
 					ratios.Add(digits.Skip(1).Aggregate(digits[0], (sum, d) => sum * d));
 				}
 			}
 
-			return (ratios.Sum( ) + (273*273)).ToString( );
+			return (ratios.Sum( )).ToString( );
 		}
 	}
 }
