@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
-using Microsoft.VisualBasic;
 
 namespace AoC2023
 {
@@ -31,76 +25,65 @@ namespace AoC2023
 					continue;
 				}
 
-				if (neighbors.Count != 0)
+				if (neighbors.Count == 0)
+					continue;
+
+				if (neighbors.Any(n => n.Character != '.'))
 				{
-					if (neighbors.Any(n => n.Character != '.'))
-					{
-						parts.Add(int.Parse(sb.ToString( )));
-					}
-
-					neighbors.Clear( );
-					sb.Clear( );
+					parts.Add(int.Parse(sb.ToString( )));
 				}
-			}
 
+				neighbors.Clear( );
+				sb.Clear( );
+			}
 			return parts.Sum( ).ToString( );
 		}
+
 
 		public override string SolvePart2()
 		{
 			var ratios = new List<long>( );
 			foreach (var cell in grid)
 			{
-				if (cell.Character == '*')
-				{
-					var neighbors = grid.GetNeighbors(cell).Where(n => char.IsDigit(n.Character)).ToList();
+				if (cell.Character != '*')
+					continue;
 
-					if(neighbors.Count < 2) continue;
+				var neighbors = grid.GetNeighbors(cell).Where(n => char.IsDigit(n.Character)).ToList( );
 
-					var rangeString = new StringBuilder();
-					var range = grid.GetRange(cell.Position.Add(-3, -1), cell.Position.Add(3, 1)).GroupBy(c => c.Position.y);
-					foreach (var group in range)
-					{
-						foreach (var cell1 in group)
-						{
-							rangeString.Append(cell1.Character);
-						}
-						rangeString.AppendLine();
-					}
-					Console.WriteLine(rangeString);
+				if (neighbors.Count < 2)
+					continue;
 
-
-					var digits = neighbors
-						.Select(d =>
-							 grid.TryGetCell(d.Position.Add(-1, 0), out var m1) && m1.Character is '.' or '*' &&
-							 grid.TryGetCell(d.Position.Add(1, 0), out var m2) && m2.Character is '.' or '*'
-							? new List<Grid2d.Cell> { d }
+				//please look away from this nightmare. 
+				//basically for each digit neighbor looking to the left & right to determine the range to grab
+				var digits = neighbors
+					.Select(d =>
+						grid.TryGetCell(d.Position.Add(-1, 0), out var m1) && m1.Character is '.' && grid.TryGetCell(d.Position.Add(1, 0), out var m2) && m2.Character is '.'
+							? new List<Grid2d.Cell> { d } // it is just a single digit, e.g. 7
 							: grid.TryGetCell(d.Position.Add(-1, 0), out var cl1) && cl1.Character is '.' or '*'
-							? grid.GetRange(d.Position, d.Position.Add(2, 0))
+							? grid.GetRange(d.Position, d.Position.Add(2, 0)) // grab 2 to the right
 							: grid.TryGetCell(d.Position.Add(1, 0), out var cr1) && cr1.Character is '.' or '*'
-							? grid.GetRange(d.Position.Add(-2, 0), d.Position)
-							: grid.GetRange(d.Position.Add(-1, 0), d.Position.Add(1, 0)))
+							? grid.GetRange(d.Position.Add(-2, 0), d.Position) // grab 2 to the left
+							: grid.GetRange(d.Position.Add(-1, 0), d.Position.Add(1, 0))) // grab 1 from left & right
+					.Select(d => int.Parse(new string(d.Where(c => char.IsDigit(c.Character)).Select(c => c.Character).ToArray( )))) // filter out any . in grabbed range and convert to int
+					.Distinct( ).ToList( );
 
-						.Select(d => int.Parse(new string(d.Where(c => char.IsDigit(c.Character)).Select(c => c.Character).ToArray())))
-						.Distinct().ToList();
-					
-					//bug! if 2 of the same digit appear left/right & up/down from the gear we do NOT find them because of the distinct!
-					// after inspecting ALL the gear ranges it turns out to be the case for 273
-					//if(digits.Count < 2) continue;
-
-					if (digits.Count == 1 && neighbors.Select(n => cell.Position.y).Distinct( ).Count( ) == 2)
-					{
-						digits.Add(digits.First( ));
-					}
-				
-
-					Console.WriteLine($"Found: {digits[0]} and {digits[1]}");
-					Console.WriteLine();
-					ratios.Add(digits.Skip(1).Aggregate(digits[0], (sum, d) => sum * d));
+				//nasty check for one particular gear wherein the same digit appears above and below the gear. 
+				//hence we check when if only 1 digit is found but there are 2 distinct y positions for the neighbors
+				//for completeness sake we should also check the same scenario for distinct x positions of neighbors
+				//however this case does not appear in the input so screw it. 
+				if (digits.Count == 1 && neighbors.Select(n => n.Position.y).Distinct( ).Count( ) == 2)
+				{
+					digits.Add(digits.First( ));
 				}
+				else if (digits.Count < 2)
+				{
+					continue;
+				}
+
+				ratios.Add(digits[0] * digits[1]);
 			}
 
-			return (ratios.Sum( )).ToString( );
+			return ratios.Sum( ).ToString( );
 		}
 	}
 }
