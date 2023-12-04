@@ -31,7 +31,7 @@ namespace Common
 
 		public Grid2d(IReadOnlyList<string> input, bool diagonalAllowed = true) : this(diagonalAllowed)
 		{
-			Width = input[0].Length;
+			Width = input.Max(l => l.Length);
 			Height = input.Count;
 			DoInitializeCells(input);
 		}
@@ -47,11 +47,11 @@ namespace Common
 		{
 			for (var y = 0 ;y < Height ;y++)
 			{
-				for (var x = 0 ;x < Width ;x++) // assuming all lines are equal length
+				for (var x = 0 ;x < Width ;x++) 
 				{
-					var gc = input == default 
-						? new Cell((x,y)) 
-						:  new Cell((x, y),input[y][x]); //yes really input[y][x], it reads wrong but is right - still dealing with a list here. 
+					var gc = input == default || x >= input[y].Length 
+						? new Cell((x, y))
+						: new Cell((x, y), input[y][x]); //yes really input[y][x], it reads wrong but is right - still dealing with a list here. 
 
 					Cells.Add(gc.Position, gc);
 				}
@@ -106,7 +106,6 @@ namespace Common
 			return false;
 		}
 			
-
 
 		public List<Cell> GetRange((int x, int y) topLeft, (int x, int y) bottomRight)
 		{
@@ -203,7 +202,7 @@ namespace Common
 		public record Cell((int, int) Position)
 		{
 			public (int x, int y) Position { get; set; } = Position;
-			public char Character { get; set; }
+			public char Character { get; set; } = ' ';
 			public long Value { get; set; }
 			public Cell Parent { get; init; }
 			public long Cost { get; init; }
