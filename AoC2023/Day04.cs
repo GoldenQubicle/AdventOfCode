@@ -21,7 +21,6 @@ namespace AoC2023
 		public override string SolvePart1() => cards.Values
 			.Select(c => c.numbers.Intersect(c.win))
 			.Select(i => Math.Pow(2, i.Count( )-1))
-			.Where(s => s >= 1)
 			.Sum( ).ToString( );
 
 
