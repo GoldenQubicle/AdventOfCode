@@ -1,7 +1,4 @@
 using AoC2023;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AoC2023Tests
 {
@@ -50,11 +47,6 @@ namespace AoC2023Tests
 			yield return new GetRangeTestCase((2, 13), (12, 13), -2L,  new List<(int, int, bool)> { (10,11, true) });
 			yield return new GetRangeTestCase((2, 13), (13, 13), 20L,  new List<(int, int, bool)> { (33,33, true) });
 			yield return new GetRangeTestCase((53, 61), (62, 70), -4L, new List<(int, int, bool)> { (62,70, false) });
-
-			//yield return new GetRangeTestCase((25, 40), (30, 50), 0L, new List<(int, int)> { (30, 40), (41, 50) });
-			//yield return new GetRangeTestCase((25, 40), (30, 35), 0L, new List<(int, int)> { (30, 35) });
-			//yield return new GetRangeTestCase((25, 40), (10, 30), 0L, new List<(int, int)> { (10, 24), (25, 30) });
-			//yield return new GetRangeTestCase((25, 40), (10, 50), 0L, new List<(int, int)> { (10, 24), (25, 40), (41, 50) });
 		}
 
 		public record GetRangeTestCase((int s, int e) source, (int s, int e) range, long offset, List<(int s, int e, bool m)> e);

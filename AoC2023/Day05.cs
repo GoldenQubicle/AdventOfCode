@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Diagnostics;
 using Common;
 using Common.Extensions;
 
@@ -7,7 +6,7 @@ namespace AoC2023
 {
 	public class Day05 : Solution
 	{
-		private List<long> seeds;
+		private readonly List<long> seeds;
 
 		public class Mappings : IEnumerable<string>
 		{
@@ -60,11 +59,6 @@ namespace AoC2023
 
 			public List<(long start, long end)> GetDestinationRanges(string map, (long s, long e) range)
 			{
-				var inRange = maps[map].Where(m => !(m.start > range.e || range.s > m.end)).ToList( );
-
-				if (inRange.Count == 0)
-					return new( ) { range };
-
 				var result = new List<(long start, long end)>( );
 				var toCheck = new Queue<(long start, long end)>( );
 				toCheck.Enqueue(range);
@@ -72,7 +66,7 @@ namespace AoC2023
 				while (toCheck.Count != 0)
 				{
 					var current = toCheck.Dequeue( );
-					inRange = maps[map].Where(m => !(m.start > current.end || current.start > m.end)).ToList( );
+					var inRange = maps[map].Where(m => !(m.start > current.end || current.start > m.end)).ToList( );
 
 					if (inRange.Count == 0)
 					{
@@ -80,7 +74,6 @@ namespace AoC2023
 						continue;
 					}
 						
-
 					foreach (var ranges in inRange.Select(m => GetRange((m.start, m.end), current, m.dest - m.start)))
 					{
 						ranges.Where(r => !r.isMapped).ForEach(r => toCheck.Enqueue((r.s, r.e)));
