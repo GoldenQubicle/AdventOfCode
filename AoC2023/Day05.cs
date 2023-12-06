@@ -60,73 +60,79 @@ namespace AoC2023
 
 			public List<(long start, long end)> GetDestinationRanges(string map, (long s, long e) range)
 			{
-				var inRange = maps[map].Where(m => !(m.start > range.e)).Where(m => !(range.s > m.end)).ToList();
+				var inRange = maps[map].Where(m => !(m.start > range.e || range.s > m.end)).ToList( );
 
 				if (inRange.Count == 0)
-					return new() { range };
+					return new( ) { range };
 
 				var result = new List<(long start, long end)>( );
-				var toCheck = new Queue<(long start, long end)>();
+				var toCheck = new Queue<(long start, long end)>( );
 				toCheck.Enqueue(range);
 
 				while (toCheck.Count != 0)
 				{
 					var current = toCheck.Dequeue( );
-					inRange = maps[map].Where(m => !(m.start > current.end)).Where(m => !(current.start > m.end)).ToList( );
+					inRange = maps[map].Where(m => !(m.start > current.end || current.start > m.end)).ToList( );
 
 					if (inRange.Count == 0)
 						return new( ) { range };
 
-					foreach (var m in inRange)
+					foreach (var ranges in inRange.Select(m => GetRange((m.start, m.end), current, m.dest - m.start)))
 					{
-						var ranges = GetRange((m.start, m.end), current, m.dest - m.start);
 						ranges.Where(r => !r.isMapped).ForEach(r => toCheck.Enqueue((r.s, r.e)));
-						
-						if(ranges.Any(r => r.isMapped))
-							result.Add(ranges.Where(r => r.isMapped).Select(r => (r.s, r.e)).First());
+
+						if (ranges.Any(r => r.isMapped))
+							result.Add(ranges.Where(r => r.isMapped).Select(r => (r.s, r.e)).First( ));
 					}
 				}
 				return result;
 			}
 
-			public static List<(long s, long e, bool isMapped)> GetRange((long s, long e) source, (long s, long e) range, long offset)
+			public static List<(long s, long e, bool isMapped)> GetRange((long s, long e) source, (long s, long e) range, long offset) => (source, range) switch
 			{
-				if (source.s > range.e || range.s > source.e)
-					return new() { (range.s, range.e, false) };
+				var (s, r) when s.s > r.e || r.s > s.e => new( ) { (range.s, range.e, false) },
+				var (s, r) when r.s >= s.s && r.s <= s.e && r.e > s.e => new( ) { (range.s + offset, source.e + offset, true), (source.e + 1, range.e, false) },
+				var (s, r) when r.s < s.s && r.e >= s.s && r.e <= s.e => new( ) { (range.s, source.s - 1, false), (source.s + offset, range.e + offset, true) },
+				var (s, r) when r.s >= s.s && r.e <= s.e => new( ) { (range.s + offset, range.e + offset, true) },
+				var (s, r) when r.s < s.s && r.e > s.e => new( ) { (range.s, source.s - 1, false), (source.s + offset, source.e + offset, true), (source.e + 1, range.e, false) }
+			};
+			//{
+			//	if (source.s > range.e || range.s > source.e)
+			//		return new() { (range.s, range.e, false) };
 
-				var result = new List<(long, long, bool)>( );
-				
-				if (range.s >= source.s && range.s <= source.e && range.e > source.e)
-				{
-					result.Add((range.s + offset, source.e + offset, true)); 
-					result.Add((source.e + 1, range.e, false));
-					//return result;
-				}
+			//	var result = new List<(long, long, bool)>( );
 
-				if (range.s < source.s && range.e >= source.s && range.e <= source.e)
-				{
-					result.Add((range.s, source.s - 1, false));
-					result.Add((source.s + offset, range.e + offset, true)); 
-					//return result;
-				}
+			//	if (range.s >= source.s && range.s <= source.e && range.e > source.e)
+			//	{
+			//		result.Add((range.s + offset, source.e + offset, true)); 
+			//		result.Add((source.e + 1, range.e, false));
+			//		return result;
+			//	}
 
-				if (range.s >= source.s && range.e <= source.e)
-				{
-					result.Add((range.s + offset, range.e + offset, true));
-					//return result;
-				}
+			//	if (range.s < source.s && range.e >= source.s && range.e <= source.e)
+			//	{
+			//		result.Add((range.s, source.s - 1, false));
+			//		result.Add((source.s + offset, range.e + offset, true)); 
+			//		return result;
+			//	}
 
-				if (range.s < source.s && range.e > source.e)
-				{
-					result.Add((range.s, source.s - 1, false));
-					result.Add((source.s + offset, source.e + offset, true)); 
-					result.Add((source.e + 1, range.e, false));
-					//return result;
-				}
+			//	if (range.s >= source.s && range.e <= source.e)
+			//	{
+			//		result.Add((range.s + offset, range.e + offset, true));
+			//		return result;
+			//	}
+
+			//	if (range.s < source.s && range.e > source.e)
+			//	{
+			//		result.Add((range.s, source.s - 1, false));
+			//		result.Add((source.s + offset, source.e + offset, true)); 
+			//		result.Add((source.e + 1, range.e, false));
+			//		return result;
+			//	}
 
 
-				return result;
-			}
+			//	return result;
+			//}
 		}
 
 		public Mappings Maps = new( );
@@ -164,10 +170,10 @@ namespace AoC2023
 			var toBeMapped = seeds.Chunk(2).Select(c => (start: c[0], end: (c[0] + c[1]))).ToList( );
 			foreach (var map in Maps)
 			{
-				toBeMapped = toBeMapped.SelectMany(v => Maps.GetDestinationRanges(map, v)).Distinct().ToList( );
+				toBeMapped = toBeMapped.SelectMany(v => Maps.GetDestinationRanges(map, v)).Distinct( ).ToList( );
 			}
 
-			return toBeMapped.Min().start.ToString( );
+			return toBeMapped.Min( ).start.ToString( );
 		}
 	}
 }
