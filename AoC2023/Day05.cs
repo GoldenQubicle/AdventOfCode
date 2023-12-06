@@ -75,7 +75,11 @@ namespace AoC2023
 					inRange = maps[map].Where(m => !(m.start > current.end || current.start > m.end)).ToList( );
 
 					if (inRange.Count == 0)
-						return new( ) { range };
+					{
+						result.Add(range);
+						continue;
+					}
+						
 
 					foreach (var ranges in inRange.Select(m => GetRange((m.start, m.end), current, m.dest - m.start)))
 					{
@@ -96,43 +100,6 @@ namespace AoC2023
 				var (s, r) when r.s >= s.s && r.e <= s.e => new( ) { (range.s + offset, range.e + offset, true) },
 				var (s, r) when r.s < s.s && r.e > s.e => new( ) { (range.s, source.s - 1, false), (source.s + offset, source.e + offset, true), (source.e + 1, range.e, false) }
 			};
-			//{
-			//	if (source.s > range.e || range.s > source.e)
-			//		return new() { (range.s, range.e, false) };
-
-			//	var result = new List<(long, long, bool)>( );
-
-			//	if (range.s >= source.s && range.s <= source.e && range.e > source.e)
-			//	{
-			//		result.Add((range.s + offset, source.e + offset, true)); 
-			//		result.Add((source.e + 1, range.e, false));
-			//		return result;
-			//	}
-
-			//	if (range.s < source.s && range.e >= source.s && range.e <= source.e)
-			//	{
-			//		result.Add((range.s, source.s - 1, false));
-			//		result.Add((source.s + offset, range.e + offset, true)); 
-			//		return result;
-			//	}
-
-			//	if (range.s >= source.s && range.e <= source.e)
-			//	{
-			//		result.Add((range.s + offset, range.e + offset, true));
-			//		return result;
-			//	}
-
-			//	if (range.s < source.s && range.e > source.e)
-			//	{
-			//		result.Add((range.s, source.s - 1, false));
-			//		result.Add((source.s + offset, source.e + offset, true)); 
-			//		result.Add((source.e + 1, range.e, false));
-			//		return result;
-			//	}
-
-
-			//	return result;
-			//}
 		}
 
 		public Mappings Maps = new( );
@@ -156,6 +123,7 @@ namespace AoC2023
 		public override string SolvePart1()
 		{
 			var toBeMapped = seeds;
+
 			foreach (var map in Maps)
 			{
 				toBeMapped = toBeMapped.Select(v => Maps.GetDestination(map, v)).ToList( );
@@ -166,8 +134,8 @@ namespace AoC2023
 
 		public override string SolvePart2()
 		{
-
 			var toBeMapped = seeds.Chunk(2).Select(c => (start: c[0], end: (c[0] + c[1]))).ToList( );
+
 			foreach (var map in Maps)
 			{
 				toBeMapped = toBeMapped.SelectMany(v => Maps.GetDestinationRanges(map, v)).Distinct( ).ToList( );
