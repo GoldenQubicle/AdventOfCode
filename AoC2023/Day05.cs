@@ -60,44 +60,67 @@ namespace AoC2023
 
 			public List<(long start, long end)> GetDestinationRanges(string map, (long s, long e) range)
 			{
-				var inRange = maps[map].Where(m => !(m.start > range.e || range.s > m.end)).ToList();
+				var inRange = maps[map].Where(m => !(m.start > range.e)).Where(m => !(range.s > m.end)).ToList();
 
 				if (inRange.Count == 0)
 					return new() { range };
-				//!bug not treating multiple source ranges correct, the range needs to be mapped in one time
-				return GetRange((inRange[0].start, inRange[0].end), range, inRange[0].dest - inRange[0].start);
-				return inRange.SelectMany(m => GetRange((m.start, m.end), range, m.dest - m.start)).ToList();
+
+				var result = new List<(long start, long end)>( );
+				var toCheck = new Queue<(long start, long end)>();
+				toCheck.Enqueue(range);
+
+				while (toCheck.Count != 0)
+				{
+					var current = toCheck.Dequeue( );
+					inRange = maps[map].Where(m => !(m.start > current.end)).Where(m => !(current.start > m.end)).ToList( );
+
+					if (inRange.Count == 0)
+						return new( ) { range };
+
+					foreach (var m in inRange)
+					{
+						var ranges = GetRange((m.start, m.end), current, m.dest - m.start);
+						ranges.Where(r => !r.isMapped).ForEach(r => toCheck.Enqueue((r.s, r.e)));
+						
+						if(ranges.Any(r => r.isMapped))
+							result.Add(ranges.Where(r => r.isMapped).Select(r => (r.s, r.e)).First());
+					}
+				}
+				return result;
 			}
 
-			public static List<(long x, long y)> GetRange((long s, long e) source, (long s, long e) range, long offset)
+			public static List<(long s, long e, bool isMapped)> GetRange((long s, long e) source, (long s, long e) range, long offset)
 			{
-				var result = new List<(long, long)>( );
+				if (source.s > range.e || range.s > source.e)
+					return new() { (range.s, range.e, false) };
+
+				var result = new List<(long, long, bool)>( );
 				
 				if (range.s >= source.s && range.s <= source.e && range.e > source.e)
 				{
-					result.Add((range.s + offset, source.e + offset)); 
-					result.Add((source.e + 1, range.e));
+					result.Add((range.s + offset, source.e + offset, true)); 
+					result.Add((source.e + 1, range.e, false));
 					//return result;
 				}
 
 				if (range.s < source.s && range.e >= source.s && range.e <= source.e)
 				{
-					result.Add((range.s, source.s - 1));
-					result.Add((source.s + offset, range.e + offset)); 
+					result.Add((range.s, source.s - 1, false));
+					result.Add((source.s + offset, range.e + offset, true)); 
 					//return result;
 				}
 
 				if (range.s >= source.s && range.e <= source.e)
 				{
-					result.Add(range.Add((offset, offset)));
+					result.Add((range.s + offset, range.e + offset, true));
 					//return result;
 				}
 
 				if (range.s < source.s && range.e > source.e)
 				{
-					result.Add((range.s, source.s - 1));
-					result.Add((source.s + offset, source.e + offset)); 
-					result.Add((source.e + 1, range.e));
+					result.Add((range.s, source.s - 1, false));
+					result.Add((source.s + offset, source.e + offset, true)); 
+					result.Add((source.e + 1, range.e, false));
 					//return result;
 				}
 
