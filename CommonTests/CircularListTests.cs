@@ -18,6 +18,20 @@ namespace CommonTests
 			sut = new( ) { 2, 3, 4, 5, 6 };
 		}
 
+	
+
+		[Test]
+		public void SetHeadByIndexShouldSetCorrectCurrent()
+		{
+			sut.ResetHead();
+			sut.SetHeadByIndex(2);
+			Assert.That(sut.Current, Is.EqualTo(4));
+			
+			sut.MoveRight(4);
+			Assert.That(sut.Current, Is.EqualTo(3));
+
+		}
+
 		[Test]
 		public void AddShouldWorkInObjectInitializer()
 		{
@@ -28,7 +42,7 @@ namespace CommonTests
 
 		
 		[Test]
-		public void MovePointerShouldWorkOnEmptyList()
+		public void MoveLeftAndRightShouldWorkOnEmptyList()
 		{
 			var cl = new CircularList<int> { 1 };
 
@@ -38,6 +52,16 @@ namespace CommonTests
 			Assert.DoesNotThrow(moveLeft.Invoke);
 			Assert.DoesNotThrow(moveRight.Invoke);
 		}
+
+
+		[Test]
+		public void MoveLeftAndRightShouldThrowOnNegativeValues()
+		{
+			Assert.Throws<ArgumentException>(() => sut.MoveLeft(-5));
+			Assert.Throws<ArgumentException>(() => sut.MoveRight(-5));
+			
+		}
+
 
 		[Test]
 		public void MovePointerShouldWrapAround()

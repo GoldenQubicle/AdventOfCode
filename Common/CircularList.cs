@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 
 namespace Common;
@@ -19,6 +21,8 @@ public class CircularList<T> : LinkedList<T>
 	/// </summary>
 	public T Current => current.Value;
 
+	public T this[int i] => this.ToArray( )[i];
+
 
 	/// <summary>
 	/// Set the current node n positions to the left.
@@ -26,6 +30,7 @@ public class CircularList<T> : LinkedList<T>
 	/// <param name="n">defaults to 1 position</param>
 	public void MoveLeft(int n = 1)
 	{
+		if (n < 0) throw new ArgumentException($"Cannot move {n} steps to the left, use MoveRight instead");
 		for (var i = 0 ;i < n ;i++)
 		{
 			current = current.Previous ?? Last;
@@ -39,6 +44,7 @@ public class CircularList<T> : LinkedList<T>
 	/// <param name="n">Defaults to 1 position</param>
 	public void MoveRight(int n = 1)
 	{
+		if (n < 0) throw new ArgumentException($"Cannot move {n} steps to the right, use MoveLeft instead");
 		for (var i = 0 ;i < n ;i++)
 		{
 			current = current.Next ?? First;
@@ -71,7 +77,8 @@ public class CircularList<T> : LinkedList<T>
 	public bool TryRemove(T value)
 	{
 		var remove = Find(value);
-		if (remove is null) return false;
+		if (remove is null)
+			return false;
 
 		current = remove.Next ?? remove.Previous;
 		Remove(remove);
@@ -95,6 +102,34 @@ public class CircularList<T> : LinkedList<T>
 	/// </summary>
 	public void ResetHead(bool toFirst = true) => current = toFirst ? First : Last;
 
+
+	/// <summary>
+	/// Sets the current node to the node specified by the index.
+	/// </summary>
+	/// <param name="idx"></param>
+	public void SetHeadByIndex(int idx) => current = ToNodeArray( )[idx];
+
+
+	public int GetIndex() => ToNodeArray().ToList().IndexOf(current);
+
+	private LinkedListNode<T>[ ] ToNodeArray()
+	{
+		if (Count == 0)
+			return Array.Empty<LinkedListNode<T>>( );
+
+		var node = First;
+		var array = new LinkedListNode<T>[Count];
+		var index = 0;
+
+		do
+		{
+			array[index++] = node;
+			node = node.Next;
+		} while (node != null);
+
+
+		return array;
+	}
 
 	public override string ToString() => this.Aggregate(new StringBuilder( ), (sb, value) =>
 		sb.Append(value).Append(',')).ToString( );
