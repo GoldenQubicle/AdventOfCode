@@ -54,11 +54,11 @@ public class Day07 : Solution
 			do
 			{
 				idx++;
-				strength = labels[c1.Hand[idx]] > labels[c2.Hand[idx]]
-					? 1
-					: labels[c1.Hand[idx]] < labels[c2.Hand[idx]]
-						? -1
-						: 0;
+
+				var h1 = labels[c1.Hand[idx]];
+				var h2 = labels[c2.Hand[idx]];
+
+				strength = h1 > h2 ? 1 : h1 < h2 ? -1 : 0;
 
 			} while (strength == 0 && idx < c1.Hand.Length - 1);
 
