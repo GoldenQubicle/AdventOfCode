@@ -43,25 +43,25 @@ namespace CLI
              using System.Threading.Tasks;
              using Common;
 
-             namespace AoC{Year}
+             namespace AoC{Year};
+             
+             public class Day{Day} : Solution
              {{
-                 public class Day{Day} : Solution
+                 public Day{Day}(string file) : base(file) {{ }}
+                 
+                 public Day{Day}(List<string> input) : base(input) {{ }}
+
+                 public override string SolvePart1( ) 
                  {{
-                     public Day{Day}(string file) : base(file) {{ }}
-                     
-                     public Day{Day}(List<string> input) : base(input) {{ }}
-
-                     public override string SolvePart1( ) 
-                     {{
-                     	return string.Empty;
-                     }}
-
-                     public override string SolvePart2( )
-                     {{
-                     	return string.Empty;
-                     }}
+                 	return string.Empty;
                  }}
-             }}".Replace("             ", "");
+
+                 public override string SolvePart2( )
+                 {{
+                 	return string.Empty;
+                 }}
+             }}
+             ".Replace("             ", "");
 
         private string FSharpUnitTest() => 
             $@"module Day{Day}Test
@@ -96,43 +96,43 @@ namespace CLI
              using System.Collections.Generic;
              using System.Linq;
              
-             namespace AoC{Year}Tests
+             namespace AoC{Year}Tests;
+            
+             public class Day{Day}Test
              {{
-                 public class Day{Day}Test
+                 Day{Day} day{Day};
+            
+                 [SetUp]
+                 public void Setup( )
                  {{
-                     Day{Day} day{Day};
-             
-                     [SetUp]
-                     public void Setup( )
-                     {{
-                         day{Day} = new Day{Day}(""day{Day}test1"");
-                     }}
-                     
-                     {(TestCases.Count == 0 ?
-                @$"[Test]
-                     public void Part1( )
-                     {{
-                         var actual = day{Day}.SolvePart1( );
-                         Assert.That(actual, Is.EqualTo(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}""));
-                     }}"
-                :
-                $@"{TestCases.Aggregate(string.Empty,
-                    (s, c) => s + @$"[TestCase(""{c.input}"",""{c.outcome}"")] {Environment.NewLine}        ").TrimEnd()}
-                     public void Part1(string input, string expected )
-                     {{
-                         day{Day} = new Day{Day}(new List<string> {{ input }} );
-                         var actual = day{Day}.SolvePart1( );
-                         Assert.That(actual, Is.EqualTo(expected));
-                     }}")}
-             
-                     [Test]
-                     public void Part2( )
-                     {{
-                         var expected = string.Empty;
-                         var actual = day{Day}.SolvePart2( );
-                         Assert.That(actual, Is.EqualTo(expected));
-                     }}
+                     day{Day} = new Day{Day}(""day{Day}test1"");
                  }}
-             }}".Replace("             ", "");
+                 
+                 {(TestCases.Count == 0 ?
+            @$"[Test]
+                 public void Part1( )
+                 {{
+                     var actual = day{Day}.SolvePart1( );
+                     Assert.That(actual, Is.EqualTo(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}""));
+                 }}"
+            :
+            $@"{TestCases.Aggregate(string.Empty,
+                (s, c) => s + @$"[TestCase(""{c.input}"",""{c.outcome}"")] {Environment.NewLine}        ").TrimEnd()}
+                 public void Part1(string input, string expected )
+                 {{
+                     day{Day} = new Day{Day}(new List<string> {{ input }} );
+                     var actual = day{Day}.SolvePart1( );
+                     Assert.That(actual, Is.EqualTo(expected));
+                 }}")}
+            
+                 [Test]
+                 public void Part2( )
+                 {{
+                     var expected = string.Empty;
+                     var actual = day{Day}.SolvePart2( );
+                     Assert.That(actual, Is.EqualTo(expected));
+                 }}
+             }}
+             ".Replace("             ", "");
     }
 }

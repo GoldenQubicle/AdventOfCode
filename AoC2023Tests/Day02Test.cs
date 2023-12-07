@@ -1,29 +1,28 @@
 using AoC2023;
 
-namespace AoC2023Tests
+namespace AoC2023Tests;
+
+public class Day02Test
 {
-    public class Day02Test
-    {
-        Day02 day02;
+	Day02 day02;
 
-        [SetUp]
-        public void Setup( )
-        {
-            day02 = new Day02("day02test1");
-        }
+	[SetUp]
+	public void Setup( )
+	{
+		day02 = new Day02("day02test1");
+	}
         
-        [Test]
-        public void Part1( )
-        {
-            var actual = day02.SolvePart1( );
-            Assert.That(actual, Is.EqualTo("8"));
-        }
+	[Test]
+	public void Part1( )
+	{
+		var actual = day02.SolvePart1( );
+		Assert.That(actual, Is.EqualTo("8"));
+	}
 
-        [Test]
-        public void Part2( )
-        {
-            var actual = day02.SolvePart2( );
-            Assert.That(actual, Is.EqualTo("2286"));
-        }
-    }
+	[Test]
+	public void Part2( )
+	{
+		var actual = day02.SolvePart2( );
+		Assert.That(actual, Is.EqualTo("2286"));
+	}
 }
