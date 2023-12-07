@@ -10,7 +10,7 @@ namespace AoC2022
                 grid.GetCells(c => c.Character == 'S').First(),
                 grid.GetCells(c => c.Character == 'E').First(),
                 (c,n) => getCharacter(n.Character) - 1 <= getCharacter(c.Character),
-                (c,t) => c.Character == t.Character).Count.ToString();
+                (c,t) => c.Character == t.Character).First().Count.ToString();
 
 
         public override string SolvePart2() => 
@@ -22,7 +22,7 @@ namespace AoC2022
                         g.GetCells(c => c.Character == 'E').First(),
                         (c, n) => getCharacter(n.Character) - 1 <= getCharacter(c.Character),
                         (c, t) => c.Character == t.Character);
-                }).Min(p => p.Count).ToString();
+                }).First().Min(p => p.Count).ToString();
 
         char getCharacter(char c) => c switch
         {

@@ -76,7 +76,7 @@ public class Day05 : Solution
 						
 				foreach (var ranges in inRange.Select(m => GetRange((m.start, m.end), current, m.dest - m.start)))
 				{
-					ranges.Where(r => !r.isMapped).ForEach(r => toCheck.Enqueue((r.s, r.e)));
+					toCheck.EnqueueAll(ranges.Where(r => !r.isMapped).Select(r => (r.s, r.e)));
 
 					if (ranges.Any(r => r.isMapped))
 						result.Add(ranges.Where(r => r.isMapped).Select(r => (r.s, r.e)).First( ));

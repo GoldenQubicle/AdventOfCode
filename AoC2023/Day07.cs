@@ -65,7 +65,7 @@ public class Day07 : Solution
 			return strength;
 		}
 
-		private int CompareCardType(Card c1, Card c2, bool isPart1 = true) => isPart1
+		private int CompareCardType(Card c1, Card c2, bool isPart1) => isPart1
 			? c1.Type1 < c2.Type1 ? 1 : c1.Type1 > c2.Type1 ? -1 : 0
 			: c1.Type2 < c2.Type2 ? 1 : c1.Type2 > c2.Type2 ? -1 : 0;
 	}
