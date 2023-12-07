@@ -25,7 +25,7 @@ public class Day07 : Solution
 		.Select(l =>
 		{
 			var parts = l.Split(' ', StringSplitOptions.TrimEntries);
-			return new Card(parts[0], long.Parse(parts[1]));
+			return new Card(parts[0], int.Parse(parts[1]));
 		}).ToList( );
 
 	public override string SolvePart1() => SortCards(LabelsPart1, isPart1: true);
@@ -34,26 +34,18 @@ public class Day07 : Solution
 
 	private string SortCards(Dictionary<char, int> labels, bool isPart1)
 	{
-		cards.Sort(new Comparer(labels, CompareCardType, isPart1));
+		cards.Sort(new Comparer(labels, isPart1));
 
 		return cards
 			.Select((c, idx) => c.Bid * (idx + 1))
 			.Sum( ).ToString( );
 	}
 
-	public static int CompareCardType(Card c1, Card c2, bool isPart1 = true) => isPart1
-		? c1.Type1 < c2.Type1 ? 1 : c1.Type1 > c2.Type1 ? -1 : 0
-		: c1.Type2 < c2.Type2 ? 1 : c1.Type2 > c2.Type2 ? -1 : 0;
-
-
-	public class Comparer(
-		Dictionary<char, int> labels,
-		Func<Card, Card, bool, int> typeCompare,
-		bool isPart1) : IComparer<Card>
+	public class Comparer(Dictionary<char, int> labels, bool isPart1) : IComparer<Card>
 	{
 		public int Compare(Card c1, Card c2)
 		{
-			var result = typeCompare(c1, c2, isPart1);
+			var result = CompareCardType(c1, c2, isPart1);
 			if (result != 0)
 				return result;
 
@@ -68,27 +60,31 @@ public class Day07 : Solution
 						? -1
 						: 0;
 
-			} while (labels[c1.Hand[idx]] == labels[c2.Hand[idx]] && idx < 4);
+			} while (labels[c1.Hand[idx]] == labels[c2.Hand[idx]] && idx < c1.Hand.Length - 1);
 
 			return strength;
 		}
+
+		private int CompareCardType(Card c1, Card c2, bool isPart1 = true) => isPart1
+			? c1.Type1 < c2.Type1 ? 1 : c1.Type1 > c2.Type1 ? -1 : 0
+			: c1.Type2 < c2.Type2 ? 1 : c1.Type2 > c2.Type2 ? -1 : 0;
 	}
 
 
-	public record Card(string Hand, long Bid)
+	public record Card(string Hand, int Bid)
 	{
 		public int Type1 => Hand
 				.GroupBy(c => c)
 				.OrderByDescending(g => g.Count( )).ToList( ) switch
-			{
-				{ Count: 1 } => 1,
-				{ Count: 2 } g when g.First( ).Count( ) == 4 => 2,
-				{ Count: 2 } g when g.First( ).Count( ) == 3 => 3,
-				{ Count: 3 } g when g.First( ).Count( ) == 3 => 4,
-				{ Count: 3 } g when g.First( ).Count( ) == 2 => 5,
-				{ Count: 4 } => 6,
-				{ Count: 5 } => 7,
-			};
+		{
+			{ Count: 1 } => 1,
+			{ Count: 2 } g when g.First( ).Count( ) == 4 => 2,
+			{ Count: 2 } g when g.First( ).Count( ) == 3 => 3,
+			{ Count: 3 } g when g.First( ).Count( ) == 3 => 4,
+			{ Count: 3 } g when g.First( ).Count( ) == 2 => 5,
+			{ Count: 4 } => 6,
+			{ Count: 5 } => 7,
+		};
 
 		public int Type2
 		{
