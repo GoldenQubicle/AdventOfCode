@@ -60,7 +60,7 @@ public class Day07 : Solution
 						? -1
 						: 0;
 
-			} while (labels[c1.Hand[idx]] == labels[c2.Hand[idx]] && idx < c1.Hand.Length - 1);
+			} while (strength == 0 && idx < c1.Hand.Length - 1);
 
 			return strength;
 		}
