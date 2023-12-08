@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common;
+using Math = System.Math;
 
 namespace AoC2015
 {

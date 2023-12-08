@@ -169,7 +169,7 @@ namespace Common
 		public List<List<Cell>> GetShortestPath(Cell start, Cell target, Func<Cell, Cell, bool> constraint, Func<Cell, Cell, bool> targetCondition)
 		{
 			//2023 12 7 start rework
-			Cells.Values.ForEach(c => c.Distance = Math.Abs(target.X - c.X) + Math.Abs(target.Y - c.Y));
+			Cells.Values.ForEach(c => c.Distance = System.Math.Abs(target.X - c.X) + System.Math.Abs(target.Y - c.Y));
 			var paths = new List<List<Cell>>( );
 			var visited = new Dictionary<(int x, int y), bool>( );
 			var queue = new PriorityQueue<Cell, long>( );

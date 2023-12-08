@@ -37,7 +37,7 @@ public class Day08 : Solution
 	public override string SolvePart2()
 	{
 		var current = nodes.Keys.Where(n => n.EndsWith('A')).ToList( );
-		var paths = current.Select((n, i) => (n, i)).ToDictionary(t => t.i, _ => (found: false, steps: 0));
+		var paths = current.Select((n, i) => (n, i)).ToDictionary(t => t.i, _ => (found: false, steps: 0L));
 		var idx = 0;
 		var steps = 0;
 
@@ -54,7 +54,7 @@ public class Day08 : Solution
 			idx = (idx + 1) % instructions.Length;
 			
 		}
-		//TODO figure out how to calculate lcm, for now just put the path results in online calculator :)
-		return string.Empty;
+		
+		return Maths.LeastCommonMultiple(paths.Select(p => p.Value.steps)).ToString();
 	}
 }

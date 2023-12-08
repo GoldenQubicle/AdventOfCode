@@ -1,5 +1,6 @@
 using Common;
 using Common.Extensions;
+using Math = System.Math;
 
 namespace AoC2023;
 
