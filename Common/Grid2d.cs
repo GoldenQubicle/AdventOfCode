@@ -168,6 +168,7 @@ namespace Common
 		/// <returns></returns>
 		public List<List<Cell>> GetShortestPath(Cell start, Cell target, Func<Cell, Cell, bool> constraint, Func<Cell, Cell, bool> targetCondition)
 		{
+			//2023 12 7 start rework
 			Cells.Values.ForEach(c => c.Distance = Math.Abs(target.X - c.X) + Math.Abs(target.Y - c.Y));
 			var paths = new List<List<Cell>>( );
 			var visited = new Dictionary<(int x, int y), bool>( );
@@ -190,7 +191,7 @@ namespace Common
 						current = current.Parent;
 					}
 					//current has been reset to start now, so clear queue & visited
-					//however, do add ALL the paths we just found to the visited list
+					//however, do add ALL the paths we just found to the visited list -> yeah no, doesn't work like that
 					queue.Clear();
 					visited.Clear();
 					paths.Add(path);

@@ -1,0 +1,10 @@
+LR
+
+EEA = (EEB, XXX)
+EEB = (XXX, EEZ)
+EEZ = (EEB, XXX)
+FFA = (FFB, XXX)
+FFB = (FFC, FFC)
+FFC = (FFZ, FFZ)
+FFZ = (FFB, FFB)
+XXX = (XXX, XXX)
