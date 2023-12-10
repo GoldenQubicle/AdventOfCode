@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Numerics;
 
@@ -40,4 +42,23 @@ public static class Maths // dumb name but prevents namespace conflict with Syst
 		b == T.Zero ? a : GreatestCommonDivisor(b, a % b);
 
 
+
+	//shamelessly copied from https://stackoverflow.com/a/67403631
+	/// <summary>
+	/// Simple test to see a point is inside the given polygon. 
+	/// </summary>
+	/// <remarks>Note the polygon must be ordered correctly, and a new GraphicsPath object is created with every call!</remarks>
+	/// <param name="polygon"></param>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <returns></returns>
+	public static bool IsPointInsidePolygon(IEnumerable<(int x, int y)> polygon, (int x, int y) p)
+	{
+		var path = new GraphicsPath( );
+		path.AddPolygon(polygon.Select(p => new Point(p.x, p.y)).ToArray());
+
+		var region = new Region(path);
+
+		return region.IsVisible(p.x, p.y);
+	}
 }
