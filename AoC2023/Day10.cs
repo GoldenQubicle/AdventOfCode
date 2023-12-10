@@ -29,21 +29,15 @@ public class Day10 : Solution
 
 	private List<Grid2d.Cell> GetPath()
 	{
-		var start = grid.First(c => c.Character == 'S');
-		start.Character = 'F';
+		var current = grid.First(c => c.Character == 'S');
+		current.Character = 'F';
 		var visited = new List<Grid2d.Cell>( );
-		var queue = new Queue<Grid2d.Cell>( );
-		queue.Enqueue(start);
 
-		while (queue.Count > 0)
+		while (current is not null)
 		{
-			var current = queue.Dequeue( );
 			visited.Add(current);
 
-			var neighbor = grid.GetNeighbors(current, n => !visited.Contains(n) && IsConnected(current, n)).FirstOrDefault( );
-
-			if (neighbor != default)
-				queue.Enqueue(neighbor);
+			current = grid.GetNeighbors(current, n => !visited.Contains(n) && IsConnected(current, n)).FirstOrDefault( );
 		}
 
 		return visited;
@@ -56,14 +50,14 @@ public class Day10 : Solution
 			//ground not connected by default
 			(_, _, _, '.') => false,
 			//current pipes which cannot have anything to the left, right, up or down
-			(1, 0,  '|' or 'L' or 'F', _) => false,
+			(1, 0, '|' or 'L' or 'F', _) => false,
 			(-1, 0, '|' or 'J' or '7', _) => false,
-			(0, 1,  '-' or '7' or 'F', _) => false,
+			(0, 1, '-' or '7' or 'F', _) => false,
 			(0, -1, '-' or 'L' or 'J', _) => false,
 			//current pipes taking into account neighbors which cannot connect
-			(1, 0,  '-' or '7' or 'J', '|' or '7' or 'J') => false,
+			(1, 0, '-' or '7' or 'J', '|' or '7' or 'J') => false,
 			(-1, 0, '-' or 'L' or 'F', '|' or 'L' or 'F') => false,
-			(0, 1,  '|' or 'L' or 'J', '-' or 'L' or 'J') => false,
+			(0, 1, '|' or 'L' or 'J', '-' or 'L' or 'J') => false,
 			(0, -1, '|' or '7' or 'F', '-' or '7' or 'F') => false,
 			//whatever remains can connect
 			_ => true
