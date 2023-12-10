@@ -14,6 +14,7 @@ public class Day10Test
     }
 
 	[TestCase("day10test3", "4")]
+	[TestCase("day10test4", "8")]
 	[TestCase("day10test5", "4")]
 	[TestCase("day10test6", "10")]
 	public void Part2(string file, string expected)
