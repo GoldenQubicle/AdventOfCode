@@ -63,6 +63,13 @@ public static class Maths // dumb name but prevents namespace conflict with Syst
 		return region.IsVisible(p.x, p.y);
 	}
 
+	/// <summary>
+	/// Calculate the Manhattan Distance between point a and b. 
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <returns></returns>
 	public static T GetManhattanDistance<T>((T x, T y) a, (T x, T y) b) where T : INumber<T> =>
 		T.Abs(a.x - b.x) + T.Abs(a.y - b.y);
 }

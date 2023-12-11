@@ -18,27 +18,25 @@ public class Day11 : Solution
 	public string GetDistanceSum(int expansionFactor)
 	{
 		var emptyRows = Enumerable.Range(0, grid.Height)
-			.Select(n => (r: grid.Where(c => c.Position.y == n).All(c => c.Character == '.'), i: n))
-			.Where(r => r.r).ToList( );
+			.Select(n => (isEmpty: grid.Where(c => c.Position.y == n).All(c => c.Character == '.'), idx: n))
+			.Where(r => r.isEmpty).ToList( );
 
 		var emptyCols = Enumerable.Range(0, grid.Width)
-			.Select(n => (r: grid.Where(c => c.Position.x == n).All(c => c.Character == '.'), i: n))
-			.Where(c => c.r).ToList( );
+			.Select(n => (isEmpty: grid.Where(c => c.Position.x == n).All(c => c.Character == '.'), idx: n))
+			.Where(c => c.isEmpty).ToList( );
 
-		var galaxies = grid.Where(c => c.Character == '#').ToList( );
-
-		foreach (var galaxy in galaxies)
-		{
-			var offsetX = emptyCols.Count(c => galaxy.Position.x > c.i) * (expansionFactor - 1);
-			var offsetY = emptyRows.Count(r => galaxy.Position.y > r.i) * (expansionFactor - 1);
-			galaxy.Position = galaxy.Position.Add(offsetX, offsetY);
-		}
+		var galaxies = grid.Where(c => c.Character == '#')
+			.Select(g =>
+			{
+				var offsetX = emptyCols.Count(c => g.Position.x > c.idx) * (expansionFactor - 1);
+				var offsetY = emptyRows.Count(r => g.Position.y > r.idx) * (expansionFactor - 1);
+				return g.Position.Add(offsetX, offsetY).ToLong();
+			}).ToList( );
 
 		return Enumerable.Range(0, galaxies.Count - 1)
 			.SelectMany(i => Enumerable.Range(i + 1, galaxies.Count - i - 1)
-				.Select(k => (start: galaxies[i].Position.ToLong( ), end: galaxies[k].Position.ToLong( ))))
+				.Select(k => (start: galaxies[i], end: galaxies[k])))
 			.Sum(p => Maths.GetManhattanDistance(p.start, p.end))
 			.ToString( );
-
 	}
 }
