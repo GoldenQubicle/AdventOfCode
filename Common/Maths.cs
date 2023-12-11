@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -61,4 +62,7 @@ public static class Maths // dumb name but prevents namespace conflict with Syst
 
 		return region.IsVisible(p.x, p.y);
 	}
+
+	public static T GetManhattanDistance<T>((T x, T y) a, (T x, T y) b) where T : INumber<T> =>
+		T.Abs(a.x - b.x) + T.Abs(a.y - b.y);
 }

@@ -9,12 +9,17 @@
     &lt;TestId&gt;NUnit3x::147E3225-79A1-4398-ABBE-4E74A38D9E00::net8.0::AoC2023Tests.Day09Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=375891f1_002D2fa7_002D4a76_002D81b0_002D2fbb73f3dfb9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day11Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::147E3225-79A1-4398-ABBE-4E74A38D9E00::net8.0::AoC2023Tests.Day11Test&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f5884568_002D6785_002D4e4f_002D95c3_002D98bb7420494f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MathsTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::2B58D939-8993-4BE1-A2D6-DD1D8B6F43EC::net8.0::CommonTests.MathsTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fc744fc5_002D7eb4_002D45d4_002D9bfd_002D8933db571e5d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day10Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fc744fc5_002D7eb4_002D45d4_002D9bfd_002D8933db571e5d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day10Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::147E3225-79A1-4398-ABBE-4E74A38D9E00::net8.0::AoC2023Tests.Day10Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
