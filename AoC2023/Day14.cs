@@ -8,143 +8,83 @@ public class Day14 : Solution
 	private readonly Grid2d grid;
 
 	public Day14(string file) : base(file) => grid = new Grid2d(Input);
-    
-    public override string SolvePart1( )
-    {
-		TiltNorth();
 
-		return grid.Where(c => c.Character == 'O').Sum(c => (grid.Height - c.Y)).ToString();
-    }
 
-    public override string SolvePart2()
-    {
-		//we could do cycle detection or just run it a decreased manifold
-		//like wise we could write a nice generic tilt method or just copy paste 4 times and change it around..
-	    for (var i = 0; i < 1000; i++)
-	    {
-		    //Console.WriteLine(grid);
-			TiltNorth();
-			//Console.WriteLine(grid);
-			TiltWest();
-			//Console.WriteLine(grid);
-			TiltSouth();
-			//Console.WriteLine(grid);
-			TiltEast();
-			//Console.WriteLine(grid);
-	    }
+	public override string SolvePart1()
+	{
+		TiltPlatform((0, -1), 1);
 
-	    return grid.Where(c => c.Character == 'O').Sum(c => (grid.Height - c.Y)).ToString();
-    }
+		return grid.Where(c => c.Character == 'O').Sum(c => (grid.Height - c.Y)).ToString( );
+	}
 
-	private void TiltEast()
-    {
-	    var col = grid.Width -1;
-	    while (col >= 0)
-	    {
-		    var rocks = grid.GetColumn(col).Where(c => c.Character == 'O').ToList( );
-		    foreach (var rock in rocks)
-		    {
-			    var p = rock.Position.Add(1, 0);
-			    while (p.x < grid.Width)
-			    {
-				    if (grid[p].Character != '.')
-					    break;
+	public override string SolvePart2()
+	{
+		//we could do cycle detection or just run it for a while... still less than billion tho
 
-				    p = p.Add(1, 0);
-			    }
+		for (var i = 0 ;i < 1000 ;i++)
+		{
+			TiltPlatform((0, -1), 1);
+			TiltPlatform((-1, 0), 1);
+			TiltPlatform((0, 1), grid.Height - 1);
+			TiltPlatform((1, 0), grid.Width - 1);
+		}
 
-			    grid[p.Add(-1, 0)].Character = 'O';
-			    if (rock.Position.x != p.Add(-1, 0).x)
-				    grid[rock.Position].Character = '.';
+		return grid.Where(c => c.Character == 'O').Sum(c => (grid.Height - c.Y)).ToString( );
+	}
 
-			    //Console.WriteLine(grid);
-		    }
 
-		    col--;
-	    }
-    }
+	private void TiltPlatform((int x, int y) offset, int idx)
+	{
+		var startsAtOne = idx == 1;
+		var isColumn = offset.x != 0;
 
-	private void TiltWest()
-    {
-	    var col = 1;
-	    while (col < grid.Width)
-	    {
-		    var rocks = grid.GetColumn(col).Where(c => c.Character == 'O').ToList( );
-		    foreach (var rock in rocks)
-		    {
-			    var p = rock.Position.Add(-1, 0);
-			    while (p.x >= 0)
-			    {
-				    if (grid[p].Character != '.')
-					    break;
+		Func<int, bool> hasRemaining = (startsAtOne, isColumn) switch
+		{
+			(false, true) or (false, false) => i => i >= 0,
+			(true, true) => i => i < grid.Width,
+			(true, false) => i => i < grid.Height
+		};
 
-				    p = p.Add(-1, 0);
-			    }
+		Func<(int x, int y), bool> canRoll = (startsAtOne, isColumn) switch
+		{
+			(true, true) => p => p.x >= 0,
+			(false, true) => p => p.x < grid.Width,
+			(true, false) => p => p.y >= 0,
+			(false, false) => p => p.y < grid.Height
+		};
 
-			    grid[p.Add(1,0)].Character = 'O';
-			    if (rock.Position.x != p.Add(1, 0).x)
-				    grid[rock.Position].Character = '.';
+		while (hasRemaining(idx))
+		{
+			var rocks = isColumn
+				? grid.GetColumn(idx).Where(c => c.Character == 'O').ToList( )
+				: grid.GetRow(idx).Where(c => c.Character == 'O').ToList( );
 
-			    //Console.WriteLine(grid);
-		    }
+			foreach (var rock in rocks)
+			{
+				var p = rock.Position.Add(offset);
 
-		    col++;
-	    }
-    }
+				while (canRoll(p))
+				{
+					if (grid[p].Character != '.')
+						break;
 
-	private void TiltNorth()
-    {
-	    var row = 1;
-	    while (row < grid.Height)
-	    {
-		    var rocks = grid.GetRow(row).Where(c => c.Character == 'O').ToList();
-		    foreach (var rock in rocks)
-		    {
-			    var p = rock.Position.Add(0, -1);
-			    while (p.y >= 0)
-			    {
-				    if (grid[p].Character != '.')
-					    break;
+					p = p.Add(offset);
+				}
 
-				    p = p.Add(0, -1);
-			    }
+				grid[p.Subtract(offset)].Character = 'O';
 
-			    grid[p.Add(0, 1)].Character = 'O';
-			    if (rock.Position.y != p.Add(0, 1).y)
-				    grid[rock.Position].Character = '.';
+				var replaceRock = isColumn
+					? rock.Position.x != p.Subtract(offset).x
+					: rock.Position.y != p.Subtract(offset).y;
 
-			    //Console.WriteLine(grid);
-		    }
+				if (replaceRock)
+					grid[rock.Position].Character = '.';
+			}
 
-		    row++;
-	    }
-    }
-
-    private void TiltSouth()
-    {
-	    var row = grid.Height - 1;
-	    while (row >= 0)
-	    {
-		    var rocks = grid.GetRow(row).Where(c => c.Character == 'O').ToList();
-		    foreach (var rock in rocks)
-		    {
-			    var p = rock.Position.Add(0, 1);
-			    while (p.y < grid.Height)
-			    {
-				    if (grid[p].Character != '.')
-					    break;
-
-				    p = p.Add(0, 1);
-			    }
-
-			    grid[p.Add(0, -1)].Character = 'O';
-			    if (rock.Position.y != p.Add(0, -1).y)
-				    grid[rock.Position].Character = '.';
-
-			    //Console.WriteLine(grid);
-		    }
-
-		    row--;
-	    }
-    }
+			if (startsAtOne)
+				idx++;
+			else
+				idx--;
+		}
+	}
 }

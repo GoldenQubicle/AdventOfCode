@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using Common;
 
 namespace AoC2023;
@@ -18,32 +16,44 @@ public class Day13 : Solution
 		}
 	}
 
-	public override string SolvePart1() => grids.Select(g => (g,
-			c: Enumerable.Range(0, g.Width - 1).Select(c => IsMirrorLine(g, c, c + 1, isRow: false) ? c + 1 : 0),
-			r: Enumerable.Range(0, g.Height - 1).Select(c => IsMirrorLine(g, c, c + 1, isRow: true) ? c + 1 : 0)))
+	public override string SolvePart1() => grids.Select(GetMirrorLines)
 			.Sum(t => t.c.Sum( ) + t.r.Sum(i => i * 100)).ToString( );
+
+	private (IEnumerable<int> c, IEnumerable<int> r) GetMirrorLines(Grid2d g) => 
+		(c: Enumerable.Range(0, g.Width - 1).Select(c => IsMirrorLine(g, c, c + 1, isRow: false) ? c + 1 : 0).ToList(),
+		r: Enumerable.Range(0, g.Height - 1).Select(c => IsMirrorLine(g, c, c + 1, isRow: true) ? c + 1 : 0).ToList());
+
 
 
 	public override string SolvePart2()
 	{
+		var result = new List<int>();
 		foreach (var grid in grids)
 		{
-			var r = SmudgedRows(grid);
-			var c = SmudgedColumns(grid);
-			if (r.Count() > 0 )
+			var oldLines = GetMirrorLines(grid);
+			var rows = SmudgedRows(grid);
+			var cols = SmudgedColumns(grid);
+			Console.WriteLine($"About to fix {rows.Count} smudged rows and {cols.Count} smudged columns");
+			
+			rows.ForEach(r =>
 			{
-				grid.GetRow(r[0].a)[r[0].c.IndexOf(false)].Character = '#';
-				grid.GetRow(r[0].b)[r[0].c.IndexOf(false)].Character = '#';
-			}
+				grid.GetRow(r.a)[r.c.IndexOf(false)].Character = '.';
+				grid.GetRow(r.b)[r.c.IndexOf(false)].Character = '.';
+			});
+			
+			cols.ForEach(c =>
+			{
+				grid.GetColumn(c.a)[c.c.IndexOf(false)].Character = '.';
+				grid.GetColumn(c.b)[c.c.IndexOf(false)].Character = '.';
+			});
 
-			//if (c.Count( ) > 0)
-			//{
-			//	grid.GetColumn(c[0].a)[c[0].c.IndexOf(false)].Character = '.';
-			//	grid.GetColumn(c[0].b)[c[0].c.IndexOf(false)].Character = '.';
-			//}
+		
+			var newLines = GetMirrorLines(grid);
+			var lines = (newLines.c.Except(oldLines.c), newLines.r.Except(oldLines.r));
+			result.Add(lines.Item1.Sum() + lines.Item2.Sum(i => i * 100));
 		}
 
-		return SolvePart1( );
+		return result.Sum().ToString();
 	}
 
 	private static List<(int a, int b, List<bool> c)> SmudgedColumns(Grid2d grid)
@@ -102,8 +112,8 @@ public class Day13 : Solution
 	}
 
 	public static IEnumerable<bool> Match(Grid2d grid, int a, int b, bool isRow) => isRow
-		? grid.GetRow(a).Zip(grid.GetRow(b), (a, b) => a.Character == b.Character)
-		: grid.GetColumn(a).Zip(grid.GetColumn(b), (a, b) => a.Character == b.Character);
+		? grid.GetRow(a).Zip(grid.GetRow(b), (a, b) => a.Character == b.Character).ToList()
+		: grid.GetColumn(a).Zip(grid.GetColumn(b), (a, b) => a.Character == b.Character).ToList();
 
 
 
