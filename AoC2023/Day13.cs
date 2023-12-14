@@ -31,18 +31,18 @@ public class Day13 : Solution
 
 	public static bool IsMirrorLine(Grid2d g, int a, int b, bool isRow, bool isSmudged)
 	{
-		var result = new List<List<bool>>( );
+		var matches = new List<List<bool>>( );
 
 		while (Exit(a, b))
 		{
-			result.Add(Match(g, a, b, isRow));
+			matches.Add(Match(g, a, b, isRow));
 			a--;
 			b++;
 		}
 
 		return isSmudged 
-			? result.SelectMany(m => m).Count(m => !m) == 1
-			: result.SelectMany(m => m).All(m => m);
+			? matches.SelectMany(m => m).Count(m => !m) == 1
+			: matches.SelectMany(m => m).All(m => m);
 
 
 		bool Exit(int a, int b) => isRow
