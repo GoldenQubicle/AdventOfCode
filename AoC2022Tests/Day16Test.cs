@@ -11,7 +11,7 @@ namespace AoC2022Tests
         }
         
         [Test]
-        [Ignore("not finished")]
+        //[Ignore("not finished")]
         public void Part1( )
         {
             var actual = day16.SolvePart1( );

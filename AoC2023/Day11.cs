@@ -18,11 +18,11 @@ public class Day11 : Solution
 	public string GetDistanceSum(int expansionFactor)
 	{
 		var emptyRows = Enumerable.Range(0, grid.Height)
-			.Select(n => (isEmpty: grid.Where(c => c.Position.y == n).All(c => c.Character == '.'), idx: n))
+			.Select(n => (isEmpty: grid.GetRow(n).All(c => c.Character == '.'), idx: n))
 			.Where(r => r.isEmpty).ToList( );
 
 		var emptyCols = Enumerable.Range(0, grid.Width)
-			.Select(n => (isEmpty: grid.Where(c => c.Position.x == n).All(c => c.Character == '.'), idx: n))
+			.Select(n => (isEmpty: grid.GetColumn(n).All(c => c.Character == '.'), idx: n))
 			.Where(c => c.isEmpty).ToList( );
 
 		var galaxies = grid.Where(c => c.Character == '#')

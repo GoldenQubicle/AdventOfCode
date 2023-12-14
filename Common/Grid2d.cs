@@ -106,7 +106,11 @@ namespace Common
 			cell = null;
 			return false;
 		}
-			
+
+		public List<Cell> GetRow(int r) => 
+			Cells.Values.Where(p => p.Y == r).ToList();
+
+		public List<Cell> GetColumn(int c) => Cells.Values.Where(p => p.X == c).ToList();
 
 		public List<Cell> GetRange((int x, int y) topLeft, (int x, int y) bottomRight)
 		{

@@ -9,32 +9,46 @@ namespace AoC2022
 
         public override string SolvePart1()
         {
-            var result = new List<int>();
-            var queue = new Queue<(string valve, int relieved, int step)>();
+            //SETUP
+            //precompute travel times between all nodes
+            var nodes = valves.Keys.ToList();
+            var graph = valves.ToDictionary(v => v.Key, v => v.Value.tunnels);
+            var paths = Enumerable.Range(0, valves.Count - 1)
+	            .SelectMany(i => Enumerable.Range(i, valves.Count - i - 1)
+		            .Select(k => (start: nodes[i], end: nodes[k], GetPath(nodes[i], nodes[k], graph))))
+	            .GroupBy(t => t.start)
+	            .ToDictionary(g => g.Key, g => g.ToDictionary(t => t.end, t => t.Item3));
 
-            queue.Enqueue(("AA", 0, 0));
+            var path = GetPath("AA", "HH", graph);
 
-            
-            
+            var isOpen = valves.Where(v => v.Value.rate > 0).ToDictionary(v => v.Key, _ => false);
+            //FLOW
+            //given the current and elapsed time, which next valve to open will give the largest flow in the time remaining?
+            //i.e. taking into account travel time and 1 minute, max (elapsed-timeSpend) * flowRate
+            //update timeSpend
+            //update totalFlow
+
+
+
+	        return string.Empty;
+        }
+
+        private List<string> GetPath(string start, string end, Dictionary<string, List<string>> graph)
+        {
+	        var queue = new Queue<(string node, List<string> visited)>();
+	        queue.Enqueue((start, new List<string>()));
+
             while (queue.Count > 0)
             {
-                // state consist of; dictionary valves open / closed, ticks elapsed, pressure relieved, current valve
-                // get all closed valves with flow rate > 0 for current
-                // foreach option
-                // - compute the shortest path to it (i.e. travel time 1 * n nodes)
-                // - compute the amount of pressure relieved during
+	            var current = queue.Dequeue();
+	            if (current.node == end)
+		            return current.visited;
 
-                var current = queue.Dequeue();
+                queue.EnqueueAll(graph[current.node].Select(n => (n, current.visited.Expand(current.node))));
 
-                if (current.step == 15)
-                    result.Add(current.relieved);
-                else
-                    valves[current.valve].tunnels.ForEach(t =>
-                        queue.Enqueue((t, current.relieved * 2 + valves[current.valve].rate, current.step++)));
             }
 
-
-            return result.Max().ToString();
+            return new List<string>();
         }
 
         public override string SolvePart2() => null;
