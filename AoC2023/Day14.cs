@@ -19,7 +19,7 @@ public class Day14 : Solution
 
 	public override string SolvePart2()
 	{
-		//we could do cycle detection or just run it for a while... still less than billion tho
+		//we could do cycle detection or just run it for a while... 
 
 		for (var i = 0 ;i < 1000 ;i++)
 		{
