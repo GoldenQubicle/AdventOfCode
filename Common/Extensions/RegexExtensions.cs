@@ -14,7 +14,9 @@ public static class RegexExtensions
 
     public static long AsLong(this Match m, string group) => long.Parse(m.Groups[group].Success ? m.Groups[group].Value : "0");
 
-	public static int GetGroup(this MatchCollection mc, string group)
+    public static string AsString(this Match m, string group) => m.Groups[group].Success ? m.Groups[group].Value : string.Empty;
+
+	public static int GetGroupAsInt(this MatchCollection mc, string group)
 	{
 		foreach (Match match in mc)
 		{
@@ -24,4 +26,16 @@ public static class RegexExtensions
 
 		return 0;
 	}
+
+	public static string GetGroup(this MatchCollection mc, string group)
+	{
+		foreach (Match match in mc)
+		{
+			if (match.Groups[group].Success)
+				return match.Groups[group].Value;
+		}
+
+		return string.Empty;
+	}
+
 }

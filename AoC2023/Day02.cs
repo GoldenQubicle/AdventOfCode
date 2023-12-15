@@ -12,7 +12,7 @@ public class Day02 : Solution
 		.Select((l, idx) => (idx, l.Split(':')[1]))
 		.ToDictionary(t => t.idx + 1, t => t.Item2.Split(';')
 			.Select(s => Regex.Matches(s, @"(?<r>\d+.(?=red))|(?<g>\d+.(?=green))|(?<b>\d+.(?=blue))"))
-			.Select(m => (r: m.GetGroup("r"), g: m.GetGroup("g"), b: m.GetGroup("b"))).ToList( ));
+			.Select(m => (r: m.GetGroupAsInt("r"), g: m.GetGroupAsInt("g"), b: m.GetGroupAsInt("b"))).ToList( ));
 
 
 	public override string SolvePart1() => games

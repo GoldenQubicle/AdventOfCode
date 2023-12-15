@@ -16,6 +16,7 @@ public class Day13 : Solution
 		}
 	}
 
+
 	public override string SolvePart1() => grids.Select(g => GetMirrorLines(g, isSmudged: false))
 			.Sum(t => t.c.Sum( ) + t.r.Sum(i => i * 100)).ToString( );
 

@@ -23,10 +23,10 @@ public class Day14 : Solution
 
 		for (var i = 0 ;i < 1000 ;i++)
 		{
-			TiltPlatform((0, -1), 1);
-			TiltPlatform((-1, 0), 1);
-			TiltPlatform((0, 1), grid.Height - 1);
-			TiltPlatform((1, 0), grid.Width - 1);
+			TiltPlatform((0, -1), 1); //north
+			TiltPlatform((-1, 0), 1); //west
+			TiltPlatform((0, 1), grid.Height - 1); //south
+			TiltPlatform((1, 0), grid.Width - 1); // east
 		}
 
 		return grid.Where(c => c.Character == 'O').Sum(c => (grid.Height - c.Y)).ToString( );
