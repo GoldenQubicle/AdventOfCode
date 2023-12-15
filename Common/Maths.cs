@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
+using System.Text;
+using Common.Extensions;
 
 namespace Common;
 
@@ -72,4 +74,15 @@ public static class Maths // dumb name but prevents namespace conflict with Syst
 	/// <returns></returns>
 	public static T GetManhattanDistance<T>((T x, T y) a, (T x, T y) b) where T : INumber<T> =>
 		T.Abs(a.x - b.x) + T.Abs(a.y - b.y);
+
+
+	public static string HashToHexadecimal(string input)
+	{
+		using var md5 = MD5.Create( );
+		var bytes = Encoding.UTF8.GetBytes(input);
+		var hashBytes = md5.ComputeHash(bytes);
+		var sb = new StringBuilder( );
+		hashBytes.ForEach(b => sb.Append(b.ToString("X2")));
+		return sb.ToString( );
+	}
 }

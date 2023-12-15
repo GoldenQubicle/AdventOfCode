@@ -60,7 +60,7 @@ namespace AoC2016
 
         private List<((int x, int y) room, string path)> GetMoves(((int x, int y) room, string path) current)
         {
-            var hash = Md5.HashToHexadecimal($"{PassCode}{current.path}").ToLowerInvariant();
+            var hash = Maths.HashToHexadecimal($"{PassCode}{current.path}").ToLowerInvariant();
             return offsets
                 .Where(o => isOpen(hash[o.p]) && isValid(current.room, o))
                 .Select(o => (room: (current.room.x + o.x, current.room.y + o.y), path: $"{current.path}{o.dir}")).ToList();

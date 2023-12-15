@@ -7,10 +7,13 @@ namespace AoC2023;
 public class Day15 : Solution
 {
 	private readonly List<string> sequence;
-	public Day15(string file) : base(file) => sequence = Input[0].Split(',', StringSplitOptions.TrimEntries).ToList();
+
+	public Day15(string file) : base(file) => 
+		sequence = Input[0].Split(',').ToList();
     
 
-    public override string SolvePart1( ) => sequence.Select(s => s.Aggregate(0, (current, c) => CalculateHash(c, current))).Sum( ).ToString( );
+    public override string SolvePart1( ) => sequence
+	    .Select(s => s.Aggregate(0, (v, c) => CalculateHash(c, v))).Sum( ).ToString( );
 
 
 	public override string SolvePart2( )
