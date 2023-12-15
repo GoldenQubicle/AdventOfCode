@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -11,6 +12,51 @@ namespace Common;
 
 public static class Maths // dumb name but prevents namespace conflict with System.Math
 {
+	public record PatternDetectionResult<T>(bool IsCycle = false, List<T> Pattern = default, int Idx = -1 ) where T : INumber<T>;
+
+	/// <summary>
+	/// Tries to find a repeating pattern in the given input. 
+	/// </summary>
+	/// <param name="input"></param>
+	/// <returns><see cref="PatternDetectionResult{T}"/></returns>
+	public static PatternDetectionResult<T> DetectPattern<T>(IEnumerable<T> input) where T : INumber<T>
+	{
+		var numbers = input.ToList( );
+		for (var i = 0 ;i < numbers.Count ;i++)
+		{
+			var potentialPattern = numbers.GetRange(i, numbers.Count - i);
+			var patternLength = FindPatternLength(potentialPattern);
+
+			if (patternLength > 0)
+			{
+				return new PatternDetectionResult<T>(true, numbers.GetRange(i, patternLength), i);
+			}
+		}
+
+		return new PatternDetectionResult<T>( );
+	}
+
+	private static int FindPatternLength<T>(IReadOnlyCollection<T> potentialPattern) where T : INumber<T>
+	{
+		for (var i = 1 ;i <= potentialPattern.Count / 2 ;i++)
+		{
+			var subPattern = potentialPattern.Take(i).ToList( );
+			var repetitions = potentialPattern.Count / i;
+
+			var repeatedPattern = Enumerable.Repeat(subPattern, repetitions)
+				.SelectMany(item => item)
+				.ToList( );
+
+			if (potentialPattern.SequenceEqual(repeatedPattern.Take(potentialPattern.Count)))
+			{
+				return i;
+			}
+		}
+
+		return 0;
+	}
+
+
 	/// <summary>
 	/// Calculate the Least Common Multiple for the given list of input values. 
 	/// </summary>
@@ -58,7 +104,7 @@ public static class Maths // dumb name but prevents namespace conflict with Syst
 	public static bool IsPointInsidePolygon(IEnumerable<(int x, int y)> polygon, (int x, int y) p)
 	{
 		var path = new GraphicsPath( );
-		path.AddPolygon(polygon.Select(p => new Point(p.x, p.y)).ToArray());
+		path.AddPolygon(polygon.Select(p => new Point(p.x, p.y)).ToArray( ));
 
 		var region = new Region(path);
 

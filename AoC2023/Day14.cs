@@ -19,17 +19,21 @@ public class Day14 : Solution
 
 	public override string SolvePart2()
 	{
-		//we could do cycle detection or just run it for a while... 
+		var loads = new List<int>( );
 
-		for (var i = 0 ;i < 1000 ;i++)
+		for (var i = 0 ;i < 150 ;i++)
 		{
 			TiltPlatform((0, -1), 1); //north
 			TiltPlatform((-1, 0), 1); //west
 			TiltPlatform((0, 1), grid.Height - 1); //south
 			TiltPlatform((1, 0), grid.Width - 1); // east
+			loads.Add(grid.Where(c => c.Character == 'O').Sum(c => grid.Height - c.Y));
 		}
 
-		return grid.Where(c => c.Character == 'O').Sum(c => (grid.Height - c.Y)).ToString( );
+		var result = Maths.DetectPattern(loads);
+		var idx = (1000000000 - result.Idx - 1) % result.Pattern.Count;
+
+		return result.Pattern[idx].ToString( );
 	}
 
 
