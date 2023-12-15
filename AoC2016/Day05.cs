@@ -17,7 +17,7 @@ namespace AoC2016
             
             while(password.Length < 8)
             {
-                var hash = Md5.HashToHexadecimal(Input[0] + count);
+                var hash = Maths.HashToHexadecimal(Input[0] + count);
                 
                 if(hash.StartsWith("00000"))
                     password += hash[5];
@@ -34,7 +34,7 @@ namespace AoC2016
 
             while(password.Contains("_"))
             {
-                var hash = Md5.HashToHexadecimal(Input[0] + count);
+                var hash = Maths.HashToHexadecimal(Input[0] + count);
                 
                 if(hash.StartsWith("00000") && char.IsDigit(hash[5]))
                 {

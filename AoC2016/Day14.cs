@@ -45,12 +45,12 @@ namespace AoC2016
 
         private string ComputeHash(int idx, bool isPart2)
         {
-            var hash = Md5.HashToHexadecimal(Salt + idx).ToLowerInvariant();
+            var hash = Maths.HashToHexadecimal(Salt + idx).ToLowerInvariant();
             if(isPart2)
             {
                 for(var i = 0 ; i < 2016 ; i++)
                 {
-                    hash = Md5.HashToHexadecimal(hash).ToLowerInvariant();
+                    hash = Maths.HashToHexadecimal(hash).ToLowerInvariant();
                 }
             }
             return hash;

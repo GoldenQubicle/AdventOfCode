@@ -23,7 +23,7 @@ namespace AoC2015
             while ( !result.StartsWith(lookingFor) )
             {
                 count++;
-                result = Md5.HashToHexadecimal($"{Input[0]}{count}");
+                result = Maths.HashToHexadecimal($"{Input[0]}{count}");
             }
             return count.ToString( );
         }
