@@ -16,15 +16,28 @@ public class Day16 : Solution
 	public Day16(string file) : base(file) => grid = new Grid2d(Input);
 
 
-	public override string SolvePart1()
+	public override string SolvePart1() => SimulateBeams((0, 0), (1, 0)).ToString();
+
+	public override string SolvePart2()
 	{
-		var queue = new Queue<Beam>( );
-		var tiles = new HashSet<(int x, int y)>( );
+		//this is obviously slow af
+		var left = grid.GetColumn(0).Select(c => SimulateBeams(c.Position, (1, 0))).Max();
+		var right = grid.GetColumn(grid.Width -1).Select(c => SimulateBeams(c.Position, (-1, 0))).Max();
+		var top = grid.GetRow(0).Select(c => SimulateBeams(c.Position, (0, 1))).Max();
+		var down = grid.GetRow(grid.Height - 1).Select(c => SimulateBeams(c.Position, (0, -1))).Max();
+
+		return new List<int> { left, right, top, down }.Max().ToString();
+	}
+
+	private int SimulateBeams((int x, int y) start, (int, int) dir)
+	{
+		var queue = new Queue<Beam>();
+		var tiles = new HashSet<(int x, int y)>();
 		var maxTilesCount = 0;
 		var beamCount = 0;
 
-		queue.Enqueue(new Beam((0, 0), (1, 0), SplitBeam));
-
+		queue.Enqueue(new Beam(start, dir, SplitBeam));
+		Console.WriteLine($"starting {start.x} {start.y} of {grid.Width} {grid.Height}");
 		while (queue.TryDequeue(out var beam))
 		{
 			beamCount++;
@@ -39,13 +52,12 @@ public class Day16 : Solution
 				maxTilesCount = tiles.Count;
 				beamCount = 0;
 			}
-			Console.WriteLine($"tile count {tiles.Count} | beam count {beamCount}");
 
-			if (beamCount == 100000)
+			if (beamCount == 100000) // magic value found by trial and error for part1
 				break;
 		}
 
-		return tiles.Count.ToString( );
+		return tiles.Count;
 
 
 		(int, int) SplitBeam(char c, (int, int) p)
@@ -68,10 +80,6 @@ public class Day16 : Solution
 		}
 	}
 
-	public override string SolvePart2()
-	{
-		return string.Empty;
-	}
 
 	public record Beam((int x, int y) Position, (int x, int y) Direction, Func<char, (int, int), (int, int)> Split)
 	{

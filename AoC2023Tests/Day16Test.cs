@@ -25,8 +25,7 @@ public class Day16Test
     [Test]
     public void Part2( )
     {
-        var expected = string.Empty;
         var actual = day16.SolvePart2( );
-        Assert.That(actual, Is.EqualTo(expected));
+        Assert.That(actual, Is.EqualTo("51"));
     }
 }
