@@ -73,12 +73,12 @@ namespace Common
 		/// <returns></returns>
 		public List<Cell> GetNeighbors(Cell cell) => Offsets
 			.Select(o => o.Add(cell.Position))
-			.Where(np => Cells.ContainsKey(np))
+			.Where(IsInBounds)
 			.Select(np => Cells[np]).ToList( );
 
 		public List<Cell> GetNeighbors((int x, int y) position) => Offsets
 			.Select(o => o.Add(position))
-			.Where(np => Cells.ContainsKey(np))
+			.Where(IsInBounds)
 			.Select(np => Cells[np]).ToList( );
 
 		public List<Cell> GetNeighbors(Cell cell, Func<Cell, bool> query) =>
@@ -87,10 +87,12 @@ namespace Common
 		public List<Cell> GetNeighbors((int x, int y) p, Func<Cell, bool> query) =>
 			GetNeighbors(p).Where(query).ToList( );
 
+		public bool IsInBounds((int x, int y) toCheck) => Cells.ContainsKey(toCheck);
+
 		/// <summary>
 		/// Gets cells according to specified query.
 		/// </summary>
-		/// <remarks><b>NOTE:</b> there is NO range check, staying within bounds of the grid is responsibility of the caller!</remarks>
+		/// <remarks><b>NOTE:</b> There are NO checks at all, i.e. staying within bounds of the grid is responsibility of the caller!</remarks>
 		/// <param name="query"></param>
 		/// <returns></returns>
 		public List<Cell> GetCells(Func<Cell, bool> query) => Cells.Values.Where(query).ToList( );
@@ -110,7 +112,8 @@ namespace Common
 		public List<Cell> GetRow(int r) => 
 			Cells.Values.Where(p => p.Y == r).ToList();
 
-		public List<Cell> GetColumn(int c) => Cells.Values.Where(p => p.X == c).ToList();
+		public List<Cell> GetColumn(int c) => 
+			Cells.Values.Where(p => p.X == c).ToList();
 
 		public List<Cell> GetRange((int x, int y) topLeft, (int x, int y) bottomRight)
 		{
