@@ -20,7 +20,6 @@ public class Day10 : Solution
 	public override string SolvePart2()
 	{
 		var path = GetPath( );
-
 		return grid
 			.Where(c => !path.Contains(c))
 			.Count(c => Maths.IsPointInsidePolygon(path.Select(p => p.Position), c.Position)).ToString( );

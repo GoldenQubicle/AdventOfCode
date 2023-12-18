@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Common;
 using NUnit.Framework;
 
@@ -11,7 +12,14 @@ namespace CommonTests
 		public void CalculateShoeLaceArea((List<(long x, long y)> poly, long expected) test) =>
 		 Assert.That(Maths.CalculateAreaShoeLace(test.poly), Is.EqualTo(test.expected));
 
-		
+
+		[Test]
+		public void CalculateShoeLaceShouldThrowIfFirstAndLastElementAreNotTheSame()
+		{
+			Assert.Throws<ArgumentException>(() => Maths.CalculateAreaShoeLace(new List<(long x, long y)> { (1, 2), (2, 1), (1, 3) }));
+		}
+
+
 		[TestCaseSource(nameof(GetCycleDetectionTestCases))]
 		public void PatternShouldBeCorrectlyDetected((List<int> inputs, Maths.PatternDetectionResult<int> expected) test)
 		{
@@ -37,7 +45,6 @@ namespace CommonTests
 		[TestCase(6188f, 211684f, 68f)]
 		public void GreatestCommonDivisorShouldBeCorrectFloat(float a, float b, float e) =>
 			Assert.That(Maths.GreatestCommonDivisor(a, b), Is.EqualTo(e));
-
 
 
 		public static IEnumerable<(List<(long x, long y)> poly, long expected)> GetShoeLaceTestCases()

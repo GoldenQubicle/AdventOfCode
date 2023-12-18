@@ -41,7 +41,7 @@ public class Day18 : Solution
 				"D" => current.Add(0, s.d)
 			};
 		});
-
+		coords.Add(coords[0]);
 		return (Maths.CalculateAreaShoeLace(coords) + length / 2 + 1).ToString( );
 	}
 }

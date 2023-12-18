@@ -18,12 +18,16 @@ public static class Maths // dumb name but prevents namespace conflict with Syst
 	/// <remarks>NOTE: this first coordinate needs to added at the end of the list as well! </remarks>
 	/// <param name="polygon"></param>
 	/// <returns>The area</returns>
-	public static long CalculateAreaShoeLace(List<(long x, long y)> polygon)
+	public static T CalculateAreaShoeLace<T>(IEnumerable<(T x, T y)> polygon) where T : INumber<T>
 	{
-		var sum1 = polygon.Select((c, i) => (c, i)).Skip(1).Select(t => polygon[t.i - 1].x * t.c.y).Sum( );
-		var sum2 = polygon.Select((c, i) => (c, i)).Skip(1).Select(t => polygon[t.i - 1].y * t.c.x).Sum( );
+		var poly = polygon.ToList();
+		if (poly.First( ) != poly.Last( ))
+			throw new ArgumentException("The first and last vertex in the list needs to be the same!");
 
-		return Math.Abs(sum1 - sum2) / 2L;
+		var sum1 = poly.Select((c, i) => (c, i)).SkipLast(1).Select(t => t.c.x * poly[t.i + 1].y).Aggregate(T.Zero, (sum, n) => sum + n);
+		var sum2 = poly.Select((c, i) => (c, i)).SkipLast(1).Select(t => t.c.y * poly[t.i + 1].x).Aggregate(T.Zero, (sum, n) => sum + n);
+
+		return T.Abs(sum1 - sum2) / T.CreateChecked(2);
 	}
 
 	public record PatternDetectionResult<T>(bool IsCycle = false, List<T> Pattern = default, int Idx = -1) where T : INumber<T>;
