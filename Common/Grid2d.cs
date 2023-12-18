@@ -164,6 +164,40 @@ namespace Common
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator( );
 
+		public List<Cell> GetShortestPath_V1(Cell start, Cell target, Func<Cell, Cell, bool> constraint, Func<Cell, Cell, bool> targetCondition)
+		{
+			Cells.Values.ForEach(c => c.Distance = Math.Abs(target.X - c.X) + Math.Abs(target.Y - c.Y));
+			var path = new List<Cell>( );
+			var visited = new Dictionary<(int x, int y), bool>( );
+			var queue = new PriorityQueue<Cell, long>( );
+
+			queue.Enqueue(start, start.GetOverallCost);
+
+			while (queue.Count > 0)
+			{
+				var current = queue.Dequeue( );
+				visited[current.Position] = true;
+
+				if (targetCondition(current, target))
+				{
+					while (current.Parent is not null)
+					{
+						path.Add(current.Parent);
+						current = current.Parent;
+					}
+					break;
+				}
+
+				GetNeighbors(current, n => !visited.ContainsKey(n.Position) && constraint(current, n))
+					.Select(n => n with { Parent = current, Cost = current.Cost + 1 })
+					.ForEach(n => queue.Enqueue(n, n.GetOverallCost));
+
+			}
+
+			return path;
+		}
+
+
 		/// <summary>
 		/// Simple shortest path solver using a priority queue.
 		/// Note it operates on the instanced grid, i.e. multiple calls are not possible and require new grid2d. Kinda sucky, I know. 
@@ -176,7 +210,7 @@ namespace Common
 		public List<List<Cell>> GetShortestPath(Cell start, Cell target, Func<Cell, Cell, bool> constraint, Func<Cell, Cell, bool> targetCondition)
 		{
 			//2023 12 7 start rework
-			Cells.Values.ForEach(c => c.Distance = System.Math.Abs(target.X - c.X) + System.Math.Abs(target.Y - c.Y));
+			Cells.Values.ForEach(c => c.Distance = Math.Abs(target.X - c.X) + Math.Abs(target.Y - c.Y));
 			var paths = new List<List<Cell>>( );
 			var visited = new Dictionary<(int x, int y), bool>( );
 			var queue = new PriorityQueue<Cell, long>( );
@@ -228,7 +262,7 @@ namespace Common
 			public char Character { get; set; } = ' ';
 			public long Value { get; set; }
 			public Cell Parent { get; init; }
-			public long Cost { get; init; }
+			public long Cost { get; set; }
 			public long Distance { get; set; }
 			public long GetOverallCost => Cost + Distance;
 			public int X => Position.x;

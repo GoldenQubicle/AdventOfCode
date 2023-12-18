@@ -12,7 +12,21 @@ namespace Common;
 
 public static class Maths // dumb name but prevents namespace conflict with System.Math
 {
-	public record PatternDetectionResult<T>(bool IsCycle = false, List<T> Pattern = default, int Idx = -1 ) where T : INumber<T>;
+	/// <summary>
+	/// Calculates the area of a polygon using shoelace method. 
+	/// </summary>
+	/// <remarks>NOTE: this first coordinate needs to added at the end of the list as well! </remarks>
+	/// <param name="polygon"></param>
+	/// <returns>The area</returns>
+	public static long CalculateAreaShoeLace(List<(long x, long y)> polygon)
+	{
+		var sum1 = polygon.Select((c, i) => (c, i)).Skip(1).Select(t => polygon[t.i - 1].x * t.c.y).Sum( );
+		var sum2 = polygon.Select((c, i) => (c, i)).Skip(1).Select(t => polygon[t.i - 1].y * t.c.x).Sum( );
+
+		return Math.Abs(sum1 - sum2) / 2L;
+	}
+
+	public record PatternDetectionResult<T>(bool IsCycle = false, List<T> Pattern = default, int Idx = -1) where T : INumber<T>;
 
 	/// <summary>
 	/// Tries to find a repeating pattern in the given input. 
