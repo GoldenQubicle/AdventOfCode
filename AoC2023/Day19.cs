@@ -16,10 +16,10 @@ public class Day19 : Solution
 			.Select(l => Regex.Matches(l, "(?<tag>[a-z]*).(?<={)(?<rules>.*)(?=})"))
 			.Select(m =>
 			{
-				var group = m.GetGroup("rules").Split(',', StringSplitOptions.TrimEntries).ToList();
-				var rules= group.SkipLast(1).Select(l => (c: l[0], op: l[1], v: l.AsInteger(), r: l.Split(':').Last())).ToList();
+				var group = m.GetGroup("rules").Split(',', StringSplitOptions.TrimEntries).ToList( );
+				var rules = group.SkipLast(1).Select(l => (c: l[0], op: l[1], v: l.AsInteger( ), r: l.Split(':').Last( ))).ToList( );
 
-				rules.Add(('n', '_', 0,  group.Last() ));
+				rules.Add(('_', '_', 0, group.Last( )));
 				return new WorkFlow(m.GetGroup("tag"), rules);
 			}).ToDictionary(wf => wf.Tag, wf => wf);
 
@@ -36,13 +36,14 @@ public class Day19 : Solution
 					{ 'a', parts[2].AsInteger() },
 					{ 's', parts[3].AsInteger() },
 				});
-			}).ToList();
+			}).ToList( );
 	}
-	
+
 
 	public override string SolvePart1()
 	{
-		var accepted = new List<Part>();
+		var accepted = new List<Part>( );
+
 		foreach (var part in parts)
 		{
 			while (part.Next is not ("A" or "R"))
@@ -50,11 +51,11 @@ public class Day19 : Solution
 				workflows[part.Next].Process(part);
 			}
 
-			if(part.Next == "A")
+			if (part.Next == "A")
 				accepted.Add(part);
 		}
 
-		return accepted.Sum(p => p.Categories.Values.Sum()).ToString();
+		return accepted.Sum(p => p.Categories.Values.Sum( )).ToString( );
 	}
 
 	public override string SolvePart2()
@@ -75,7 +76,7 @@ public class Day19 : Solution
 				return;
 			}
 
-			p.Next = Rules.Last().result;
+			p.Next = Rules.Last( ).result;
 		}
 
 		private static bool Accepted(int p, char op, int v) => op == '>' ? p > v : p < v;
