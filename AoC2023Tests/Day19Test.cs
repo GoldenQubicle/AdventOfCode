@@ -1,0 +1,31 @@
+using AoC2023;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace AoC2023Tests;
+            
+public class Day19Test
+{
+    Day19 day19;
+            
+    [SetUp]
+    public void Setup( )
+    {
+        day19 = new Day19("day19test1");
+    }
+    
+    [Test]
+    public void Part1( )
+    {
+        var actual = day19.SolvePart1( );
+        Assert.That(actual, Is.EqualTo("19114"));
+    }
+            
+    [Test]
+    public void Part2( )
+    {
+        var actual = day19.SolvePart2( );
+        Assert.That(actual, Is.EqualTo("167409079868000"));
+    }
+}
