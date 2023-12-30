@@ -29,12 +29,12 @@ public class Day19 : Solution
 			.Select(l =>
 			{
 				var parts = l.Split(',', StringSplitOptions.TrimEntries);
-				return new Part(new Dictionary<char, int>
+				return new Part(new Dictionary<char, (int ,int)>
 				{
-					{ 'x', parts[0].AsInteger() },
-					{ 'm', parts[1].AsInteger() },
-					{ 'a', parts[2].AsInteger() },
-					{ 's', parts[3].AsInteger() },
+					{ 'x', (1, parts[0].AsInteger()) },
+					{ 'm', (1, parts[1].AsInteger()) },
+					{ 'a', (1, parts[2].AsInteger()) },
+					{ 's', (1, parts[3].AsInteger()) },
 				});
 			}).ToList( );
 	}
@@ -48,24 +48,46 @@ public class Day19 : Solution
 		{
 			while (part.Next is not ("A" or "R"))
 			{
-				workflows[part.Next].Process(part);
+				workflows[part.Next].ProcessPart1(part);
 			}
 
 			if (part.Next == "A")
 				accepted.Add(part);
 		}
 
-		return accepted.Sum(p => p.Categories.Values.Sum( )).ToString( );
+		return accepted.Sum(p => p.Categories.Values.Sum(r => r.e )).ToString( );
 	}
 
 	public override string SolvePart2()
 	{
+		//starts with xmas ranges 1-4k at in:
+		//per workflow if rule applies, adjust range accordingly
+		//crucially, per applied rule I want to queue a new state with adjusted ranges
+		//intersect xmas ranges for all states which end up in A
+		var queue = new Queue<Part>( );
+
+		while (queue.TryDequeue(out var current))
+		{
+
+		}
+
 		return string.Empty;
 	}
 
+
 	public record WorkFlow(string Tag, List<(char c, char op, int value, string result)> Rules)
 	{
-		public void Process(Part p)
+		//public void ProcessPart2(State state)
+		//{
+		//	foreach (var (c, op, value, result) in Rules.SkipLast(1))
+		//	{
+		//		//if rules applies, generate 2 new 
+		//		return;
+		//	}
+		//}
+
+	
+		public void ProcessPart1(Part p)
 		{
 			foreach (var (c, op, value, result) in Rules.SkipLast(1))
 			{
@@ -79,10 +101,10 @@ public class Day19 : Solution
 			p.Next = Rules.Last( ).result;
 		}
 
-		private static bool Accepted(int p, char op, int v) => op == '>' ? p > v : p < v;
+		private static bool Accepted((int s, int e) r, char op, int v) => op == '>' ? r.e> v : r.e < v;
 	}
 
-	public record Part(Dictionary<char, int> Categories)
+	public record Part(Dictionary<char, (int s, int e)> Categories)
 	{
 		public string Next { get; set; } = "in";
 	};
