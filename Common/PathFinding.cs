@@ -53,12 +53,15 @@ public static class PathFinding
 		{
 			path.Add(current);
 			current = visited[current];
-			if (renderAction is not null)
-				await renderAction(path);
 		}
 		path.Add(grid[start]);
-		Console.WriteLine($"Found path with length {path.Count}");
+
 		if (renderAction is not null)
-			await renderAction(path);
+		{
+			for (var i = 1; i <= path.Count; i++)
+			{
+				await renderAction(path.TakeLast(i));
+			}
+		}
 	}
 }
