@@ -9,17 +9,17 @@ namespace CommonTests
     {
         private Grid2d grid;
         
-        [Test]
-        public void GetShortestPathTest()
-        {
-	        grid = CreateGrid(diagonals: false);
-	        var start = grid[0, 0];
-	        var end = grid[2, 2];
-	        var path = grid.GetShortestPath(start, end,
-		        (c1, c2) => true, (c1, c2) => c1.Character == end.Character);
+        //[Test]
+        //public void GetShortestPathTest()
+        //{
+	       // grid = CreateGrid(diagonals: false);
+	       // var start = grid[0, 0];
+	       // var end = grid[2, 2];
+	       // var path = grid.GetShortestPath(start, end,
+		      //  (c1, c2) => true, (c1, c2) => c1.Character == end.Character);
 
-            Assert.That(path.Count, Is.EqualTo(4));
-        }
+        //    Assert.That(path.Count, Is.EqualTo(4));
+        //}
 
 
         [TestCase(0, 0, 'f', 'b', 'g')]

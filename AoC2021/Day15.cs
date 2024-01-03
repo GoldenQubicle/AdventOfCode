@@ -30,7 +30,7 @@ namespace AoC2021
                 }
 
                 grid.GetNeighbors(current.ptr, n => !current.visited.Contains(n))
-                    .ForEach( n => queue.Enqueue((n, current.visited.Expand(current.ptr)), risk + n.Value));
+                    .ForEach( n => queue.Enqueue((n as Grid2d.Cell, current.visited.Expand(current.ptr)), risk + n.Value));
                 
             }
 

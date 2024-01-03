@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
+using Common.Interfaces;
 
 namespace AoC2023;
 
@@ -44,12 +45,12 @@ public class Day21 : Solution
 
 	private string DoSteps(int steps, (int x, int y) start)
 	{
-		var queue = new Queue<Grid2d.Cell>();
+		var queue = new Queue<INode>();
 		queue.Enqueue(grid[start]);
 		
 		for (var i = 0; i <= steps; i++)
 		{
-			var next = new HashSet<Grid2d.Cell>();
+			var next = new HashSet<INode>();
 			while (queue.TryDequeue(out var current))
 			{
 				grid.GetNeighbors(current, n => n.Character == '.')

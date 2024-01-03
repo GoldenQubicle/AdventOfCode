@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using static Common.Grid2d;
 
 namespace Common;
@@ -20,7 +21,7 @@ public class CellularAutomaton2d(List<string> input)
 			var newGrid = new Grid2d();
 			foreach (var cell in grid)
 			{
-				var activeCount = grid.GetNeighbors(cell, c => c.Character == Active).Count; //assuming AoC input treats # as active state
+				var activeCount = grid.GetNeighbors(cell, c  => (c as Cell).Character == Active).Count(); //assuming AoC input treats # as active state
 				var newCell = GameOfLifeRules(activeCount, cell);
 
 				if (AdditionalRules is not null)

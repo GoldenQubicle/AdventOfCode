@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Extensions;
+using Common.Interfaces;
 
 namespace Common;
 
-public static class PathFinding
+public class PathFinding
 {
 	// Technically not finding any path but closely related and first implementation for visualizing AoC stuff. 
-	public static async Task FloodFill((int x, int y) start, Grid2d grid, Func<Grid2d.Cell, bool> constraint, Func<IEnumerable<Grid2d.Cell>, Task> renderAction = null)
+	public static async Task FloodFill((int x, int y) start, IGraph graph, Func<INode, bool> constraint, Func<IEnumerable<INode>, Task> renderAction = null)
 	{
-		var queue = new Queue<Grid2d.Cell>( );
-		var visited = new HashSet<Grid2d.Cell>( );
-		queue.Enqueue(grid[start]);
+		var queue = new Queue<INode>( );
+		var visited = new HashSet<INode>( );
+		queue.Enqueue(graph[start.x, start.y]);
 
 		while (queue.TryDequeue(out var current))
 		{
@@ -22,40 +23,50 @@ public static class PathFinding
 			if (renderAction is not null)
 				await renderAction(visited);
 
-			queue.EnqueueAll(grid.GetNeighbors(current, n => !queue.Contains(n) && !visited.Contains(n) && constraint(n)));
+			queue.EnqueueAll(graph.GetNeighbors(current, n => !queue.Contains(n) && !visited.Contains(n) && constraint(n)));
 		}
 	}
 
-	//note we do not always know the target position to begin with!
-	public static async Task BreadthFirstSearch((int x, int y) start, (int x, int y) target,
-		Grid2d grid, Func<Grid2d.Cell, bool> constraint, Func<IEnumerable<Grid2d.Cell>, Task> renderAction = null)
+	delegate bool NeighborConstraint(INode neighbor, INode current);
+	delegate bool TargetCondition(INode target, INode current);
+	delegate bool Heuristic(INode node1, INode node2);
+
+	public static async Task<IEnumerable<INode>> BreadthFirstSearch(INode start, INode target, IGraph graph,
+		Func<INode,INode, bool> constraint,
+		Func<INode, INode, bool> targetCondition,
+		Func<IEnumerable<INode>, Task> renderAction = null)
 	{
-		var queue = new Queue<Grid2d.Cell>( );
-		var visited = new Dictionary<Grid2d.Cell, Grid2d.Cell>( );
-		var current = grid[start];
+		var queue = new Queue<INode>( );
+		var visited = new Dictionary<INode, INode>( );
+		var current = start;
 		queue.Enqueue(current);
-		visited.Add(grid[start], new Grid2d.Cell((0, 0)));
+		visited.Add(current, default);
 
 		while (queue.TryDequeue(out var next))
 		{
 			current = next;
 
-			if (current.Position == target)
+			if (targetCondition(current, target))
 				break;
 
-			var neighbors = grid.GetNeighbors(current, n => !queue.Contains(n) && !visited.ContainsKey(n) && constraint(n));
-			neighbors.ForEach(n => visited.TryAdd(n, current));
-			queue.EnqueueAll(neighbors);
-			await renderAction(visited.Keys);
+			graph.GetNeighbors(current, n => !queue.Contains(n) && !visited.ContainsKey(n) && constraint(current, n))
+				.ForEach(n =>
+				{
+					visited.TryAdd(n, current);
+					queue.Enqueue(n);
+				});
+			
+			if(renderAction is not null)
+				await renderAction(visited.Keys);
 		}
 
-		var path = new List<Grid2d.Cell>( );
-		while (current.Position != start)
+		var path = new List<INode>( );
+		while (!current.Equals(start))
 		{
 			path.Add(current);
 			current = visited[current];
 		}
-		path.Add(grid[start]);
+		path.Add(start);
 
 		if (renderAction is not null)
 		{
@@ -63,27 +74,32 @@ public static class PathFinding
 			for (var i = 1 ;i <= path.Count ;i++)
 				await renderAction(path.TakeLast(i));
 		}
+
+		return path;
 	}
 
-	public static async Task UniformCostSearch((int x, int y) start, (int x, int y) target,
-		Grid2d grid, Func<Grid2d.Cell, bool> constraint, Func<Grid2d.Cell, Grid2d.Cell, long> heuristic, Func<IEnumerable<Grid2d.Cell>, Task> renderAction = null)
+	public static async Task<IEnumerable<INode>> UniformCostSearch(INode start, INode target, IGraph grid,
+		Func<INode, INode, bool> constraint,
+		Func<INode, INode, bool> targetCondition,
+		Func<INode, INode, long> heuristic,
+		Func<IEnumerable<INode>, Task> renderAction = null)
 	{
-		var queue = new PriorityQueue<Grid2d.Cell, long>( );
-		var visited = new Dictionary<Grid2d.Cell, Grid2d.Cell>( );
-		var costs = new Dictionary<Grid2d.Cell, long>( );
-		var current = grid[start];
+		var queue = new PriorityQueue<INode, long>( );
+		var visited = new Dictionary<INode, INode>( );
+		var costs = new Dictionary<INode, long>( );
+		var current = start;
 		queue.Enqueue(current, 0);
-		visited.Add(grid[start], grid[start]);
-		costs.Add(grid[start], 0);
+		visited.Add(current, default);
+		costs.Add(current, 0);
 
 		while (queue.TryDequeue(out var next, out var cost))
 		{
 			current = next;
 
-			if (current.Position == target)
+			if (targetCondition(current, target))
 				break;
 
-			foreach (var n in grid.GetNeighbors(current, n => !visited.ContainsKey(n) && constraint(n)))
+			foreach (var n in grid.GetNeighbors(current, n => !visited.ContainsKey(n) && constraint(n, current)))
 			{
 				if (costs.TryGetValue(n, out var value) && cost + n.Value < value)
 					costs[n] = cost + n.Value;
@@ -93,19 +109,21 @@ public static class PathFinding
 				if (queue.UnorderedItems.Contains((n, costs[n])))
 					continue;
 
-				queue.Enqueue(n, costs[n] + heuristic(grid[target], n));
+				queue.Enqueue(n, costs[n] + heuristic(target, n));
 				visited.TryAdd(n, current);
-				await renderAction(visited.Keys);
+
+				if(renderAction is not null)
+					await renderAction(visited.Keys);
 			}
 		}
-		
-		var path = new List<Grid2d.Cell>( );
-		while (current.Position != start)
+
+		var path = new List<INode>( );
+		while (!current.Equals(start))
 		{
 			path.Add(current);
 			current = visited[current];
 		}
-		path.Add(grid[start]);
+		path.Add(start);
 
 		if (renderAction is not null)
 		{
@@ -115,5 +133,7 @@ public static class PathFinding
 				await renderAction(path.TakeLast(i));
 
 		}
+
+		return path;
 	}
 }

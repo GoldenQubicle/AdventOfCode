@@ -6,23 +6,25 @@ namespace AoC2022
 
         public Day12(string file) : base(file) => grid = new(Input, diagonalAllowed: false);
 
-        public override string SolvePart1() => grid.GetShortestPath(
+        public override string SolvePart1() => (PathFinding.BreadthFirstSearch(
                 grid.GetCells(c => c.Character == 'S').First(),
                 grid.GetCells(c => c.Character == 'E').First(),
+                grid,
                 (c,n) => getCharacter(n.Character) - 1 <= getCharacter(c.Character),
-                (c,t) => c.Character == t.Character).First().Count.ToString();
+                (c,t) => c.Character == t.Character).Result.Count() -1 ).ToString();
 
-
+        // Note: as per 3-1-2024 the actual answer is no longer correct using the newfangled bfs... 
         public override string SolvePart2() => 
              grid.Where(c => getCharacter(c.Character) == 'a' && grid.GetNeighbors(c).Any(n => n.Character == 'b'))
                 .Select(s =>
                 {
                     var g = new Grid2d(Input, diagonalAllowed: false);
-                    return g.GetShortestPath(s,
-                        g.GetCells(c => c.Character == 'E').First(),
+                    return PathFinding.BreadthFirstSearch(
+	                    s, g.GetCells(c => c.Character == 'E').First(),
+                        grid,
                         (c, n) => getCharacter(n.Character) - 1 <= getCharacter(c.Character),
-                        (c, t) => c.Character == t.Character);
-                }).First().Min(p => p.Count).ToString();
+                        (c, t) => c.Character == t.Character).Result.Count() -1;
+                }).Min().ToString();
 
         char getCharacter(char c) => c switch
         {

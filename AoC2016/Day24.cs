@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using Common;
 using Common.Extensions;
+using Common.Interfaces;
 
 namespace AoC2016
 {
@@ -50,8 +51,8 @@ namespace AoC2016
 
             foreach (var digitCell in digitCells)
             {
-                var visited = new HashSet<Grid2d.Cell>();
-                var queue = new Queue<(Grid2d.Cell cell, int steps)>();
+                var visited = new HashSet<INode>();
+                var queue = new Queue<(INode cell, int steps)>();
                 queue.Enqueue((digitCell, 0));
 
                 while (queue.Count > 0)

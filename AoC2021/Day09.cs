@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Common;
+using Common.Extensions;
+using Common.Interfaces;
 
 namespace AoC2021
 {
@@ -16,25 +18,25 @@ namespace AoC2021
         public override string SolvePart2()
         {
             var lowPoints = grid.Where(c => grid.GetNeighbors(c).All(n => n.Value > c.Value));
-            var visited = new HashSet<(int x, int y)>();
+            var visited = new HashSet<INode>();
 
             return lowPoints.Aggregate(new List<long>(), (basins, cell) =>
             {
                 var count = 1;
-                var cells = new Queue<Grid2d.Cell>();
-                visited.Add(cell.Position);
+                var cells = new Queue<INode>();
+                visited.Add(cell);
                 cells.Enqueue(cell);
 
                 while (cells.Any())
                 {
                     var c = cells.Dequeue();
-                    var neighbors = grid.GetNeighbors(c, n => n.Value != 9 && !visited.Contains(n.Position));
+                    var neighbors = grid.GetNeighbors(c, n => n.Value != 9 && !visited.Contains(n));
                     neighbors.ForEach(n =>
                     {
-                        visited.Add(n.Position);
+                        visited.Add(n);
                         cells.Enqueue(n);
                     });
-                    count += neighbors.Count;
+                    count += neighbors.Count();
                 }
 
                 basins.Add(count);

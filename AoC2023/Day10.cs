@@ -36,7 +36,7 @@ public class Day10 : Solution
 		{
 			visited.Add(current);
 
-			current = grid.GetNeighbors(current, n => !visited.Contains(n) && IsConnected(current, n)).FirstOrDefault( );
+			current = grid.GetNeighbors(current, n => !visited.Contains(n) && IsConnected(current, (Grid2d.Cell)n)).FirstOrDefault( ) as Grid2d.Cell;
 		}
 
 		return visited;
