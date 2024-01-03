@@ -271,7 +271,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>
 		public Cell((int, int) Position, char character) : this(Position)
 		{
 			Character = character;
-			Value = char.IsDigit(Character) ? Character.ToLong( ) : -1;
+			Value = char.IsDigit(Character) ? Character.ToLong( ) : 0;
 		}
 
 		/// <summary>

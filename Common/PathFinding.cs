@@ -46,6 +46,7 @@ public static class PathFinding
 			var neighbors = grid.GetNeighbors(current, n => !queue.Contains(n) && !visited.ContainsKey(n) && constraint(n));
 			neighbors.ForEach(n => visited.TryAdd(n, current));
 			queue.EnqueueAll(neighbors);
+			await renderAction(visited.Keys);
 		}
 
 		var path = new List<Grid2d.Cell>( );
@@ -58,22 +59,21 @@ public static class PathFinding
 
 		if (renderAction is not null)
 		{
+			Console.WriteLine($"BFS found path with length: {path.Count} and visited {visited.Count} cells");
 			for (var i = 1 ;i <= path.Count ;i++)
-			{
 				await renderAction(path.TakeLast(i));
-			}
 		}
 	}
 
 	public static async Task UniformCostSearch((int x, int y) start, (int x, int y) target,
-		Grid2d grid, Func<Grid2d.Cell, bool> constraint, Func<IEnumerable<Grid2d.Cell>, Task> renderAction = null)
+		Grid2d grid, Func<Grid2d.Cell, bool> constraint, Func<Grid2d.Cell, Grid2d.Cell, long> heuristic, Func<IEnumerable<Grid2d.Cell>, Task> renderAction = null)
 	{
 		var queue = new PriorityQueue<Grid2d.Cell, long>( );
 		var visited = new Dictionary<Grid2d.Cell, Grid2d.Cell>( );
 		var costs = new Dictionary<Grid2d.Cell, long>( );
 		var current = grid[start];
 		queue.Enqueue(current, 0);
-		visited.Add(grid[start], new Grid2d.Cell((0, 0)));
+		visited.Add(grid[start], grid[start]);
 		costs.Add(grid[start], 0);
 
 		while (queue.TryDequeue(out var next, out var cost))
@@ -83,20 +83,22 @@ public static class PathFinding
 			if (current.Position == target)
 				break;
 
-			var neighbors = grid.GetNeighbors(current, n => !visited.ContainsKey(n) && constraint(n));
-			neighbors.ForEach(n =>
+			foreach (var n in grid.GetNeighbors(current, n => !visited.ContainsKey(n) && constraint(n)))
 			{
 				if (costs.TryGetValue(n, out var value) && cost + n.Value < value)
 					costs[n] = cost + n.Value;
 				else
 					costs.Add(n, n.Value + cost);
 
-				queue.Enqueue(n, costs[n]);
+				if (queue.UnorderedItems.Contains((n, costs[n])))
+					continue;
+
+				queue.Enqueue(n, costs[n] + heuristic(grid[target], n));
 				visited.TryAdd(n, current);
-
-			});
+				await renderAction(visited.Keys);
+			}
 		}
-
+		
 		var path = new List<Grid2d.Cell>( );
 		while (current.Position != start)
 		{
@@ -107,11 +109,11 @@ public static class PathFinding
 
 		if (renderAction is not null)
 		{
+			Console.WriteLine($"UCS found path with length: {path.Count} and visited {visited.Count} cells");
+
 			for (var i = 1 ;i <= path.Count ;i++)
-			{
 				await renderAction(path.TakeLast(i));
-			}
+
 		}
 	}
-
 }
