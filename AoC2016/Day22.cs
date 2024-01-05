@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -28,9 +29,9 @@ namespace AoC2016
                 }).ToList();
         }
 
-        public override string SolvePart1() => nodes.Sum(a => a.Used != 0 ? nodes.Count(b => a != b && b.Avail >= a.Used) : 0).ToString();
+        public override async Task<string> SolvePart1() => nodes.Sum(a => a.Used != 0 ? nodes.Count(b => a != b && b.Avail >= a.Used) : 0).ToString();
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             //taking a clue from the example in part 2
             //solved this manually by printing the grid from there it shows; 

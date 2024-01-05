@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Common.Extensions;
 
 namespace AoC2020Tests
 {
@@ -16,7 +17,7 @@ namespace AoC2020Tests
                 .Select((line, i) => (line.Split("part"), i))
                 .Aggregate(new Dictionary<string, (string pt1, string pt2)>( ), (dic, line) =>
                 {
-                    var day = line.Item1[0].Replace(" ", "");
+                    var day = line.Item1[0].Replace(" ", "").Replace("Day", "");
                     if ( line.i % 2 == 0 )
                         dic.Add(day, (line.Item1[1][4..], string.Empty));
                     else
@@ -30,9 +31,9 @@ namespace AoC2020Tests
         [TestCaseSource(nameof(GetExpectedPerDay))]
         public void ActualResultPerDay(KeyValuePair<string, (string pt1, string pt2)> testCase)
         {
-            var solution = GetSolutionForDay(testCase.Key);
-            var actualPt1 = solution.SolvePart1( );
-            var actualPt2 = solution.SolvePart2( );
+	        var solution = Solution.Initialize("2020", testCase.Key);
+            var actualPt1 = solution.SolvePart1( ).Result;
+            var actualPt2 = solution.SolvePart2( ).Result;
 
             Assert.AreEqual(testCase.Value.pt1, actualPt1);
             Assert.AreEqual(testCase.Value.pt2, actualPt2);

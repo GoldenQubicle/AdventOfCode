@@ -13,14 +13,14 @@ namespace AoC2022Tests
         [Test]
         public void Part1( )
         {
-            var actual = day13.SolvePart1( );
+            var actual = day13.SolvePart1( ).Result;
             Assert.AreEqual("13", actual);
         }
 
         [Test]
         public void Part2( )
         {
-            var actual = day13.SolvePart2( );
+            var actual = day13.SolvePart2( ).Result;
             Assert.AreEqual("140", actual);
         }
     }

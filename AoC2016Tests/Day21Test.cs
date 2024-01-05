@@ -19,7 +19,7 @@ namespace AoC2016Tests
         public void Part1( )
         {
             day21.PassWord = "abcde";
-            var actual = day21.SolvePart1();
+            var actual = day21.SolvePart1().Result;
             Assert.AreEqual("decab", actual);
         }
 
@@ -27,7 +27,7 @@ namespace AoC2016Tests
         public void Part2( )
         {
             day21.Scrambled = "decab";
-            var actual = day21.SolvePart2();
+            var actual = day21.SolvePart2().Result;
             Assert.AreEqual("abcde", actual);
         }
 

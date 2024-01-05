@@ -18,7 +18,7 @@ namespace AoC2020Tests
         public void Part1(int iterations, string expected)
         {
             day23.IteratePart1 = iterations;
-            var actual = day23.SolvePart1( );
+            var actual = day23.SolvePart1( ).Result;
             Assert.AreEqual(expected, actual);
         }
 
@@ -26,7 +26,7 @@ namespace AoC2020Tests
         public void Part2( )
         {
             day23.IteratePart2 = 10000000;
-            var actual = day23.SolvePart2( );
+            var actual = day23.SolvePart2( ).Result;
             Assert.AreEqual("149245887792", actual);
         }
     }

@@ -15,9 +15,9 @@ namespace AoC2015
         
         public Day11(List<string> input) : base(input) { }
 
-        public override string SolvePart1( ) => "cqjxxyzz"; // solved manually proved way faster
+        public override async Task<string> SolvePart1( ) => "cqjxxyzz"; // solved manually proved way faster
 
-        public override string SolvePart2( ) => "cqkaabcc"; // ditto manaully solved
+        public override async Task<string> SolvePart2( ) => "cqkaabcc"; // ditto manaully solved
 
         public string GenerateNewPassword(string oldPassword)
         {

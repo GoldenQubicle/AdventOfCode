@@ -19,7 +19,7 @@ namespace AoC2021Tests
         [Ignore("runs too long, investigate")]
         public void Part1( )
         {
-            var actual = day11.SolvePart1( );
+            var actual = day11.SolvePart1( ).Result;
             Assert.AreEqual("1656", actual);
         }
 
@@ -27,7 +27,7 @@ namespace AoC2021Tests
         [Ignore("runs too long, investigate")]
 		public void Part2( )
         {
-            var actual = day11.SolvePart2( );
+            var actual = day11.SolvePart2( ).Result;
             Assert.AreEqual("195", actual);
         }
     }

@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2019
@@ -7,9 +8,9 @@ namespace AoC2019
     {
         public Day01(string file) : base(file, "\n") { }
 
-        public override string SolvePart1() => Input.Select(int.Parse).Select(GetFuelPerModule).Sum().ToString();
+        public override async Task<string> SolvePart1() => Input.Select(int.Parse).Select(GetFuelPerModule).Sum().ToString();
 
-        public override string SolvePart2() => Input.Select(int.Parse).Select(mass =>
+        public override async Task<string> SolvePart2() => Input.Select(int.Parse).Select(mass =>
             {
                 var fuelMass = GetFuelPerModule(mass);
                 var total = fuelMass;

@@ -8,9 +8,9 @@ namespace AoC2018
         
         public Day01(List<string> input) : base(input) { }
 
-        public override string SolvePart1( ) => Input.Select(int.Parse).Aggregate(0, (i, i1) => i + i1).ToString();
+        public override async Task<string> SolvePart1( ) => Input.Select(int.Parse).Aggregate(0, (i, i1) => i + i1).ToString();
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
 	        var seen = new HashSet<int>();
 	        var freq = 0;

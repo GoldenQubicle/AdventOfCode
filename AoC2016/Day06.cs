@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -7,7 +8,7 @@ namespace AoC2016
     {
         public Day06(string file) : base(file, "\n") { }
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             var mssg = string.Empty;
             
@@ -23,7 +24,7 @@ namespace AoC2016
             return mssg;
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var mssg = string.Empty;
 

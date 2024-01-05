@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -7,9 +8,9 @@ namespace AoC2020
     {
         public Day05(string file) : base(file) { }
 
-        public override string SolvePart1( ) => Input.Select(PartitionString).Max(p => p.id).ToString( );
+        public override async Task<string> SolvePart1( ) => Input.Select(PartitionString).Max(p => p.id).ToString( );
 
-        public override string SolvePart2( ) => 
+        public override async Task<string> SolvePart2( ) => 
                 Enumerable.Range(0, Input.Select(PartitionString).Max(p => p.id))
                 .Except(Input.Select(PartitionString).Select(p => p.id)).Max( ).ToString( );
 

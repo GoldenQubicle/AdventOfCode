@@ -43,11 +43,11 @@ namespace AoC2015
                 int.Parse(v.Where(char.IsDigit).ToArray( ));
         }
 
-        public override string SolvePart1( ) => MakeCookies( )
+        public override async Task<string> SolvePart1( ) => MakeCookies( )
                 .Select(cookie => cookie[Capacity] * cookie[Durability] * cookie[Flavor] * cookie[Texture])
                 .Max( ).ToString( );
 
-        public override string SolvePart2( ) => MakeCookies( )
+        public override async Task<string> SolvePart2( ) => MakeCookies( )
                 .Where(cookie => cookie[Calories] == 500)
                 .Select(cookie => cookie[Capacity] * cookie[Durability] * cookie[Flavor] * cookie[Texture])
                 .Max( ).ToString( );

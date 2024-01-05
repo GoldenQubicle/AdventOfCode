@@ -8,9 +8,9 @@ namespace AoC2022
             .Select(l => l.Split(" "))
             .Select(p => (direction: p[0], steps: int.Parse(p[1]))).ToList();
 
-        public override string SolvePart1() => SimulateRope(GetRope(2));
+        public override async Task<string> SolvePart1() => SimulateRope(GetRope(2));
 
-        public override string SolvePart2() => SimulateRope(GetRope(10));
+        public override async Task<string> SolvePart2() => SimulateRope(GetRope(10));
 
         private string SimulateRope(List<(int x, int y)> rope) =>
             motions.Aggregate(new HashSet<(int, int)> { rope.Last() }, (visited, motion) =>

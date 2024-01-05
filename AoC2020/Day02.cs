@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -20,11 +21,11 @@ namespace AoC2020
             }).ToList( );
 
 
-        public override string SolvePart1( ) => Policies.Count(p =>
+        public override async Task<string> SolvePart1( ) => Policies.Count(p =>
                 p.Password.Count(s => s == p.Letter) >= p.Digit1 &&
                 p.Password.Count(s => s == p.Letter) <= p.Digit2).ToString();
 
-        public override string SolvePart2( ) => Policies.Count(p =>
+        public override async Task<string> SolvePart2( ) => Policies.Count(p =>
                 ( p.Password[p.Digit1 - 1] == p.Letter && p.Password[p.Digit2 - 1] != p.Letter ) ||
                 ( p.Password[p.Digit1 - 1] != p.Letter && p.Password[p.Digit2 - 1] == p.Letter )).ToString( );
 

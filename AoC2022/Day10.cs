@@ -11,7 +11,7 @@ namespace AoC2022
             l.StartsWith("noop") ? ("noop", 0) : (l.Split(" ")[0], int.Parse(l.Split(" ")[1])));
 
 
-        public override string SolvePart1() => DoCycles((c, x) =>
+        public override async Task<string> SolvePart1() => DoCycles((c, x) =>
         {
             c++;
 
@@ -22,7 +22,7 @@ namespace AoC2022
         }, () => signals.Sum().ToString());
 
 
-        public override string SolvePart2() => DoCycles((c, x) =>
+        public override async Task<string> SolvePart2() => DoCycles((c, x) =>
         {
             if (c % 40 == 0)
                 crt.Append(Environment.NewLine);

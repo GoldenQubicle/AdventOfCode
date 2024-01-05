@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -12,9 +13,9 @@ namespace AoC2016
         public int TotalRows { get; set; } = 40;
         public Day18(string file) : base(file, "\n") => tiles.Add(Input[0]);
 
-        public override string SolvePart1( ) => GetSafeTiles();
+        public override async Task<string> SolvePart1( ) => GetSafeTiles();
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             TotalRows = 400000;
             return GetSafeTiles();

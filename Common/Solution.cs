@@ -37,10 +37,16 @@ public abstract class Solution
 
 	}
 
-	public abstract string SolvePart1();
-	public abstract string SolvePart2();
+	public abstract Task<string> SolvePart1();
+	public abstract Task<string> SolvePart2();
 
-	public static Solution Initialize(int year, int day)
+	/// <summary>
+	/// Initializes the solution for the given day and year. Initially used by SharpRay for visualization but also used internally for 2020. 
+	/// </summary>
+	/// <param name="year"></param>
+	/// <param name="day">Just the numeric value as string with a leading zero below 10, e.g. "05", "17"</param>
+	/// <returns></returns>
+	public static Solution Initialize(string year, string day)
 	{
 		//Assuming a ./source/repos/... folder structure which contains the AoC project, and SharpRay
 		var root = Directory.GetCurrentDirectory( ).Split("repos")[0];

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -17,14 +18,14 @@ namespace AoC2015
 
         public Day18(string file) : base(file, "\n") { }
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             var ca = new CellularAutomaton2d(Input) { GameOfLifeRules = gameOfLifeRules };
             ca.Iterate(Steps);
             return ca.CountCells('#').ToString();
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var dim = Input.Count - 1;
 

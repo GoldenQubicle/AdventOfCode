@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -10,9 +11,9 @@ namespace AoC2021
         private readonly Grid2d grid;
         public Day11(string file) : base(file) => grid = new Grid2d(Input, diagonalAllowed: true);
 
-        public override string SolvePart1() => Enumerable.Range(0, 100).Aggregate(0L, (flashes, _) => flashes += DoFlashes()).ToString();
+        public override async Task<string> SolvePart1() => Enumerable.Range(0, 100).Aggregate(0L, (flashes, _) => flashes += DoFlashes()).ToString();
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var step = 0;
 

@@ -21,7 +21,7 @@ namespace AoC2018
 			.Select(m => new Point(m.AsIntTuple("p", ","), m.AsIntTuple("v", ","))).ToList( );
 
 
-		public override string SolvePart1()
+		public override async Task<string> SolvePart1()
 		{
 			for (var i = 0 ;i <= 10942 ;i++)
 			{
@@ -55,7 +55,7 @@ namespace AoC2018
 			return string.Empty;
 		}
 
-		public override string SolvePart2()
+		public override async Task<string> SolvePart2()
 		{
 			return string.Empty;
 		}

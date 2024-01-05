@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 namespace AoC2021
@@ -11,7 +12,7 @@ namespace AoC2021
         public Day15(string file) : base(file) =>
             grid = new Grid2d(Input, diagonalAllowed: false);
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             var queue = new PriorityQueue<(Grid2d.Cell ptr, List<Grid2d.Cell> visited), long>();
             var paths = new List<(List<Grid2d.Cell> path, long risk)>();
@@ -37,6 +38,6 @@ namespace AoC2021
             return string.Empty;
         }
 
-        public override string SolvePart2() => string.Empty;
+        public override async Task<string> SolvePart2() => string.Empty;
     }
 }

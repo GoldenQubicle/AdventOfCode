@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Combinatorics.Collections;
 using Common;
 
@@ -10,8 +11,8 @@ namespace AoC2015
         private readonly List<long> packages;
         public Day24(string file) : base(file, "\n") => packages = Input.Select(long.Parse).ToList();
         
-        public override string SolvePart1( ) => GetQuantumEntanglement(3);
-        public override string SolvePart2( ) => GetQuantumEntanglement(4);
+        public override async Task<string> SolvePart1( ) => GetQuantumEntanglement(3);
+        public override async Task<string> SolvePart2( ) => GetQuantumEntanglement(4);
 
         private string GetQuantumEntanglement(int groups)
         {

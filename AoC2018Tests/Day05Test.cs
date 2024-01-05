@@ -14,7 +14,7 @@ namespace AoC2018Tests
         public void Part1(string input, string expected )
         {
             day05 = new Day05(new List<string> { input } );
-            var actual = day05.SolvePart1( );
+            var actual = day05.SolvePart1( ).Result;
             Assert.That(actual, Is.EqualTo(expected));
         }
 
@@ -22,7 +22,7 @@ namespace AoC2018Tests
         public void Part2(string input)
         {
 	        day05 = new Day05(new List<string> { input });
-			var actual = day05.SolvePart2( );
+			var actual = day05.SolvePart2( ).Result;
             Assert.That(actual, Is.EqualTo("4"));
         }
     }

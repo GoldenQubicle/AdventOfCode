@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -7,7 +8,7 @@ namespace AoC2015
     {
         public Day25(List<string> input) : base(input) { }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var idx = (row: 1, column: 1);
             var pRow = 1;
@@ -32,6 +33,6 @@ namespace AoC2015
             return code.ToString();
         }
 
-        public override string SolvePart2( ) => null;
+        public override async Task<string> SolvePart2( ) => null;
     }
 }

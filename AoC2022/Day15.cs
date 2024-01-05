@@ -11,7 +11,7 @@ namespace AoC2022
             .Select(m => (s: (x: m.AsLong("sx"), y: m.AsLong("sy")), b: (x: m.AsLong("bx"), y: m.AsLong("by"))))
             .Select(p => (p.s, d: GetDistance(p.s, p.b))).ToList();
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             var maxd = sensors.Max(p => p.d);
             var minx = sensors.Min(p => p.s.x) - maxd;
@@ -21,7 +21,7 @@ namespace AoC2022
                 .Count(x => sensors.Any(d => GetDistance(d.s, (x, RowToCheck)) <= d.d)) - 1).ToString(); // no idea why the -1 is needed but it is..
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             //walk along the edges of each sensor checking for free spot not in range of any other sensor
             foreach (var s in sensors)

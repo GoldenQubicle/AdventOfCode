@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -16,7 +17,7 @@ namespace AoC2016
                 .Select(parts => (start: long.Parse(parts[0]), end: long.Parse(parts[1]))).ToList();
         }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var ip = 0l;
             ranges.OrderBy(r => r.start)
@@ -28,7 +29,7 @@ namespace AoC2016
             return ip.ToString();
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var ips = new List<long>();
             var max = -1l;

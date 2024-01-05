@@ -40,7 +40,7 @@ public class Day19 : Solution
 	}
 
 
-	public override string SolvePart1()
+	public override async Task<string> SolvePart1()
 	{
 		var accepted = new List<Part>( );
 
@@ -58,7 +58,7 @@ public class Day19 : Solution
 		return accepted.Sum(p => p.Categories.Values.Sum(r => r.e )).ToString( );
 	}
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		//starts with xmas ranges 1-4k at in:
 		//per workflow if rule applies, adjust range accordingly

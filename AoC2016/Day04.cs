@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -22,9 +23,9 @@ namespace AoC2016
             }).ToList();
         }
 
-        public override string SolvePart1( ) => rooms.Where(IsRealRoom).Sum(r => r.sectorId).ToString();
+        public override async Task<string> SolvePart1( ) => rooms.Where(IsRealRoom).Sum(r => r.sectorId).ToString();
 
-        public override string SolvePart2( ) => rooms.Where(IsRealRoom)
+        public override async Task<string> SolvePart2( ) => rooms.Where(IsRealRoom)
                 .Select(r => (name: DecryptRoomName(r), r.sectorId))
                 .First(r => r.name.Contains("northpole")).sectorId.ToString();
 

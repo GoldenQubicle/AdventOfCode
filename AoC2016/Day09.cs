@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -18,7 +19,7 @@ namespace AoC2016
                     m => (take: int.Parse(m.Groups["take"].Value), repeat: int.Parse(m.Groups["repeat"].Value),
                         length: m.Length));
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var line = Input[0];
             var idx = 0;
@@ -42,7 +43,7 @@ namespace AoC2016
         }
 
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var markerEnds = new Dictionary<int, int>();
 

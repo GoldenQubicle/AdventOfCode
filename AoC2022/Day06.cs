@@ -5,8 +5,8 @@ namespace AoC2022
         public Day06(string input) : base(input) { }
         public Day06(List<string> input) : base(input) { }
 
-        public override string SolvePart1() => FindFirstMarker(4);
-        public override string SolvePart2() => FindFirstMarker(14);
+        public override async Task<string> SolvePart1() => FindFirstMarker(4);
+        public override async Task<string> SolvePart2() => FindFirstMarker(14);
 
         private string FindFirstMarker(int markerLength) => Enumerable.Range(0, Input[0].Length - markerLength)
             .Aggregate(new List<int>(), (markers, idx) =>

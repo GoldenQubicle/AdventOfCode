@@ -22,13 +22,13 @@ public class Day01 : Solution
 
 	public Day01(List<string> input) : base(input) { }
 
-	public override string SolvePart1() => Input
+	public override async Task<string> SolvePart1() => Input
 		.Select(s => s.Where(char.IsDigit).AsString( ))
 		.Select(s => s.Length == 1 ? $"{s[0]}{s[0]}" : $"{s[0]}{s[^1]}")
 		.Select(int.Parse)
 		.Sum( ).ToString( );
 
-	public override string SolvePart2() => Input.Select(s =>
+	public override async Task<string> SolvePart2() => Input.Select(s =>
 		{
 			var idx = 0;
 			var sb = new StringBuilder( );

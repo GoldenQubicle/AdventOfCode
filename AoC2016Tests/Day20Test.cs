@@ -16,7 +16,7 @@ namespace AoC2016Tests
         [Test]
         public void Part1( )
         {
-            var actual = day20.SolvePart1( );
+            var actual = day20.SolvePart1( ).Result;
             Assert.AreEqual("3", actual);
         }
 
@@ -24,7 +24,7 @@ namespace AoC2016Tests
         public void Part2( )
         {
             day20.MaxIp = 9;
-            var actual = day20.SolvePart2( );
+            var actual = day20.SolvePart2( ).Result;
             Assert.AreEqual("2", actual);
         }
     }

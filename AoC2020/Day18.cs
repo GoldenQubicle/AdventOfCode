@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -9,9 +10,9 @@ namespace AoC2020
     {
         public Day18(string file) : base(file) { }
 
-        public override string SolvePart1( ) => Solve(isPart1: true).ToString( );
+        public override async Task<string> SolvePart1( ) => Solve(isPart1: true).ToString( );
 
-        public override string SolvePart2( ) => Solve(isPart1: false).ToString( );
+        public override async Task<string> SolvePart2( ) => Solve(isPart1: false).ToString( );
 
         private long Solve(bool isPart1)
         {

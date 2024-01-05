@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -25,7 +26,7 @@ namespace AoC2020
             grid4d.TryAddAll4D(n4d);
         }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             for ( int i = 0 ; i < 6 ; i++ )
             {
@@ -59,7 +60,7 @@ namespace AoC2020
             return grid3d.Values.Count(c => c == '#').ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             for ( int i = 0 ; i < 6 ; i++ )
             {

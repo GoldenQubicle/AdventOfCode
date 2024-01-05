@@ -14,12 +14,12 @@ public class Day15 : Solution
     
     public Day15(List<string> input) : base(input) { }
 
-    public override string SolvePart1( ) 
+    public override async Task<string> SolvePart1( ) 
     {
     	return string.Empty;
     }
 
-    public override string SolvePart2( )
+    public override async Task<string> SolvePart2( )
     {
     	return string.Empty;
     }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2021
@@ -24,10 +25,10 @@ namespace AoC2021
 
         public Day10(string file) : base(file) { }
 
-        public override string SolvePart1() => Input.Select(IsCorrupted).Sum(r => r.Item2).ToString();
+        public override async Task<string> SolvePart1() => Input.Select(IsCorrupted).Sum(r => r.Item2).ToString();
 
         //meh copy pasta
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var completionScores = Input.Where(l => !IsCorrupted(l).Item1).Aggregate(new List<long>(),
                 (scores, s) =>

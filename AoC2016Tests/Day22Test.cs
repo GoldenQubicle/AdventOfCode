@@ -16,14 +16,14 @@ namespace AoC2016Tests
         [Test]
         public void Part1( )
         {
-            var actual = day22.SolvePart1( );
+            var actual = day22.SolvePart1( ).Result;
             Assert.AreEqual("7", actual);
         }
 
         [Test]
         public void Part2( )
         {
-            var actual = day22.SolvePart2( );
+            var actual = day22.SolvePart2( ).Result;
             Assert.AreEqual("9", actual);//note not the actual correct answer since there are no walls in example, and we presume to move the empty cell..
         }
     }

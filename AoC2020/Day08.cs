@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -22,7 +23,7 @@ namespace AoC2020
             argument = (i.Substring(4, 1), int.Parse(i.Where(char.IsDigit).ToArray( )))
         }).ToList( );
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {            
             while ( !visited.Contains(idx) )
             {
@@ -32,7 +33,7 @@ namespace AoC2020
             return accumulator.ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var changed = new List<int>( );
             var hasChanged = false;

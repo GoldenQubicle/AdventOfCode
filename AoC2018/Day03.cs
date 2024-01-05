@@ -23,7 +23,7 @@ namespace AoC2018
 
 		}
 
-	    public override string SolvePart1() => rects
+	    public override async Task<string> SolvePart1() => rects
 		    .Select(r => r.GetSurface())
 		    .Aggregate(new Dictionary<(int x, int y), int>(), (grid, s) =>
 		    {
@@ -41,7 +41,7 @@ namespace AoC2018
 		    .ToString();
 
 
-	    public override string SolvePart2() => rects
+	    public override async Task<string> SolvePart2() => rects
 		    .Aggregate(new Dictionary<(int x, int y), List<int>>(), (grid, r) =>
 		    {
 			    r.GetSurface().ForEach(c =>

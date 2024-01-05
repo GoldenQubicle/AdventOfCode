@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -8,8 +9,8 @@ namespace AoC2020
     {
         private List<int> jolts;
         public Day10(string file) : base(file) => jolts = Input.Select(i => int.Parse(i)).ToList( );
-        public override string SolvePart1( ) => (CalculateJoltDifferenes( ).jd1 * CalculateJoltDifferenes( ).jd3).ToString( );
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart1( ) => (CalculateJoltDifferenes( ).jd1 * CalculateJoltDifferenes( ).jd3).ToString( );
+        public override async Task<string> SolvePart2( )
         {
             jolts.Add(0);
             jolts.Sort( );

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -26,7 +27,7 @@ namespace AoC2021
                 }).ToList();
         }
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             AddHorizontalPoints();
             AddVerticalPoints();
@@ -34,7 +35,7 @@ namespace AoC2021
             return points.Values.Count(v => v >= 2).ToString();
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             points = new();
             AddHorizontalPoints();

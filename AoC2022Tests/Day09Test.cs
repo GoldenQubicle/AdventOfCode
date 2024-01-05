@@ -8,7 +8,7 @@ namespace AoC2022Tests
         public void Part1()
         {
             day09 = new Day09("day09test1");
-            var actual = day09.SolvePart1();
+            var actual = day09.SolvePart1().Result;
             Assert.AreEqual("13", actual);
         }
 
@@ -16,7 +16,7 @@ namespace AoC2022Tests
         public void Part2()
         {
             day09 = new Day09("day09test2");
-            var actual = day09.SolvePart2();
+            var actual = day09.SolvePart2().Result;
             Assert.AreEqual("36", actual);
         }
     }

@@ -26,9 +26,9 @@ namespace AoC2022
         });
 
 
-        public override string SolvePart1() => DoMonkeyBusiness(20, wl => wl / 3);
+        public override async Task<string> SolvePart1() => DoMonkeyBusiness(20, wl => wl / 3);
 
-        public override string SolvePart2() => DoMonkeyBusiness(10_000, wl => wl % monkeys.Aggregate(1L, (mod, monkey) => mod * monkey.Divisor));
+        public override async Task<string> SolvePart2() => DoMonkeyBusiness(10_000, wl => wl % monkeys.Aggregate(1L, (mod, monkey) => mod * monkey.Divisor));
 
         private string DoMonkeyBusiness(int rounds, Func<long, long> getWorryLevel)
         {

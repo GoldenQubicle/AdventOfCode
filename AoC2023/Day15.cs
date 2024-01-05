@@ -12,11 +12,11 @@ public class Day15 : Solution
 		sequence = Input[0].Split(',').ToList( );
 
 
-	public override string SolvePart1() => sequence
+	public override async Task<string> SolvePart1() => sequence
 		.Select(s => s.Aggregate(0, (v, c) => CalculateHash(c, v))).Sum( ).ToString( );
 
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		var boxes = Enumerable.Range(0, 256).ToDictionary(n => n, _ => new List<string>( ));
 		var labels2Boxes = new Dictionary<string, int>( );

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -10,7 +11,7 @@ namespace AoC2016
 
         public Day05(List<string> input) : base(input) { }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var password = string.Empty;
             var count = 0;
@@ -27,7 +28,7 @@ namespace AoC2016
             return password;
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var password = "________";
             var count = 0;

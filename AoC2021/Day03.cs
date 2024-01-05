@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -13,7 +14,7 @@ namespace AoC2021
         private const char Zero = '0';
         public Day03(string file) : base(file) { }
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             var gamma = new StringBuilder();
             var epsilon = new StringBuilder();
@@ -28,7 +29,7 @@ namespace AoC2021
             return (gamma.ToDecimal() * epsilon.ToDecimal()).ToString();
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var oxygen = GetRating(Input, One);
             var carbon = GetRating(Input, Zero);

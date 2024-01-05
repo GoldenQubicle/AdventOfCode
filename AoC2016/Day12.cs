@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -15,9 +16,9 @@ namespace AoC2016
             registers.Add("d", 0);
         }
 
-        public override string SolvePart1( ) => ParseInstructions();
+        public override async Task<string> SolvePart1( ) => ParseInstructions();
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             registers["c"] = 1;
             return ParseInstructions();

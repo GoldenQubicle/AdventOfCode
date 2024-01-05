@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -20,7 +21,7 @@ namespace AoC2016
 
         public Day17(List<string> input) : base(input) => PassCode = Input[0];
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var current = (room: (x: 0, y: 0), path: string.Empty);
             var queue = new Queue<((int x, int y) room, string path)>();
@@ -36,7 +37,7 @@ namespace AoC2016
             return current.path;
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var current = (room: (x: 0, y: 0), path: string.Empty);
             var queue = new Queue<((int x, int y) room, string path)>();

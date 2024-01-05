@@ -19,7 +19,7 @@ public class Day08 : Solution
 
 	}
 
-	public override string SolvePart1()
+	public override async Task<string> SolvePart1()
 	{
 		var current = "AAA";
 		var idx = 0;
@@ -34,7 +34,7 @@ public class Day08 : Solution
 		return steps.ToString( );
 	}
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		var current = nodes.Keys.Where(n => n.EndsWith('A')).ToList( );
 		var paths = current.Select((n, i) => (n, i)).ToDictionary(t => t.i, _ => (found: false, steps: 0L));

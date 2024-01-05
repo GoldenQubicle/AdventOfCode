@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -23,11 +24,11 @@ namespace AoC2015
 
         public Day22(List<string> input) : base(input) { }
 
-        public override string SolvePart1( ) => PlayGames(NumberOfGames)
+        public override async Task<string> SolvePart1( ) => PlayGames(NumberOfGames)
             .Where(r => r.winner.Equals("ThePlayer"))
             .OrderBy(r => r.manaSpend).First().manaSpend.ToString();
 
-        public override string SolvePart2( ) => PlayGames(NumberOfGames, true)
+        public override async Task<string> SolvePart2( ) => PlayGames(NumberOfGames, true)
             .Where(r => r.winner.Equals("ThePlayer"))
             .OrderBy(r => r.manaSpend).First().manaSpend.ToString();
 

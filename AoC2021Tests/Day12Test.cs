@@ -21,7 +21,7 @@ namespace AoC2021Tests
         public void Part1(string file, string expected )
         {
             day12 = new Day12(file);
-            var actual = day12.SolvePart1( );
+            var actual = day12.SolvePart1( ).Result;
             Assert.AreEqual(expected, actual);
         }
 
@@ -31,7 +31,7 @@ namespace AoC2021Tests
         public void Part2(string file, string expected)
         {
             day12 = new Day12(file);
-            var actual = day12.SolvePart2();
+            var actual = day12.SolvePart2().Result;
             Assert.AreEqual(expected, actual);
         }
     }

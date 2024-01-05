@@ -29,7 +29,7 @@ namespace AoC2015
 
         public Day14(List<string> input) : base(input) { }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var afterTravelSeconds = reindeers.Select(r =>
             {
@@ -46,7 +46,7 @@ namespace AoC2015
             return afterTravelSeconds.Max(r => r.distance ).ToString();
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var scores = reindeers.ToDictionary(r => r.name, _ => 0);
 

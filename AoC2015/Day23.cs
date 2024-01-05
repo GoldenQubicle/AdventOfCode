@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -16,7 +17,7 @@ namespace AoC2015
 
         private int pointer;
         public string Answer { get; set; } = "b";
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             RunProgram();
 
@@ -24,7 +25,7 @@ namespace AoC2015
 
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             registers["a"] = 1;
 

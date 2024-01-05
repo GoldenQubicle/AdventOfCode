@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -7,11 +8,11 @@ namespace AoC2020
     {
         public Day01(string day) : base(day) { }
 
-        public override string SolvePart1( ) => Input.Select(int.Parse)
+        public override async Task<string> SolvePart1( ) => Input.Select(int.Parse)
             .Where(i => Input.Contains(( 2020 - i ).ToString( )))
             .Select(i => i * ( 2020 - i )).First( ).ToString();
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var input = Input.Select(int.Parse);
 

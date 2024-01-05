@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -14,7 +15,7 @@ namespace AoC2016
         
         public Day16(List<string> input) : base(input) =>  InitialState = Input[0];
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             var data = InitialState;
             while (data.Length < Length)
@@ -23,10 +24,10 @@ namespace AoC2016
             return CheckSum(data[..Length]);
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             Length = 35651584;
-            return SolvePart1();
+            return SolvePart1().Result;
         }
 
         public string Dragonize(string input) => @$"{input}{0}{

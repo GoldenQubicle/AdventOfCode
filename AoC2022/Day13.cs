@@ -4,13 +4,13 @@ namespace AoC2022
     {
         public Day13(string file) : base(file) { }
 
-        public override string SolvePart1() => Input.Chunk(2)
+        public override async Task<string> SolvePart1() => Input.Chunk(2)
             .Select(p => (left: ParsePackets(p[0][1..^1]), right: ParsePackets(p[1][1..^1])))
             .Select((p, idx) => (result: p.left.CompareTo(p.right), idx: idx + 1))
             .Where(r => r.result == -1)
             .Sum(r => r.idx).ToString();
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var packets = Input.Select(line => ParsePackets(line[1..^1])).ToList();
             var d2 = GetDivider(2);

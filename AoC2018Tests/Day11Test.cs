@@ -17,7 +17,7 @@ namespace AoC2018Tests
 		public void Part1(int serialNumber, string expected)
 		{
 			Day11.SerialNumber = serialNumber;
-			var actual = day11.SolvePart1( );
+			var actual = day11.SolvePart1( ).Result;
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
@@ -26,7 +26,7 @@ namespace AoC2018Tests
 		public void Part2(int serialNumber, string expected)
 		{
 			Day11.SerialNumber = serialNumber;
-			var actual = day11.SolvePart2( );
+			var actual = day11.SolvePart2( ).Result;
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 

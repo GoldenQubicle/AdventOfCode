@@ -22,7 +22,7 @@ namespace AoC2022
 
             });
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             var grid = GetGrid();
             grid.Fill('.');
@@ -58,7 +58,7 @@ namespace AoC2022
             return grid.Count(c => c.Character == 'S').ToString();
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var grid = GetGrid();
 

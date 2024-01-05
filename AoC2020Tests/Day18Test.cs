@@ -23,7 +23,7 @@ namespace AoC2020Tests
         public void Part1(string file, int expected )
         {
             day18 = new Day18(file);
-            var actual = day18.SolvePart1( );
+            var actual = day18.SolvePart1( ).Result;
             Assert.AreEqual(expected.ToString( ), actual);
         }
 
@@ -36,7 +36,7 @@ namespace AoC2020Tests
         public void Part2(string file, int expected)
         {
             day18 = new Day18(file);
-            var actual = day18.SolvePart2( );
+            var actual = day18.SolvePart2( ).Result;
             Assert.AreEqual(expected.ToString( ), actual);
         }
 

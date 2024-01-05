@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -34,14 +35,14 @@ namespace AoC2020
             });
         }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var bad = allergensIngredients.SelectMany(kvp => kvp.Value.Select(i => i)).Distinct( );
 
             return foods.Sum(f => f.ingredients.Except(bad).Count( )).ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var knownAllergens = new SortedDictionary<string, string>( );
 

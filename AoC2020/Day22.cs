@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -13,7 +14,7 @@ namespace AoC2020
             (new Queue<int>(Input[0].Split("\r\n").Skip(1).Select(int.Parse)),
              new Queue<int>(Input[1].Split("\r\n").Skip(1).Select(int.Parse)));
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var (player1, player2) = InitializeGame( );
 
@@ -30,7 +31,7 @@ namespace AoC2020
             return player1.Count > 0 ? player1.GetScore( ) : player2.GetScore( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var (player1, player2) = InitializeGame( );
             return RecurseGame(player1, player2) ? player1.GetScore( ) : player2.GetScore( );

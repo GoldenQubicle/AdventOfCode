@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -15,7 +16,7 @@ namespace AoC2016
 
         public Day10(string file) : base(file, "\n") { }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             ParseInput();
 
@@ -27,7 +28,7 @@ namespace AoC2016
             return bots.Where(b => b.Value.Found).Select(b => b.Key).First().ToString();
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             ParseInput();
             

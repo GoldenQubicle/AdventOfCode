@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -13,9 +14,9 @@ namespace AoC2016
                 .Select(line => line.Split(" ").Where(s => !string.IsNullOrEmpty(s)).Select(s => s.Trim()).Select(int.Parse).ToArray()).ToList();
         }
         
-        public override string SolvePart1() => triangles.Count(IsValidTriangle).ToString();
+        public override async Task<string> SolvePart1() => triangles.Count(IsValidTriangle).ToString();
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var validCount = 0;
             for (var i = 0; i < triangles.Count / 3; i++)

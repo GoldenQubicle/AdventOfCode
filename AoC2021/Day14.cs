@@ -25,7 +25,7 @@ namespace AoC2021
             }).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
-        public override string SolvePart1() => BuildPolymer(10);
+        public override async Task<string> SolvePart1() => BuildPolymer(10);
 
         //saw problems part 2 coming, still went for it naive approach part1 :'|
         private string BuildPolymer(int iterations)
@@ -44,7 +44,7 @@ namespace AoC2021
             return (freq.Max() - freq.Min()).ToString();
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var chars = new Dictionary<char, long>();
             var pairs = new Dictionary<string, long>();

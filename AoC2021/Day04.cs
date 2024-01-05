@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -28,9 +29,9 @@ namespace AoC2021
             }
         }
 
-        public override string SolvePart1() => PlayBingo().First().ToString();
+        public override async Task<string> SolvePart1() => PlayBingo().First().ToString();
 
-        public override string SolvePart2() => PlayBingo().Last().ToString();
+        public override async Task<string> SolvePart2() => PlayBingo().Last().ToString();
 
         private IEnumerable<long> PlayBingo()
         {

@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System.Threading.Tasks;
+using Common;
 
 namespace AoC2020
 {
@@ -13,7 +14,7 @@ namespace AoC2020
             doorKey = long.Parse(Input[1]);
         }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             long transform(long v, long s) => ( v * s ) % 20201227;
 
@@ -36,6 +37,6 @@ namespace AoC2020
             return key.ToString( );
         }
 
-        public override string SolvePart2( ) => string.Empty;
+        public override async Task<string> SolvePart2( ) => string.Empty;
     }
 }

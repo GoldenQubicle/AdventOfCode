@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -15,7 +16,7 @@ namespace AoC2020
                 Value = int.Parse(i.Where(char.IsDigit).ToArray( ))
             }).ToList( );
 
-        public override string SolvePart1( ) => instructions.Aggregate(
+        public override async Task<string> SolvePart1( ) => instructions.Aggregate(
             (x: 0, y: 0, d: 90), (p, i) => i.Action switch
                 {
                     'N' => (p.x, p.y + i.Value, p.d),
@@ -34,7 +35,7 @@ namespace AoC2020
                 },
                 pos => Math.Abs(pos.x) + Math.Abs(pos.y)).ToString( );
 
-        public override string SolvePart2( ) => instructions.Aggregate(
+        public override async Task<string> SolvePart2( ) => instructions.Aggregate(
             (x: 0, y: 0, wx: 10, wy: 1), (p, i) => i switch
                {
                    ('N', var value) => (p.x, p.y, p.wx, p.wy + value),

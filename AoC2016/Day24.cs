@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 using Common.Interfaces;
@@ -17,8 +18,8 @@ namespace AoC2016
 
         public Day24(List<string> input) : base(input) { }
 
-        public override string SolvePart1() => GetMinimalPathLength();
-        public override string SolvePart2() => GetMinimalPathLength(true);
+        public override async Task<string> SolvePart1() => GetMinimalPathLength();
+        public override async Task<string> SolvePart2() => GetMinimalPathLength(true);
 
         private string GetMinimalPathLength(bool isPart2 = false)
         {

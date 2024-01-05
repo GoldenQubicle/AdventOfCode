@@ -65,7 +65,7 @@ namespace AoC2018
 		}
 
 
-		public override string SolvePart1()
+		public override async Task<string> SolvePart1()
 		{
 			InitializeGridAndCarts( );
 			var collision = false;
@@ -76,7 +76,7 @@ namespace AoC2018
 			return carts.GroupBy(c => c.Position).First(g => g.Count( ) == 2).Select(c => $"{c.Position.x},{c.Position.y}").First( );
 		}
 
-		public override string SolvePart2()
+		public override async Task<string> SolvePart2()
 		{
 			InitializeGridAndCarts( );
 

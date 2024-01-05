@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -26,7 +27,7 @@ namespace AoC2015
                 )).ToList( );
         }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             ResetLights( );
             instructions.ForEach(n =>
@@ -47,7 +48,7 @@ namespace AoC2015
             return Lights.Sum(row => row.Count(l => l == 1)).ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             ResetLights( );
             instructions.ForEach(n =>

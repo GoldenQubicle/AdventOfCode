@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -16,10 +17,10 @@ namespace AoC2021
                     return (parts[0].Split(' ').ToList(), parts[1].Split(' ').ToList());
                 }).ToList();
 
-        public override string SolvePart1() => digits.Sum(d =>
+        public override async Task<string> SolvePart1() => digits.Sum(d =>
             d.output.Count(s => s.Length == 2 || s.Length == 3 || s.Length == 4 || s.Length == 7)).ToString();
 
-        public override string SolvePart2() => digits.Select(DetermineWireSegments).Sum().ToString();
+        public override async Task<string> SolvePart2() => digits.Select(DetermineWireSegments).Sum().ToString();
 
         private static int DetermineWireSegments((List<string> patterns, List<string> output) i)
         {

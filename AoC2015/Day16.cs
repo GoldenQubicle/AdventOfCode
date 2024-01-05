@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -40,7 +41,7 @@ namespace AoC2015
              }).ToList( );
         }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var potential = compounds.ToDictionary(c => c.Key,
                 c => aunts.Where(a => a.ContainsKey(c.Key) && a[c.Key] == c.Value).Select(a => a["Sue"]).ToList( ));
@@ -48,7 +49,7 @@ namespace AoC2015
             return aunts.Where(a => a.Keys.Skip(1).All(k => potential[k].Contains(a["Sue"]))).First( )["Sue"].ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var potential = compounds.ToDictionary(c => c.Key,
                 c => aunts.Where(a => a.ContainsKey(c.Key))

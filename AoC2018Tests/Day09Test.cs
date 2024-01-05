@@ -22,14 +22,14 @@ namespace AoC2018Tests
         {
 	        Day09.Players = players;
 	        Day09.LastMarble = lastMarble;
-            var actual = day09.SolvePart1( );
+            var actual = day09.SolvePart1( ).Result;
             Assert.That(actual, Is.EqualTo(expected.ToString()));
         }
 
         public void Part2( )
         {
             var expected = string.Empty;
-            var actual = day09.SolvePart2( );
+            var actual = day09.SolvePart2( ).Result;
             Assert.That(actual, Is.EqualTo(expected));
         }
     }

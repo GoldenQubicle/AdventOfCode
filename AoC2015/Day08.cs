@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -8,7 +9,7 @@ namespace AoC2015
     {
         public Day08(string file) : base(file, "\n") { }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var expression = new Regex(@"(\\{2})|(\\x(\w{2}))|(\\"")|(\w)");
             var count = Input
@@ -18,7 +19,7 @@ namespace AoC2015
             return ( count.code - count.memory ).ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var expression = new Regex(@"(?<s>\\{2})|(?<h>\\x\w{2})|(?<sq>\\"")|(?<q>\"")");
 

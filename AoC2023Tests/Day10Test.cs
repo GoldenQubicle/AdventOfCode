@@ -9,7 +9,7 @@ public class Day10Test
     public void Part1(string file, string expected )
     {
 	    var day10 = new Day10(file);
-        var actual = day10.SolvePart1( );
+        var actual = day10.SolvePart1( ).Result;
         Assert.That(actual, Is.EqualTo(expected));
     }
 
@@ -20,7 +20,7 @@ public class Day10Test
 	public void Part2(string file, string expected)
 	{
 		var day10 = new Day10(file);
-		var actual = day10.SolvePart2( );
+		var actual = day10.SolvePart2( ).Result;
         Assert.That(actual, Is.EqualTo(expected));
     }
 

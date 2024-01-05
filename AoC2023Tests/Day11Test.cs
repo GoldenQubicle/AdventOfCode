@@ -15,7 +15,7 @@ public class Day11Test
     [Test]
     public void Part1( )
     {
-        var actual = day11.SolvePart1( );
+        var actual = day11.SolvePart1( ).Result;
         Assert.That(actual, Is.EqualTo("374"));
     }
             

@@ -10,14 +10,14 @@ public class Day10 : Solution
 		grid = new Grid2d(Input, diagonalAllowed: false);
 
 
-	public override string SolvePart1()
+	public override async Task<string> SolvePart1()
 	{
 		var path = GetPath( );
 		return (path.Count % 2 == 0 ? path.Count / 2 : (path.Count / 2) - 1).ToString( );
 	}
 
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		var path = GetPath( );
 		return grid

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -11,7 +12,7 @@ namespace AoC2015
         public Day17(string file) : base(file, "\n") =>
             containers = Input.Select(line => int.Parse(line)).ToList( );
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var options = new CombinatorOptions
             {
@@ -28,7 +29,7 @@ namespace AoC2015
             return result.ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var options = new CombinatorOptions
             {

@@ -26,7 +26,7 @@ namespace AoC2021
             });
         }
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             var pathsFound = 0;
             var queue = new Queue<(List<string> path, List<string> visited)>();
@@ -47,7 +47,7 @@ namespace AoC2021
             return pathsFound.ToString();
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var paths = new HashSet<string>();
             var queue = new Queue<(List<string> path, List<string> visited, bool seenTwice)>();

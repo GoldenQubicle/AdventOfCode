@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -36,9 +37,9 @@ namespace AoC2016
 
         public Day08(List<string> input) : base(input) { }
 
-        public override string SolvePart1() => Screen.Sum(row => row.Count(p => p == 1)).ToString();
+        public override async Task<string> SolvePart1() => Screen.Sum(row => row.Count(p => p == 1)).ToString();
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             SolvePart1();
             var sb = new StringBuilder();

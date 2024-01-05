@@ -22,7 +22,7 @@ namespace AoC2015Tests
             day19 = new Day19(new List<string> { input } );
             day19.Mappings.Add("H", new List<string> { "HO", "OH" });
             day19.Mappings.Add("O", new List<string> { "HH" });
-            var actual = day19.SolvePart1( );
+            var actual = day19.SolvePart1( ).Result;
             Assert.AreEqual(expected, actual);
         }
     }

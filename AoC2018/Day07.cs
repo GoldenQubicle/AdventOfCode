@@ -33,7 +33,7 @@ namespace AoC2018
 				});
 		}
 
-		public override string SolvePart1()
+		public override async Task<string> SolvePart1()
 		{
 			var order = new HashSet<string>( );
 			var queue = new PriorityQueue<Node, string>( );
@@ -61,7 +61,7 @@ namespace AoC2018
 			return order.Aggregate(new StringBuilder( ), (builder, s) => builder.Append(s)).ToString( );
 		}
 
-		public override string SolvePart2()
+		public override async Task<string> SolvePart2()
 		{
 			var timer = 0;
 			var queue = new PriorityQueue<Node, string>( );

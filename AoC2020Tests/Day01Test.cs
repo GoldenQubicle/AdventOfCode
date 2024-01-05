@@ -17,7 +17,7 @@ namespace AoC2020Tests
         public void Part1( )
         {
             var expected = 514579.ToString( );
-            var result = day01.SolvePart1( );
+            var result = day01.SolvePart1( ).Result;
             Assert.AreEqual(expected, result);
         }
 
@@ -25,7 +25,7 @@ namespace AoC2020Tests
         public void Part2( )
         {
             var expected = 241861950.ToString( );
-            var result = day01.SolvePart2( );
+            var result = day01.SolvePart2( ).Result;
             Assert.AreEqual(expected, result);
         }
     }

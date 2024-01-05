@@ -18,14 +18,14 @@ public class Day18Test
     [Test]
     public void Part1( )
     {
-        var actual = day18.SolvePart1( );
+        var actual = day18.SolvePart1( ).Result;
         Assert.That(actual, Is.EqualTo("62"));
     }
             
     [Test]
     public void Part2( )
     {
-        var actual = day18.SolvePart2( );
+        var actual = day18.SolvePart2( ).Result;
         Assert.That(actual, Is.EqualTo("952408144115"));
     }
 }

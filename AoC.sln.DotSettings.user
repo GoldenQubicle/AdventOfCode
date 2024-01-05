@@ -1,40 +1,28 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=21de7442_002D5939_002D4cd4_002Db7da_002Dbdfa0d375af4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day17Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::147E3225-79A1-4398-ABBE-4E74A38D9E00::net8.0::AoC2023Tests.Day17Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2dec764b_002Da710_002D49a5_002Dace1_002D4e7bbc2e5b49/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day18Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::147E3225-79A1-4398-ABBE-4E74A38D9E00::net8.0::AoC2023Tests.Day18Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4af7a1a4_002Dd891_002D417f_002D9edc_002D53ee11f7a11d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CalculateShoeLaceArea" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::2B58D939-8993-4BE1-A2D6-DD1D8B6F43EC::net8.0::CommonTests.MathsTest.CalculateShoeLaceArea&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::2B58D939-8993-4BE1-A2D6-DD1D8B6F43EC::net8.0::CommonTests.MathsTest.CalculateShoeLaceShouldThrowIfFirstAndLastElementAreNotTheSame&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5042d786_002D4e2a_002D4230_002D975a_002Daf1a2430a09c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day12Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=04e72cd7_002D4a01_002D44aa_002Dbf0d_002Dfc0df9bf2b1c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day12Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net8.0::AoC2022Tests.Day12Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=752c6e1f_002Dd976_002D419f_002D9401_002Db9505d52fc26/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day21Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::147E3225-79A1-4398-ABBE-4E74A38D9E00::net8.0::AoC2023Tests.Day21Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	
+	
+	
+	
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=83f47f06_002Dfd6a_002D41c6_002D8ef1_002Da04a20dc2579/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AllYears" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2015Tests" Presentation="&amp;lt;AoC2015Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2016Tests" Presentation="&amp;lt;AoC2016Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2018Tests" Presentation="&amp;lt;AoC2018Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2019Tests" Presentation="&amp;lt;AoC2019Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2020Tests" Presentation="&amp;lt;AoC2020Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2021Tests" Presentation="&amp;lt;AoC2021Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2022Tests" Presentation="&amp;lt;AoC2022Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2023Tests" Presentation="&amp;lt;AoC2023Tests&amp;gt;" /&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a38f5a38_002Df175_002D4907_002Dbbfd_002D45ded97efa33/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day19Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::147E3225-79A1-4398-ABBE-4E74A38D9E00::net8.0::AoC2023Tests.Day19Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a4a71c67_002D3fe0_002D4509_002D8bf6_002D98045f1914a1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day10Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::147E3225-79A1-4398-ABBE-4E74A38D9E00::net8.0::AoC2023Tests.Day10Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
+	
+	
 	
 	
 	

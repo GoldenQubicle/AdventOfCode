@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -10,7 +11,7 @@ namespace AoC2016
         public Day19(string file) : base(file, "\n") => elves = Enumerable.Range(1, int.Parse(Input[0])).ToList();
         public Day19(List<string> input) : base(input) => elves = Enumerable.Range(1, int.Parse(Input[0])).ToList();
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             while (elves.Count > 1)
             {
@@ -24,7 +25,7 @@ namespace AoC2016
             return elves.First().ToString();
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             //tbh not quite sure why this works but it does.. 
             //spend way too long with while loop, linked list and then back to

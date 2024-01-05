@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -8,7 +9,7 @@ namespace AoC2016
     {
         public Day02(string file) : base(file, "\n") { }
         
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             var code = string.Empty;
             var button = 5;
@@ -29,7 +30,7 @@ namespace AoC2016
             return code;
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var keypad = new Dictionary<char, Dictionary<char, char>>
             {

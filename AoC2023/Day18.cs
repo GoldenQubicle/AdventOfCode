@@ -13,10 +13,10 @@ public class Day18 : Solution
 			.Select(m => (dir: m.Groups["dir"].Value, d: m.AsLong("d"), hex: m.Groups["hex"].Value)).ToList( );
 
 
-	public override string SolvePart1() => DigLavaLagoon(digPlan.Select(d => (d.dir, d.d)));
+	public override async Task<string> SolvePart1() => DigLavaLagoon(digPlan.Select(d => (d.dir, d.d)));
 
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		var dir = new Dictionary<char, string> { { '0', "R" }, { '1', "D" }, { '2', "L" }, { '3', "U" } };
 		var steps = digPlan.Select(s => (dir: dir[s.hex[^1]], d: Convert.ToInt64(s.hex[..5], 16))).ToList( );

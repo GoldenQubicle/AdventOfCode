@@ -17,7 +17,7 @@ namespace AoC2020Tests
         [Test]
         public void Part1( )
         {
-            var actual = day5.SolvePart1( );
+            var actual = day5.SolvePart1( ).Result;
             Assert.AreEqual(820.ToString( ), actual);
         }
 

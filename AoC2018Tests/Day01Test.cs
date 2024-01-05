@@ -12,7 +12,7 @@ namespace AoC2018Tests
         public void Part1(string input, string expected )
         {
             var day01 = new Day01(input.Split(',').ToList());
-            var actual = day01.SolvePart1( );
+            var actual = day01.SolvePart1( ).Result;
             Assert.That(actual, Is.EqualTo(expected));
         }
 
@@ -24,7 +24,7 @@ namespace AoC2018Tests
 		public void Part2(string input, string expected)
         {
 			var day01 = new Day01(input.Split(',').ToList( ));
-			var actual = day01.SolvePart2( );
+			var actual = day01.SolvePart2( ).Result;
             Assert.That(actual, Is.EqualTo(expected));
         }
     }

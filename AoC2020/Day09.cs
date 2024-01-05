@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -11,7 +12,7 @@ namespace AoC2020
         private long target;
         public Day09(string file) : base(file) => cypher = Input.Select(i => long.Parse(i)).ToList( );
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             for ( int i = Preamble ; i < cypher.Count ; i++ )
             {
@@ -24,9 +25,9 @@ namespace AoC2020
             return string.Empty;
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
-            target = long.Parse(SolvePart1( ));
+            target = long.Parse(SolvePart1( ).Result);
 
             for ( int i = 0 ; i < cypher.Count ; i++ )
             {

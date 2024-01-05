@@ -1,6 +1,7 @@
 using System.Linq;
 using Common;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Common.Extensions;
 
 namespace AoC2021
@@ -11,11 +12,11 @@ namespace AoC2021
         public Day01(string file) : base(file) =>
             sonarReadings = Input.Select((i, idx) => (idx, int.Parse(i))).ToList();
 
-        public override string SolvePart1() => sonarReadings.Aggregate(0, (count, reading) =>
+        public override async Task<string> SolvePart1() => sonarReadings.Aggregate(0, (count, reading) =>
             reading.idx == 0 ? count :
             reading.depth > sonarReadings[reading.idx - 1].depth ? count + 1 : count).ToString();
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var summedWindows = sonarReadings.Aggregate(new List<int>(), (windows, reading) =>
                      reading.idx + 2 > sonarReadings.Count - 1 ? windows

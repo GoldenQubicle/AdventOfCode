@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -9,7 +10,7 @@ namespace AoC2015
         public Day02(string file) : base(file, "\n") { }
         public Day02(List<string> input) : base(input) { }
 
-        public override string SolvePart1( ) => Input
+        public override async Task<string> SolvePart1( ) => Input
             .Select(line => line.Split('x').Select(int.Parse).ToList( ))
             .Select(list => new List<int>
             {
@@ -24,7 +25,7 @@ namespace AoC2015
             }).ToString( );
 
 
-        public override string SolvePart2( ) => Input
+        public override async Task<string> SolvePart2( ) => Input
             .Select(line => line.Split('x').Select(int.Parse).ToList( ))
             .Aggregate(0L, (sum, list) =>
             {

@@ -8,7 +8,7 @@ namespace AoC2022
 
         public Day08(string file) : base(file) => grid = new Grid2d(Input, diagonalAllowed: false);
 
-        public override string SolvePart1() => grid.Where(FilterEdge)
+        public override async Task<string> SolvePart1() => grid.Where(FilterEdge)
             .Aggregate(grid.Count, (visible, cell) =>
             {
                 var hiddenLeft = IsHidden(c => c.X < cell.X && c.Y == cell.Y, cell.Value);
@@ -19,7 +19,7 @@ namespace AoC2022
                 return (hiddenLeft && hiddenRight && hiddenUp && hiddenDown) ? --visible : visible;
             }).ToString();
 
-        public override string SolvePart2() => grid.Where(FilterEdge)
+        public override async Task<string> SolvePart2() => grid.Where(FilterEdge)
             .Select(cell =>
             {
                 var scoreLeft = WalkLine(step => (cell.X - step, cell.Y), cell.Value);

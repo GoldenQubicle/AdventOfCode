@@ -16,14 +16,14 @@ namespace AoC2021Tests
         [Test]
         public void Part1( )
         {
-            var actual = day08.SolvePart1( );
+            var actual = day08.SolvePart1( ).Result;
             Assert.AreEqual("26", actual);
         }
 
         [Test]
         public void Part2( )
         {
-            var actual = day08.SolvePart2( );
+            var actual = day08.SolvePart2( ).Result;
             Assert.AreEqual("61229", actual);
         }
     }

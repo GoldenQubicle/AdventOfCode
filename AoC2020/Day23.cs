@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -17,7 +18,7 @@ namespace AoC2020
                     .Where(char.IsDigit)
                     .Select(c => int.Parse(c.ToString( ))).ToArray( );
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var result = Iterate( );
             var indexone = cups.ToList( ).IndexOf(1);
@@ -25,7 +26,7 @@ namespace AoC2020
             return result.Skip(indexone + 1).Take(cups.Length - 1).Aggregate(string.Empty, (s, c) => s + c.ToString( )).ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var cups = GetCups( );
             cups = cups.Concat(Enumerable.Range(cups.Max( ) + 1, 1000000 - cups.Length)).ToArray( );

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 using Math = System.Math;
 
@@ -54,7 +55,7 @@ namespace AoC2015
             };
         }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var combinations = GetAllItemCombinations();
 
@@ -76,7 +77,7 @@ namespace AoC2015
             return rounds.cost.ToString();
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var combinations = GetAllItemCombinations();
 

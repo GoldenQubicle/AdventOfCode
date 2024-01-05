@@ -15,7 +15,7 @@ namespace AoC2018
 
 		public Day02(List<string> input) : base(input) { }
 
-		public override string SolvePart1()
+		public override async Task<string> SolvePart1()
 		{
 			var counts = Input.Select(s =>
 			{
@@ -26,7 +26,7 @@ namespace AoC2018
 		}
 
 
-		public override string SolvePart2()
+		public override async Task<string> SolvePart2()
 		{
 			foreach (var s1 in Input)
 			{

@@ -16,7 +16,7 @@ namespace AoC2018
 				.ToDictionary(p => p[0], p => p[1]);
 		}
 
-		public override string SolvePart1()
+		public override async Task<string> SolvePart1()
 		{
 			var current = state;
 			var offsetIdx = 0;
@@ -66,7 +66,7 @@ namespace AoC2018
 
 		//after 100 generations the sum increases with 5 for each subsequent generation
 		//the score at generation 100 is 724
-		public override string SolvePart2() => (724 + ((50000000000 - 101) * 5)).ToString();
+		public override async Task<string> SolvePart2() => (724 + ((50000000000 - 101) * 5)).ToString();
 
 
 	}

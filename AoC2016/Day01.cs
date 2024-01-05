@@ -31,7 +31,7 @@ namespace AoC2016
 
         public Day01(List<string> input) : base(input) { }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var current = Direction.North;
             var position = (x: 0, y: 0);
@@ -47,7 +47,7 @@ namespace AoC2016
             return (Math.Abs(position.x) + Math.Abs(position.y)).ToString();
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var current = Direction.North;
             var position = (x: 0, y: 0);

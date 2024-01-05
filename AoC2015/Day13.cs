@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -31,9 +32,9 @@ namespace AoC2015
 
         }
 
-        public override string SolvePart1( ) => FindOptimalArrangement( );
+        public override async Task<string> SolvePart1( ) => FindOptimalArrangement( );
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             persons.Add("me", new Dictionary<string, int>( ));
             persons.ForEach(p =>

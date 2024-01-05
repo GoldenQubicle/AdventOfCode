@@ -17,11 +17,11 @@ public class Day13 : Solution
 	}
 
 
-	public override string SolvePart1() => grids.Select(g => GetMirrorLines(g, isSmudged: false))
+	public override async Task<string> SolvePart1() => grids.Select(g => GetMirrorLines(g, isSmudged: false))
 			.Sum(t => t.c.Sum( ) + t.r.Sum(i => i * 100)).ToString( );
 
 
-	public override string SolvePart2() => grids.Select(g => GetMirrorLines(g, isSmudged: true))
+	public override async Task<string> SolvePart2() => grids.Select(g => GetMirrorLines(g, isSmudged: true))
 		.Sum(t => t.c.Sum( ) + t.r.Sum(i => i * 100)).ToString( );
 
 

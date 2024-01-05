@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -24,13 +25,13 @@ namespace AoC2020
             myTicket = intermediate[1].Skip(1).SelectMany(i => i.Split(",")).Select(int.Parse).ToList( );
         }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var validNumbers = fields.SelectMany(f => f.valid).ToList( );
             return tickets.Sum(ticket => ticket.Sum(n => !validNumbers.Contains(n) ? n : 0)).ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var fieldOrder = new List<(string name, int index)>( );
             var validNumbers = fields.SelectMany(f => f.valid).ToList( );

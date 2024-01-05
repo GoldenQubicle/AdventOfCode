@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -9,9 +10,9 @@ namespace AoC2021
     {
         public Day06(string file) : base(file) { }
 
-        public override string SolvePart1() => Simulate(80);
+        public override async Task<string> SolvePart1() => Simulate(80);
 
-        public override string SolvePart2() => Simulate(256);
+        public override async Task<string> SolvePart2() => Simulate(256);
 
         private string Simulate(int iterations)
         {

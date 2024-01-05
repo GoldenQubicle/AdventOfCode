@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -11,9 +12,9 @@ namespace AoC2016
 
         public Day07(List<string> input) : base(input) { }
 
-        public override string SolvePart1( ) => Input.Count(HasTlsSupport).ToString();
+        public override async Task<string> SolvePart1( ) => Input.Count(HasTlsSupport).ToString();
 
-        public override string SolvePart2( ) => Input.Count(HasSslSupport).ToString();
+        public override async Task<string> SolvePart2( ) => Input.Count(HasSslSupport).ToString();
 
         public bool HasTlsSupport(string ip)
         {

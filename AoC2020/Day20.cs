@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -28,7 +29,7 @@ namespace AoC2020
                 .ToDictionary(t => t.Id, t => t);
         }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var corners = GetMatchedTiles( )
             .Where(m => m.matches.Count == 2).ToList( );
@@ -62,7 +63,7 @@ namespace AoC2020
             return matches.Select(m => (tile: m.Key, matches: m.Value.Where(v => v != 0).ToList( ))).ToList( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var size = ( int ) Math.Sqrt(tiles.Count);
             var picture = new List<List<Tile>>( );

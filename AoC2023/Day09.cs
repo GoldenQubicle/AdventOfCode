@@ -10,9 +10,9 @@ public class Day09 : Solution
 	public Day09(string file) : base(file) => reports = Input
 		.Select(l => l.Split(' ', StringSplitOptions.TrimEntries).Select(long.Parse).ToList( )).ToList( );
 
-	public override string SolvePart1() => GetInterpolatedSum(isPart2: false);
+	public override async Task<string> SolvePart1() => GetInterpolatedSum(isPart2: false);
 
-	public override string SolvePart2() => GetInterpolatedSum(isPart2: true);
+	public override async Task<string> SolvePart2() => GetInterpolatedSum(isPart2: true);
 	
 	private string GetInterpolatedSum(bool isPart2)
 	{

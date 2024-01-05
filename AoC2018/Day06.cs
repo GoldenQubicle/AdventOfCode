@@ -15,7 +15,7 @@ namespace AoC2018
 		}).ToDictionary(l => 65 + l.idx, l => (l.Item2, l.Item3));
 
 
-		public override string SolvePart1()
+		public override async Task<string> SolvePart1()
 		{
 			var minx = locations.Values.MinBy(c => c.x).x;
 			var maxx = locations.Values.MaxBy(c => c.x).x;
@@ -42,7 +42,7 @@ namespace AoC2018
 				.Count( ).ToString( );
 		}
 
-		public override string SolvePart2()
+		public override async Task<string> SolvePart2()
 		{
 			var maxx = locations.Values.MaxBy(c => c.x).x;
 			var maxy = locations.Values.MaxBy(c => c.y).y;

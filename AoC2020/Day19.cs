@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -34,7 +35,7 @@ namespace AoC2020
             messages = Input[1].Split("\r\n").ToList( );
         }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var startIndex = 0;
             rules["0"][0].ForEach(d =>
@@ -48,7 +49,7 @@ namespace AoC2020
             return messages.Count(m => m.Length == startIndex).ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             messages = Input[1].Split("\r\n").ToList( );
 

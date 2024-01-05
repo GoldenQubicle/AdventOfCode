@@ -15,14 +15,14 @@ namespace AoC2022Tests
         public void Part1(string file, string expected)
         {
             day10 = new Day10(file);
-            var actual = day10.SolvePart1();
+            var actual = day10.SolvePart1().Result;
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
         public void Part2()
         {
-            var actual = day10.SolvePart2().Replace(Environment.NewLine, string.Empty);
+            var actual = day10.SolvePart2().Result.Replace(Environment.NewLine, string.Empty);
             var expected = "##..##..##..##..##..##..##..##..##..##.."+
                            "###...###...###...###...###...###...###."+
                            "####....####....####....####....####...."+

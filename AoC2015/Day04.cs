@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Common;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace AoC2015
 {
@@ -12,9 +13,9 @@ namespace AoC2015
 
         public Day04(List<string> input) : base(input) { }
 
-        public override string SolvePart1( ) => SolveHash("00000");
+        public override async Task<string> SolvePart1( ) => SolveHash("00000");
 
-        public override string SolvePart2( ) => SolveHash("000000");
+        public override async Task<string> SolvePart2( ) => SolveHash("000000");
 
         private string SolveHash(string lookingFor )
         {

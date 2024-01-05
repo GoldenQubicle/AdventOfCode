@@ -33,7 +33,7 @@ namespace AoC2016
             elementCount = floors.Sum(f => f.chips.Count);
         }
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             var elevator = 0;
             var steps = 0;
@@ -48,6 +48,6 @@ namespace AoC2016
             return "31";
         }
 
-        public override string SolvePart2() => "55"; //solved by hand, see day11_part2.txt
+        public override async Task<string> SolvePart2() => "55"; //solved by hand, see day11_part2.txt
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -32,9 +33,9 @@ namespace AoC2015
                 });
         }
 
-        public override string SolvePart1( ) => CalculateDistances( ).Values.Select(i => i.Min( )).Min( ).ToString( );
+        public override async Task<string> SolvePart1( ) => CalculateDistances( ).Values.Select(i => i.Min( )).Min( ).ToString( );
         
-        public override string SolvePart2( ) => CalculateDistances( ).Values.Select(i => i.Max( )).Max( ).ToString( );
+        public override async Task<string> SolvePart2( ) => CalculateDistances( ).Values.Select(i => i.Max( )).Max( ).ToString( );
       
         private Dictionary<string, List<int>> CalculateDistances( )
         {

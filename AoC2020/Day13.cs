@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -15,13 +16,13 @@ namespace AoC2020
             buses = Input[1].Split(',').Where(s => !s.Equals("x")).Select(int.Parse).ToList( );
         }
 
-        public override string SolvePart1( ) =>
+        public override async Task<string> SolvePart1( ) =>
                  buses.Select(id => (id: id, wait: MathF.Ceiling(( float ) timestep / id) * id))
                 .OrderBy(id => id.wait)
                 .Select(id => ( int ) ( id.wait - timestep ) * id.id)
                 .First( ).ToString( );
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var departure = Input[1].Split(',')
                 .Select((b, i) => (b, i))

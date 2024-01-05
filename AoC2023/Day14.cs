@@ -10,14 +10,14 @@ public class Day14 : Solution
 	public Day14(string file) : base(file) => grid = new Grid2d(Input);
 
 
-	public override string SolvePart1()
+	public override async Task<string> SolvePart1()
 	{
 		TiltPlatform((0, -1), 1);
 
 		return grid.Where(c => c.Character == 'O').Sum(c => (grid.Height - c.Y)).ToString( );
 	}
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		var loads = new List<int>( );
 

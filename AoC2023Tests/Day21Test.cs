@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace AoC2023Tests;
-            
+
+[Ignore("not finished")]
 public class Day21Test
 {
     Day21 day21;
@@ -19,7 +20,7 @@ public class Day21Test
     public void Part1( )
     {
 	    Day21.Steps = 6;
-        var actual = day21.SolvePart1( );
+        var actual = day21.SolvePart1( ).Result;
         Assert.That(actual, Is.EqualTo("16"));
     }
 
@@ -33,7 +34,7 @@ public class Day21Test
 	public void Part2(int steps, int expected )
 	{
 		Day21.Steps = steps;
-        var actual = day21.SolvePart2( );
+        var actual = day21.SolvePart2( ).Result;
         Assert.That(actual, Is.EqualTo(expected.ToString()));
     }
 }

@@ -22,7 +22,7 @@ public class Day12 : Solution
 		}).ToList( );
 	}
 
-	public override string SolvePart1()
+	public override async Task<string> SolvePart1()
 	{
 		var t = springs.Select(s => GetArrangements(s.row, s.records));
 
@@ -85,7 +85,7 @@ public class Day12 : Solution
 			: new( ) { (row, count, records) };
 
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		return string.Empty;
 	}

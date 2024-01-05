@@ -19,7 +19,7 @@ namespace AoC2018Tests
         [Test]
         public void Part1( )
         {
-            var actual = day10.SolvePart1( );
+            var actual = day10.SolvePart1( ).Result;
             Assert.That(actual, Is.EqualTo("HI"));
         }
 
@@ -28,7 +28,7 @@ namespace AoC2018Tests
         public void Part2( )
         {
             var expected = string.Empty;
-            var actual = day10.SolvePart2( );
+            var actual = day10.SolvePart2( ).Result;
             Assert.That(actual, Is.EqualTo(expected));
         }
     }

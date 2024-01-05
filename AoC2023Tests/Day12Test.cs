@@ -55,7 +55,7 @@ public class Day12Test
 	[Test]
 	public void Part1()
 	{
-		var actual = day12.SolvePart1( );
+		var actual = day12.SolvePart1( ).Result;
 		Assert.That(actual, Is.EqualTo("21"));
 	}
 
@@ -63,7 +63,7 @@ public class Day12Test
 	public void Part2()
 	{
 		var expected = string.Empty;
-		var actual = day12.SolvePart2( );
+		var actual = day12.SolvePart2( ).Result;
 		Assert.That(actual, Is.EqualTo(expected));
 	}
 }

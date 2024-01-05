@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -14,9 +15,9 @@ namespace AoC2020
             Height = Input.Count;
             Width = Input[0].Length;
         }
-        public override string SolvePart1( ) => TraverseSlope((3, 1)).ToString( );
+        public override async Task<string> SolvePart1( ) => TraverseSlope((3, 1)).ToString( );
 
-        public override string SolvePart2( ) => new List<(int, int)>
+        public override async Task<string> SolvePart2( ) => new List<(int, int)>
             { (1, 1), (3, 1), (5, 1), (7, 1), (1, 2) }
             .Select(TraverseSlope)
             .Aggregate((s1, s2) => s1 * s2).ToString( );

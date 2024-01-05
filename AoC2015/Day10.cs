@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -13,9 +14,9 @@ namespace AoC2015
 
         public Day10(List<string> input) : base(input) { }
 
-        public override string SolvePart1( ) => Iterate(40);
+        public override async Task<string> SolvePart1( ) => Iterate(40);
 
-        public override string SolvePart2( ) => Iterate(50);
+        public override async Task<string> SolvePart2( ) => Iterate(50);
 
         private string Iterate(int iterations )
         {

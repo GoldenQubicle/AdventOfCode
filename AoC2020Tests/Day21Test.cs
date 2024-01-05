@@ -16,14 +16,14 @@ namespace AoC2020Tests
         [Test]
         public void Part1( )
         {
-            var actual = day21.SolvePart1( );
+            var actual = day21.SolvePart1( ).Result;
             Assert.AreEqual("5", actual);
         }
 
         [Test]
         public void Part2( )
         {
-            var actual = day21.SolvePart2( );
+            var actual = day21.SolvePart2( ).Result;
             Assert.AreEqual("mxmxvkd,sqjhc,fvjkl", actual);
         }
     }

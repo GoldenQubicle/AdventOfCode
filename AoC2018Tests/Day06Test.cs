@@ -15,7 +15,7 @@ namespace AoC2018Tests
         [Test]
         public void Part1( )
         {
-            var actual = day06.SolvePart1( );
+            var actual = day06.SolvePart1( ).Result;
             Assert.That(actual, Is.EqualTo("17"));
         }
 
@@ -23,7 +23,7 @@ namespace AoC2018Tests
         public void Part2( )
         {
 	        day06.Threshold = 32;
-            var actual = day06.SolvePart2( );
+            var actual = day06.SolvePart2( ).Result;
             Assert.That(actual, Is.EqualTo("16"));
         }
     }

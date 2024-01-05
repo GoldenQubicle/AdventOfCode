@@ -10,7 +10,7 @@ public class Day03 : Solution
 	public Day03(string file) : base(file) => grid = new Grid2d(Input);
 
 
-	public override string SolvePart1()
+	public override async Task<string> SolvePart1()
 	{
 		var parts = new List<int>( );
 		var sb = new StringBuilder( );
@@ -40,7 +40,7 @@ public class Day03 : Solution
 	}
 
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		var ratios = new List<long>( );
 		foreach (var cell in grid)

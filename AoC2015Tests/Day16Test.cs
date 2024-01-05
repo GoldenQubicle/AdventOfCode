@@ -17,14 +17,14 @@ namespace AoC2015Tests
         [Test]
         public void Part1( )
         {
-            var actual = day16.SolvePart1( );
+            var actual = day16.SolvePart1( ).Result;
             Assert.AreEqual("103", actual);
         }
 
         [Test]
         public void Part2( )
         {
-            var actual = day16.SolvePart2( );
+            var actual = day16.SolvePart2( ).Result;
             Assert.AreEqual("405", actual);
         }
     }

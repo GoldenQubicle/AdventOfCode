@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -16,7 +17,7 @@ namespace AoC2016
             
         }
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             foreach(var line in Input)
             {
@@ -49,7 +50,7 @@ namespace AoC2016
             return PassWord;
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             Input.Reverse();
             

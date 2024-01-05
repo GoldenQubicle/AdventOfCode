@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -27,9 +28,9 @@ namespace AoC2021
             });
         }
 
-        public override string SolvePart1() => DoFold(dots, instructions.First()).Count.ToString();
+        public override async Task<string> SolvePart1() => DoFold(dots, instructions.First()).Count.ToString();
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             instructions.ForEach(i => dots = DoFold(dots, i));
         

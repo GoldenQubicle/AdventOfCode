@@ -21,9 +21,9 @@ public class Day21 : Solution
 	public Day21(string file) : base(file) => grid = new Grid2d(Input, diagonalAllowed: false);
 
 
-	public override string SolvePart1() => DoSteps(Steps, grid.First(c => c.Character == 'S').Position);
+	public override async Task<string> SolvePart1() => DoSteps(Steps, grid.First(c => c.Character == 'S').Position);
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		var steps = 63;
 		var topLeft = DoSteps(steps, (0, 0));

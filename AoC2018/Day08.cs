@@ -38,10 +38,10 @@ namespace AoC2018
 		}
 
 
-		public override string SolvePart1() => root.Resolve(isPart1: true).ToString( );
+		public override async Task<string> SolvePart1() => root.Resolve(isPart1: true).ToString( );
 
 
-		public override string SolvePart2() => root.Resolve(isPart1: false).ToString( );
+		public override async Task<string> SolvePart2() => root.Resolve(isPart1: false).ToString( );
 
 
 		public record Node(int ChildCount, int MetaDataCount)

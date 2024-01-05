@@ -15,12 +15,12 @@ namespace AoC2022
 
         public Day17(string file) : base(file) { }
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             return string.Empty;
         }
 
-        public override string SolvePart2() => null;
+        public override async Task<string> SolvePart2() => null;
     }
 
     internal enum Direction

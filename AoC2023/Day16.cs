@@ -9,9 +9,9 @@ public class Day16 : Solution
 
 	public Day16(string file) : base(file) => grid = new Grid2d(Input);
 
-	public override string SolvePart1() => SimulateBeams((0, 0), (1, 0)).ToString( );
+	public override async Task<string> SolvePart1() => SimulateBeams((0, 0), (1, 0)).ToString( );
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		//this is obviously slow af
 		var left = grid.GetColumn(0).Select(c => SimulateBeams(c.Position, (1, 0))).Max( );

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2015
@@ -11,9 +12,9 @@ namespace AoC2015
         
         public Day05(List<string> input) : base(input) { }
 
-        public override string SolvePart1( ) => Input.Select(IsValidStringPart1).Count(b => b ).ToString();
+        public override async Task<string> SolvePart1( ) => Input.Select(IsValidStringPart1).Count(b => b ).ToString();
 
-        public override string SolvePart2( ) => Input.Select(IsValidStringPart2).Count(b => b).ToString( );
+        public override async Task<string> SolvePart2( ) => Input.Select(IsValidStringPart2).Count(b => b).ToString( );
         public bool IsValidStringPart1(string input)
         {
             var vowels = new Regex("[aeiou]");

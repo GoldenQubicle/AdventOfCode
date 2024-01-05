@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -11,7 +12,7 @@ namespace AoC2020
         private List<string[ ]> program;
         public Day14(string file) : base(file) => program = Input.Select(i => i.Split("=")).ToList( );
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             memory = new( );
             var currentMask = "0";
@@ -35,7 +36,7 @@ namespace AoC2020
 
             return memory.Sum(kvp => kvp.Value).ToString( );
         }
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             memory = new( );
 

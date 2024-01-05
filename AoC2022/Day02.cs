@@ -6,7 +6,7 @@ namespace AoC2022
         
         public Day02(List<string> input) : base(input) { }
 
-        public override string SolvePart1() => Input
+        public override async Task<string> SolvePart1() => Input
             .Select(round => round switch
             {
                 "A X" => 1 + 3,
@@ -22,7 +22,7 @@ namespace AoC2022
 
 
 
-        public override string SolvePart2() => Input
+        public override async Task<string> SolvePart2() => Input
             .Select(round => round switch
             {
                 "A X" => 0 + 3,

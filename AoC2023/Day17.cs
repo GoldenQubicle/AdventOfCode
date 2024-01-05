@@ -10,7 +10,7 @@ public class Day17 : Solution
 	public Day17(string file) : base(file) => grid = new Grid2d(Input, diagonalAllowed: false);
     
 
-    public override string SolvePart1( ) 
+    public override async Task<string> SolvePart1( ) 
     {
         grid.ForEach(c => c.Cost = c.Character.ToLong());
         var prev = new List<Grid2d.Cell>();
@@ -39,7 +39,7 @@ public class Day17 : Solution
         return string.Empty;
     }
 
-    public override string SolvePart2( )
+    public override async Task<string> SolvePart2( )
     {
     	return string.Empty;
     }

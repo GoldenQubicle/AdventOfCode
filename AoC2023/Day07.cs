@@ -28,9 +28,9 @@ public class Day07 : Solution
 			return new Card(parts[0], int.Parse(parts[1]));
 		}).ToList( );
 
-	public override string SolvePart1() => SortCards(LabelsPart1, isPart1: true);
+	public override async Task<string> SolvePart1() => SortCards(LabelsPart1, isPart1: true);
 
-	public override string SolvePart2() => SortCards(LabelsPart2, isPart1: false);
+	public override async Task<string> SolvePart2() => SortCards(LabelsPart2, isPart1: false);
 
 	private string SortCards(Dictionary<char, int> labels, bool isPart1)
 	{

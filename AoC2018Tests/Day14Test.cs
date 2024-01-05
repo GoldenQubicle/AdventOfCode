@@ -22,7 +22,7 @@ namespace AoC2018Tests
 		public void Part1(int make, string expected)
 		{
 			Day14.Make = make;
-			var actual = day14.SolvePart1( );
+			var actual = day14.SolvePart1( ).Result;
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
@@ -30,7 +30,7 @@ namespace AoC2018Tests
 		public void Part2(TestCase test)
 		{
 			Day14.LookFor = test.lookFor;
-			var actual = day14.SolvePart2( );
+			var actual = day14.SolvePart2( ).Result;
 			Assert.That(actual, Is.EqualTo(test.expected.ToString( )));
 		}
 

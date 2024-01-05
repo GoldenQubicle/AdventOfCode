@@ -19,7 +19,7 @@ namespace AoC2018
 			});
 		}
 
-		public override string SolvePart1()
+		public override async Task<string> SolvePart1()
 		{
 			InitializeGrid( );
 			var maxLevel = 0L;
@@ -43,7 +43,7 @@ namespace AoC2018
 			return $"{pos.x},{pos.y}";
 		}
 
-		public override string SolvePart2()
+		public override async Task<string> SolvePart2()
 		{
 			InitializeGrid( );
 			

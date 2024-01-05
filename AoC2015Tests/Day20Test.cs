@@ -18,7 +18,7 @@ namespace AoC2015Tests
         public void Part1(string input, string expected )
         {
             day20 = new Day20(new List<string> { input } );
-            var actual = day20.SolvePart1( );
+            var actual = day20.SolvePart1( ).Result;
             Assert.AreEqual(expected, actual);
         }
 
@@ -27,7 +27,7 @@ namespace AoC2015Tests
         {
             day20 = new Day20(new List<string> { "29000000" });
 
-            var actual = day20.SolvePart2( );
+            var actual = day20.SolvePart2( ).Result;
             Assert.AreEqual("705600", actual);
         }
     }

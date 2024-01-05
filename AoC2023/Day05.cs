@@ -113,7 +113,7 @@ public class Day05 : Solution
 		}
 	}
 
-	public override string SolvePart1()
+	public override async Task<string> SolvePart1()
 	{
 		var toBeMapped = seeds;
 
@@ -125,7 +125,7 @@ public class Day05 : Solution
 		return toBeMapped.Min( ).ToString( );
 	}
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		var toBeMapped = seeds.Chunk(2).Select(c => (start: c[0], end: (c[0] + c[1]))).ToList( );
 

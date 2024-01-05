@@ -19,13 +19,13 @@ public class Day04 : Solution
 		});
 
 
-	public override string SolvePart1() => cards.Values
+	public override async Task<string> SolvePart1() => cards.Values
 		.Select(c => c.numbers.Intersect(c.win))
 		.Select(i => Math.Pow(2, i.Count( )-1))
 		.Sum( ).ToString( );
 
 
-	public override string SolvePart2()
+	public override async Task<string> SolvePart2()
 	{
 		var wins = cards.ToDictionary(c => c.Key, c => c.Value.numbers.Intersect(c.Value.win).Count( ));
 		var totalCards = 0;

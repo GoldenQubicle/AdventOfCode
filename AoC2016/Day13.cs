@@ -28,7 +28,7 @@ namespace AoC2016
 
         public Day13(List<string> input) : base(input) { }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var layout = ConstructLayout(Grid.rows, Grid.columns);
             var current = (pos: (x: 1, y: 1), steps: 0);
@@ -46,7 +46,7 @@ namespace AoC2016
             return current.steps.ToString();
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var layout = ConstructLayout(Grid.rows, Grid.columns);
             var current = (pos: (x: 1, y: 1), steps: 0);

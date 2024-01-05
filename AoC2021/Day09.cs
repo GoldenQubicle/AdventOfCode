@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 using Common.Interfaces;
@@ -11,11 +12,11 @@ namespace AoC2021
         private readonly Grid2d grid;
         public Day09(string file) : base(file) => grid = new Grid2d(Input, diagonalAllowed: false);
 
-        public override string SolvePart1() => grid
+        public override async Task<string> SolvePart1() => grid
             .Where(c => grid.GetNeighbors(c).All(n => n.Value > c.Value))
             .Sum(c => c.Value + 1).ToString();
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var lowPoints = grid.Where(c => grid.GetNeighbors(c).All(n => n.Value > c.Value));
             var visited = new HashSet<INode>();

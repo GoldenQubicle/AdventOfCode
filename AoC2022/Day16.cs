@@ -7,7 +7,7 @@ namespace AoC2022
         public Day16(string file) : base(file) => valves = Input.Select(line => line.Split(";"))
             .ToDictionary(p => p[0][6..8], p => (rate: p[0].AsInteger(), tunnels: p[1][23..].Split(",").Select(s => s.Trim()).ToList()));
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             //SETUP
             //precompute travel times between all nodes
@@ -51,6 +51,6 @@ namespace AoC2022
             return new List<string>();
         }
 
-        public override string SolvePart2() => null;
+        public override async Task<string> SolvePart2() => null;
     }
 }

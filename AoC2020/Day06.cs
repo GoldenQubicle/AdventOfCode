@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -10,9 +11,9 @@ namespace AoC2020
 
         public Day06(string file) : base(file, "\r\n\r\n") => groups = Input.Select(s => s.Split("\r\n")).ToList( );
 
-        public override string SolvePart1( ) => groups.Sum(g => g.SelectMany(p => p.ToCharArray( )).Distinct( ).Count( )).ToString( );
+        public override async Task<string> SolvePart1( ) => groups.Sum(g => g.SelectMany(p => p.ToCharArray( )).Distinct( ).Count( )).ToString( );
 
-        public override string SolvePart2( ) => groups.Sum(CountAnswers).ToString( );
+        public override async Task<string> SolvePart2( ) => groups.Sum(CountAnswers).ToString( );
 
         private int CountAnswers(string[ ] group)
         {

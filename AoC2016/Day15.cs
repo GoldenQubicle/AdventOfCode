@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -24,9 +25,9 @@ namespace AoC2016
             }).ToList();
         }
 
-        public override string SolvePart1( ) => RotateDiscs();
+        public override async Task<string> SolvePart1( ) => RotateDiscs();
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             discs.Add(new Disc
             {

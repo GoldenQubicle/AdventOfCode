@@ -18,7 +18,7 @@ namespace AoC2016Tests
         public void Part1( )
         {
             day16.Length = 20;
-            var actual = day16.SolvePart1();
+            var actual = day16.SolvePart1().Result;
             Assert.AreEqual("01100", actual);
         }
 
@@ -43,7 +43,7 @@ namespace AoC2016Tests
         [Test]
         public void Part2( )
         {
-            var actual = day16.SolvePart2( );
+            var actual = day16.SolvePart2( ).Result;
             Assert.AreEqual("10111110011110111", actual);
         }
     }

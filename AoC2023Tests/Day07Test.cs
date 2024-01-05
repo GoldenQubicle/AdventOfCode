@@ -15,14 +15,14 @@ public class Day07Test
 	[Test]
 	public void Part1()
 	{
-		var actual = day07.SolvePart1( );
+		var actual = day07.SolvePart1( ).Result;
 		Assert.That(actual, Is.EqualTo("6440"));
 	}
 
 	[Test]
 	public void Part2()
 	{
-		var actual = day07.SolvePart2( );
+		var actual = day07.SolvePart2( ).Result;
 		Assert.That(actual, Is.EqualTo("5905"));
 	}
 

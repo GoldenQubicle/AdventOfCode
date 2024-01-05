@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2016
@@ -14,9 +15,9 @@ namespace AoC2016
         public Day14(string file) : base(file) { }
         public Day14(List<string> input) : base(input) { }
 
-        public override string SolvePart1( ) => GetLastValidKeyIndex();
+        public override async Task<string> SolvePart1( ) => GetLastValidKeyIndex();
 
-        public override string SolvePart2( ) => GetLastValidKeyIndex(isPart2: true);
+        public override async Task<string> SolvePart2( ) => GetLastValidKeyIndex(isPart2: true);
 
         private string GetLastValidKeyIndex(bool isPart2 = false)
         {

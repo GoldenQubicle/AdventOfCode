@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -11,7 +12,7 @@ namespace AoC2015
 
         public Day03(List<string> input) : base(input) { }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var current = (x: 0, y: 0);
             var locations = new List<(int, int)>( );
@@ -31,7 +32,7 @@ namespace AoC2015
             return locations.Distinct( ).Count( ).ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var agg = Input[0]
             .Select((c, i) => c switch

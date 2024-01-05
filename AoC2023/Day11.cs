@@ -9,10 +9,10 @@ public class Day11 : Solution
 	public Day11(string file) : base(file) => grid = new Grid2d(Input, diagonalAllowed: false);
 
 
-	public override string SolvePart1() => GetDistanceSum(2);
+	public override async Task<string> SolvePart1() => GetDistanceSum(2);
 
 
-	public override string SolvePart2() => GetDistanceSum(1000000);
+	public override async Task<string> SolvePart2() => GetDistanceSum(1000000);
 
 
 	public string GetDistanceSum(int expansionFactor)

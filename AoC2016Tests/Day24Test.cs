@@ -18,14 +18,14 @@ namespace AoC2016Tests
         [Test]
         public void Part1( )
         {
-            var actual = day24.SolvePart1( );
+            var actual = day24.SolvePart1( ).Result;
             Assert.AreEqual("14", actual);
         }
 
         [Test]
         public void Part2( )
         {
-            var actual = day24.SolvePart2( );
+            var actual = day24.SolvePart2( ).Result;
             Assert.AreEqual("20", actual);
         }
     }

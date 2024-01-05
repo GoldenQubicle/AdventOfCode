@@ -18,7 +18,7 @@ namespace AoC2021Tests
         [Test]
         public void Part1( )
         {
-            var actual = day13.SolvePart1( );
+            var actual = day13.SolvePart1( ).Result;
             Assert.AreEqual("17", actual);
         }
 
@@ -26,7 +26,7 @@ namespace AoC2021Tests
         public void Part2( )
         {
             var expected = "\r\n#####\r\n#...#\r\n#...#\r\n#...#\r\n#####";
-            var actual = day13.SolvePart2( );
+            var actual = day13.SolvePart2( ).Result;
             Assert.AreEqual(expected, actual);
         }
     }

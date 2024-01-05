@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -15,9 +16,9 @@ namespace AoC2020
                 .Select(i => i.SelectMany(f => f.Select(e => e.Split(" ")[0]))
                 .ToDictionary(kvp => kvp.Split(":")[0], kvp => kvp.Split(":")[1])).ToList( );
 
-        public override string SolvePart1( ) => passports.Count(IsValidPassport).ToString( );
+        public override async Task<string> SolvePart1( ) => passports.Count(IsValidPassport).ToString( );
 
-        public override string SolvePart2( ) => passports.Where(IsValidPassport).Count(p => p.All(IsValidField)).ToString( );
+        public override async Task<string> SolvePart2( ) => passports.Where(IsValidPassport).Count(p => p.All(IsValidField)).ToString( );
 
         private bool IsValidPassport(Dictionary<string, string> p) =>
             p.Keys.Count == 8 || ( p.Keys.Count == 7 && !p.ContainsKey("cid") );

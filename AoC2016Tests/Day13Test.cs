@@ -27,14 +27,14 @@ namespace AoC2016Tests
                 day13.Grid = (7, 10);
             }
 
-            var actual = day13.SolvePart1();
+            var actual = day13.SolvePart1().Result;
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
         public void Part2( )
         {
-            var actual = day13.SolvePart2();
+            var actual = day13.SolvePart2().Result;
             Assert.AreEqual("127", actual);
         }
 

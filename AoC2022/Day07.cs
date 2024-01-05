@@ -57,12 +57,12 @@ namespace AoC2022
             }
         }
 
-        public override string SolvePart1() => directories
+        public override async Task<string> SolvePart1() => directories
             .Where(d => d.GetSize() <= 100000)
             .Select(d => d.GetSize())
             .Sum().ToString();
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             var hdSize = 70000000;
             var unused = hdSize - directories.First(d => d.Name.Equals("/")).GetSize();

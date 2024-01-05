@@ -23,7 +23,7 @@ namespace AoC2015Tests
         public void Part1(string input, string expected )
         {
             day12 = new Day12(new List<string> { input } );
-            var actual = day12.SolvePart1( );
+            var actual = day12.SolvePart1( ).Result;
             Assert.AreEqual(expected, actual);
         }
 
@@ -34,7 +34,7 @@ namespace AoC2015Tests
         public void Part2(string input, string expected)
         {
             day12 = new Day12(new List<string> { input });
-            var actual = day12.SolvePart2( );
+            var actual = day12.SolvePart2( ).Result;
             Assert.AreEqual(expected, actual);
         }
     }

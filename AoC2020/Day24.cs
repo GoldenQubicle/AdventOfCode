@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -38,7 +39,7 @@ namespace AoC2020
                 return moves;
             }).ToList( );
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             moveSet.ForEach(move =>
             {
@@ -54,7 +55,7 @@ namespace AoC2020
             return hexgrid.Values.Count(b => !b).ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             hexgrid = new( );
             SolvePart1( );

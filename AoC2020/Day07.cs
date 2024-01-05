@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -24,7 +25,7 @@ namespace AoC2020
                     });
                 });
         }
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var endPoints = new List<string>( );
             var queue = new Queue<KeyValuePair<string, List<(string, int)>>>( );
@@ -41,7 +42,7 @@ namespace AoC2020
             return endPoints.Distinct( ).Count( ).ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var queue = new Queue<(string bag, int count)>( );
             var count = new List<int>( );

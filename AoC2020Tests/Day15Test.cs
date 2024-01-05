@@ -11,7 +11,7 @@ namespace AoC2020Tests
         public void SolvePart1(string file, int expected )
         {
             day15 = new Day15(file);
-            var actual = day15.SolvePart1( );
+            var actual = day15.SolvePart1( ).Result;
             Assert.AreEqual(expected.ToString( ), actual);
         }
 
@@ -19,7 +19,7 @@ namespace AoC2020Tests
         public void SolvePart2(string file, int expected)
         {
             day15 = new Day15(file);
-            var actual = day15.SolvePart2( );
+            var actual = day15.SolvePart2( ).Result;
             Assert.AreEqual(expected.ToString( ), actual);
         }
     }

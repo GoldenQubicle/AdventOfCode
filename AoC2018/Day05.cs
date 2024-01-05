@@ -15,10 +15,10 @@ namespace AoC2018
         private bool DoesReact(char one, char two) => Math.Abs(one - two) == Match;
 
         
-        public override string SolvePart1() => FullYReactPolymer(Input[0]).ToString();
+        public override async Task<string> SolvePart1() => FullYReactPolymer(Input[0]).ToString();
 
         
-        public override string SolvePart2() => Enumerable.Range(0, 26)
+        public override async Task<string> SolvePart2() => Enumerable.Range(0, 26)
 	        .Select(n =>
 			{
 			    var current = 65 + n;

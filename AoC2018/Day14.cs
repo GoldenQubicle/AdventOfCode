@@ -21,7 +21,7 @@ namespace AoC2018
 
 
 
-		public override string SolvePart1()
+		public override async Task<string> SolvePart1()
 		{
 			var elf1 = 0;
 			var elf2 = 1;
@@ -50,7 +50,7 @@ namespace AoC2018
 			return board.Skip(Make).Take(10).Aggregate(new StringBuilder( ), (builder, i) => builder.Append(i)).ToString( );
 		}
 
-		public override string SolvePart2()
+		public override async Task<string> SolvePart2()
 		{
 			var elf1 = 0;
 			var elf2 = 1;

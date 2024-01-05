@@ -24,7 +24,7 @@ namespace AoC2015
             Target = int.Parse(input.First()) /10;
         }
         
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             //awy yeah brute force trial and error optimization ftw!
             var houseNumber = 352800;
@@ -48,7 +48,7 @@ namespace AoC2015
             return houseNumber.ToString();
         }
 
-        public override string SolvePart2()
+        public override async Task<string> SolvePart2()
         {
             //compute presents delivered
             var houses = new Dictionary<int, int>();

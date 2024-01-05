@@ -16,7 +16,7 @@ namespace AoC2015Tests
         [Test]
         public void Part1( )
         {
-            var actual = day13.SolvePart1( );
+            var actual = day13.SolvePart1( ).Result;
             Assert.AreEqual("330", actual);
         }
     }

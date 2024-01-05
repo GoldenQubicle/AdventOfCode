@@ -26,7 +26,7 @@ namespace AoC2016
 
         public Day25(List<string> input) : base(input) { }
 
-        public override string SolvePart1()
+        public override async Task<string> SolvePart1()
         {
             //Input.RemoveRange(1, 7);
             //Input.InsertRange(1, Enumerable.Repeat("nop", 7));
@@ -43,7 +43,7 @@ namespace AoC2016
 
             return "158"; // solved manually by looking at input instruction repeating lines
         }
-        public override string SolvePart2() => string.Empty;
+        public override async Task<string> SolvePart2() => string.Empty;
 
         private string ParseInstructions()
         {

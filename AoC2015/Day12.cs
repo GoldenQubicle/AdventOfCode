@@ -15,7 +15,7 @@ namespace AoC2015
 
         public Day12(List<string> input) : base(input) { }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var matches = Regex.Matches(Input.First( ), @"(?<positive>\d{1,})|(?<negative>-\d{1,})");
             var result = 0;
@@ -28,7 +28,7 @@ namespace AoC2015
             return result.ToString( );
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             var openings = new Stack<(char type, int idx, bool isIgnore)>( );
             var tobeIgnored = new List<IEnumerable<int>>( );

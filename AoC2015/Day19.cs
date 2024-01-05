@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
@@ -34,7 +35,7 @@ namespace AoC2015
             molecule = Input[0];
         }
 
-        public override string SolvePart1( )
+        public override async Task<string> SolvePart1( )
         {
             var result = new HashSet<string>();
 
@@ -50,7 +51,7 @@ namespace AoC2015
             return result.Count.ToString();
         }
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
             // after a week of frustration with BFS & combinatorial explosions and what not
             // I finally had enough, admitted defeat and yoinked the solution from here; 

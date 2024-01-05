@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -9,8 +10,8 @@ namespace AoC2020
         private List<long> numbers;
         public Day15(string file) : base(file, ",") => numbers = Input.Select(long.Parse).ToList( );
 
-        public override string SolvePart1( ) => MemoryGame(2020).ToString( );
-        public override string SolvePart2( ) => MemoryGame(30000000).ToString( );
+        public override async Task<string> SolvePart1( ) => MemoryGame(2020).ToString( );
+        public override async Task<string> SolvePart2( ) => MemoryGame(30000000).ToString( );
 
         private long MemoryGame(int iterate )
         {

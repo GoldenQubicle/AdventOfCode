@@ -10,29 +10,11 @@ namespace CLI
         public string Day { get; init; }
         public bool HasUnitTest { get; init; }
         public string ExpectedValuePart1 { get; init; }
-        public bool IsFSharp { get; init; }
         public List<(string input, string outcome)> TestCases { get; init; }
 
-        public string CreateSolution() => IsFSharp ? FSharpSolution() : CSharpSolution();
+        public string CreateSolution() =>  CSharpSolution();
 
-        public string CreateUnitTest() => IsFSharp ? FSharpUnitTest() : CSharpUnitTest();
-
-        private string FSharpSolution() =>
-            $@"namespace AoC{Year}
-
-             open Common
-             open System.Collections.Generic
-             open System.Linq 
-
-             type Day{Day} = 
-                 inherit Solution
-
-                 new (file:string) = {{ inherit Solution(file) }}
-                 new (input : List<string>) = {{ inherit Solution(input) }}
-
-                 override this.SolvePart1() = """"
-
-                 override this.SolvePart2() = """" ".Replace("             ", "");
+        public string CreateUnitTest() => CSharpUnitTest();
 
         private string CSharpSolution() => 
             $@"using System;
@@ -51,44 +33,18 @@ namespace CLI
                  
                  public Day{Day}(List<string> input) : base(input) {{ }}
 
-                 public override string SolvePart1( ) 
+                 public override async Task<string> SolvePart1( ) 
                  {{
                  	return string.Empty;
                  }}
 
-                 public override string SolvePart2( )
+                 public override async Task<string> SolvePart2( )
                  {{
                  	return string.Empty;
                  }}
              }}
              ".Replace("             ", "");
 
-        private string FSharpUnitTest() => 
-            $@"module Day{Day}Test
-
-            open AoC{Year}
-            open NUnit.Framework
-            open Common.Extensions
-
-            {(TestCases.Count == 0 ? 
-            @$"[<Test>]
-            let Part1 () =
-                let day = new Day{Day}(""day{Day}test1"")
-                let actual = day.SolvePart1()
-                Assert.AreEqual(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}"", actual)"
-            : 
-            @$"{TestCases.Aggregate(string.Empty,
-                (s, c) => s + @$"[<TestCase(""{c.input}"",""{c.outcome}"")>] {Environment.NewLine}").TrimEnd()}
-            let Part1 (input: string, expected : string) =
-                let day = new Day{Day}(input.ToList())
-                let actual = day.SolvePart1()
-                Assert.AreEqual(expected, actual)")}
-            
-            [<Test>]
-            let Part2 () = 
-                let day = new Day{Day}(""day{Day}"")
-                let actual = day.SolvePart2()
-                Assert.AreEqual("""", actual)".Replace("            ", "");
 
         private string CSharpUnitTest() =>
             $@"using AoC{Year};

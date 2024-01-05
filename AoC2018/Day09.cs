@@ -12,9 +12,9 @@ namespace AoC2018
 
 		public Day09(string file) : base(file) { }
 
-		public override string SolvePart1() => DoPlayMarbles(isPartTwo: false);
+		public override async Task<string> SolvePart1() => DoPlayMarbles(isPartTwo: false);
 
-		public override string SolvePart2() => DoPlayMarbles(isPartTwo: true);
+		public override async Task<string> SolvePart2() => DoPlayMarbles(isPartTwo: true);
 
 		private static string DoPlayMarbles(bool isPartTwo = false)
 		{

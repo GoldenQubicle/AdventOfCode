@@ -27,11 +27,11 @@ namespace AoC2015
                 )).ToList( );
         }
 
-        public override string SolvePart1( ) => Solve( );
+        public override async Task<string> SolvePart1( ) => Solve( );
 
-        public override string SolvePart2( )
+        public override async Task<string> SolvePart2( )
         {
-            var newBValue = SolvePart1( );
+            var newBValue = SolvePart1( ).Result;
             wires = new( );
             instructions.RemoveAt(334);
             instructions.Insert(334, (a: "", b: newBValue, gate: "", output: "b"));

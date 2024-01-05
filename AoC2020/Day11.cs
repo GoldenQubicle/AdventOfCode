@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common;
 
 namespace AoC2020
@@ -21,9 +22,9 @@ namespace AoC2020
 
         public List<char[ ]> GetInitialState( ) => Input.Select(i => i.ToCharArray( )).ToList( );
 
-        public override string SolvePart1( ) => Solve(GetInitialState( ), part1: true).ToString( );
+        public override async Task<string> SolvePart1( ) => Solve(GetInitialState( ), part1: true).ToString( );
 
-        public override string SolvePart2( ) => Solve(GetInitialState( ), part1: false).ToString( );
+        public override async Task<string> SolvePart2( ) => Solve(GetInitialState( ), part1: false).ToString( );
 
         private int Solve(List<char[ ]> state, bool part1)
         {

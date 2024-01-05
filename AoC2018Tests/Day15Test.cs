@@ -18,7 +18,7 @@ public class Day15Test
     [Test]
     public void Part1( )
     {
-        var actual = day15.SolvePart1( );
+        var actual = day15.SolvePart1( ).Result;
         Assert.That(actual, Is.EqualTo(""));
     }
 
@@ -37,7 +37,7 @@ public class Day15Test
     public void Part2( )
     {
         var expected = string.Empty;
-        var actual = day15.SolvePart2( );
+        var actual = day15.SolvePart2( ).Result;
         Assert.That(actual, Is.EqualTo(expected));
     }
 }

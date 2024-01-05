@@ -57,7 +57,7 @@ namespace AoC2018
 		}
 
 
-		public override string SolvePart1()
+		public override async Task<string> SolvePart1()
 		{
 			var mostAsleep = guards.MaxBy(g => g.Value.Sum(r => r.e - r.s));
 			var minute = mostAsleep.Value
@@ -77,7 +77,7 @@ namespace AoC2018
 			return (mostAsleep.Key * minute).ToString();
 		}
 
-		public override string SolvePart2()
+		public override async Task<string> SolvePart2()
 		{
 			var guard = guards.Where(kvp => kvp.Value.Count > 0)
 					.Select(g => (g.Key, g.Value

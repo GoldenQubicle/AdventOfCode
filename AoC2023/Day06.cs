@@ -21,7 +21,7 @@ public class Day06 : Solution
 	}
         
 
-	public override string SolvePart1( )
+	public override async Task<string> SolvePart1( )
 	{
 		var dist = races.Select(r =>
 		{
@@ -39,7 +39,7 @@ public class Day06 : Solution
 		return dist.Skip(1).Aggregate(dist[0], (s, i) => s* i).ToString();
 	}
 
-	public override string SolvePart2( )
+	public override async Task<string> SolvePart2( )
 	{
 		var time = long.Parse(races.Aggregate(new StringBuilder(), (sb, r) => sb.Append(r.t)).ToString());
 		var dist = long.Parse(races.Aggregate(new StringBuilder( ), (sb, r) => sb.Append(r.d)).ToString( ));

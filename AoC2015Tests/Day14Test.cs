@@ -19,7 +19,7 @@ namespace AoC2015Tests
         public void Part1( )
         {
             day14.TravelSeconds = 1000;
-            var actual = day14.SolvePart1( );
+            var actual = day14.SolvePart1( ).Result;
             Assert.AreEqual("1120", actual);
         }
 
@@ -27,7 +27,7 @@ namespace AoC2015Tests
         public void Part2( )
         {
             day14.TravelSeconds = 1000;
-            var actual = day14.SolvePart2( );
+            var actual = day14.SolvePart2( ).Result;
             Assert.AreEqual("689", actual);
         }
     }

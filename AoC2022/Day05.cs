@@ -23,9 +23,9 @@ namespace AoC2022
         });
 
 
-        public override string SolvePart1() => DoContainerMoves(isPartOne: true);
+        public override async Task<string> SolvePart1() => DoContainerMoves(isPartOne: true);
 
-        public override string SolvePart2() => DoContainerMoves(isPartOne: false);
+        public override async Task<string> SolvePart2() => DoContainerMoves(isPartOne: false);
 
         private string DoContainerMoves(bool isPartOne)
         {
