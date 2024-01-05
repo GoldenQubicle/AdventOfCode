@@ -6,13 +6,18 @@ namespace AoC2022
 
         public Day12(string file) : base(file) => grid = new(Input, diagonalAllowed: false);
 
-        public async Task SolveAsync() => await PathFinding.BreadthFirstSearch(
-	        grid.GetCells(c => c.Character == 'S').First( ),
-	        grid.GetCells(c => c.Character == 'E').First( ),
-	        grid,
-	        (c, n) => getCharacter(n.Character) - 1 <= getCharacter(c.Character),
-	        (c, t) => c.Character == t.Character,
-	        RenderAction);
+        public async Task<string> SolveAsync() 
+        {
+	        var result = await PathFinding.BreadthFirstSearch(
+		        grid.GetCells(c => c.Character == 'S').First( ),
+		        grid.GetCells(c => c.Character == 'E').First( ),
+		        grid,
+		        (c, n) => getCharacter(n.Character) - 1 <= getCharacter(c.Character),
+		        (c, t) => c.Character == t.Character,
+		        RenderAction);
+
+	        return (result.Count() - 1).ToString();
+        }
 
         public override string SolvePart1() => ( Task.Run( async () => await PathFinding.BreadthFirstSearch(
                 grid.GetCells(c => c.Character == 'S').First(),
