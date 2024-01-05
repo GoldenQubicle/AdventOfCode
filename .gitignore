@@ -1,8 +1,7 @@
 .vs
 *bin
 *obj
-*input
 .idea
-
 .editorconfig
 *data
+aoctoken.txt

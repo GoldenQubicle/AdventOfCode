@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CLI.Verbs;
@@ -83,10 +84,19 @@ public class ScaffoldOptions : BaseOptions
 			if (options.HasUnitTest)
 				await File.WriteAllTextAsync(options.TestPath, template.CreateUnitTest());
 
-			message = $"Succes: created file for year {options.Year} day {options.Day} with {(options.HasUnitTest ? "additional" : "no")} unit test.";
+			message = $"Success: created file for year {options.Year} day {options.Day} with {(options.HasUnitTest ? "additional" : "no")} unit test.";
 		}
 
 		Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
+
 		return message;
 	}
+
+	public async Task<GetInputOptions> ToGetInputOption() => new() 
+	{
+		Year = Year,
+		Day = Day,
+		SessionId = await File.ReadAllTextAsync(Path.Combine(Directory.GetParent(Assembly.GetExecutingAssembly( ).Location).FullName, "aoctoken.txt")) // bit iffy, no validation here..
+	};
+
 }

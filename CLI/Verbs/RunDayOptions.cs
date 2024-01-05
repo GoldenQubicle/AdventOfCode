@@ -3,6 +3,7 @@ using Common;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace CLI.Verbs;
 
@@ -46,13 +47,13 @@ public class RunDayOptions : BaseOptions
 		return DayType == null ? (false, $"Error: could not find day {Day} for year {Year} in assembly at {assemblyPath}.") : result;
 	}
 
-	public static string Run(RunDayOptions options)
+	public static async Task<string> Run(RunDayOptions options)
 	{
 		var (isValid, message) = options.Validate( );
 
 		if (isValid)
 		{
-			var (part1, part2) = GetSolutions(options);
+			var (part1, part2) = await GetSolutions(options);
 
 			message = options.Part switch
 			{
@@ -66,17 +67,17 @@ public class RunDayOptions : BaseOptions
 		return message;
 	}
 
-	private static (string part1, string part2) GetSolutions(RunDayOptions options)
+	private static async Task<(string part1, string part2)> GetSolutions(RunDayOptions options)
 	{ 
 		var ctorType = new[] { typeof(string) };
 		var ctor = options.DayType.GetConstructor(ctorType);
 
 		var part1 = options.Part is 1 or 0
-			? ((Solution)ctor.Invoke(new object[] { $"day{options.DayString}" })).SolvePart1().Result
+			? await ((Solution)ctor.Invoke(new object[] { $"day{options.DayString}" })).SolvePart1()
 			: string.Empty;
 
 		var part2 = options.Part is 2 or 0
-			? ((Solution)ctor.Invoke(new object[] { $"day{options.DayString}" })).SolvePart2().Result
+			? await ((Solution)ctor.Invoke(new object[] { $"day{options.DayString}" })).SolvePart2()
 			: string.Empty;
 
 		return (part1, part2);

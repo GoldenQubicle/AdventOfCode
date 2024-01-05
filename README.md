@@ -4,26 +4,29 @@ Repo for AoC, thusfar 2015, 2016 & 2020 are complete.
 
 Also contains small CLI for getting things up and running.<br>
 Example usage; `.\CLI.exe scaffold -y 2015 -d 2 -u -c hello:world` <br>
+
 This command will create `Day02.cs` in the `AoC2015` project, 
-as well as create `Day02test.cs` in `AoC2015Test` project with a single test case generated for part 1; `TestCase[("hello", "world")]`. 
+as well as create `Day02test.cs` in `AoC2015Test` project with a single test case generated for part 1; `TestCase[("hello", "world")]`. In addition it will get the input for that day provided `aoctoken.txt` file is present containing the session token. 
 
 Available commands and their flags.
 - `scaffold`, create .cs file for day with option for unit test file<br>
-    -y           Required. The year, from 2015 to 2022<br>
+    -y           Required. The year, from 2015 to 2023<br>
     -d           Required. The day, from 1 to 25<br>
     -u           Creates a unit test file<br>
     -e           Mutually exclusive with -c. Sets the expected value for example part 1 and reads input from file.<br>
     -c           Mutually exclusive with -e. Generate test cases for part 1 in the format of `input:outcome`.<br>
 
-- `getinput`, retrieves input from site <br>
-  -y           Required. The year, from 2015 to 2022<br>
+- `getinput`, retrieves input from site<br> 
+  -y           Required. The year, from 2015 to 2023<br>
   -d           Required. The day, from 1 to 25<br>
   -s           Required. The session token for adventofcode.com<br>
 
 - `runday`, run an individual day<br>
-  -y           Required. The year, from 2015 to 2022<br>
+  -y           Required. The year, from 2015 to 2023<br>
   -d           Required. The day, from 1 to 25<br>
   -p           Part one or two, or both if not specified<br>
+
+
 
  CLI made with [CommandLineParser](https://github.com/commandlineparser/commandline)
    

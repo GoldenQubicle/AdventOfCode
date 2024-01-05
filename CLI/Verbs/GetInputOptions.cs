@@ -1,7 +1,5 @@
 ﻿using CommandLine;
-using Common.Extensions;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -49,8 +47,8 @@ public class GetInputOptions : BaseOptions
 			{
 				CookieContainer = cookieContainer,
 				AutomaticDecompression = DecompressionMethods.All,
-                   
 			};
+
 			using var httpClient = new HttpClient(httpClientHandler)
 			{
 				BaseAddress = baseAddress,
@@ -68,19 +66,8 @@ public class GetInputOptions : BaseOptions
 				response = response.EnsureSuccessStatusCode();
 				var content = await response.Content.ReadAsStringAsync();
 				await File.WriteAllTextAsync(inputFile, content);
-
-				// NOTE: as per 2022 we're no longer updating the csproj file on day to day basis.
-				// Instead we include the data folder wholesale in the project file, much easier and less error prone.
-				// TODO update project files of previous years to include the data folder
-
-				//var projExtension = options.IsFSharp ? ".fsproj" : ".csproj";
-				//var projPath = $"{aocDir}\\AoC{options.Year}{projExtension}";
-				//var projFile = await File.ReadAllLinesAsync(projPath)
-				//    .ContinueWith(f => UpdateProjFile(f.Result.ToList(), options.DayString, options.IsFSharp));
-
-				//await File.WriteAllLinesAsync($"{projPath}", projFile);
-
-				message = $"Success: created input file for year {options.Year} day {options.Day}";
+				
+				message = $"Success: retrieved input file for year {options.Year} day {options.Day}";
 			}
 			catch (HttpRequestException e)
 			{
@@ -92,15 +79,4 @@ public class GetInputOptions : BaseOptions
 		Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
 		return message;
 	}
-
-	//note the wonky string formatting is on purpose such that the tabs in the proj file are actually aligned
-	private static List<string> UpdateProjFile(List<string> file, string dayNo, bool isFSharp) =>
-		file.InsertAt(file.Count - 2, isFSharp ?
-			$@"    <Content Include=""data\day{dayNo}.txt"">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>"
-			:
-			$@"    <None Update=""data\day{dayNo}.txt"">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>");
 }

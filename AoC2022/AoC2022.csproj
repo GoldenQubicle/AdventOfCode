@@ -6,11 +6,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="data\**" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="false" /> 
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Day13.cs~RFad8042.TMP" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 </Project>

@@ -9,6 +9,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
+    <Content Include="data\**" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="false" /> 
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="data\" />
   </ItemGroup>
 
 </Project>
