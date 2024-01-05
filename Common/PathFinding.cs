@@ -41,7 +41,7 @@ public class PathFinding
 		var current = start;
 		queue.Enqueue(current);
 		visited.Add(current, default);
-
+		Console.WriteLine($"Render action is null: {renderAction is null} ");
 		while (queue.TryDequeue(out var next))
 		{
 			current = next;
