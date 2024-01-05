@@ -66,26 +66,26 @@ namespace CLI
                  
                  {(TestCases.Count == 0 ?
             @$"[Test]
-                 public void Part1( )
+                 public async Task Part1( )
                  {{
-                     var actual = day{Day}.SolvePart1( );
+                     var actual = await day{Day}.SolvePart1( );
                      Assert.That(actual, Is.EqualTo(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}""));
                  }}"
             :
             $@"{TestCases.Aggregate(string.Empty,
-                (s, c) => s + @$"[TestCase(""{c.input}"",""{c.outcome}"")] {Environment.NewLine}        ").TrimEnd()}
-                 public void Part1(string input, string expected )
+                (s, c) => s + @$"[TestCase(""{c.input}"",""{c.outcome}"")] {Environment.NewLine}    ").TrimEnd()}
+                 public async Task Part1(string input, string expected )
                  {{
                      day{Day} = new Day{Day}(new List<string> {{ input }} );
-                     var actual = day{Day}.SolvePart1( );
+                     var actual = await day{Day}.SolvePart1( );
                      Assert.That(actual, Is.EqualTo(expected));
                  }}")}
             
                  [Test]
-                 public void Part2( )
+                 public async Task Part2( )
                  {{
                      var expected = string.Empty;
-                     var actual = day{Day}.SolvePart2( );
+                     var actual = await day{Day}.SolvePart2( );
                      Assert.That(actual, Is.EqualTo(expected));
                  }}
              }}
