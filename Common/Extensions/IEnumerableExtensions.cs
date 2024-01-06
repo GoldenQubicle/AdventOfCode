@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Common.Extensions
 {
@@ -20,5 +21,8 @@ namespace Common.Extensions
             collection.ForEach(result.Add);
 	        return result;
         }
+
+        public static IEnumerable<(T Value, int idx)> WithIndex<T>(this IEnumerable<T> collection) =>
+	        collection.Select((e, idx) => (e, idx));
     }
 }

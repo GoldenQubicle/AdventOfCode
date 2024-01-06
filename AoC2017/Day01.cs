@@ -1,26 +1,38 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Common;
+using Common.Extensions;
 
 namespace AoC2017;
 
 public class Day01 : Solution
 {
-    public Day01(string file) : base(file) { }
-    
-    public Day01(List<string> input) : base(input) { }
+	private CircularList<int> digits;
+	public Day01(string file) : base(file) => InputToDigits( );
 
-    public override async Task<string> SolvePart1( ) 
-    {
-    	return string.Empty;
-    }
+	public Day01(List<string> input) : base(input) => InputToDigits( );
 
-    public override async Task<string> SolvePart2( )
-    {
-    	return string.Empty;
-    }
+	private void InputToDigits()
+	{
+		digits = Input.First( ).Aggregate(new CircularList<int>( ), (list, c) =>
+		{
+			list.Add(c.ToInt( ));
+			return list;
+		});
+		digits.ResetHead( );
+	}
+
+	public override async Task<string> SolvePart1() => digits
+		.Aggregate(0, (sum, i) =>
+		{
+			digits.MoveRight( );
+			return i == digits.Current ? sum + i : sum;
+		}).ToString( );
+
+
+	public override async Task<string> SolvePart2() => digits.WithIndex()
+		.Aggregate(0, (sum, i) =>
+		{
+			digits.SetHeadByIndex(i.idx);
+			digits.MoveRight(digits.Count / 2);
+			return i.Value == digits.Current ? sum + i.Value : sum;
+		}).ToString( );
 }
