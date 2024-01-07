@@ -6,17 +6,16 @@ public class Day09 : Solution
 
 	public Day09(List<string> input) : base(input) { }
 
-	public override async Task<string> SolvePart1() => ProcessStream( ).sum;
+	public override async Task<string> SolvePart1() => ProcessStream( );
 
-	public override async Task<string> SolvePart2() => ProcessStream( ).count;
+	public override async Task<string> SolvePart2() => ProcessStream(isPart2: true);
 
-
-	private (string sum, string count) ProcessStream()
+	private string ProcessStream(bool isPart2 = false)
 	{
 		var idx = -1;
 		var stream = Input.First( );
-		var nesting = 0L;
-		var sum = 0L;
+		var nesting = 0;
+		var sum = 0;
 		var inGarbage = false;
 		var garbageCount = 0;
 
@@ -45,6 +44,7 @@ public class Day09 : Solution
 					break;
 			}
 		}
-		return (sum.ToString( ), garbageCount.ToString( ));
+
+		return isPart2 ? garbageCount.ToString( ) : sum.ToString( );
 	}
 }
