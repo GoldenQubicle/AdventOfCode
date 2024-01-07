@@ -19,10 +19,8 @@ public class Day07 : Solution
 		programs = t.ToDictionary(p => p.Key, t => t.Value.p);
 	}
 
-
 	public override async Task<string> SolvePart1() => GetRoot( );
-
-
+	
 	public override async Task<string> SolvePart2()
 	{
 		var root = programs[GetRoot( )];
