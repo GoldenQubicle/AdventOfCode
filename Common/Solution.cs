@@ -22,6 +22,8 @@ public abstract class Solution
 	protected Solution(List<string> input) => Input = input;
 	protected Solution() { }
 
+	private const string y2017 = "AoC2017";
+
 	private List<string> ParseInput(string file, string split, bool doTrim, bool doRemoveEmptyLines)
 	{
 		// admittedly bit hacky solution 
@@ -30,7 +32,7 @@ public abstract class Solution
 		var aocYear = GetType().FullName.Split('.')[0];
 		var path = GetType().Assembly.Location.Replace($"{aocYear}.dll", "");
 		var lines = File.ReadAllText($"{path}\\data\\{file}.txt")
-			.Split(split)
+			.Split(aocYear == y2017 ? "\n" : split) // for some reason I always manually adjusted the line ends.. lets not do that anymore, and also not break anything
 			.Select(s => doTrim ? s.Trim() : s);
 
 		return doRemoveEmptyLines ? lines.Where(s => !string.IsNullOrEmpty(s)).ToList() : lines.ToList();
