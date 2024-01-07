@@ -1,5 +1,3 @@
-using AoC2017;
-
 namespace AoC2017Tests;
             
 public class Day06Test
