@@ -1,5 +1,5 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=19f52ad8_002Db228_002D42fc_002D9d35_002D6edef2ca9c5f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day07Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=19f52ad8_002Db228_002D42fc_002D9d35_002D6edef2ca9c5f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day07Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::882F233B-1C09-4CDF-948A-A4F83A7EF8B4::net8.0::AoC2017Tests.Day07Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
@@ -10,6 +10,11 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b857ab63_002D5d88_002D4f77_002D8c4b_002Df033983c967a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day05Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::882F233B-1C09-4CDF-948A-A4F83A7EF8B4::net8.0::AoC2017Tests.Day05Test&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c865165d_002Dfa3f_002D49d2_002Db31e_002D016a9b9b0906/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day08Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::882F233B-1C09-4CDF-948A-A4F83A7EF8B4::net8.0::AoC2017Tests.Day08Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d59cffcd_002D3d14_002D43bb_002D88fe_002D31c125341232/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day06Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
