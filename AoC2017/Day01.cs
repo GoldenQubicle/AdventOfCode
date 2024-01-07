@@ -1,6 +1,3 @@
-using Common;
-using Common.Extensions;
-
 namespace AoC2017;
 
 public class Day01 : Solution
@@ -8,7 +5,9 @@ public class Day01 : Solution
 	private CircularList<int> digits;
 	public Day01(string file) : base(file) => InputToDigits( );
 
+
 	public Day01(List<string> input) : base(input) => InputToDigits( );
+
 
 	private void InputToDigits()
 	{

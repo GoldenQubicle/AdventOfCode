@@ -1,12 +1,8 @@
-using Common;
-using Common.Extensions;
-
 namespace AoC2017;
-
 
 public class Day02 : Solution
 {
-	private List<List<float>> SpreadSheet;
+	private readonly List<List<float>> SpreadSheet;
 
 	public Day02(string file) : base(file) => SpreadSheet = Input.Select(l => l.Split('\t').Select(float.Parse).ToList( )).ToList( );
 

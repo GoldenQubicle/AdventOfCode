@@ -61,7 +61,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 
 
 	public Cell this[Cell c] => Cells[c.Position];
-
+	public Cell this[int idx] => this.ToArray()[idx];
 	public Cell this[(int x, int y) p] => Cells[p];
 	public INode this[int x, int y] => Cells[(x, y)];
 
@@ -262,7 +262,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 	public record Cell((int, int) Position) : INode
 	{
 		public (int x, int y) Position { get; set; } = Position;
-		public char Character { get; set; } = ' ';
+		public char Character { get; set; } = '.';
 		public long Value { get; set; }
 		public Cell Parent { get; init; }
 		public long Cost { get; set; }
@@ -277,6 +277,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 			Value = char.IsDigit(Character) ? Character.ToLong( ) : 0;
 		}
 
+		
 		/// <summary>
 		/// returns a new Cell with same Position but new character
 		/// </summary>
@@ -300,7 +301,9 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 			for (var x = minx ;x <= maxx ;x++)
 			{
 				var p = (x, y);
-				sb.Append(Cells[p].Character);
+				if (Cells.TryGetValue(p, out var c))
+					sb.Append(c.Value);
+				else sb.Append(string.Empty);
 			}
 			sb.Append("\n");
 		}
