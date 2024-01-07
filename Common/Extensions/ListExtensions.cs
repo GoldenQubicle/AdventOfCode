@@ -4,7 +4,7 @@ namespace Common.Extensions
 {
     public static class ListExtensions
     {
-
+	    public static bool IsEmpty<T>(this List<T> list) => list.Count == 0;
         public static void RemoveAll<T>(this List<T> list, List<T> toBeRemoved)
         {
             foreach (var item in toBeRemoved)
