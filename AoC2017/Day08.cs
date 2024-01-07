@@ -7,7 +7,7 @@ public class Day08 : Solution
 
 	public Day08(string file) : base(file) => instructions = Input.Select(l =>
 	{
-		var parts = l.Split(' ').Select(p => p.Trim( )).ToList( );
+		var parts = l.Split(' ', StringSplitOptions.TrimEntries).ToList( );
 		var modify = parts[0];
 		var increment = parts[1].Equals("inc");
 		var amount = int.Parse(parts[2]);
@@ -17,12 +17,10 @@ public class Day08 : Solution
 		registers.TryAdd(modify, 0);
 		registers.TryAdd(check, 0);
 		return new Instruction(
-			() =>
+			() => registers[modify] = increment switch
 			{
-				if (increment)
-					registers[modify] += amount;
-				else
-					registers[modify] -= amount;
+				true => registers[modify] + amount,
+				false => registers[modify] - amount
 			},
 			() => condition switch
 			{
