@@ -22,7 +22,13 @@ public class Day09 : Solution
 
 	    while (idx++ < stream.Length - 1)
 	    {
-		    if (stream[idx] == '{' && !inGarbage)
+		    if (stream[idx] == '!')
+		    {
+			    idx+=1;
+				continue;
+		    }
+
+			if (stream[idx] == '{' && !inGarbage)
 		    {
 			    nesting++;
 			    sum += nesting;
@@ -48,10 +54,7 @@ public class Day09 : Solution
 			    inGarbage = false;
 		    }
 
-		    if (stream[idx] == '!')
-		    {
-			    idx++;
-		    }
+		   
 	    }
 
 	    return (sum.ToString(), garbageCount.ToString());
