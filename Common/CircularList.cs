@@ -32,7 +32,7 @@ public class CircularList<T> : LinkedList<T>
 			throw new ArgumentException($"Cannot move {n} steps to the left, use MoveRight instead");
 		for (var i = 0 ;i < n ;i++)
 			current = current.Previous ?? Last;
-		
+
 	}
 
 
@@ -50,20 +50,22 @@ public class CircularList<T> : LinkedList<T>
 
 
 	/// <summary>
-	/// Takes N elements starting at the current node, including the current node. When end of list is reached, will wrap around to the start.The current node position remains the same. 
-	/// <remarks>Note: if N is larger than list size, the returned collection will contain duplicate elements!</remarks>
-	/// </summary>
-	/// <param name="n"></param>
+	/// Starting at, and including the current node, takes the next amount of elements. 
+	/// <br>When end of list is reached, it will wrap around to the start.</br>
+	/// <br>The current node position remains the same.</br>
+	/// </summary> 
+	/// <remarks>Note: if the amount to take is larger than list size, the returned collection will contain duplicate elements!</remarks>
+	/// <param name="amount"></param>
 	/// <returns></returns>
-	public IEnumerable<T> TakeAt(int n)
+	public IEnumerable<T> TakeAt(int amount)
 	{
-		var result = new List<T> ();
-		for (var i = 0 ;i < n ;i++) 
+		var result = new List<T>( );
+		for (var i = 0 ;i < amount ;i++)
 		{
 			result.Add(Current);
 			MoveRight( );
 		}
-		MoveLeft(n);
+		MoveLeft(amount);
 		return result;
 	}
 
@@ -74,11 +76,11 @@ public class CircularList<T> : LinkedList<T>
 	/// <param name="range"></param>
 	public void ReplaceRange(IEnumerable<T> range)
 	{
-		var l = range.ToList();
+		var l = range.ToList( );
 		foreach (var v in l)
 		{
 			ReplaceCurrent(v);
-			MoveRight();
+			MoveRight( );
 		}
 		MoveLeft(l.Count);
 	}
@@ -91,7 +93,7 @@ public class CircularList<T> : LinkedList<T>
 	{
 		current.Value = value;
 	}
-	
+
 
 	/// <summary>
 	/// Inserts a node <b>after</b> the current node by default, and sets the current node.
