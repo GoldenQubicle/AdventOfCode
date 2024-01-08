@@ -4,6 +4,12 @@
     &lt;TestId&gt;NUnit3x::882F233B-1C09-4CDF-948A-A4F83A7EF8B4::net8.0::AoC2017Tests.Day07Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=39fcbe78_002D8c42_002D412b_002Db609_002Da5ad9abb38a3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ReplaceRangeShouldWrapAround" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::2B58D939-8993-4BE1-A2D6-DD1D8B6F43EC::net8.0::CommonTests.CircularListTests.ReplaceRangeShouldWrapAround&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::2B58D939-8993-4BE1-A2D6-DD1D8B6F43EC::net8.0::CommonTests.CircularListTests.TakeAtShouldWrapAround&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	
 	
 	
@@ -22,10 +28,16 @@
     &lt;TestId&gt;NUnit3x::882F233B-1C09-4CDF-948A-A4F83A7EF8B4::net8.0::AoC2017Tests.Day06Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d9bb3f01_002D0ef4_002D49be_002D88cf_002D85ac804fb28d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day09Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d9bb3f01_002D0ef4_002D49be_002D88cf_002D85ac804fb28d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day09Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::882F233B-1C09-4CDF-948A-A4F83A7EF8B4::net8.0::AoC2017Tests.Day09Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fc787ed6_002D0d81_002D4295_002D8291_002D3898417819b8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day10Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::882F233B-1C09-4CDF-948A-A4F83A7EF8B4::net8.0::AoC2017Tests.Day10Test&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
 	
 	</wpf:ResourceDictionary>

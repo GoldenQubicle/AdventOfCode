@@ -13,6 +13,8 @@ public class Day10Test
     [Test]
     public async Task Part1( )
     {
+	    Day10.List = new () { 0, 1, 2, 3, 4 };
+
         var actual = await day10.SolvePart1( );
         Assert.That(actual, Is.EqualTo("12"));
     }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 
 
 namespace Common;
@@ -14,7 +13,6 @@ namespace Common;
 public class CircularList<T> : LinkedList<T>
 {
 	private LinkedListNode<T> current;
-
 
 	/// <summary>
 	/// Get the value at the current node. 
@@ -30,11 +28,11 @@ public class CircularList<T> : LinkedList<T>
 	/// <param name="n">defaults to 1 position</param>
 	public void MoveLeft(int n = 1)
 	{
-		if (n < 0) throw new ArgumentException($"Cannot move {n} steps to the left, use MoveRight instead");
+		if (n < 0)
+			throw new ArgumentException($"Cannot move {n} steps to the left, use MoveRight instead");
 		for (var i = 0 ;i < n ;i++)
-		{
 			current = current.Previous ?? Last;
-		}
+		
 	}
 
 
@@ -44,13 +42,56 @@ public class CircularList<T> : LinkedList<T>
 	/// <param name="n">Defaults to 1 position</param>
 	public void MoveRight(int n = 1)
 	{
-		if (n < 0) throw new ArgumentException($"Cannot move {n} steps to the right, use MoveLeft instead");
+		if (n < 0)
+			throw new ArgumentException($"Cannot move {n} steps to the right, use MoveLeft instead");
 		for (var i = 0 ;i < n ;i++)
-		{
 			current = current.Next ?? First;
-		}
 	}
 
+
+	/// <summary>
+	/// Takes N elements starting at the current node, including the current node. When end of list is reached, will wrap around to the start.The current node position remains the same. 
+	/// <remarks>Note: if N is larger than list size, the returned collection will contain duplicate elements!</remarks>
+	/// </summary>
+	/// <param name="n"></param>
+	/// <returns></returns>
+	public IEnumerable<T> TakeAt(int n)
+	{
+		var result = new List<T> ();
+		for (var i = 0 ;i < n ;i++) 
+		{
+			result.Add(Current);
+			MoveRight( );
+		}
+		MoveLeft(n);
+		return result;
+	}
+
+
+	/// <summary>
+	/// Replaces the values starting from the current node for the values in the range. The current node position remains the same.  
+	/// </summary>
+	/// <param name="range"></param>
+	public void ReplaceRange(IEnumerable<T> range)
+	{
+		var l = range.ToList();
+		foreach (var v in l)
+		{
+			ReplaceCurrent(v);
+			MoveRight();
+		}
+		MoveLeft(l.Count);
+	}
+
+	/// <summary>
+	/// Replaces the value of the current node with the value given. 
+	/// </summary>
+	/// <param name="value"></param>
+	public void ReplaceCurrent(T value)
+	{
+		current.Value = value;
+	}
+	
 
 	/// <summary>
 	/// Inserts a node <b>after</b> the current node by default, and sets the current node.
@@ -110,7 +151,7 @@ public class CircularList<T> : LinkedList<T>
 	public void SetHeadByIndex(int idx) => current = ToNodeArray( )[idx];
 
 
-	public int GetIndex() => ToNodeArray().ToList().IndexOf(current);
+	public int GetIndex() => ToNodeArray( ).ToList( ).IndexOf(current);
 
 	private LinkedListNode<T>[ ] ToNodeArray()
 	{
@@ -133,5 +174,6 @@ public class CircularList<T> : LinkedList<T>
 
 	public override string ToString() => this.Aggregate(new StringBuilder( ), (sb, value) =>
 		sb.Append(value).Append(',')).ToString( );
+
 
 }

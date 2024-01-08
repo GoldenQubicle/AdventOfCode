@@ -18,15 +18,36 @@ namespace CommonTests
 			sut = new( ) { 2, 3, 4, 5, 6 };
 		}
 
-	
+		[Test]
+		public void TakeAtShouldWrapAround()
+		{
+			sut.SetHeadByIndex(3);
+			Assert.That(sut.Current, Is.EqualTo(5));
+			var actual = sut.TakeAt(4);
+			Assert.That(actual, Is.EqualTo(new List<int> { 5, 6, 2, 3 }));
+		}
+
+
+		[Test]
+		public void ReplaceRangeShouldWrapAround()
+		{
+			sut.SetHeadByIndex(3);
+			Assert.That(sut.Current, Is.EqualTo(5));
+			var sub = sut.TakeAt(4).Reverse();
+			sut.ReplaceRange(sub);
+			Assert.That(sut.ToList(), Is.EqualTo(new List<int>{ 6, 5, 4, 3, 2 }));
+			Assert.That(sut.Current, Is.EqualTo(3));
+
+		}
+
 
 		[Test]
 		public void SetHeadByIndexShouldSetCorrectCurrent()
 		{
-			sut.ResetHead();
+			sut.ResetHead( );
 			sut.SetHeadByIndex(2);
 			Assert.That(sut.Current, Is.EqualTo(4));
-			
+
 			sut.MoveRight(4);
 			Assert.That(sut.Current, Is.EqualTo(3));
 
@@ -40,7 +61,7 @@ namespace CommonTests
 			Assert.That(sut.ToList( ), Is.EqualTo(expected));
 		}
 
-		
+
 		[Test]
 		public void MoveLeftAndRightShouldWorkOnEmptyList()
 		{
@@ -59,14 +80,14 @@ namespace CommonTests
 		{
 			Assert.Throws<ArgumentException>(() => sut.MoveLeft(-5));
 			Assert.Throws<ArgumentException>(() => sut.MoveRight(-5));
-			
+
 		}
 
 
 		[Test]
 		public void MovePointerShouldWrapAround()
 		{
-			sut.ResetHead();
+			sut.ResetHead( );
 			Assert.That(sut.Current, Is.EqualTo(2));
 
 			sut.MoveLeft(8);
@@ -86,7 +107,7 @@ namespace CommonTests
 		[TestCaseSource(nameof(GetInsertTestCases))]
 		public void InsertShouldBeAtCurrentPointerPosition((bool after, List<int> expected) test)
 		{
-			sut.ResetHead();
+			sut.ResetHead( );
 			sut.MoveRight(2);
 			sut.Insert(7, test.after);
 
