@@ -1,3 +1,5 @@
+using Common.Renders;
+
 namespace AoC2017;
 
 public class Day10 : Solution
@@ -23,7 +25,7 @@ public class Day10 : Solution
 		List.ResetHead( );
 		var skipSize = 0;
 
-		DoKnotHash(ref skipSize);
+		await DoKnotHash(skipSize);
 
 		List.ResetHead( );
 		var e1 = List.Current;
@@ -44,7 +46,7 @@ public class Day10 : Solution
 
 		for (var i = 0 ;i < 64 ;i++)
 		{
-			DoKnotHash(ref skipSize);
+			skipSize = await DoKnotHash(skipSize);
 		}
 
 		return List.Chunk(16)
@@ -53,14 +55,26 @@ public class Day10 : Solution
 			.ToString( );
 	}
 
-	private void DoKnotHash(ref int skipSize)
+	private async Task<int> DoKnotHash(int skipSize)
 	{
 		foreach (var length in lengths)
 		{
-			var sub = List.TakeAt(length).Reverse( );
-			List.ReplaceRange(sub);
+			var sub = List.TakeAt(length);
+			
+			if (RenderAction is not null)
+			{
+				await RenderAction(new KnotHashRender
+				{
+					Range = sub.ToList(),
+					Jump = length + skipSize
+				});
+			}
+
+			List.ReplaceRange(sub.Reverse());
 			List.MoveRight(length + skipSize);
 			skipSize++;
 		}
+
+		return skipSize;
 	}
 }

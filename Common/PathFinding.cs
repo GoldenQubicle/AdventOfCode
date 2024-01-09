@@ -4,16 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Common.Extensions;
 using Common.Interfaces;
+using Common.Renders;
 
 namespace Common;
 
 public class PathFinding
 {
-	public class VisitedSet : IRenderState
-	{
-		public IEnumerable<INode> set { get; set; }
-	}
-
 	// Technically not finding any path but closely related and first implementation for visualizing AoC stuff. 
 	public static async Task FloodFill((int x, int y) start, IGraph graph, Func<INode, bool> constraint, Func<IRenderState, Task> renderAction = null)
 	{
@@ -26,7 +22,7 @@ public class PathFinding
 			visited.Add(current);
 
 			if (renderAction is not null)
-				await renderAction(new VisitedSet{ set = visited});
+				await renderAction(new PathFindingRender{ set = visited});
 
 			queue.EnqueueAll(graph.GetNeighbors(current, n => !queue.Contains(n) && !visited.Contains(n) && constraint(n)));
 		}
@@ -62,7 +58,7 @@ public class PathFinding
 				});
 			
 			if(renderAction is not null)
-				await renderAction(new VisitedSet { set = visited.Keys });
+				await renderAction(new PathFindingRender { set = visited.Keys });
 		}
 
 		var path = new List<INode>( );
@@ -77,7 +73,7 @@ public class PathFinding
 		{
 			Console.WriteLine($"BFS found path with length: {path.Count} and visited {visited.Count} cells");
 			for (var i = 1 ;i <= path.Count ;i++)
-				await renderAction(new VisitedSet{ set = path.TakeLast(i)});
+				await renderAction(new PathFindingRender{ set = path.TakeLast(i)});
 		}
 
 		return path;
@@ -118,7 +114,7 @@ public class PathFinding
 				visited.TryAdd(n, current);
 
 				if(renderAction is not null)
-					await renderAction(new VisitedSet { set = visited.Keys});
+					await renderAction(new PathFindingRender { set = visited.Keys});
 			}
 		}
 
@@ -135,7 +131,7 @@ public class PathFinding
 			Console.WriteLine($"UCS found path with length: {path.Count} and visited {visited.Count} cells");
 
 			for (var i = 1 ;i <= path.Count ;i++)
-				await renderAction(new VisitedSet{ set = path.TakeLast(i)});
+				await renderAction(new PathFindingRender{ set = path.TakeLast(i)});
 
 		}
 
