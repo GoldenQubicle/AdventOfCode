@@ -22,7 +22,7 @@ public class PathFinding
 			visited.Add(current);
 
 			if (renderAction is not null)
-				await renderAction(new PathFindingRender{ set = visited});
+				await renderAction(new PathFindingRender{ Set = visited});
 
 			queue.EnqueueAll(graph.GetNeighbors(current, n => !queue.Contains(n) && !visited.Contains(n) && constraint(n)));
 		}
@@ -58,7 +58,7 @@ public class PathFinding
 				});
 			
 			if(renderAction is not null)
-				await renderAction(new PathFindingRender { set = visited.Keys });
+				await renderAction(new PathFindingRender { Set = visited.Keys });
 		}
 
 		var path = new List<INode>( );
@@ -73,7 +73,7 @@ public class PathFinding
 		{
 			Console.WriteLine($"BFS found path with length: {path.Count} and visited {visited.Count} cells");
 			for (var i = 1 ;i <= path.Count ;i++)
-				await renderAction(new PathFindingRender{ set = path.TakeLast(i)});
+				await renderAction(new PathFindingRender{ Set = path.TakeLast(i)});
 		}
 
 		return path;
@@ -114,7 +114,7 @@ public class PathFinding
 				visited.TryAdd(n, current);
 
 				if(renderAction is not null)
-					await renderAction(new PathFindingRender { set = visited.Keys});
+					await renderAction(new PathFindingRender { Set = visited.Keys});
 			}
 		}
 
@@ -131,7 +131,7 @@ public class PathFinding
 			Console.WriteLine($"UCS found path with length: {path.Count} and visited {visited.Count} cells");
 
 			for (var i = 1 ;i <= path.Count ;i++)
-				await renderAction(new PathFindingRender{ set = path.TakeLast(i)});
+				await renderAction(new PathFindingRender{ Set = path.TakeLast(i)});
 
 		}
 

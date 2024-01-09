@@ -5,6 +5,6 @@ namespace Common.Renders
 {
 	public class PathFindingRender : IRenderState
 	{
-		public IEnumerable<INode> set { get; set; }
+		public IEnumerable<INode> Set { get; set; }
 	}
 }
