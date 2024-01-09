@@ -9,8 +9,13 @@ namespace Common;
 
 public class PathFinding
 {
+	public class VisitedSet : IRenderState
+	{
+		public IEnumerable<INode> set { get; set; }
+	}
+
 	// Technically not finding any path but closely related and first implementation for visualizing AoC stuff. 
-	public static async Task FloodFill((int x, int y) start, IGraph graph, Func<INode, bool> constraint, Func<IEnumerable<INode>, Task> renderAction = null)
+	public static async Task FloodFill((int x, int y) start, IGraph graph, Func<INode, bool> constraint, Func<IRenderState, Task> renderAction = null)
 	{
 		var queue = new Queue<INode>( );
 		var visited = new HashSet<INode>( );
@@ -21,7 +26,7 @@ public class PathFinding
 			visited.Add(current);
 
 			if (renderAction is not null)
-				await renderAction(visited);
+				await renderAction(new VisitedSet{ set = visited});
 
 			queue.EnqueueAll(graph.GetNeighbors(current, n => !queue.Contains(n) && !visited.Contains(n) && constraint(n)));
 		}
@@ -34,7 +39,7 @@ public class PathFinding
 	public static async Task<IEnumerable<INode>> BreadthFirstSearch(INode start, INode target, IGraph graph,
 		Func<INode,INode, bool> constraint,
 		Func<INode, INode, bool> targetCondition,
-		Func<IEnumerable<INode>, Task> renderAction = null)
+		Func<IRenderState, Task> renderAction = null)
 	{
 		var queue = new Queue<INode>( );
 		var visited = new Dictionary<INode, INode>( );
@@ -57,7 +62,7 @@ public class PathFinding
 				});
 			
 			if(renderAction is not null)
-				await renderAction(visited.Keys);
+				await renderAction(new VisitedSet { set = visited.Keys });
 		}
 
 		var path = new List<INode>( );
@@ -72,7 +77,7 @@ public class PathFinding
 		{
 			Console.WriteLine($"BFS found path with length: {path.Count} and visited {visited.Count} cells");
 			for (var i = 1 ;i <= path.Count ;i++)
-				await renderAction(path.TakeLast(i));
+				await renderAction(new VisitedSet{ set = path.TakeLast(i)});
 		}
 
 		return path;
@@ -82,7 +87,7 @@ public class PathFinding
 		Func<INode, INode, bool> constraint,
 		Func<INode, INode, bool> targetCondition,
 		Func<INode, INode, long> heuristic,
-		Func<IEnumerable<INode>, Task> renderAction = null)
+		Func<IRenderState, Task> renderAction = null)
 	{
 		var queue = new PriorityQueue<INode, long>( );
 		var visited = new Dictionary<INode, INode>( );
@@ -113,7 +118,7 @@ public class PathFinding
 				visited.TryAdd(n, current);
 
 				if(renderAction is not null)
-					await renderAction(visited.Keys);
+					await renderAction(new VisitedSet { set = visited.Keys});
 			}
 		}
 
@@ -130,7 +135,7 @@ public class PathFinding
 			Console.WriteLine($"UCS found path with length: {path.Count} and visited {visited.Count} cells");
 
 			for (var i = 1 ;i <= path.Count ;i++)
-				await renderAction(path.TakeLast(i));
+				await renderAction(new VisitedSet{ set = path.TakeLast(i)});
 
 		}
 

@@ -10,7 +10,7 @@ namespace Common;
 
 public abstract class Solution
 {
-	public Func<IEnumerable<INode>, Task> RenderAction { get; set; }
+	public Func<IRenderState, Task> RenderAction { get; set; }
 	public List<string> Input { get; }
 
 	protected Solution(string file, bool doTrim = true, bool doRemoveEmptyLines = true) =>
