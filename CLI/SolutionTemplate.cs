@@ -39,12 +39,7 @@ namespace CLI
 
 
         private string CSharpUnitTest() =>
-            $@"using AoC{Year};
-             using NUnit.Framework;
-             using System.Collections.Generic;
-             using System.Linq;
-             
-             namespace AoC{Year}Tests;
+            $@"namespace AoC{Year}Tests;
             
              public class Day{Day}Test
              {{
