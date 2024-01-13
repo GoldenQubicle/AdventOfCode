@@ -1,9 +1,8 @@
-using Common.Renders;
-
 namespace AoC2017;
 
 public class Day10 : Solution
 {
+
 	private List<int> lengths;
 
 	public CircularList<int> List { get; set; } = Enumerable.Range(0, 256)
@@ -25,7 +24,7 @@ public class Day10 : Solution
 		List.ResetHead( );
 		var skipSize = 0;
 
-		await DoKnotHash(skipSize);
+		await DoKnotHash(skipSize, 0);
 
 		List.ResetHead( );
 		var e1 = List.Current;
@@ -46,7 +45,7 @@ public class Day10 : Solution
 
 		for (var i = 0 ;i < 64 ;i++)
 		{
-			skipSize = await DoKnotHash(skipSize);
+			skipSize = await DoKnotHash(skipSize, i);
 		}
 
 		return List.Chunk(16)
@@ -55,26 +54,30 @@ public class Day10 : Solution
 			.ToString( );
 	}
 
-	private async Task<int> DoKnotHash(int skipSize)
+	private async Task<int> DoKnotHash(int skipSize, int cycle)
 	{
 		foreach (var length in lengths)
 		{
-			var sub = List.TakeAt(length);
+			var range = List.TakeAt(length).Reverse( ).ToList();
 			
 			if (RenderAction is not null)
 			{
 				await RenderAction(new KnotHashRender
 				{
-					Range = sub.ToList(),
+					Cycle = cycle,
+					Operation = lengths.IndexOf(length),
+					Range = range,
 					Jump = length + skipSize
 				});
 			}
 
-			List.ReplaceRange(sub.Reverse());
+			List.ReplaceRange(range);
 			List.MoveRight(length + skipSize);
 			skipSize++;
 		}
 
 		return skipSize;
 	}
+
+	
 }

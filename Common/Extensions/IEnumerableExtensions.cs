@@ -22,6 +22,18 @@ namespace Common.Extensions
 	        return result;
         }
 
+        public static ConcurrentDictionary<TKey, TValue> ToConcurrentDictionary<TSource, TKey, TValue>(
+	        this IEnumerable<TSource> collection, Func<TSource, TKey> keySelector, Func<TSource, TValue> valueSelector)
+        {
+	        var result = new ConcurrentDictionary<TKey, TValue>();
+	        foreach (var item in collection)
+	        {
+		        result.TryAdd(keySelector(item), valueSelector(item));
+	        }
+
+	        return result;
+        }
+
         public static IEnumerable<(T Value, int idx)> WithIndex<T>(this IEnumerable<T> collection) =>
 	        collection.Select((e, idx) => (e, idx));
     }

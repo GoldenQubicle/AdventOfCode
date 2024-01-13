@@ -8,8 +8,8 @@ public class Day02 : Solution
 {
 	private readonly Dictionary<int, List<(int r, int g, int b)>> games;
 
-	public Day02(string file) : base(file) => games = Input
-		.Select((l, idx) => (idx, l.Split(':')[1]))
+	public Day02(string file) : base(file) => games = Input.WithIndex()
+		.Select(l => (l.idx, l.Value.Split(':')[1]))
 		.ToDictionary(t => t.idx + 1, t => t.Item2.Split(';')
 			.Select(s => Regex.Matches(s, @"(?<r>\d+.(?=red))|(?<g>\d+.(?=green))|(?<b>\d+.(?=blue))"))
 			.Select(m => (r: m.GetGroupAsInt("r"), g: m.GetGroupAsInt("g"), b: m.GetGroupAsInt("b"))).ToList( ));
