@@ -1,50 +1,46 @@
-using System.Runtime.InteropServices.JavaScript;
-using Common;
+namespace AoC2018;
 
-namespace AoC2018
+public class Day09 : Solution
 {
-	public class Day09 : Solution
+	public static int Players { get; set; } = 412;
+	public static int LastMarble { get; set; } = 71646;
+
+	public Day09() { }
+
+	public Day09(string file) : base(file) { }
+
+	public override async Task<string> SolvePart1() => DoPlayMarbles(isPartTwo: false);
+
+	public override async Task<string> SolvePart2() => DoPlayMarbles(isPartTwo: true);
+
+	private static string DoPlayMarbles(bool isPartTwo = false)
 	{
-		public static int Players { get; set; } = 412;
-		public static int LastMarble { get; set; } = 71646;
+		var cl = new CircularList<long>( );
+		var players = new long[Players];
+		var marble = 0;
+		var lastMarble = isPartTwo ? 100 * LastMarble : LastMarble;
+		cl.Add(marble);
 
-		public Day09() { }
-
-		public Day09(string file) : base(file) { }
-
-		public override async Task<string> SolvePart1() => DoPlayMarbles(isPartTwo: false);
-
-		public override async Task<string> SolvePart2() => DoPlayMarbles(isPartTwo: true);
-
-		private static string DoPlayMarbles(bool isPartTwo = false)
+		while (marble < lastMarble)
 		{
-			var cl = new CircularList<long>( );
-			var players = new long[Players];
-			var marble = 0;
-			var lastMarble = isPartTwo ? 100 * LastMarble : LastMarble;
-			cl.Add(marble);
+			marble++;
 
-			while (marble < lastMarble)
+			if (marble % 23 == 0)
 			{
-				marble++;
+				cl.MoveLeft(7);
 
-				if (marble % 23 == 0)
-				{
-					cl.MoveLeft(7);
+				players[marble % Players] += marble + cl.Current;
 
-					players[marble % Players] += marble + cl.Current;
+				cl.RemoveCurrent( );
 
-					cl.RemoveCurrent( );
-
-					continue;
-				}
-
-				cl.MoveRight( );
-				cl.Insert(marble);
-
+				continue;
 			}
 
-			return players.Max( ).ToString( );
+			cl.MoveRight( );
+			cl.Insert(marble);
+
 		}
+
+		return players.Max( ).ToString( );
 	}
 }
