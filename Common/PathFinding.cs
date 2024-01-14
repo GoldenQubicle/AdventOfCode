@@ -105,9 +105,9 @@ public class PathFinding
 				if (costs.TryGetValue(n, out var value) && cost + n.Value < value)
 					costs[n] = cost + n.Value;
 				else
-					costs.Add(n, n.Value + cost);
+					costs.Add(n, cost + n.Value);
 
-				if (queue.UnorderedItems.Contains((n, costs[n])))
+				if (queue.UnorderedItems.Contains((n, costs[n] + heuristic(target, n))))
 					continue;
 
 				queue.Enqueue(n, costs[n] + heuristic(target, n));

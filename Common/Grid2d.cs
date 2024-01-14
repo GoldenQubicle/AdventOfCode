@@ -302,7 +302,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 			{
 				var p = (x, y);
 				if (Cells.TryGetValue(p, out var c))
-					sb.Append(c.Value);
+					sb.Append(c.Character);
 				else sb.Append(string.Empty);
 			}
 			sb.Append("\n");

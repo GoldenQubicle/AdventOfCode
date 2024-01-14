@@ -1,43 +1,69 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Common;
-using Common.Extensions;
-namespace AoC2021
+namespace AoC2021;
+
+public class Day15 : Solution
 {
-    public class Day15 : Solution
-    {
-        private Grid2d grid;
-        public Day15(string file) : base(file) =>
-            grid = new Grid2d(Input, diagonalAllowed: false);
+	private Grid2d grid;
+	public Day15(string file) : base(file) =>
+		grid = new Grid2d(Input, diagonalAllowed: false);
 
-        public override async Task<string> SolvePart1()
-        {
-            var queue = new PriorityQueue<(Grid2d.Cell ptr, List<Grid2d.Cell> visited), long>();
-            var paths = new List<(List<Grid2d.Cell> path, long risk)>();
-            var end = grid[(grid.Width- 1, grid.Height - 1)];
+	public override async Task<string> SolvePart1()
+	{
+		var start = grid[0, 0];
+		var target = grid[grid.Max(c => c.X), grid.Max(c => c.Y)];
 
-            var start = (ptr: grid[(0, 0)], visited: new List<Grid2d.Cell>());
-            queue.Enqueue(start, 0l);
+		var result = await PathFinding.UniformCostSearch(start, target, grid,
+			(node, node1) => true,
+			(node, node1) => node.Equals(target),
+			(node, node1) => Maths.GetManhattanDistance((node as Grid2d.Cell).Position, (node1 as Grid2d.Cell).Position));
 
-            while (queue.Count > 0)
-            {
-                queue.TryDequeue(out var current, out var risk);
+		return result.Skip(1).Sum(c => c.Value).ToString( );
+	}
 
-                if (current.ptr == end)
-                {
-                    return risk.ToString();
-                }
+	public override async Task<string> SolvePart2()
+	{
+		var expansion = new List<Grid2d.Cell>( );
 
-                grid.GetNeighbors(current.ptr, n => !current.visited.Contains(n))
-                    .ForEach( n => queue.Enqueue((n as Grid2d.Cell, current.visited.Expand(current.ptr)), risk + n.Value));
-                
-            }
+		foreach (var cell in grid)
+		{
+			var value = cell.Value;
+			for (var c = 1 ;c < 5 ;c++)
+			{
+				value = value + 1 == 10 ? 1 : value + 1;
+				var nc = new Grid2d.Cell(cell.Position.Add(c * grid.Width, 0), char.Parse(value.ToString( )));
+				expansion.Add(nc);
+			}
+		}
+		expansion.ForEach(grid.Add);
+		expansion.Clear( );
 
-            return string.Empty;
-        }
+		foreach (var cell in grid)
+		{
+			var value = cell.Value;
+			for (var r = 1 ;r < 5 ;r++)
+			{
+				value = value + 1 == 10 ? 1 : value + 1;
+				var nc = new Grid2d.Cell(cell.Position.Add(0, r * grid.Height), char.Parse(value.ToString( )));
+				expansion.Add(nc);
+			}
+		}
+		expansion.ForEach(grid.Add);
 
-        public override async Task<string> SolvePart2() => string.Empty;
-    }
+		Console.WriteLine(grid);
+
+		var start = grid[0, 0];
+		var target = grid[grid.Max(c => c.X), grid.Max(c => c.Y)];
+
+		var result = await PathFinding.UniformCostSearch(start, target, grid,
+			(node, node1) => true,
+			(node, node1) => node.Equals(target),
+			(node, node1) => Maths.GetManhattanDistance((node as Grid2d.Cell).Position, (node1 as Grid2d.Cell).Position));
+
+
+		result.ForEach(c => c.Character = '#');
+		Console.WriteLine(grid);
+		return result.Skip(1).Sum(c => c.Value).ToString( );
+
+		// 2874 too high
+		return string.Empty;
+	}
 }
