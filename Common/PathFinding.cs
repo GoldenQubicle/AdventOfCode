@@ -79,7 +79,7 @@ public class PathFinding
 		return path;
 	}
 
-	public static async Task<IEnumerable<INode>> UniformCostSearch(INode start, INode target, IGraph grid,
+	public static async Task<(IEnumerable<INode> path, long cost)> UniformCostSearch(INode start, INode target, IGraph grid,
 		Func<INode, INode, bool> constraint,
 		Func<INode, INode, bool> targetCondition,
 		Func<INode, INode, long> heuristic,
@@ -93,6 +93,9 @@ public class PathFinding
 		visited.Add(current, default);
 		costs.Add(current, 0);
 
+
+		//1-18-2024: note we're not using the heuristic, nor the actual priority value from the queue.
+		//Had some trouble properly separating the concepts of distance vs priority value while debugging. 
 		while (queue.TryDequeue(out var next, out var cost))
 		{
 			current = next;
@@ -100,17 +103,20 @@ public class PathFinding
 			if (targetCondition(current, target))
 				break;
 
-			foreach (var n in grid.GetNeighbors(current, n => !visited.ContainsKey(n) && constraint(n, current)))
+			foreach (var n in grid.GetNeighbors(current, n => !visited.ContainsKey(n) &&  constraint(n, current)))
 			{
-				if (costs.TryGetValue(n, out var value) && cost + n.Value < value)
-					costs[n] = cost + n.Value;
-				else
-					costs.Add(n, cost + n.Value);
+				var newCost = costs[current] + n.Value;
 
-				if (queue.UnorderedItems.Contains((n, costs[n] + heuristic(target, n))))
+				if (costs.TryGetValue(n, out var value) && newCost < value)
+					costs[n] = newCost;
+				else
+					costs.Add(n, newCost);
+
+				if (queue.UnorderedItems.Contains((n, newCost)))
 					continue;
 
-				queue.Enqueue(n, costs[n] + heuristic(target, n));
+				queue.Enqueue(n, newCost);
+
 				visited.TryAdd(n, current);
 
 				if(renderAction is not null)
@@ -128,13 +134,12 @@ public class PathFinding
 
 		if (renderAction is not null)
 		{
-			Console.WriteLine($"UCS found path with length: {path.Count} and visited {visited.Count} cells");
+			Console.WriteLine($"UCS found path with length {path.Count}, total cost of {costs[target]} and visited {visited.Count} cells");
 
 			for (var i = 1 ;i <= path.Count ;i++)
 				await renderAction(new PathFindingRender{ Set = path.TakeLast(i)});
-
 		}
 
-		return path;
+		return (path, costs[target]);
 	}
 }

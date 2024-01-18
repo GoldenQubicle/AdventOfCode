@@ -16,7 +16,10 @@ public class Day15 : Solution
 			(node, node1) => node.Equals(target),
 			(node, node1) => Maths.GetManhattanDistance((node as Grid2d.Cell).Position, (node1 as Grid2d.Cell).Position));
 
-		return result.Skip(1).Sum(c => c.Value).ToString( );
+		result.path.ForEach(c => c.Character = '#');
+		//Console.WriteLine(grid);
+
+		return result.cost.ToString();
 	}
 
 	public override async Task<string> SolvePart2()
@@ -48,7 +51,7 @@ public class Day15 : Solution
 		}
 		expansion.ForEach(grid.Add);
 
-		Console.WriteLine(grid);
+		//Console.WriteLine(grid);
 
 		var start = grid[0, 0];
 		var target = grid[grid.Max(c => c.X), grid.Max(c => c.Y)];
@@ -59,9 +62,10 @@ public class Day15 : Solution
 			(node, node1) => Maths.GetManhattanDistance((node as Grid2d.Cell).Position, (node1 as Grid2d.Cell).Position));
 
 
-		result.ForEach(c => c.Character = '#');
-		Console.WriteLine(grid);
-		return result.Skip(1).Sum(c => c.Value).ToString( );
+		result.path.ForEach(c => c.Character = '#');
+		
+		//Console.WriteLine(grid);
+		return result.cost.ToString();
 
 		// 2874 too high
 		return string.Empty;

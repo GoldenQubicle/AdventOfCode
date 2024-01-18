@@ -28,6 +28,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 			.Select(v => (v[0], v[1]))
 			.Where(p => !filter.Contains(p))
 			.ToList( );
+		//Offsets.Reverse();
 	}
 
 	public Grid2d(IReadOnlyList<string> input, bool diagonalAllowed = true) : this(diagonalAllowed)
