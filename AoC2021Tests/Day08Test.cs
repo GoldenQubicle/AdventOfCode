@@ -1,30 +1,26 @@
-using AoC2021;
-using NUnit.Framework;
+namespace AoC2021Tests;
 
-namespace AoC2021Tests
+public class Day08Test
 {
-    public class Day08Test
-    {
-        Day08 day08;
+	Day08 day08;
 
-        [SetUp]
-        public void Setup( )
-        {
-            day08 = new Day08("day08test1");
-        }
+	[SetUp]
+	public void Setup( )
+	{
+		day08 = new Day08("day08test1");
+	}
         
-        [Test]
-        public void Part1( )
-        {
-            var actual = day08.SolvePart1( ).Result;
-            Assert.AreEqual("26", actual);
-        }
+	[Test]
+	public void Part1( )
+	{
+		var actual = day08.SolvePart1( ).Result;
+		Assert.AreEqual("26", actual);
+	}
 
-        [Test]
-        public void Part2( )
-        {
-            var actual = day08.SolvePart2( ).Result;
-            Assert.AreEqual("61229", actual);
-        }
-    }
+	[Test]
+	public void Part2( )
+	{
+		var actual = day08.SolvePart2( ).Result;
+		Assert.AreEqual("61229", actual);
+	}
 }
