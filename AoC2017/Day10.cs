@@ -1,3 +1,5 @@
+using Common.Interfaces;
+
 namespace AoC2017;
 
 public class Day10 : Solution
@@ -60,9 +62,9 @@ public class Day10 : Solution
 		{
 			var range = List.TakeAt(length).Reverse( ).ToList();
 			
-			if (RenderAction is not null)
+			if (IRenderState.IsActive)
 			{
-				await RenderAction(new KnotHashRender
+				await IRenderState.Update(new KnotHashRender
 				{
 					Cycle = cycle,
 					Operation = lengths.IndexOf(length),

@@ -11,7 +11,7 @@ namespace Common;
 public class PathFinding
 {
 	// Technically not finding any path but closely related and first implementation for visualizing AoC stuff. 
-	public static async Task FloodFill((int x, int y) start, IGraph graph, Func<INode, bool> constraint, Func<IRenderState, Task> renderAction = null)
+	public static async Task FloodFill((int x, int y) start, IGraph graph, Func<INode, bool> constraint)
 	{
 		var queue = new Queue<INode>( );
 		var visited = new HashSet<INode>( );
@@ -21,8 +21,8 @@ public class PathFinding
 		{
 			visited.Add(current);
 
-			if (renderAction is not null)
-				await renderAction(new PathFindingRender{ Set = visited});
+			if (IRenderState.IsActive)
+				await IRenderState.Update(new PathFindingRender{ Set = visited});
 
 			queue.EnqueueAll(graph.GetNeighbors(current, n => !queue.Contains(n) && !visited.Contains(n) && constraint(n)));
 		}
@@ -34,8 +34,7 @@ public class PathFinding
 
 	public static async Task<IEnumerable<INode>> BreadthFirstSearch(INode start, INode target, IGraph graph,
 		Func<INode,INode, bool> constraint,
-		Func<INode, INode, bool> targetCondition,
-		Func<IRenderState, Task> renderAction = null)
+		Func<INode, INode, bool> targetCondition )
 	{
 		var queue = new Queue<INode>( );
 		var visited = new Dictionary<INode, INode>( );
@@ -56,9 +55,9 @@ public class PathFinding
 					visited.TryAdd(n, current);
 					queue.Enqueue(n);
 				});
-			
-			if(renderAction is not null)
-				await renderAction(new PathFindingRender { Set = visited.Keys });
+
+			if (IRenderState.IsActive)
+				await IRenderState.Update(new PathFindingRender { Set = visited.Keys });
 		}
 
 		var path = new List<INode>( );
@@ -69,11 +68,11 @@ public class PathFinding
 		}
 		path.Add(start);
 
-		if (renderAction is not null)
+		if (IRenderState.IsActive)
 		{
 			Console.WriteLine($"BFS found path with length: {path.Count} and visited {visited.Count} cells");
 			for (var i = 1 ;i <= path.Count ;i++)
-				await renderAction(new PathFindingRender{ Set = path.TakeLast(i)});
+				await IRenderState.Update(new PathFindingRender{ Set = path.TakeLast(i)});
 		}
 
 		return path;
@@ -119,8 +118,8 @@ public class PathFinding
 
 				visited.TryAdd(n, current);
 
-				if(renderAction is not null)
-					await renderAction(new PathFindingRender { Set = visited.Keys});
+				if (IRenderState.IsActive)
+					await IRenderState.Update(new PathFindingRender { Set = visited.Keys });
 			}
 		}
 
@@ -132,12 +131,12 @@ public class PathFinding
 		}
 		path.Add(start);
 
-		if (renderAction is not null)
+		if (IRenderState.IsActive)
 		{
 			Console.WriteLine($"UCS found path with length {path.Count}, total cost of {costs[target]} and visited {visited.Count} cells");
 
 			for (var i = 1 ;i <= path.Count ;i++)
-				await renderAction(new PathFindingRender{ Set = path.TakeLast(i)});
+				await IRenderState.Update(new PathFindingRender{ Set = path.TakeLast(i)});
 		}
 
 		return (path, costs[target]);
