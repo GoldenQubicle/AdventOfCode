@@ -28,10 +28,6 @@ public class PathFinding
 		}
 	}
 
-	delegate bool NeighborConstraint(INode neighbor, INode current);
-	delegate bool TargetCondition(INode target, INode current);
-	delegate bool Heuristic(INode node1, INode node2);
-
 	public static async Task<IEnumerable<INode>> BreadthFirstSearch(INode start, INode target, IGraph graph,
 		Func<INode,INode, bool> constraint,
 		Func<INode, INode, bool> targetCondition )
@@ -81,8 +77,7 @@ public class PathFinding
 	public static async Task<(IEnumerable<INode> path, long cost)> UniformCostSearch(INode start, INode target, IGraph grid,
 		Func<INode, INode, bool> constraint,
 		Func<INode, INode, bool> targetCondition,
-		Func<INode, INode, long> heuristic,
-		Func<IRenderState, Task> renderAction = null)
+		Func<INode, INode, long> heuristic)
 	{
 		var queue = new PriorityQueue<INode, long>( );
 		var visited = new Dictionary<INode, INode>( );
