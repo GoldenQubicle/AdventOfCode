@@ -109,7 +109,7 @@ public class PathFinding
 				if (queue.UnorderedItems.Contains((n, newCost)))
 					continue;
 
-				queue.Enqueue(n, newCost);
+				queue.Enqueue(n, newCost + heuristic(target, n));
 
 				visited.TryAdd(n, current);
 

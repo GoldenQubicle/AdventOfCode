@@ -1,6 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cd6a31f7_002Df382_002D496e_002D9650_002D7b8bff11349b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day15Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c509e674_002Da847_002D4b6d_002Dba53_002Dc880e08e9ade/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day16Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net8.0::AoC2021Tests.Day15Test&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::D921DB77-1F1C-4064-84B2-1AA9D964D1B8::net8.0::AoC2021Tests.Day16Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String>
+	</wpf:ResourceDictionary>

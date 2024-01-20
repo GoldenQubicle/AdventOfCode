@@ -14,7 +14,7 @@ public class Day15 : Solution
 		var result = await PathFinding.UniformCostSearch(start, target, grid,
 			(node, node1) => true,
 			(node, node1) => node.Equals(target),
-			(node, node1) => Maths.GetManhattanDistance((node as Grid2d.Cell).Position, (node1 as Grid2d.Cell).Position));
+			(node, node1) => 0L);
 
 		result.path.ForEach(c => c.Character = '#');
 		//Console.WriteLine(grid);
