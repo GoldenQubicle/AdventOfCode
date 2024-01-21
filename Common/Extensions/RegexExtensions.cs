@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Common.Extensions;
 
@@ -10,9 +11,9 @@ public static class RegexExtensions
 		return (int.Parse(strings[0]), int.Parse(strings[1]));
 	}
 
-    public static int AsInt(this Match m, string group) => int.Parse(m.Groups[group].Success ? m.Groups[group].Value : "0");
+    public static int AsInt(this Match m, string group) => int.Parse(m.Groups[group].Success ? m.Groups[group].Value.Where(char.IsDigit).AsString() : "0");
 
-    public static long AsLong(this Match m, string group) => long.Parse(m.Groups[group].Success ? m.Groups[group].Value : "0");
+    public static long AsLong(this Match m, string group) => long.Parse(m.Groups[group].Success ? m.Groups[group].Value.Where(char.IsDigit).AsString( ) : "0");
 
     public static string AsString(this Match m, string group) => m.Groups[group].Success ? m.Groups[group].Value : string.Empty;
 
