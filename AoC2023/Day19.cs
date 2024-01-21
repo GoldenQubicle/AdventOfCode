@@ -17,7 +17,7 @@ public class Day19 : Solution
 			.Select(m =>
 			{
 				var group = m.GetGroup("rules").Split(',', StringSplitOptions.TrimEntries).ToList( );
-				var rules = group.SkipLast(1).Select(l => (c: l[0], op: l[1], v: l.AsInteger( ), r: l.Split(':').Last( ))).ToList( );
+				var rules = group.SkipLast(1).Select(l => (c: l[0], op: l[1], v: l.ToInt( ), r: l.Split(':').Last( ))).ToList( );
 
 				rules.Add(('_', '_', 0, group.Last( )));
 				return new WorkFlow(m.GetGroup("tag"), rules);
@@ -31,10 +31,10 @@ public class Day19 : Solution
 				var parts = l.Split(',', StringSplitOptions.TrimEntries);
 				return new Part(new Dictionary<char, (int ,int)>
 				{
-					{ 'x', (1, parts[0].AsInteger()) },
-					{ 'm', (1, parts[1].AsInteger()) },
-					{ 'a', (1, parts[2].AsInteger()) },
-					{ 's', (1, parts[3].AsInteger()) },
+					{ 'x', (1, parts[0].ToInt()) },
+					{ 'm', (1, parts[1].ToInt()) },
+					{ 'a', (1, parts[2].ToInt()) },
+					{ 's', (1, parts[3].ToInt()) },
 				});
 			}).ToList( );
 	}

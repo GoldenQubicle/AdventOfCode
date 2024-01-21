@@ -9,7 +9,7 @@ namespace AoC2022
         {
             if (g.Key == false)
             {
-                var totalStacks = g.Last().Split(" ").Max().AsInteger();
+                var totalStacks = g.Last().Split(" ").Max().ToInt();
                 stacks = Enumerable.Range(1, totalStacks).Select(n =>
                     new string(g.Take(totalStacks).Select(s => s[n + (n - 1) * 3]).ToArray()).Trim()).ToList();
             }

@@ -5,7 +5,7 @@ public class Day04 : Solution
 	private record Record(DateOnly Date, TimeOnly Time, string State)
 	{
 		public bool IsBegin() => State.Contains("begins");
-		public int GetId() => State.AsInteger( );
+		public int GetId() => State.ToInt( );
 	}
 
 	private Dictionary<int, List<(int s, int e)>> guards = new( );

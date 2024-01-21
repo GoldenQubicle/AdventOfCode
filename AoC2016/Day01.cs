@@ -40,7 +40,7 @@ namespace AoC2016
             {
                 var turn = s.Contains("R") ? Turn.Right : Turn.Left;
                 current = GetDirection(current, turn);
-                var distance = s.AsInteger();
+                var distance = s.ToInt();
                 position = UpdatePosition(position, current, distance);
             });
 
@@ -58,7 +58,7 @@ namespace AoC2016
             {
                 var turn = instruction.Contains("R") ? Turn.Right : Turn.Left;
                 current = GetDirection(current, turn);
-                var distance = instruction.AsInteger();
+                var distance = instruction.ToInt();
 
                 for(var s = 0 ; s < distance ; s++)
                 {

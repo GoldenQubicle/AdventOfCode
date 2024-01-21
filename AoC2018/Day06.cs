@@ -8,7 +8,7 @@ public class Day06 : Solution
 	public Day06(string file) : base(file) => locations = Input.Select((s, idx) =>
 	{
 		var parts = s.Split(',');
-		return (idx, parts[0].AsInteger( ), parts[1].AsInteger( ));
+		return (idx, parts[0].ToInt( ), parts[1].ToInt( ));
 	}).ToDictionary(l => 65 + l.idx, l => (l.Item2, l.Item3));
 
 

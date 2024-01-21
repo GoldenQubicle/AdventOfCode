@@ -1,71 +1,20 @@
-using System.Collections;
-using System.Reflection.Metadata;
+using System.Drawing;
 
 namespace AoC2021;
 
 public class Day18 : Solution
 {
-	public Day18(string file) : base(file)
+	public Day18(string file) : base(file, split: "\n")
 	{
-		var number = "[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]";
 
-		var matches = Regex.Matches(number, @"(?<x>\[+\d+)*(?<y>\d\]{1,})*");
-		var stack = new Stack<SnailNumber>( );
-		var root = new SnailNumber( );
-
-		foreach (Match match in matches)
-		{
-			if (string.IsNullOrWhiteSpace(match.Value))
-				continue;
-
-			if (match.Groups["x"].Success)
-			{
-				var toOpen = match.Value.Count(c => c == '[');
-
-				for (var i = 0 ;i < toOpen ;i++)
-				{
-					stack.Push(new SnailNumber( ));
-				}
-
-				stack.Peek( ).X = new SnailNumber { Value = match.AsInt("x") };
-				stack.Peek().X.Parent = stack.Peek();
-			}
-
-			if (match.Groups["y"].Success)
-			{
-				stack.Peek( ).Y = new SnailNumber { Value = match.AsInt("y") };
-				stack.Peek( ).Y.Parent = stack.Peek( );
-				var toClose = match.Value.Count(c => c == ']');
-
-				for (var i = 1 ;i <= toClose ;i++)
-				{
-					var current = stack.Pop( );
-					
-					if (stack.Count > 0)
-					{
-						if (current.Parent == null)
-							current.Parent = stack.Peek();
-
-							if (stack.Peek( ).HasX)
-							stack.Peek( ).Y = current;
-						else
-							stack.Peek( ).X = current;
-					}
-					else
-					{
-						root = current;
-					}
-				}
-			}
-		};
-
-		var r = root.TryGetExplodingPair();
 	}
 
 	public Day18(List<string> input) : base(input) { }
 
 	public override async Task<string> SolvePart1()
 	{
+		var final = Reduce(Input);
+
 		return string.Empty;
 	}
 
@@ -74,53 +23,156 @@ public class Day18 : Solution
 		return string.Empty;
 	}
 
-	public record SnailNumber
+	
+	public static string Add(string l, string r) => $"[{l},{r}]";
+
+	public static bool TrySplit(string n, out string sn)
 	{
-		public int Value { get; set; }
-		public SnailNumber Parent { get; set; }
-		public SnailNumber X { get; set; }
-		public SnailNumber Y { get; set; }
-		public int Depth => Parent is null ? 1 : Parent.Depth + 1;
-		public bool HasX => X is not null;
-		public bool HasY => Y is not null;
-		public bool HasValue => X == null && Y == null;
-		public bool CanExplode => Depth > 4;
-
-
-		public (bool, SnailNumber) TryGetExplodingPair()
+		sn = n;
+		if (HasValueLargerThan10(n, out var idx))
 		{
-			var current = this;
+			var pair = Split(n[idx..(idx + 2)]);
+			sn = n.ReplaceAt(idx, pair, 2);
+			return true;
+		}
+
+		return false;
+	}
+
+	private static bool HasValueLargerThan10(string n, out int idx)
+	{
+		var m = Regex.Match(n, @"\d{2}");
+		idx = m.Index;
+
+		return m.Success;
+	}
+
+	public static string Split(string n)
+	{
+		var value = n.ToInt( );
+		if (value < 10)
+			throw new ArgumentException($"Number {n} is less than 10!");
+
+		var x = (int)Math.Floor(value / 2f);
+		var y = (int)Math.Ceiling(value / 2f);
+
+		return $"[{x},{y}]";
+	}
+
+	public static bool TryExplode(string n, out string sn)
+	{
+		sn = n;
+
+		if (HasExplodingPair(n, out var idx))
+		{
+			var hasLeft = Regex.Matches(n[..idx], @"\d+");
+			var hasRight = Regex.Matches(n[(idx + 5)..], @"\d+");
+			var pair = GetValue(n[idx..(idx + 5)]);
+			var offsetRight = 0;
 			
-			while (current.HasX)
+			if (hasLeft.Any( ))
 			{
-				if (current.CanExplode)
-					return (true, current);
-				
-				current = current.X;
+				var left = hasLeft.Last( );
+				var nl = (left.Value.ToInt( ) + pair.x).ToString( );
+				n = n.ReplaceAt(left.Index, nl, left.Value.Length);
+				offsetRight = nl.Length - 1;
 			}
 
-			current = this;
-
-			while (current.HasY)
+			if (hasRight.Any())
 			{
-				if (current.CanExplode)
-					return (true, current);
-
-				current = current.Y;
+				var right = hasRight.First();
+				var nl = (right.Value.ToInt() + pair.y).ToString();
+				n = n.ReplaceAt(right.Index + idx + 5 + offsetRight, nl, right.Value.Length);
 			}
 
-			return (false, null);
+			sn = n.ReplaceAt(idx + offsetRight, "0", 5);
+
+			return true;
 		}
 
-		public SnailNumber Add(SnailNumber x, SnailNumber y)
+		return false;
+	}
+
+
+	private static (int x, int y) GetValue(string pair)
+	{
+		var isValidPair = pair.StartsWith('[') &&
+						  pair.EndsWith(']') &&
+						  pair.Count(c => c == '[') == 1 &&
+						  pair.Count(c => c == ']') == 1;
+
+		if (!isValidPair)
+			throw new ArgumentException($"{pair} is not a valid pair!");
+
+		var parts = pair.Trim('[', ']').Split(',');
+		return (parts[0].ToInt( ), parts[1].ToInt( ));
+	}
+
+
+
+	private static bool HasExplodingPair(string n, out int idx)
+	{
+		var nesting = 0;
+		idx = 0;
+		while (idx < n.Length)
 		{
-			var result = new SnailNumber { X = x, Y = y };
-			result.X.Parent = result;
-			result.Y.Parent = result;
+			if (n[idx] == '[')
+				nesting++;
 
-			return result;
+			if (n[idx] == ']')
+				nesting--;
+
+			if (nesting > 4)
+				return true;
+			idx++;
 		}
 
-		
+		return false;
+	}
+
+	public static int CalculateMagnitude(string n)
+	{
+		while (true)
+		{
+			var match = Regex.Match(n, @"\[\d+,\d+\]");
+			if (!match.Success)
+				break;
+
+			var pair = GetValue(match.Value);
+			var mag = 3 * pair.x + 2 * pair.y;
+			n = n.ReplaceAt(match.Index, mag.ToString( ), match.Value.Length);
+		}
+
+		return n.ToInt( );
+	}
+
+	public static string Reduce(List<string> input)
+	{
+		var idx = 0;
+		var current = input[idx];
+
+		while (idx < input.Count - 1)
+		{
+			idx++;
+			current = Add(current, input[idx]);
+
+			while (HasExplodingPair(current, out _) || HasValueLargerThan10(current, out _))
+			{
+				if (TryExplode(current, out var sn))
+				{
+					current = sn;
+					continue;
+				}
+
+				if (TrySplit(current, out var snn))
+				{
+					current = snn;
+				}
+			}
+
+		}
+
+
+		return current;
 	}
 }

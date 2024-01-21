@@ -31,8 +31,8 @@ public class Day15 : Solution
 
 				if (t.o.Contains('='))
 				{
-					if (!labels2Focus.TryAdd(t.l, t.o.AsInteger( )))
-						labels2Focus[t.l] = t.o.AsInteger( );
+					if (!labels2Focus.TryAdd(t.l, t.o.ToInt( )))
+						labels2Focus[t.l] = t.o.ToInt( );
 
 					if (!boxes[labels2Boxes[t.l]].Contains(t.l))
 						boxes[labels2Boxes[t.l]].Add(t.l);

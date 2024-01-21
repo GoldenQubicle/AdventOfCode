@@ -11,7 +11,7 @@ namespace Common.Extensions
 
         public static List<string> ToList(this string s) => new() { s };
 
-        public static int AsInteger(this string s) => int.Parse(new(s.Where(char.IsDigit).ToArray()));
+        public static int ToInt(this string s) => int.Parse(s.Where(char.IsDigit).AsString());
 
         public static bool HasInteger(this string s) => s.Any(char.IsDigit);
 

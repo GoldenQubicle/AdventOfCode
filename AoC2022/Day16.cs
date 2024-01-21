@@ -5,7 +5,7 @@ namespace AoC2022
         private readonly Dictionary<string, (int rate, List<string> tunnels)> valves;
 
         public Day16(string file) : base(file) => valves = Input.Select(line => line.Split(";"))
-            .ToDictionary(p => p[0][6..8], p => (rate: p[0].AsInteger(), tunnels: p[1][23..].Split(",").Select(s => s.Trim()).ToList()));
+            .ToDictionary(p => p[0][6..8], p => (rate: p[0].ToInt(), tunnels: p[1][23..].Split(",").Select(s => s.Trim()).ToList()));
 
         public override async Task<string> SolvePart1()
         {
