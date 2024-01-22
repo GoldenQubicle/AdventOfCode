@@ -20,9 +20,8 @@ public class Day18Test
 	[Test]
 	public async Task Part2()
 	{
-		var expected = string.Empty;
 		var actual = await day18.SolvePart2( );
-		Assert.That(actual, Is.EqualTo(expected));
+		Assert.That(actual, Is.EqualTo("3993"));
 	}
 
 	[Test]
@@ -37,6 +36,7 @@ public class Day18Test
 	[TestCase("[[6,[5,[4,[3,2]]]],1]", "[[6,[5,[7,0]]],3]")]
 	[TestCase("[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]", "[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]")]
 	[TestCase("[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]", "[[3,[2,[8,0]]],[9,[5,[7,0]]]]")]
+	[TestCase("[[[[12,12],[6,14]],[[15,0],[17,[8,1]]]],[2,9]]", "[[[[12,12],[6,14]],[[15,0],[25,0]]],[3,9]]")]
 	public void Explode(string n, string expected)
 	{
 		Day18.TryExplode(n, out var actual);
@@ -71,7 +71,12 @@ public class Day18Test
 		Assert.That(actual, Is.EqualTo(test.expected));
 	}
 
-	
+	[Test]
+	public void ActuallyReduce()
+	{
+		var actual = Day18.ActuallyReduce("[[[[[6,6],[6,6]],[[6,0],[6,7]]],[[[7,7],[8,9]],[8,[8,1]]]],[2,9]]");
+		Assert.That(actual, Is.EqualTo("[[[[6,6],[7,7]],[[0,7],[7,7]]],[[[5,5],[5,6]],9]]"));
+	}
 
 	private static IEnumerable<(List<string> input, string expected)> GetReduceTestCases()
 	{
