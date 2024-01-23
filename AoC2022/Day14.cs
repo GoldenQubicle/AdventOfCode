@@ -27,30 +27,30 @@ namespace AoC2022
             var grid = GetGrid();
             grid.Fill('.');
 
-            var sand = (x: 500, y: 0);
+            var sand = new Cell((x: 500, y: 0));
             var minx = grid.Min(c => c.X);
             var maxx = grid.Max(c => c.X);
             var maxy = grid.Max(c => c.Y);
 
             while (true)
             {
-                var options = grid.GetNeighbors(sand, n => n.Y > sand.y && n.Character == '.')
-                    .OrderBy(n => n.X == sand.x)
-                    .ThenBy(n => n.X < sand.x)
-                    .ThenBy(n => n.X > sand.x).ToList();
+                var options = grid.GetNeighbors(sand, n => n.Y > sand.Y && n.Character == '.')
+                    .OrderBy(n => n.X == sand.X)
+                    .ThenBy(n => n.X < sand.X)
+                    .ThenBy(n => n.X > sand.X).ToList();
 
                 if (options.Any())
                 {
-                    sand = options.Last().Position;
+                    sand = options.Last().Cast<Cell>();
                     continue;
                 }
 
                 // we cant move, either at rest or falling of the abyss, check x
-                if (sand.x <= minx || sand.x >= maxx || sand.y >= maxy)
+                if (sand.X <= minx || sand.Y >= maxx || sand.Y >= maxy)
                     break;
 
-                grid.AddOrUpdate(new(sand, 'S'));
-                sand = new(500, 0);
+                grid.AddOrUpdate(new(sand.Position, 'S'));
+                sand = new((500, 0));
                 Debug.WriteLine(grid.ToString());
 
             }
@@ -73,25 +73,25 @@ namespace AoC2022
 
             Debug.Write(grid.ToString());
 
-            var sand = (x: 500, y:0);
-            while (true)
+			var sand = new Cell((x: 500, y: 0));
+			while (true)
             {
-                var options = grid.GetNeighbors(sand, n => n.Y > sand.y && n.Character == '.')
-                    .OrderBy(n => n.X == sand.x)
-                    .ThenBy(n => n.X < sand.x)
-                    .ThenBy(n => n.X > sand.x).ToList();
+                var options = grid.GetNeighbors(sand, n => n.Y > sand.Y && n.Character == '.')
+                    .OrderBy(n => n.X == sand.X)
+                    .ThenBy(n => n.X < sand.X)
+                    .ThenBy(n => n.X > sand.X).ToList();
 
                 if (options.Any())
                 {
-                    sand = options.Last().Position;
+                    sand = options.Last().Cast<Cell>();
                     continue;
                 }
 
-                if (sand.x == 500 && sand.y == 0)
+                if (sand.X == 500 && sand.Y == 0)
                     break;
 
-                grid.AddOrUpdate(new(sand, 'S'));
-                sand = new(500, 0);
+                grid.AddOrUpdate(new(sand.Position, 'S'));
+                sand = new((500, 0));
                 Debug.WriteLine(grid.ToString());
 
             }

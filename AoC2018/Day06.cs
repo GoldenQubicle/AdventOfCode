@@ -24,7 +24,7 @@ public class Day06 : Solution
 
 		foreach (var cell in grid)
 		{
-			var closest = locations.Select(l => (l.Key, d: GetManhattanDistance(l.Value, cell.Position))).GroupBy(l => l.d).MinBy(g => g.Key);
+			var closest = locations.Select(l => (l.Key, d: Maths.GetManhattanDistance(l.Value, cell.Position))).GroupBy(l => l.d).MinBy(g => g.Key);
 			cell.Character = closest.Count( ) == 1 ? (char)closest.First( ).Key : '.';
 		}
 
@@ -48,7 +48,7 @@ public class Day06 : Solution
 
 		foreach (var cell in grid)
 		{
-			var sum = locations.Select(l => (l.Key, d: GetManhattanDistance(l.Value, cell.Position))).Sum(l => l.d);
+			var sum = locations.Select(l => (l.Key, d: Maths.GetManhattanDistance(l.Value, cell.Position))).Sum(l => l.d);
 
 			if (sum < Threshold)
 				cell.Character = 'r';
@@ -56,7 +56,4 @@ public class Day06 : Solution
 
 		return grid.Count(c => c.Character == 'r').ToString( );
 	}
-
-	private int GetManhattanDistance((int x, int y) one, (int x, int y) two) =>
-		Math.Abs(two.x - one.x) + Math.Abs(two.y - one.y);
 }

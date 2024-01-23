@@ -17,8 +17,6 @@ public class Day15 : Solution
 			(node, node1) => 0L);
 
 		result.path.ForEach(c => c.Character = '#');
-		//Console.WriteLine(grid);
-
 		return result.cost.ToString();
 	}
 
@@ -51,8 +49,6 @@ public class Day15 : Solution
 		}
 		expansion.ForEach(grid.Add);
 
-		//Console.WriteLine(grid);
-
 		var start = grid[0, 0];
 		var target = grid[grid.Max(c => c.X), grid.Max(c => c.Y)];
 
@@ -64,10 +60,6 @@ public class Day15 : Solution
 
 		result.path.ForEach(c => c.Character = '#');
 		
-		//Console.WriteLine(grid);
 		return result.cost.ToString();
-
-		// 2874 too high
-		return string.Empty;
 	}
 }

@@ -11,15 +11,22 @@ namespace Common;
 
 public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 {
-	public int Width { get; init; }
-	public int Height { get; init; }
+	/// <summary>
+	/// When true, will automatically pad the grid with an empty, 2 wide cell padding using '.' as the character.
+	/// In addition GetNeighbors will automatically expand the grid with new cells in case neighbors do not exist. 
+	/// </summary>
+	public bool IsInfinite { get; }
+	public int Width { get; init; } //note: does not reflect any changes made after initialization
+	public int Height { get; init; } //note: does not reflect any changes made after initialization
 	public int Count => Cells.Count;
 	private Dictionary<(int x, int y), Cell> Cells { get; } = new( );
 
 	private List<(int x, int y)> Offsets { get; }
 
-	public Grid2d(bool diagonalAllowed = true)
+	public Grid2d(bool diagonalAllowed = true, bool isInfinite = false)
 	{
+		IsInfinite = isInfinite;
+
 		List<(int x, int y)> filter = diagonalAllowed
 			? new( ) { new(0, 0) }
 			: new( ) { new(-1, -1), new(-1, 1), new(1, -1), new(1, 1), new(0, 0) };
@@ -28,17 +35,16 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 			.Select(v => (v[0], v[1]))
 			.Where(p => !filter.Contains(p))
 			.ToList( );
-		//Offsets.Reverse();
 	}
 
-	public Grid2d(IReadOnlyList<string> input, bool diagonalAllowed = true) : this(diagonalAllowed)
+	public Grid2d(IReadOnlyList<string> input, bool diagonalAllowed = true, bool isInfinite = false) : this(diagonalAllowed, isInfinite)
 	{
 		Width = input.Max(l => l.Length);
 		Height = input.Count;
 		DoInitializeCells(input);
 	}
 
-	public Grid2d(int width, int height, bool diagonalAllowed = true) : this(diagonalAllowed)
+	public Grid2d(int width, int height, bool diagonalAllowed = true, bool isInfinite = false) : this(diagonalAllowed, isInfinite)
 	{
 		Width = width;
 		Height = height;
@@ -58,11 +64,29 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 				Cells.Add(gc.Position, gc);
 			}
 		}
+
+		//add an empty, 2 cell wide border around the input
+		if (IsInfinite)
+		{
+			for (var w = -2 ;w < Width + 2 ;w++)
+			{
+				Add(new Cell((w, -1), '.'));
+				Add(new Cell((w, -2), '.'));
+				Add(new Cell((w, Height), '.'));
+				Add(new Cell((w, Height + 1), '.'));
+			}
+			for (var h = 0 ;h < Height  ;h++)
+			{
+				Add(new Cell((-1, h), '.'));
+				Add(new Cell((-2, h), '.'));
+				Add(new Cell((Width + 1, h), '.'));
+				Add(new Cell((Width + 2, h), '.'));
+			}
+		}
 	}
 
 
-	public Cell this[Cell c] => Cells[c.Position];
-	public Cell this[int idx] => this.ToArray()[idx];
+	public Cell this[int idx] => this.ToArray( )[idx];
 	public Cell this[(int x, int y) p] => Cells[p];
 	public INode this[int x, int y] => Cells[(x, y)];
 
@@ -76,20 +100,18 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 	/// <returns></returns>
 	public List<Cell> GetNeighbors(Cell cell) => Offsets
 		.Select(o => o.Add(cell.Position))
-		.Where(IsInBounds)
-		.Select(np => Cells[np]).ToList( );
+		.Where(c => IsInfinite || IsInBounds(c))
+		.Select(np =>
+		{
+			if(IsInfinite && !IsInBounds(np))
+				Add(new(np, '.'));
 
-	public List<Cell> GetNeighbors((int x, int y) position) => Offsets
-		.Select(o => o.Add(position))
-		.Where(IsInBounds)
-		.Select(np => Cells[np]).ToList( );
+			return Cells[np];
+		}).ToList( );
 
 	public IEnumerable<INode> GetNeighbors(INode node, Func<INode, bool> query) =>
 		GetNeighbors(node as Cell).Where(query).ToList( );
 
-
-	public List<Cell> GetNeighbors((int x, int y) p, Func<Cell, bool> query) =>
-		GetNeighbors(p).Where(query).ToList( );
 
 	public bool IsInBounds((int x, int y) toCheck) => Cells.ContainsKey(toCheck);
 
@@ -168,7 +190,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator( );
 
-	
+
 	public record Cell((int, int) Position) : INode
 	{
 		public (int x, int y) Position { get; set; } = Position;
@@ -184,7 +206,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 			Value = char.IsDigit(Character) ? Character.ToLong( ) : 0;
 		}
 
-		
+
 		/// <summary>
 		/// returns a new Cell with same Position but new character
 		/// </summary>
@@ -210,9 +232,10 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 				var p = (x, y);
 				if (Cells.TryGetValue(p, out var c))
 					sb.Append(c.Character);
-				else sb.Append(string.Empty);
+				else
+					sb.Append(string.Empty);
 			}
-			sb.Append("\n");
+			sb.Append('\n');
 		}
 		return sb.ToString( );
 	}

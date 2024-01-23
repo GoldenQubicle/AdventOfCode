@@ -69,7 +69,10 @@ public class Day13 : Solution
 		while (!collision)
 			collision = DoUpdateCarts( ).Count != 0;
 
-		return carts.GroupBy(c => c.Position).First(g => g.Count( ) == 2).Select(c => $"{c.Position.x},{c.Position.y}").First( );
+		return carts
+			.GroupBy(c => c.Position)
+			.First(g => g.Count( ) == 2)
+			.Select(c => $"{c.Position.x},{c.Position.y}").First( );
 	}
 
 	public override async Task<string> SolvePart2()
