@@ -168,107 +168,13 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator( );
 
-	//public List<Cell> GetShortestPath_V1(Cell start, Cell target, Func<Cell, Cell, bool> constraint, Func<Cell, Cell, bool> targetCondition)
-	//{
-	//	Cells.Values.ForEach(c => c.Distance = Math.Abs(target.X - c.X) + Math.Abs(target.Y - c.Y));
-	//	var path = new List<Cell>( );
-	//	var visited = new Dictionary<(int x, int y), bool>( );
-	//	var queue = new PriorityQueue<Cell, long>( );
-
-	//	queue.Enqueue(start, start.GetOverallCost);
-
-	//	while (queue.Count > 0)
-	//	{
-	//		var current = queue.Dequeue( );
-	//		visited[current.Position] = true;
-
-	//		if (targetCondition(current, target))
-	//		{
-	//			while (current.Parent is not null)
-	//			{
-	//				path.Add(current.Parent);
-	//				current = current.Parent;
-	//			}
-	//			break;
-	//		}
-
-	//		GetNeighbors(current, n => !visited.ContainsKey(n.Position) && constraint(current, n))
-	//			.Select(n => n with { Parent = current, Cost = current.Cost + 1 })
-	//			.ForEach(n => queue.Enqueue(n, n.GetOverallCost));
-
-	//	}
-
-	//	return path;
-	//}
-
-
-	/// <summary>
-	/// Simple shortest path solver using a priority queue.
-	/// Note it operates on the instanced grid, i.e. multiple calls are not possible and require new grid2d. Kinda sucky, I know. 
-	/// </summary>
-	/// <param name="start">The Start Cell</param>
-	/// <param name="target">The Target Cell</param>
-	/// <param name="constraint">Predicate used when getting neighbors for the dequeued cell. Current cell is the 1st argument, neighbor cell the 2nd.</param>
-	/// <param name="targetCondition">Predicate used to break out of while loop. Current cell is the 1st argument, target cell the 2nd.</param>
-	/// <returns></returns>
-	//public List<List<Cell>> GetShortestPath(Cell start, Cell target, Func<Cell, Cell, bool> constraint, Func<Cell, Cell, bool> targetCondition)
-	//{
-	//	//2023 12 7 start rework
-	//	Cells.Values.ForEach(c => c.Distance = Math.Abs(target.X - c.X) + Math.Abs(target.Y - c.Y));
-	//	var paths = new List<List<Cell>>( );
-	//	var visited = new Dictionary<(int x, int y), bool>( );
-	//	var queue = new PriorityQueue<Cell, long>( );
-
-	//	queue.Enqueue(start, start.GetOverallCost);
-
-	//	while (queue.Count > 0)
-	//	{
-	//		var current = queue.Dequeue( );
-	//		visited[current.Position] = true;
-
-	//		if (targetCondition(current, target))
-	//		{
-	//			//we've reached the target, now backtrack how we came here
-	//			var path = new List<Cell>( );
-	//			while (current.Parent is not null)
-	//			{
-	//				path.Add(current.Parent);
-	//				current = current.Parent;
-	//			}
-	//			//current has been reset to start now, so clear queue & visited
-	//			//however, do add ALL the paths we just found to the visited list -> yeah no, doesn't work like that
-	//			queue.Clear();
-	//			visited.Clear();
-	//			paths.Add(path);
-
-	//			paths.ForEach(p => p.ForEach(c => visited.TryAdd(c.Position, true)));
-
-	//			GetNeighbors(current, n => !visited.ContainsKey(n.Position) && constraint(current, n))
-	//				.Select(n => n with { Parent = current, Cost = current.Cost + 1 })
-	//				.ForEach(n => queue.Enqueue(n, n.GetOverallCost));
-	//			continue;
-
-	//		}
-
-	//		GetNeighbors(current, n => !visited.ContainsKey(n.Position) && constraint(current, n))
-	//			.Select(n => n with { Parent = current, Cost = current.Cost + 1 })
-	//			.ForEach(n => queue.Enqueue(n, n.GetOverallCost));
-
-	//	}
-
-	//	return paths;
-	//}
-
-
+	
 	public record Cell((int, int) Position) : INode
 	{
 		public (int x, int y) Position { get; set; } = Position;
 		public char Character { get; set; } = '.';
 		public long Value { get; set; }
-		public Cell Parent { get; init; }
 		public long Cost { get; set; }
-		public long Distance { get; set; }
-		public long GetOverallCost => Cost + Distance;
 		public int X => Position.x;
 		public int Y => Position.y;
 
