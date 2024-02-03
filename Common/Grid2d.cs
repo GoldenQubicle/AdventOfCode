@@ -16,6 +16,8 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 	/// In addition GetNeighbors will automatically expand the grid with new cells in case neighbors do not exist. 
 	/// </summary>
 	public bool IsInfinite { get; }
+
+	public char EmptyCharacter { get; set; } = '.'; 
 	public int Width { get; init; } //note: does not reflect any changes made after initialization
 	public int Height { get; init; } //note: does not reflect any changes made after initialization
 	public int Count => Cells.Count;
@@ -53,34 +55,33 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 
 	private void DoInitializeCells(IReadOnlyList<string> input = default)
 	{
-		for (var y = 0 ;y < Height ;y++)
+		for (var y = 0; y < Height; y++)
 		{
-			for (var x = 0 ;x < Width ;x++)
+			for (var x = 0; x < Width; x++)
 			{
 				var gc = input == default || x >= input[y].Length
 					? new Cell((x, y))
-					: new Cell((x, y), input[y][x]); //yes really input[y][x], it reads wrong but is right - still dealing with a list here. 
+					: new Cell((x, y),
+						input[y][x]); //yes really input[y][x], it reads wrong but is right - still dealing with a list here. 
 
 				Cells.Add(gc.Position, gc);
 			}
 		}
+	}
 
-		//add an empty, 2 cell wide border around the input
-		if (IsInfinite)
+	public (int minx, int maxx, int miny, int maxy) GetMinAndMaxXandY() =>
+		(Cells.Values.Min(c => c.X), Cells.Values.Max(c => c.X), Cells.Values.Min(c => c.Y), Cells.Values.Max(c => c.Y));
+
+	public void Pad(int n, char blank = '.')
+	{
+		var (minx, maxx, miny, maxy) = GetMinAndMaxXandY();
+
+
+		for (var y = miny - n ;y <= maxy + n ;y++)
 		{
-			for (var w = -2 ;w < Width + 2 ;w++)
+			for (var x = minx - n ;x <= maxx + n ;x++)
 			{
-				Add(new Cell((w, -1), '.'));
-				Add(new Cell((w, -2), '.'));
-				Add(new Cell((w, Height), '.'));
-				Add(new Cell((w, Height + 1), '.'));
-			}
-			for (var h = 0 ;h < Height  ;h++)
-			{
-				Add(new Cell((-1, h), '.'));
-				Add(new Cell((-2, h), '.'));
-				Add(new Cell((Width + 1, h), '.'));
-				Add(new Cell((Width + 2, h), '.'));
+				Cells.TryAdd((x, y), new(new(x, y), blank));
 			}
 		}
 	}
@@ -103,8 +104,8 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 		.Where(c => IsInfinite || IsInBounds(c))
 		.Select(np =>
 		{
-			if(IsInfinite && !IsInBounds(np))
-				Add(new(np, '.'));
+			if (IsInfinite && !IsInBounds(np))
+				return new(np, EmptyCharacter);
 
 			return Cells[np];
 		}).ToList( );
@@ -114,6 +115,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 
 
 	public bool IsInBounds((int x, int y) toCheck) => Cells.ContainsKey(toCheck);
+
 
 	/// <summary>
 	/// Gets cells according to specified query.
@@ -180,6 +182,8 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 
 	public void Add(Cell cell) => Cells.Add(cell.Position, cell);
 
+	
+
 	public void AddOrUpdate(Cell cell)
 	{
 		if (!Cells.TryAdd(cell.Position, cell))
@@ -218,10 +222,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 
 	public override string ToString()
 	{
-		var minx = Cells.Values.Min(c => c.X);
-		var maxx = Cells.Values.Max(c => c.X);
-		var miny = Cells.Values.Min(c => c.Y);
-		var maxy = Cells.Values.Max(c => c.Y);
+		var (minx, maxx, miny, maxy) = GetMinAndMaxXandY();
 
 		var sb = new StringBuilder( );
 
@@ -238,26 +239,5 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 			sb.Append('\n');
 		}
 		return sb.ToString( );
-	}
-
-	/// <summary>
-	/// Helper method to fill out the grid in case the input is sparse. 
-	/// </summary>
-	/// <param name="blank">The character to use for empty cells</param>
-	public void Fill(char blank)
-	{
-		var minx = Cells.Values.Min(c => c.X);
-		var maxx = Cells.Values.Max(c => c.X);
-		var miny = 0;//Cells.Values.Min(c => c.Y);//2022 day 14 hack
-		var maxy = Cells.Values.Max(c => c.Y);
-
-		for (var y = miny ;y <= maxy ;y++)
-		{
-			for (var x = minx ;x <= maxx ;x++)
-			{
-				var c = new Cell(new(x, y), blank);
-				Cells.TryAdd(c.Position, c);
-			}
-		}
 	}
 }
