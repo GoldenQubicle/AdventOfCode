@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common;
 using NUnit.Framework;
 
@@ -18,13 +16,15 @@ namespace CommonTests
 			sut = new( ) { 2, 3, 4, 5, 6 };
 		}
 
-		[Test]
-		public void TakeAtShouldWrapAround()
+		[TestCase(true, 4)]
+		[TestCase(false, 5)]
+		public void TakeAtShouldWrapAround(bool moveCurrent, int expectedValue)
 		{
 			sut.SetHeadByIndex(3);
 			Assert.That(sut.Current, Is.EqualTo(5));
-			var actual = sut.TakeAt(4);
+			var actual = sut.TakeAt(4, moveCurrent: moveCurrent);
 			Assert.That(actual, Is.EqualTo(new List<int> { 5, 6, 2, 3 }));
+			Assert.That(sut.Current, Is.EqualTo(expectedValue));
 		}
 
 

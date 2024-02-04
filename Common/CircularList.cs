@@ -52,12 +52,12 @@ public class CircularList<T> : LinkedList<T>
 	/// <summary>
 	/// Starting at, and including the current node, takes the next amount of elements. 
 	/// <br>When end of list is reached, it will wrap around to the start.</br>
-	/// <br>The current node position remains the same.</br>
+	/// <br>The current node position moves by default to the next node after take amount.</br>
 	/// </summary> 
 	/// <remarks>Note: if the amount to take is larger than list size, the returned collection will contain duplicate elements!</remarks>
 	/// <param name="amount"></param>
 	/// <returns></returns>
-	public IEnumerable<T> TakeAt(int amount)
+	public IEnumerable<T> TakeAt(int amount, bool moveCurrent = true)
 	{
 		var result = new List<T>( );
 		for (var i = 0 ;i < amount ;i++)
@@ -65,7 +65,10 @@ public class CircularList<T> : LinkedList<T>
 			result.Add(Current);
 			MoveRight( );
 		}
-		MoveLeft(amount);
+	
+		if(!moveCurrent)
+			MoveLeft(amount);
+
 		return result;
 	}
 
@@ -155,23 +158,28 @@ public class CircularList<T> : LinkedList<T>
 
 	public int GetIndex() => ToNodeArray( ).ToList( ).IndexOf(current);
 
+	private LinkedListNode<T>[] nodeArray;
+
 	private LinkedListNode<T>[ ] ToNodeArray()
 	{
 		if (Count == 0)
 			return Array.Empty<LinkedListNode<T>>( );
 
+		if (nodeArray is not null && nodeArray.Length == Count)
+			return nodeArray;
+
+		nodeArray = new LinkedListNode<T>[Count];
 		var node = First;
-		var array = new LinkedListNode<T>[Count];
 		var index = 0;
 
 		do
 		{
-			array[index++] = node;
+			nodeArray[index++] = node;
 			node = node.Next;
 		} while (node != null);
 
 
-		return array;
+		return nodeArray;
 	}
 
 	public override string ToString() => this.Aggregate(new StringBuilder( ), (sb, value) =>

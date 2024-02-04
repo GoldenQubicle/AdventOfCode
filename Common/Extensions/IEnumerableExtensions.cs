@@ -15,6 +15,14 @@ namespace Common.Extensions
             }
         }
 
+        public static CircularList<T> ToCircularList<T>(this IEnumerable<T> collection)
+        {
+	        var result = new CircularList<T>();
+            collection.ForEach(result.Add);
+            result.ResetHead();
+            return result;
+        }
+
         public static ConcurrentBag<T> ToConcurrentBag<T>(this IEnumerable<T> collection)
         {
 	        var result = new ConcurrentBag<T>();
