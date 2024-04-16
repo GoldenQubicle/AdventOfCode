@@ -17,28 +17,28 @@ public class Day15Test
     }
     
     [TestCaseSource(nameof(GetCombatCases))]
-    public void Part1((string file, int expected) testCase )
+    public void Part1((string file, string expected) testCase )
     {
         var day15 = new Day15(testCase.file);
 		var actual = day15.SolvePart1( ).Result;
-        Assert.That(actual, Is.EqualTo(testCase.expected.ToString()));
+        Assert.That(actual, Is.EqualTo(testCase.expected));
     }
 
-    public static IEnumerable<(string path, int expected)> GetCombatCases()
+    public static IEnumerable<(string path, string expected)> GetCombatCases()
     {
-	    yield return ("day15test1", 27730);
-	    yield return ("day15test2", 36334);
-	    yield return ("day15test3", 39514);
-	    yield return ("day15test4", 27755);
-	    yield return ("day15test5", 28944);
-	    yield return ("day15test6", 18740);
+	    yield return ("day15test1", "27730");
+	    yield return ("day15test2", "36334");
+	    yield return ("day15test3", "39514");
+	    yield return ("day15test4", "27755");
+	    yield return ("day15test5", "28944");
+	    yield return ("day15test6", "18740");
     }
 
     [Test]
     public void UnitOrderShouldBeCorrect()
     {
 	    var day15 = new Day15("day15_unit_order");
-	    var units = day15.GetUnits();
+	    var units = day15.CreateInitialState().GetUnits().Select(u => new Grid2d.Cell(u.Position, u.Type));
 	    var expected = new List<Grid2d.Cell>
 	    {
 		    new((2, 1), 'G'),
@@ -58,6 +58,14 @@ public class Day15Test
     {
 	    var day15 = new Day15("day15_unit_movement");
 	    var result = day15.SolvePart1();
+    }
+
+    [Test]
+    public void NextStepShouldBeCorrectInCaseOfMultiplePaths()
+    {
+	    var day15 = new Day15("day15_multiple_paths");
+	    var actual = day15.GetNextStep((2, 1), (4, 2)).Result;
+        Assert.That(actual, Is.EqualTo((3,1)));
     }
 
 

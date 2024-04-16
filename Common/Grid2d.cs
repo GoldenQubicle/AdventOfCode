@@ -23,7 +23,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 	public int Count => Cells.Count;
 	private Dictionary<(int x, int y), Cell> Cells { get; } = new( );
 
-	private List<(int x, int y)> Offsets { get; }
+	public List<(int x, int y)> Offsets { get; }
 
 	public Grid2d(bool diagonalAllowed = true, bool isInfinite = false)
 	{
