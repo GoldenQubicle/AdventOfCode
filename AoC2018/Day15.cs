@@ -1,28 +1,53 @@
-using Common.Interfaces;
-using Common.Renders;
-
 namespace AoC2018;
 
-public class Day15 : Solution
+public class Day15(string file) : Solution(file)
 {
-	private Grid2d grid;
-
-	public Day15(string file) : base(file) => grid = new(Input, diagonalAllowed: false);
-
-
-	public CombatState CreateInitialState() =>
-		new(0, grid
-			.Where(c => c.Character is 'G' or 'E')
-			.Select(c => new Unit(c.Character, c.Position, 200))
-			.ToList( ));
-
 	public override async Task<string> SolvePart1()
 	{
-		var state = CreateInitialState( );
+		var grid = CreateInitialGrid( );
+		var state = CreateInitialState(grid);
+
+		state = await DoCombat(state, grid);
+
+		return state.GetOutcome( ).ToString( );
+	}
+
+	public override async Task<string> SolvePart2()
+	{
+		var elfAttack = 4; // 15 
+		var grid = CreateInitialGrid( );
+		var state = CreateInitialState(grid, elfAttack);
+
+		while (true)
+		{
+			state = await DoCombat(state, grid);
+
+			if (state.ElvesSurvived( ))
+				break;
+
+			elfAttack++;
+			grid = CreateInitialGrid( );
+			state = CreateInitialState(grid, elfAttack);
+		}
+
+		return state.GetOutcome( ).ToString( );
+	}
+
+	public Grid2d CreateInitialGrid() => new(Input, diagonalAllowed: false);
+
+	public static CombatState CreateInitialState(Grid2d grid, int elfAttack = 3)
+	{
+		var elves = grid.Where(c => c.Character == 'E').Select(c => new Unit(c.Character, c.Position, 200, elfAttack));
+		var goblins = grid.Where(c => c.Character == 'G').Select(c => new Unit(c.Character, c.Position, 200, 3));
+		return new(0, elves.Concat(goblins).ToList( ));
+	}
+
+	private static async Task<CombatState> DoCombat(CombatState state, Grid2d grid)
+	{
 		var targetsRemaining = true;
 
-		Console.WriteLine($"Initial state");
-		Console.WriteLine(grid);
+		//Console.WriteLine($"Initial state");
+		//Console.WriteLine(grid);
 
 		while (targetsRemaining)
 		{
@@ -34,49 +59,40 @@ public class Day15 : Solution
 
 				var targets = state.GetTargets(unit);
 
-				if (targets.Count == 0)
+				if (!targets.Any())
 				{
 					targetsRemaining = false;
 					break;
 				}
 
-				if (TryAttack(unit, state))
+				if (TryAttack(unit, state, grid))
 					continue;
 
+				var (hasNearest, nearest) = await GetNearest(unit, targets, grid);
 
-				var (hasNearest, nearest) = await GetNearest(unit, targets);
-				if(!hasNearest)
+				if (!hasNearest)
 					continue;
 
-				await MoveUnit(unit, nearest);
+				await MoveUnit(unit, nearest!, grid);
 
-				TryAttack(unit, state);
+				TryAttack(unit, state, grid);
 			}
 
 			state = state with { Round = state.Round + 1 };
 
 			Console.WriteLine($"Round {state.Round}");
 			Console.WriteLine(grid);
-			var stats = state.Units.Aggregate(new StringBuilder( ), (builder, unit) =>
-				builder.AppendLine($"Unit {unit.Type} | Position {unit.Position} | HP: {unit.HitPoints} "));
-			Console.WriteLine(stats.ToString( ));
+			//var stats = state.Units.Aggregate(new StringBuilder( ), (builder, unit) =>
+			//	builder.AppendLine($"Unit {unit.Type} | Position {unit.Position} | HP: {unit.HitPoints} "));
+			//Console.WriteLine(stats.ToString( ));
 		}
 
-
-		if (IRenderState.IsActive)
-			await IRenderState.Update(new CombatRender(grid));
-
-		return state.GetOutcome( ).ToString( );
+		return state;
 	}
 
-	public override async Task<string> SolvePart2()
+	private static async Task MoveUnit(Unit unit, Grid2d.Cell nearest, Grid2d grid)
 	{
-		return string.Empty;
-	}
-
-	private async Task MoveUnit(Unit unit, Grid2d.Cell nearest)
-	{
-		var newPosition = await GetNextStep(unit.Position, nearest.Position);
+		var newPosition = await GetNextStep(unit.Position, nearest.Position, grid);
 
 		grid[unit.Position].Character = '.';
 		grid[newPosition].Character = unit.Type;
@@ -84,11 +100,11 @@ public class Day15 : Solution
 	}
 
 
-	private async Task<(bool hasNearest, Grid2d.Cell nearest)> GetNearest(Unit unit, List<Unit> targets)
+	private static async Task<(bool hasNearest, Grid2d.Cell? nearest)> GetNearest(Unit unit, IEnumerable<Unit> targets, Grid2d grid)
 	{
 		//Identifies all of the open squares (.) that are in range of each target and
 		//determines which open cells next to targets the unit could reach in the fewest steps.
-		var inRange = GetCellsInRange(targets);
+		var inRange = GetCellsInRange(targets, grid);
 		var reachable = new Dictionary<Grid2d.Cell, int>( );
 
 		foreach (var open in inRange)
@@ -106,13 +122,14 @@ public class Day15 : Solution
 			return (false, null);
 
 		//If multiple squares are in range and tied for being reachable in the fewest steps, the square which is first in reading order is chosen.
-		var nearest = reachable.GroupBy(kvp => kvp.Value).OrderBy(g => g.Key).First( )
+		var nearest = reachable
+			.GroupBy(kvp => kvp.Value).OrderBy(g => g.Key).First( )
 			.OrderBy(kvp => kvp.Key.Y).ThenBy(kvp => kvp.Key.X).First( ).Key;
 
 		return (true, nearest);
 	}
 
-	private HashSet<Grid2d.Cell> GetCellsInRange(List<Unit> targets) => targets
+	private static HashSet<Grid2d.Cell> GetCellsInRange(IEnumerable<Unit> targets, Grid2d grid) => targets
 			.SelectMany(t => grid.GetNeighbors(grid[t.Position], n => n.Character == '.'))
 			.Aggregate(new HashSet<Grid2d.Cell>( ), (set, node) =>
 			{
@@ -120,7 +137,7 @@ public class Day15 : Solution
 				return set;
 			});
 
-	private bool TryAttack(Unit unit, CombatState state)
+	private static bool TryAttack(Unit unit, CombatState state, Grid2d grid)
 	{
 		var (inIsRange, target) = state.IsTargetInRange(unit);
 
@@ -128,15 +145,14 @@ public class Day15 : Solution
 			return false;
 
 		target!.TakeDamage(unit.Attack);
+
 		if (target.IsDead)
-		{
 			grid[target.Position].Character = '.';
-		}
 
 		return true;
 	}
 
-	public async Task<(int x, int y)> GetNextStep((int x, int y) unitPosition, (int x, int y) nearest)
+	public static async Task<(int x, int y)> GetNextStep((int x, int y) unitPosition, (int x, int y) nearest, Grid2d grid)
 	{
 		var steps = new Dictionary<Grid2d.Cell, int>( );
 
@@ -161,22 +177,21 @@ public class Day15 : Solution
 	}
 
 
-
-	
-
 	public record CombatState(int Round, List<Unit> Units)
 	{
 		public int GetOutcome() =>
 			(Round - 1) * Units.Where(u => !u.IsDead).Sum(u => u.HitPoints);
 
-		public List<Unit> GetTargets(Unit unit) =>
-			Units.Where(u => u.Type != unit.Type && !u.IsDead).ToList( );
+		public IEnumerable<Unit> GetTargets(Unit unit) =>
+			Units.Where(u => u.Type != unit.Type && !u.IsDead);
 
 		public IEnumerable<Unit> GetUnits() => Units
 			.Where(u => !u.IsDead)
 			.OrderBy(u => u.Position.Y)
 			.ThenBy(u => u.Position.X);
 
+		public bool ElvesSurvived() =>
+			!Units.Any(u => u is { Type: 'E', IsDead: true });
 
 		public (bool result, Unit? target) IsTargetInRange(Unit unit)
 		{
@@ -200,7 +215,7 @@ public class Day15 : Solution
 		}
 	}
 
-	public record Unit(char Type, (int X, int Y) Position, int HitPoints, int Attack = 3)
+	public record Unit(char Type, (int X, int Y) Position, int HitPoints, int Attack)
 	{
 		public int HitPoints { get; private set; } = HitPoints;
 		public (int X, int Y) Position { get; set; } = Position;
