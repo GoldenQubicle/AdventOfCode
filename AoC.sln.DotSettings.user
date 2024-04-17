@@ -1,8 +1,14 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1c305442_002D156e_002D4cc4_002D88f7_002Df51b50830761/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day15Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1c305442_002D156e_002D4cc4_002D88f7_002Df51b50830761/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day15Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::8730BBB1-1670-46B4-BC10-7D8F536E5F15::net8.0::AoC2018Tests.Day15Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5c3f7cd9_002De111_002D4bce_002D8dab_002D5caead3e9b99/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day17Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::8730BBB1-1670-46B4-BC10-7D8F536E5F15::net8.0::AoC2018Tests.Day17Test&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
 	
 	</wpf:ResourceDictionary>

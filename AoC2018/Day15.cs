@@ -2,6 +2,7 @@ namespace AoC2018;
 
 public class Day15(string file) : Solution(file)
 {
+
 	public override async Task<string> SolvePart1()
 	{
 		var grid = CreateInitialGrid( );

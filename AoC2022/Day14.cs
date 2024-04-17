@@ -25,6 +25,7 @@ namespace AoC2022
 		public override async Task<string> SolvePart1()
 		{
 			var grid = GetGrid( );
+			//grid.Pad(0);
 			Fill('.', grid);
 
 			var sand = new Cell((x: 500, y: 0));

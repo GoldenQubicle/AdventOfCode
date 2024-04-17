@@ -72,7 +72,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 	public (int minx, int maxx, int miny, int maxy) GetMinAndMaxXandY() =>
 		(Cells.Values.Min(c => c.X), Cells.Values.Max(c => c.X), Cells.Values.Min(c => c.Y), Cells.Values.Max(c => c.Y));
 
-	public void Pad(int n, char blank = '.')
+	public Grid2d Pad(int n, char blank = '.')
 	{
 		var (minx, maxx, miny, maxy) = GetMinAndMaxXandY();
 
@@ -84,6 +84,8 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 				Cells.TryAdd((x, y), new(new(x, y), blank));
 			}
 		}
+
+		return this;
 	}
 
 
@@ -180,7 +182,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 		return range;
 	}
 
-	public void Add(Cell cell) => Cells.Add(cell.Position, cell);
+	public void Add(Cell cell) => Cells.TryAdd(cell.Position, cell);
 
 	
 
