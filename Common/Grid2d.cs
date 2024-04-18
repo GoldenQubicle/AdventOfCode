@@ -69,12 +69,27 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 		}
 	}
 
-	public (int minx, int maxx, int miny, int maxy) GetMinAndMaxXandY() =>
+	/// <summary>
+	/// Get the bounds of the grid as min & max x & y values. 
+	/// </summary>
+	/// <returns></returns>
+	public (int minx, int maxx, int miny, int maxy) GetBounds() =>
 		(Cells.Values.Min(c => c.X), Cells.Values.Max(c => c.X), Cells.Values.Min(c => c.Y), Cells.Values.Max(c => c.Y));
 
-	public Grid2d Pad(int n, char blank = '.')
+
+	/// <summary>
+	/// Used when having sparse input. Calculates the minimum and maximum x & y bounds, and fills out the grid accordingly. 
+	/// </summary>
+	/// <param name="n">The margin with which to pad, defaults to 0.</param>
+	/// <param name="bounds">The bounds for the padded grid, defaults to min & max for x & y.</param>
+	/// <param name="blank">The character with which to pad, defaults to '.'</param>
+	/// <returns></returns>
+	public Grid2d Pad(int n = 0, char blank = '.', (int minx, int maxx, int miny, int maxy) bounds = default)
 	{
-		var (minx, maxx, miny, maxy) = GetMinAndMaxXandY();
+		if (bounds == default)
+			bounds = GetBounds();
+
+		var (minx, maxx, miny, maxy) = bounds;
 
 
 		for (var y = miny - n ;y <= maxy + n ;y++)
@@ -224,7 +239,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 
 	public override string ToString()
 	{
-		var (minx, maxx, miny, maxy) = GetMinAndMaxXandY();
+		var (minx, maxx, miny, maxy) = GetBounds();
 
 		var sb = new StringBuilder( );
 
