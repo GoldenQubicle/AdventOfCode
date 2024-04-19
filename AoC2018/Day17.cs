@@ -1,3 +1,5 @@
+using Common.Interfaces;
+
 namespace AoC2018;
 
 public class Day17 : Solution
@@ -14,18 +16,16 @@ public class Day17 : Solution
 					g.Add(new(pos, '#'));
 				}
 				return g;
-			}).Pad();
+			}).Pad(1);
 
 	public override async Task<string> SolvePart1()
 	{
-		Console.WriteLine(grid);
 		return string.Empty;
 	}
+
 
 	public override async Task<string> SolvePart2()
 	{
 		return string.Empty;
 	}
-
-
 }

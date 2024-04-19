@@ -46,7 +46,7 @@ public class Day14 : Solution
 			}
 
 			// we cant move, either at rest or falling of the abyss, check x
-			if (sand.X <= minx || sand.Y >= maxx || sand.Y >= maxy)
+			if (sand.X <= minx || sand.X >= maxx || sand.Y >= maxy)
 				break;
 
 			grid.AddOrUpdate(new(sand.Position, 'S'));
