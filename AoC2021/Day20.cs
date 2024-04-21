@@ -21,7 +21,7 @@ public class Day20 : Solution
 		for (var i = 0; i < count; i++)
 		{
 			var newState = new Grid2d(diagonalAllowed: true, isInfinite: true);
-			var (minx, maxx, miny, maxy) = grid.GetBounds()
+			var (minx, maxx, miny, maxy) = grid.GetBounds();
 
 			for (var x = minx - 2; x < maxx + 2; x++)
 			{

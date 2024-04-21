@@ -1,13 +1,26 @@
+using Common.Interfaces;
+using Common.Renders;
+using static AoC2018.Day15;
+
 namespace AoC2018;
 
-public class Day15(string file) : Solution(file)
+public class Day15 : Solution
 {
+	// strictly speaking do not need these fields, however they facilitate rendering combat with SharpRay
+	private Grid2d grid;
+	private List<UnitData> unitData; // used for rendering via reflection
+	private Combat state;
+
+	public Day15(string file) : base(file)
+	{
+		grid = CreateInitialGrid( );
+		state = CreateInitialState(grid);
+		unitData = state.Units.Select(u => new UnitData(u.Id, u.Position, u.Type, u.HitPoints)).ToList( );
+	}
+		
 
 	public override async Task<string> SolvePart1()
 	{
-		var grid = CreateInitialGrid( );
-		var state = CreateInitialState(grid);
-
 		state = await DoCombat(state, grid);
 
 		return state.GetOutcome( ).ToString( );
@@ -16,8 +29,7 @@ public class Day15(string file) : Solution(file)
 	public override async Task<string> SolvePart2()
 	{
 		var elfAttack = 4; // 15 
-		var grid = CreateInitialGrid( );
-		var state = CreateInitialState(grid, elfAttack);
+		state = CreateInitialState(grid, elfAttack);
 
 		while (true)
 		{
@@ -36,37 +48,45 @@ public class Day15(string file) : Solution(file)
 
 	public Grid2d CreateInitialGrid() => new(Input, diagonalAllowed: false);
 
-	public static CombatState CreateInitialState(Grid2d grid, int elfAttack = 3)
-	{
-		var elves = grid.Where(c => c.Character == 'E').Select(c => new Unit(c.Character, c.Position, 200, elfAttack));
-		var goblins = grid.Where(c => c.Character == 'G').Select(c => new Unit(c.Character, c.Position, 200, 3));
-		return new(0, elves.Concat(goblins).ToList( ));
-	}
+	public static Combat CreateInitialState(Grid2d grid, int elfAttack = 3) => new(0, 
+		grid.Where(c => c.Character is 'E' or 'G')
+			.WithIndex( )
+			.Select(c => c.Value.Character switch
+			{
+				'G' => new Unit(c.idx, c.Value.Character, c.Value.Position, 200, 3),
+				'E' => new Unit(c.idx, c.Value.Character, c.Value.Position, 200, elfAttack),
+			}).ToList( ));
 
-	private static async Task<CombatState> DoCombat(CombatState state, Grid2d grid)
+
+	private static async Task<Combat> DoCombat(Combat combat, Grid2d grid)
 	{
 		var targetsRemaining = true;
 
-		//Console.WriteLine($"Initial state");
+		//Console.WriteLine($"Initial combat");
 		//Console.WriteLine(grid);
-
+	
 		while (targetsRemaining)
 		{
-			var units = state.GetUnits( );
+			if (IRenderState.IsActive)
+				await IRenderState.Update(new NewRound(combat.Round));
+
+			var units = combat.GetUnits( );
+
 			foreach (var unit in units)
 			{
+				//unit might have died during the current round, hence we check
 				if (unit.IsDead)
 					continue;
 
-				var targets = state.GetTargets(unit);
+				var targets = combat.GetTargets(unit);
 
-				if (!targets.Any())
+				if (!targets.Any( ))
 				{
 					targetsRemaining = false;
 					break;
 				}
 
-				if (TryAttack(unit, state, grid))
+				if (await TryAttack(unit, combat, grid))
 					continue;
 
 				var (hasNearest, nearest) = await GetNearest(unit, targets, grid);
@@ -76,19 +96,19 @@ public class Day15(string file) : Solution(file)
 
 				await MoveUnit(unit, nearest!, grid);
 
-				TryAttack(unit, state, grid);
+				await TryAttack(unit, combat, grid);
 			}
 
-			state = state with { Round = state.Round + 1 };
+			combat.Round++;
 
-			Console.WriteLine($"Round {state.Round}");
+			Console.WriteLine($"Round {combat.Round}");
 			Console.WriteLine(grid);
-			//var stats = state.Units.Aggregate(new StringBuilder( ), (builder, unit) =>
-			//	builder.AppendLine($"Unit {unit.Type} | Position {unit.Position} | HP: {unit.HitPoints} "));
+			//var stats = combat.Units.Aggregate(new StringBuilder( ), (builder, unit) =>
+			//builder.AppendLine($"Unit {unit.Type} | Position {unit.Position} | HP: {unit.HitPoints} "));
 			//Console.WriteLine(stats.ToString( ));
 		}
 
-		return state;
+		return combat;
 	}
 
 	private static async Task MoveUnit(Unit unit, Grid2d.Cell nearest, Grid2d grid)
@@ -98,8 +118,10 @@ public class Day15(string file) : Solution(file)
 		grid[unit.Position].Character = '.';
 		grid[newPosition].Character = unit.Type;
 		unit.Position = newPosition;
-	}
 
+		if (IRenderState.IsActive)
+			await IRenderState.Update(new Move(unit.Id, newPosition));
+	}
 
 	private static async Task<(bool hasNearest, Grid2d.Cell? nearest)> GetNearest(Unit unit, IEnumerable<Unit> targets, Grid2d grid)
 	{
@@ -138,7 +160,7 @@ public class Day15(string file) : Solution(file)
 				return set;
 			});
 
-	private static bool TryAttack(Unit unit, CombatState state, Grid2d grid)
+	private static async Task<bool> TryAttack(Unit unit, Combat state, Grid2d grid)
 	{
 		var (inIsRange, target) = state.IsTargetInRange(unit);
 
@@ -147,8 +169,16 @@ public class Day15(string file) : Solution(file)
 
 		target!.TakeDamage(unit.Attack);
 
+		if (IRenderState.IsActive)
+			await IRenderState.Update(new Attack(unit.Id, target.Id));
+
 		if (target.IsDead)
+		{
 			grid[target.Position].Character = '.';
+			
+			if (IRenderState.IsActive)
+				await IRenderState.Update(new Death(target.Id));
+		}
 
 		return true;
 	}
@@ -178,8 +208,9 @@ public class Day15(string file) : Solution(file)
 	}
 
 
-	public record CombatState(int Round, List<Unit> Units)
+	public record Combat(int Round, List<Unit> Units)
 	{
+		public int Round { get; set; } = Round;
 		public int GetOutcome() =>
 			(Round - 1) * Units.Where(u => !u.IsDead).Sum(u => u.HitPoints);
 
@@ -214,14 +245,15 @@ public class Day15(string file) : Solution(file)
 
 			return (true, target);
 		}
+
+
 	}
 
-	public record Unit(char Type, (int X, int Y) Position, int HitPoints, int Attack)
+	public record Unit(int Id, char Type, (int X, int Y) Position, int HitPoints, int Attack)
 	{
 		public int HitPoints { get; private set; } = HitPoints;
 		public (int X, int Y) Position { get; set; } = Position;
 		public void TakeDamage(int attack) => HitPoints -= attack;
 		public bool IsDead => HitPoints <= 0;
-
 	}
 }

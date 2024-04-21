@@ -1,7 +1,3 @@
-using AoC2018;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
 using Common;
 
 namespace AoC2018Tests;

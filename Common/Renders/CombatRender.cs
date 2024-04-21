@@ -1,8 +1,19 @@
-﻿using Common.Interfaces;
+﻿using System.Collections.Generic;
+using Common.Interfaces;
 
 namespace Common.Renders;
 
-public class CombatRender(Grid2d grid) : IRenderState
+public interface ICombatEvent : IRenderState
 {
-	public Grid2d Grid { get; } = grid;
+	int UnitId { get; init; }
 }
+
+public record UnitData(int Id, (int x, int y) Position, char Type, int HitPoints);
+
+public record Move(int UnitId, (int x, int y) NewPosition) : ICombatEvent;
+
+public record Attack(int UnitId, int TargetId) : ICombatEvent;
+
+public record Death(int UnitId) : ICombatEvent;
+
+public record NewRound(int UnitId) : ICombatEvent;
