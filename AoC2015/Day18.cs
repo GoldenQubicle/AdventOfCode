@@ -1,52 +1,62 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Common;
 using Common.Extensions;
 
-namespace AoC2015
+namespace AoC2015;
+
+public class Day18 : Solution
 {
-    public class Day18 : Solution
-    {
-        public int Steps { get; set; } = 100;
+	private const char Active = '#';
+	private const char InActive = '.';
+	public int Steps { get; set; } = 100;
 
-        private readonly Func<int, Grid2d.Cell, Grid2d.Cell> gameOfLifeRules = (activeCount, cell) => activeCount switch
-        {
-            < 2 or > 3 when cell.Character == '#' => cell.ChangeCharacter('.'),
-            3 when cell.Character == '.' => cell.ChangeCharacter('#'),
-            _ => cell
-        };
+	public Day18(string file) : base(file, "\n") { }
 
-        public Day18(string file) : base(file, "\n") { }
+	public override async Task<string> SolvePart1()
+	{
+		var ca = new CellularAutomaton2d(Input) { Rules = DoApplyRules };
+		ca.Iterate(Steps);
+		return ca.CountCells(Active).ToString( );
+	}
 
-        public override async Task<string> SolvePart1()
-        {
-            var ca = new CellularAutomaton2d(Input) { GameOfLifeRules = gameOfLifeRules };
-            ca.Iterate(Steps);
-            return ca.CountCells('#').ToString();
-        }
+	public override async Task<string> SolvePart2()
+	{
+		var (ul, ur, bl, br) = GetCorners( );
 
-        public override async Task<string> SolvePart2()
-        {
-            var dim = Input.Count - 1;
+		var ca = new CellularAutomaton2d(Input)
+		{
+			Rules = (c, n) => IsCorner(c) ? c : DoApplyRules(c, n),
+		};
 
-            Input[0] = Input[0].ReplaceAt(0, '#');
-            Input[0] = Input[0].ReplaceAt(dim, '#');
-            Input[dim] = Input[dim].ReplaceAt(0, '#');
-            Input[dim] = Input[dim].ReplaceAt(dim, '#');
+		ca.Iterate(Steps);
+		
+		return ca.CountCells(Active).ToString( );
 
-            var ul = (0, 0);
-            var ur = (dim, 0);
-            var bl = (0, dim);
-            var br = (dim, dim);
+		bool IsCorner(Grid2d.Cell c) =>
+			c.Position == ul || c.Position == ur || c.Position == bl || c.Position == br;
+	}
 
-            var ca = new CellularAutomaton2d(Input)
-            {
-                GameOfLifeRules = gameOfLifeRules,
-                AdditionalRules = cell  => cell.Position == ul || cell.Position == ur || cell.Position == bl || cell.Position == br ? cell.ChangeCharacter('#') : cell
-            };
+	private ((int x, int y) ul, (int x, int y) ur, (int x, int y) bl, (int x, int y) br) GetCorners()
+	{
+		var dim = Input.Count - 1;
 
-            ca.Iterate(Steps);
-            return ca.CountCells('#').ToString();
-        }
-    }
+		Input[0] = Input[0].ReplaceAt(0, Active);
+		Input[0] = Input[0].ReplaceAt(dim, Active);
+		Input[dim] = Input[dim].ReplaceAt(0, Active);
+		Input[dim] = Input[dim].ReplaceAt(dim, Active);
+
+		return ((0, 0), (dim, 0), (0, dim), (dim, dim));
+	}
+
+
+	private static Grid2d.Cell DoApplyRules(Grid2d.Cell cell, IReadOnlyCollection<Grid2d.Cell> neighbors) =>
+		neighbors.Count(c => c.Character == Active) switch
+		{
+			< 2 or > 3 when cell.Character == Active => cell with { Character = InActive },
+			3 when cell.Character == InActive => cell with { Character = Active },
+			_ => cell
+		};
+
 }

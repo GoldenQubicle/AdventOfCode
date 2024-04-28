@@ -15,10 +15,12 @@ public class Day18 : Solution
 
 	public override async Task<string> SolvePart1()
 	{
-		Iterate(10);
+		var ca = new CellularAutomaton2d(Input) { Rules = DoApplyRules };
 
-		var wood = grid.Count(c => c.Character == Acre.Trees);
-		var yards = grid.Count(c => c.Character == Acre.Yard);
+		ca.Iterate(10);
+
+		var wood = ca.CountCells(Acre.Trees);
+		var yards = ca.CountCells(Acre.Yard);
 
 		return (wood * yards).ToString( );
 	}
