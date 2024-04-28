@@ -16,7 +16,7 @@ public class Day18 : Solution
 
 	public override async Task<string> SolvePart1()
 	{
-		var ca = new CellularAutomaton2d(Input) { Rules = DoApplyRules };
+		var ca = new CellularAutomaton2d(Input, DoApplyRules );
 		ca.Iterate(Steps);
 		return ca.CountCells(Active).ToString( );
 	}
@@ -25,10 +25,7 @@ public class Day18 : Solution
 	{
 		var (ul, ur, bl, br) = GetCorners( );
 
-		var ca = new CellularAutomaton2d(Input)
-		{
-			Rules = (c, n) => IsCorner(c) ? c : DoApplyRules(c, n),
-		};
+		var ca = new CellularAutomaton2d(Input, (c, n) => IsCorner(c) ? c : DoApplyRules(c, n));
 
 		ca.Iterate(Steps);
 		

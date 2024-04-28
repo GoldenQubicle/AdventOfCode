@@ -1,9 +1,7 @@
 namespace AoC2018;
 
-public class Day18 : Solution
+public class Day18(string file) : Solution(file, split: "\n")
 {
-	private Grid2d grid;
-
 	public static class Acre
 	{
 		public const char Open = '.';
@@ -11,11 +9,9 @@ public class Day18 : Solution
 		public const char Yard = '#';
 	}
 
-	public Day18(string file) : base(file, split: "\n") => grid = new Grid2d(Input);
-
 	public override async Task<string> SolvePart1()
 	{
-		var ca = new CellularAutomaton2d(Input) { Rules = DoApplyRules };
+		var ca = new CellularAutomaton2d(Input, Rules);
 
 		ca.Iterate(10);
 
@@ -27,49 +23,24 @@ public class Day18 : Solution
 
 	public override async Task<string> SolvePart2()
 	{
-		var iteration = 0;
-		var state = new Dictionary<string, int>();
+		var ca = new CellularAutomaton2d(Input, Rules);
+		var cycle = ca.DetectCycle( );
 
-		while (true)
-		{
-			iteration++;
-			grid  = DoIteration(grid);
-
-			//break when the same state has been added, assuming start of cycle
-			if (!state.TryAdd(grid.ToString(), iteration))
-				break;
-		}
-
-		var start = state[grid.ToString()];
 		//modulo of cycle length for however many iterations are left once the cycle started gives the number of iterations to end on
-		var end = (1000000000 - start) % (iteration - start); 
+		var end = (1000000000 - cycle.Start) % cycle.Length;
 
-		grid = new Grid2d(Input);
+		ca = new CellularAutomaton2d(Input, Rules);
 
-		Iterate(start + end);
+		ca.Iterate(cycle.Start + end);
 
-		var wood = grid.Count(c => c.Character == Acre.Trees);
-		var yards = grid.Count(c => c.Character == Acre.Yard);
+		var wood = ca.CountCells(Acre.Trees);
+		var yards = ca.CountCells(Acre.Yard);
 
 		return (wood * yards).ToString( );
 	}
 
-	public void Iterate(int steps)
-	{
-		for (var i = 0 ;i < steps ;i++)
-		{
-			grid = DoIteration(grid);
-		}
-	}
 
-	private static Grid2d DoIteration(Grid2d g) => g.Aggregate(new Grid2d( ), (newGrid, cell) =>
-	{
-		newGrid.Add(DoApplyRules(cell, g.GetNeighbors(cell)));
-		return newGrid;
-	});
-
-
-	private static Grid2d.Cell DoApplyRules(Grid2d.Cell cell, IReadOnlyCollection<Grid2d.Cell> neighbors) => cell.Character switch
+	private static Grid2d.Cell Rules(Grid2d.Cell cell, IReadOnlyCollection<Grid2d.Cell> neighbors) => cell.Character switch
 	{
 		Acre.Open when neighbors.Count(c => c.Character == Acre.Trees) >= 3 => cell with { Character = Acre.Trees },
 		Acre.Trees when neighbors.Count(c => c.Character == Acre.Yard) >= 3 => cell with { Character = Acre.Yard },

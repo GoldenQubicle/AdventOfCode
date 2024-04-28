@@ -6,6 +6,7 @@
     &lt;TestId&gt;NUnit3x::52492C8D-52B2-4D86-8EBF-36909CE58B1C::net8.0::AoC2015Tests.Day18Test&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::8730BBB1-1670-46B4-BC10-7D8F536E5F15::net8.0::AoC2018Tests.Day18Test&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::2B58D939-8993-4BE1-A2D6-DD1D8B6F43EC::net8.0::CommonTests.CellularAutomatonTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::E9722CB8-1BB4-4F96-812B-9A32E080DE30::net8.0::AoC2020Tests.Day11Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

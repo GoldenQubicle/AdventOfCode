@@ -22,9 +22,20 @@ namespace AoC2020
 
         public List<char[ ]> GetInitialState( ) => Input.Select(i => i.ToCharArray( )).ToList( );
 
-        public override async Task<string> SolvePart1( ) => Solve(GetInitialState( ), part1: true).ToString( );
+		public override async Task<string> SolvePart1( ) => Solve(GetInitialState( ), part1: true).ToString( );
 
-        public override async Task<string> SolvePart2( ) => Solve(GetInitialState( ), part1: false).ToString( );
+		//public override async Task<string> SolvePart1()
+		//{
+  //          var ca = new CellularAutomaton2d(Input)
+  //          {
+  //              Rules = 
+  //          }
+
+		//	return string.Empty;
+		//}
+
+
+		public override async Task<string> SolvePart2( ) => Solve(GetInitialState( ), part1: false).ToString( );
 
         private int Solve(List<char[ ]> state, bool part1)
         {
