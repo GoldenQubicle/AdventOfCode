@@ -5,11 +5,18 @@ using static Common.Grid2d;
 
 namespace Common;
 
-public class CellularAutomaton2d(IReadOnlyList<string> input, Func<Cell, IReadOnlyCollection<Cell>, Cell> Rules)
+/// <summary>
+/// Generic Cellular Automaton Solver, operates on underlying Grid2D - constructed from Input - according to the rules given. 
+/// </summary>
+/// <param name="input">The AoC input, assuming the conventional grid input.</param>
+/// <param name="rules">The Rules, applied per iteration step.</param>
+/// <param name="getNeighbors">Optional, when not supplied will use default Grid2D implementation with diagonals enabled. </param>
+public class CellularAutomaton2d(
+	IReadOnlyList<string> input, 
+	Func<Cell, IReadOnlyCollection<Cell>, Cell> rules,
+	Func<Cell, Grid2d, List<Cell>> getNeighbors = default)
 {
 	private Grid2d grid = new(input);
-
-	//private readonly Func<Cell, IReadOnlyCollection<Cell>, Cell> Rules = rules;
 
 
 	public void Iterate(int steps)
@@ -44,7 +51,11 @@ public class CellularAutomaton2d(IReadOnlyList<string> input, Func<Cell, IReadOn
 	private Grid2d DoIteration(Grid2d g) =>
 		g.Aggregate(new Grid2d( ), (newGrid, cell) =>
 		{
-			newGrid.Add(Rules(cell, g.GetNeighbors(cell)));
+			var neighbors = getNeighbors == null 
+				? g.GetNeighbors(cell) 
+				: getNeighbors(cell, g);
+
+			newGrid.Add(rules(cell, neighbors ));
 			return newGrid;
 		});
 

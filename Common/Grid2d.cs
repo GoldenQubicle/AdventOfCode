@@ -226,15 +226,6 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 			Character = character;
 			Value = char.IsDigit(Character) ? Character.ToLong( ) : 0;
 		}
-
-
-		/// <summary>
-		/// returns a new Cell with same Position but new character
-		/// </summary>
-		/// <param name="newChar"></param>
-		/// <returns></returns>
-		public Cell ChangeCharacter(char newChar) => new(Position, newChar);
-
 	}
 
 	public override string ToString()

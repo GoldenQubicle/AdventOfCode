@@ -6,22 +6,15 @@ using Common.Extensions;
 
 namespace AoC2015;
 
-public class Day18 : Solution
+public class Day18(string file) : Solution(file, "\n")
 {
 	private const char Active = '#';
 	private const char InActive = '.';
 	public int Steps { get; set; } = 100;
 
-	public Day18(string file) : base(file, "\n")
-	{
-		var wut = file;
-		var t = Input;
-
-	}
-
 	public override async Task<string> SolvePart1()
 	{
-		var ca = new CellularAutomaton2d(Input, DoApplyRules );
+		var ca = new CellularAutomaton2d(Input, Rules);
 		ca.Iterate(Steps);
 		return ca.CountCells(Active).ToString( );
 	}
@@ -30,7 +23,7 @@ public class Day18 : Solution
 	{
 		var (ul, ur, bl, br) = GetCorners( );
 
-		var ca = new CellularAutomaton2d(Input, (c, n) => IsCorner(c) ? c : DoApplyRules(c, n));
+		var ca = new CellularAutomaton2d(Input, (c, n) => IsCorner(c) ? c : Rules(c, n));
 
 		ca.Iterate(Steps);
 		
@@ -53,7 +46,7 @@ public class Day18 : Solution
 	}
 
 
-	private static Grid2d.Cell DoApplyRules(Grid2d.Cell cell, IReadOnlyCollection<Grid2d.Cell> neighbors) =>
+	private static Grid2d.Cell Rules(Grid2d.Cell cell, IReadOnlyCollection<Grid2d.Cell> neighbors) =>
 		neighbors.Count(c => c.Character == Active) switch
 		{
 			< 2 or > 3 when cell.Character == Active => cell with { Character = InActive },

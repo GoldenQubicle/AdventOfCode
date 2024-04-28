@@ -1,7 +1,7 @@
 ﻿using AoC2020;
 using NUnit.Framework;
-using System.Collections.Generic;
 using System.Linq;
+using Common;
 
 namespace AoC2020Tests;
 
@@ -36,8 +36,9 @@ class Day11Test
 	public void EmptyEight(string file, int expected, int x, int y)
 	{
 		day11 = new Day11(file);
-		var result = day11.GetNeighborsInSight(x, y, day11.GetInitialState( ));
-		Assert.AreEqual(expected, result.Where(c => c == '#').Count( ));
+		var grid = new Grid2d(day11.Input);
+		var result = Day11.GetNeighborsInSight(grid[(x,y)], grid);
+		Assert.AreEqual(expected, result.Count(c => c.Character == '#'));
 	}
 
 	[TestCase(0, 0, 1, 2)]
@@ -47,29 +48,9 @@ class Day11Test
 	public void GetNeighborsInSight(int x, int y, int occupied, int empty)
 	{
 		day11 = new Day11("day11test2");
-		var result = day11.GetNeighborsInSight(x, y, day11.GetInitialState( ));
-		Assert.AreEqual(occupied, result.Where(c => c == '#').Count( ));
-		Assert.AreEqual(empty, result.Where(c => c == 'L').Count( ));
-	}
-
-	[TestCase(0, 0, 1, 2)]
-	[TestCase(9, 0, 0, 3)]
-	[TestCase(0, 9, 2, 1)]
-	[TestCase(9, 9, 1, 2)]
-	public void GetNeighbors(int x, int y, int floor, int seat)
-	{
-		var result = day11.GetNeighbors(x, y, day11.GetInitialState( ));
-		Assert.AreEqual(seat, result.Where(c => c == 'L').Count( ));
-		Assert.AreEqual(floor, result.Where(c => c == '.').Count( ));
-	}
-
-	[TestCase('b', true)]
-	[TestCase('c', false)]
-	public void SameState(char d, bool expected)
-	{
-		var old = new List<char[ ]> { new char[ ] { 'a', 'b' }, new char[ ] { 'a', 'b' } };
-		var update = new List<char[ ]> { new char[ ] { 'a', d }, new char[ ] { 'a', 'b' } };
-		var result = day11.SameState(old, update);
-		Assert.AreEqual(expected, result);
+		var grid = new Grid2d(day11.Input);
+		var result = Day11.GetNeighborsInSight(grid[(x, y)], grid);
+		Assert.AreEqual(occupied, result.Count(c => c.Character == '#'));
+		Assert.AreEqual(empty, result.Count(c => c.Character == 'L'));
 	}
 }
