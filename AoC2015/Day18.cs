@@ -12,7 +12,12 @@ public class Day18 : Solution
 	private const char InActive = '.';
 	public int Steps { get; set; } = 100;
 
-	public Day18(string file) : base(file, "\n") { }
+	public Day18(string file) : base(file, "\n")
+	{
+		var wut = file;
+		var t = Input;
+
+	}
 
 	public override async Task<string> SolvePart1()
 	{

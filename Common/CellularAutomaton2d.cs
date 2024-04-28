@@ -5,11 +5,11 @@ using static Common.Grid2d;
 
 namespace Common;
 
-public class CellularAutomaton2d(IReadOnlyList<string> input, Func<Cell, IReadOnlyCollection<Cell>, Cell> rules)
+public class CellularAutomaton2d(IReadOnlyList<string> input, Func<Cell, IReadOnlyCollection<Cell>, Cell> Rules)
 {
 	private Grid2d grid = new(input);
 
-	public Func<Cell, IReadOnlyCollection<Cell>, Cell> Rules = rules;
+	//private readonly Func<Cell, IReadOnlyCollection<Cell>, Cell> Rules = rules;
 
 
 	public void Iterate(int steps)
@@ -38,7 +38,7 @@ public class CellularAutomaton2d(IReadOnlyList<string> input, Func<Cell, IReadOn
 		var start = state[grid.ToString( )];
 		var cycleLength = iteration - start;
 
-		return new(start, cycleLength, grid);
+		return new(start, cycleLength);
 	}
 
 	private Grid2d DoIteration(Grid2d g) =>
@@ -51,5 +51,5 @@ public class CellularAutomaton2d(IReadOnlyList<string> input, Func<Cell, IReadOn
 	public int CountCells(char state) => grid.GetCells(c => c.Character == state).Count;
 
 
-	public record CycleResult(int Start, int Length, Grid2d State);
+	public record CycleResult(int Start, int Length);
 }

@@ -8,9 +8,10 @@ namespace AoC2020
 {
     public class Day11 : Solution
     {
-        private const char seated = '#';
-        private const char empty = 'L';
-        private const char floor = '.';
+        private const char Seated = '#';
+        private const char Empty = 'L';
+        private const char Floor = '.';
+
         private List<(int x, int y)> offsets = new List<(int, int)>
         {
             (-1, -1), (0, -1), (1, -1),
@@ -22,20 +23,25 @@ namespace AoC2020
 
         public List<char[ ]> GetInitialState( ) => Input.Select(i => i.ToCharArray( )).ToList( );
 
-		public override async Task<string> SolvePart1( ) => Solve(GetInitialState( ), part1: true).ToString( );
 
-		//public override async Task<string> SolvePart1()
-		//{
-  //          var ca = new CellularAutomaton2d(Input)
-  //          {
-  //              Rules = 
-  //          }
+        public override async Task<string> SolvePart1()
+        {
+	        var ca = new CellularAutomaton2d(Input, (cell, n) => cell.Character switch
+	        {
+		        Empty when n.All(c => c.Character is Empty or Floor) => cell with { Character = Seated },
+		        Seated when n.Count(c => c.Character is Seated) >= 4 => cell with { Character = Empty },
+		        _ => cell
+	        });
 
-		//	return string.Empty;
-		//}
+	        ca.DetectCycle();
+
+	        return ca.CountCells(Seated).ToString();
 
 
-		public override async Task<string> SolvePart2( ) => Solve(GetInitialState( ), part1: false).ToString( );
+        }
+
+
+        public override async Task<string> SolvePart2( ) => Solve(GetInitialState( ), part1: false).ToString( );
 
         private int Solve(List<char[ ]> state, bool part1)
         {
@@ -47,7 +53,7 @@ namespace AoC2020
                 newState = GetNewState(state, part1 ? GetNeighbors : GetNeighborsInSight, part1 ? 4 : 5);
             }
 
-            return state.Sum(c => c.Count(s => s == seated));
+            return state.Sum(c => c.Count(s => s == Seated));
         }
 
         private List<char[ ]> GetNewState(List<char[ ]> current,
@@ -57,8 +63,8 @@ namespace AoC2020
                 var neighbors = getNeighbors(x, y, current);
                 return c switch
                 {
-                    empty when !neighbors.Any(c => c == seated) => seated,
-                    seated when neighbors.Count(c => c == seated) >= threshold => empty,
+                    Empty when !neighbors.Any(c => c == Seated) => Seated,
+                    Seated when neighbors.Count(c => c == Seated) >= threshold => Empty,
                     _ => c
                 };
             }).ToArray( )).ToList( );
@@ -79,7 +85,7 @@ namespace AoC2020
                 {
                     tx += o.x;
                     ty += o.y;
-                    if ( state[ty][tx] != floor )
+                    if ( state[ty][tx] != Floor )
                     {
                         return state[ty][tx];
                     }
