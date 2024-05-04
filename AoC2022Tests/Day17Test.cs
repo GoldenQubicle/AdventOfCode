@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace AoC2022Tests
 {
-	[Ignore("not finished")]
 	public class Day17Test
     {
         Day17 day17;

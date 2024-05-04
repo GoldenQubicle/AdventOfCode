@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using Combinatorics.Collections;
 using Common.Extensions;
@@ -18,8 +19,8 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 	public bool IsInfinite { get; }
 
 	public char EmptyCharacter { get; set; } = '.'; 
-	public int Width { get; init; } //note: does not reflect any changes made after initialization
-	public int Height { get; init; } //note: does not reflect any changes made after initialization
+	public long Width { get; init; } //note: does not reflect any changes made after initialization
+	public long Height { get; init; } //note: does not reflect any changes made after initialization
 	public int Count => Cells.Count;
 	private Dictionary<(int x, int y), Cell> Cells { get; } = new( );
 
@@ -46,12 +47,14 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 		DoInitializeCells(input);
 	}
 
-	public Grid2d(int width, int height, bool diagonalAllowed = true, bool isInfinite = false) : this(diagonalAllowed, isInfinite)
+	public Grid2d(long width, long height, bool diagonalAllowed = true, bool isInfinite = false) : this(diagonalAllowed, isInfinite)
 	{
 		Width = width;
 		Height = height;
 		DoInitializeCells( );
 	}
+
+
 
 	private void DoInitializeCells(IReadOnlyList<string> input = default)
 	{
@@ -61,8 +64,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 			{
 				var gc = input == default || x >= input[y].Length
 					? new Cell((x, y))
-					: new Cell((x, y),
-						input[y][x]); //yes really input[y][x], it reads wrong but is right - still dealing with a list here. 
+					: new Cell((x, y), input[y][x]); //yes really input[y][x], it reads wrong but is right - still dealing with a list here. 
 
 				Cells.Add(gc.Position, gc);
 			}
@@ -234,7 +236,8 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 
 		var sb = new StringBuilder( );
 
-		for (var y = miny ;y <= maxy ;y++)
+		//for (var y = miny ;y <= maxy ;y++) //hacky solution proper visualization 2022 day 17
+		for (var y = maxy ;y >= miny ;y--)
 		{
 			for (var x = minx ;x <= maxx ;x++)
 			{

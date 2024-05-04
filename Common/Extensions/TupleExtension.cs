@@ -1,4 +1,6 @@
-﻿namespace Common.Extensions
+﻿using System.Numerics;
+
+namespace Common.Extensions
 {
     public static class TupleExtension
     {
@@ -13,6 +15,8 @@
 		public static (int x, int y, int z) Add(this (int x, int y, int z) a, int x, int y, int z) => (a.x + x, a.y + y, a.z + z);
         public static (long x, long y) ToLong(this (int x, int y) a) => (a.x, a.y);
         public static int MultiplyComponents(this (int x, int y) a) => a.x * a.y;
+
+        public static (int x, int y) ToTuple(this Vector2 v) => ((int)v.X, (int)v.Y);
 
     }
 }

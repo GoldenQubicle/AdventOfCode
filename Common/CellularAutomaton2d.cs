@@ -10,7 +10,7 @@ namespace Common;
 /// </summary>
 /// <param name="input">The AoC input, assuming the conventional grid input.</param>
 /// <param name="rules">The Rules, applied per iteration step.</param>
-/// <param name="getNeighbors">Optional, when not supplied will use default Grid2D implementation with diagonals enabled. </param>
+/// <param name="getNeighbors">Optional, when not supplied will default to Grid2D implementation with diagonals enabled.</param>
 public class CellularAutomaton2d(
 	IReadOnlyList<string> input, 
 	Func<Cell, IReadOnlyCollection<Cell>, Cell> rules,
