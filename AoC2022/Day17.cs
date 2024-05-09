@@ -1,19 +1,17 @@
 using System.Numerics;
-using System.Runtime.InteropServices;
 
 namespace AoC2022;
 
 public class Day17 : Solution
 {
-	private static readonly CircularList<Func<Rock>> rocks = new( )
+	private static readonly CircularList<Func<Rock>> RockFactory = new( )
 	{
-		() => new() { Blocks = new() { new(0,0), new(1,0),  new(2,0),   new (3,0) }             },
-		() => new() { Blocks = new() { new(0,0), new(1,0),  new(2,0),   new (1,1), new(1, -1) } },
-		() => new() { Blocks = new() { new(0,0), new(1,0),  new(2,0),   new(2,1),  new(2,2) }   },
-		() => new() { Blocks = new() { new(0,0), new(0,-1), new(0,-2),  new(0,-3) }             },
-		() => new() { Blocks = new() { new(0,0), new(1,0),  new (0,-1), new (1, -1) }           }
+		() => new(RockType.Horizontal) { Blocks = new() { new(0,0), new(1,0),  new(2,0),   new (3,0) }             },
+		() => new(RockType.Cross) { Blocks = new() { new(0,0), new(1,0),  new(2,0),   new (1,1), new(1, -1) } },
+		() => new(RockType.Jee) { Blocks = new() { new(0,0), new(1,0),  new(2,0),   new(2,1),  new(2,2) }   },
+		() => new(RockType.Vertical) { Blocks = new() { new(0,0), new(0,-1), new(0,-2),  new(0,-3) }             },
+		() => new(RockType.Square) { Blocks = new() { new(0,0), new(1,0),  new (0,-1), new (1, -1) }           }
 	};
-
 
 
 	private readonly CircularList<Direction> jets;
@@ -27,76 +25,146 @@ public class Day17 : Solution
 		});
 
 		jets.ResetHead( );
-		rocks.ResetHead( );
+		RockFactory.ResetHead( );
 	}
 
-	public override async Task<string> SolvePart1()
+	public override async Task<string> SolvePart1() => LetRocksFall( );
+
+
+	public override async Task<string> SolvePart2()
 	{
-		// so the tricky part here is that the grid keeps expanding upwards as rocks appear;
-		// 'Each rock appears so that its left edge is two units away from the left wall and its bottom edge is three units above the highest rock in the room (or the floor, if there isn't one).'
-		// consequently it would be massively helpful to have y = 0 at the bottom.. 
-		// then again there doesn't seem to be anything inherently stopping me from considering y=0 being at the bottom, other than the toString method printing upside down
-		var grid = new Grid2d(7, 3500);
-		var placed = new List<Rock>( );
-		var steps = 0L;
+		var totalHeight = 0L;
+		var prevHeight = 0f;
+		var deltaHeights = new List<(Rock r, float h)>( );
+		var state = new Dictionary<string, int>( );
+		var hashLength = 35;
 
-		while (steps++ < 2022)
+		LetRocksFall(KeepTrackOfState);
+
+		return totalHeight.ToString( );
+
+		bool KeepTrackOfState(Rock rock, List<Rock> rocksPlaced)
 		{
+			var height = rocksPlaced.Max(r => r.Blocks.Max(v => v.Y + 1));
+			var dHeight = height - prevHeight;
+			prevHeight = height;
+			deltaHeights.Add((rock, dHeight));
 
-			var rock = rocks.Current( );
-			rocks.MoveRight( );
-			var spawn = GetSpawnPoint(rock, placed);
+			if (rocksPlaced.Count < hashLength * 3)
+				return false;
 
-			rock.Spawn(spawn);
-			rock.Blocks.ForEach(b => grid[b.ToTuple( )].Character = '#');
+			var hash = deltaHeights.TakeLast(hashLength)
+				.Aggregate(new StringBuilder( ), (sb, r) => sb.Append(r.r.Type switch
+				{
+					RockType.Horizontal => $"-{r.h}",
+					RockType.Cross => $"+{r.h}",
+					RockType.Jee => $"J{r.h}",
+					RockType.Vertical => $"|{r.h}",
+					RockType.Square => $"#{r.h}",
+					_ => throw new ArgumentOutOfRangeException( )
+				})).ToString( );
 
-			//Console.WriteLine(grid);
+
+			if (state.TryAdd(hash, rocksPlaced.Count))
+				return false;
+
+			//detected a repeating hash pattern
+			//determine the cycle length from start & end to compute the cycle length & height
+			var cycleStart = state[hash] - hashLength;
+			var cycleEnd = rocksPlaced.Count - hashLength;
+			var cycleLength = cycleEnd - cycleStart;
+			var cycleHeight = deltaHeights[cycleStart..cycleEnd].Sum(r => r.h);
+
+			//the total number of cycles, and rocks to be placed at the end
+			var cycles = (1000000000000 - cycleStart) / cycleLength;
+			var remaining = (1000000000000 - cycleStart) % cycleLength;
+
+			//the height added over all cycles
+			var total = cycles * (long)cycleHeight;
+
+			//the height from the start until the cycle starts
+			var first = (long)deltaHeights[..cycleStart].Sum(r => r.h);
+
+			//the height at the end from the remaining rocks
+			var last = (long)deltaHeights[cycleStart..(cycleStart + (int)remaining)].Sum(r => r.h);
+
+			//the total height
+			totalHeight = total + first + last;
+			
+			return true;
+		}
+	}
+
+
+	private string LetRocksFall(Func<Rock, List<Rock>, bool> stateTracker = null)
+	{
+		const int totalRocks = 4044;
+		var rockCount = 0;
+		var rocksPlaced = new List<Rock>( );
+
+		while (rockCount++ < totalRocks)
+		{
+			bool? cycleFound;
+
+			var rocksToCheck = rocksPlaced.TakeLast(25).ToList( ); // no need to go over all rocks placed
+
+			var rock = SpawnRock(rocksToCheck);
 
 			while (true)
 			{
-
-				var push = jets.Current;
-				jets.MoveRight( );
-
-				if (rock.TryMove(push, placed))
+				var push = GetJetPush( );
+				
+				if (rock.TryMove(push, rocksToCheck))
 				{
-					rock.Blocks.ForEach(b => grid[b.ToTuple( )].Character = '.');
 					rock.Move(push);
-					rock.Blocks.ForEach(b => grid[b.ToTuple( )].Character = '#');
-					//Console.WriteLine(grid);
 				}
 
-				if (rock.TryMove(Direction.Down, placed))
+				if (rock.TryMove(Direction.Down, rocksToCheck))
 				{
-					rock.Blocks.ForEach(b => grid[b.ToTuple()].Character = '.');
 					rock.Move(Direction.Down);
-					rock.Blocks.ForEach(b => grid[b.ToTuple()].Character = '#');
-					//Console.WriteLine(grid);
 				}
-				else 
+				else
 				{
-					placed.Add(rock);
+					rocksPlaced.Add(rock);
+					cycleFound = stateTracker?.Invoke(rock, rocksPlaced);
 					break;
 				}
-
 			}
-		}
-		Console.WriteLine(grid);
 
-		return placed.Max(r => r.Blocks.Max(v => v.Y + 1 )).ToString();
+			if (cycleFound.HasValue && cycleFound.Value)
+				break;
+		}
+
+		return rocksPlaced.Max(r => r.Blocks.Max(v => v.Y + 1)).ToString( );
+	}
+
+
+	private Direction GetJetPush()
+	{
+		var push = jets.Current;
+		jets.MoveRight( );
+		return push;
+	}
+
+
+	private static Rock SpawnRock(List<Rock> rocksToCheck)
+	{
+		var rock = RockFactory.Current( );
+		RockFactory.MoveRight( );
+		rock.Spawn(GetSpawnPoint(rock, rocksToCheck));
+		return rock;
 	}
 
 	private static Vector2 GetSpawnPoint(Rock rock, List<Rock> placed)
 	{
-
-		if (!placed.Any( ))
+		if (placed.Count == 0)
 			return new(2, 3);
 
 		var maxY = placed.Max(r => r.Blocks.Max(v => v.Y));
 		return new(2, maxY + 4 + Math.Abs(rock.Blocks.Min(r => r.Y)));
 	}
 
-	public override async Task<string> SolvePart2() => null;
+
 }
 
 internal enum Direction
@@ -104,25 +172,28 @@ internal enum Direction
 	Left, Right, Down, Up
 }
 
-internal class Rock
+internal enum RockType
 {
+	Horizontal, Cross, Jee, Vertical, Square
+}
+
+internal class Rock(RockType type)
+{
+	public RockType Type { get; } = type;
 	public List<Vector2> Blocks { get; set; }
 
 	public bool Overlaps(Rock r) => Blocks.Any(r.Blocks.Contains);
 
 	public void Spawn(Vector2 pos) => Blocks = Blocks.Select(b => b + pos).ToList( );
 
-	public void Move(Direction direction)
+	public void Move(Direction direction) => Blocks = direction switch
 	{
-		Blocks = direction switch
-		{
-			Direction.Left => Blocks.Select(b => b - Vector2.UnitX).ToList( ),
-			Direction.Right => Blocks.Select(b => b + Vector2.UnitX).ToList( ),
-			Direction.Down => Blocks.Select(b => b - Vector2.UnitY).ToList( ),
-			Direction.Up => Blocks.Select(b => b + Vector2.UnitY).ToList( ),
-			_ => Blocks
-		};
-	}
+		Direction.Left => Blocks.Select(b => b - Vector2.UnitX).ToList( ),
+		Direction.Right => Blocks.Select(b => b + Vector2.UnitX).ToList( ),
+		Direction.Down => Blocks.Select(b => b - Vector2.UnitY).ToList( ),
+		Direction.Up => Blocks.Select(b => b + Vector2.UnitY).ToList( ),
+		_ => Blocks
+	};
 
 
 	public bool TryMove(Direction direction, List<Rock> placed)
@@ -133,8 +204,7 @@ internal class Rock
 					  && !Blocks.Any(b => b.X < 0) // not at left wall
 					  && !Blocks.Any(b => b.X > 6) // not at right wall
 					  && !placed.Any(r => r.Overlaps(this)); // not overlapping with any other rocks
-
-
+		
 		var undo = direction switch
 		{
 			Direction.Left => Direction.Right,
@@ -143,8 +213,7 @@ internal class Rock
 		};
 
 		Move(undo);
-
-
+		
 		return canMove;
 	}
 }

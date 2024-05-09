@@ -19,8 +19,8 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 	public bool IsInfinite { get; }
 
 	public char EmptyCharacter { get; set; } = '.'; 
-	public long Width { get; init; } //note: does not reflect any changes made after initialization
-	public long Height { get; init; } //note: does not reflect any changes made after initialization
+	public int Width { get; init; } //note: does not reflect any changes made after initialization
+	public int Height { get; init; } //note: does not reflect any changes made after initialization
 	public int Count => Cells.Count;
 	private Dictionary<(int x, int y), Cell> Cells { get; } = new( );
 
@@ -47,7 +47,7 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 		DoInitializeCells(input);
 	}
 
-	public Grid2d(long width, long height, bool diagonalAllowed = true, bool isInfinite = false) : this(diagonalAllowed, isInfinite)
+	public Grid2d(int width, int height, bool diagonalAllowed = true, bool isInfinite = false) : this(diagonalAllowed, isInfinite)
 	{
 		Width = width;
 		Height = height;
