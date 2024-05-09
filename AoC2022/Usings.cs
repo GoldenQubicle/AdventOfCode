@@ -11,3 +11,4 @@ global using Common.Extensions;
 global using System.IO;
 global using static Common.Grid2d;
 global using System.Diagnostics;
+global using System.Numerics;
