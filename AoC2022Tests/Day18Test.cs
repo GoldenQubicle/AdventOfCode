@@ -20,8 +20,8 @@ public class Day18Test
     [Test]
     public async Task Part2( )
     {
-        var expected = string.Empty;
+        
         var actual = await day18.SolvePart2( );
-        Assert.That(actual, Is.EqualTo(expected));
+        Assert.That(actual, Is.EqualTo("58"));
     }
 }
