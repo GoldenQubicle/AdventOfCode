@@ -33,6 +33,9 @@ public static class RegexExtensions
 		return 0;
 	}
 
+	public static int AsInt(this MatchCollection mc, int idx) => int.Parse(mc[idx].Value);
+
+
 	public static string GetGroup(this MatchCollection mc, string group)
 	{
 		foreach (Match match in mc)
