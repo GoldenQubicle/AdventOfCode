@@ -139,6 +139,12 @@ public static class Maths // dumb name but prevents namespace conflict with Syst
 	public static T GetManhattanDistance<T>((T x, T y) a, (T x, T y) b) where T : INumber<T> =>
 		T.Abs(a.x - b.x) + T.Abs(a.y - b.y);
 
+	/// <summary>
+	/// Calculate the Manhattan Distance between point a and b. 
+	/// </summary>
+	public static int GetManhattanDistance(Vector2 a, Vector2 b) =>
+		GetManhattanDistance(a.ToTuple(), b.ToTuple());
+
 
 	public static string HashToHexadecimal(string input)
 	{
