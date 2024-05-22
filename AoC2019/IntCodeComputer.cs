@@ -1,51 +1,91 @@
 namespace AoC2019;
 
-public class IntCodeComputer(IEnumerable<int> instructions)
+public class IntCodeComputer(IEnumerable<int> input)
 {
-	public List<int> Memory { get; init; } = instructions.ToList( );
+	public int Input { get; set; }
+	public int Output { get; set; }
+	public List<int> Memory { get; init; } = input.ToList( );
 
 	private int pointer;
 
-	public enum OpCode
+	private enum OpCode
 	{
-		Add = 1,
-		Mult = 2,
+		Add = 01,
+		Mult = 02,
+		Input = 03,
+		Output = 04,
+		JumpTrue = 05,
+		JumpFalse = 06,
+		LessThan = 07,
+		Equals = 08,
 		Halt = 99
 	}
 
+	
+	private record struct Instruction(OpCode OpCode, int P1, int P2, int P3);
+
 	public void Execute()
 	{
-		var opCode = (OpCode)Memory[pointer];
+		var instruction = ParseInstruction( );
 
-		while (opCode != OpCode.Halt)
+		while (instruction.OpCode != OpCode.Halt)
 		{
-			var read1 = Memory[pointer + 1];
-			var read2 = Memory[pointer + 2];
-			var write = Memory[pointer + 3];
-
-			//note this may not be correct for later days, it did help solve day 2 part 2
-			if (read1 >= Memory.Count || read2 >= Memory.Count || write >= Memory.Count)
+			Memory[instruction.P3] = instruction.OpCode switch
 			{
-				opCode = OpCode.Halt;
-				continue;
-			}
+				OpCode.Add =>  instruction.P1 + instruction.P2,
+				OpCode.Mult => instruction.P1 * instruction.P2,
 
-			Memory[write] = opCode switch
-			{
-				OpCode.Add =>  Memory[read1] + Memory[read2],
-				OpCode.Mult => Memory[read1] * Memory[read2],
 				_ => throw new ArgumentOutOfRangeException( )
 			};
 
-			opCode = (OpCode)Memory[pointer+=InstructionLength(opCode)];
+			pointer += InstructionLength(instruction.OpCode);
+			instruction = ParseInstruction( );
 		}
 	}
 
-	private int InstructionLength(OpCode op) => op switch
+	private Instruction ParseInstruction()
+	{
+		//not too happy about the conversion back-and-forth..
+		var instruction = Memory[pointer].ToString( ).PadLeft(5, '0');
+		var opCode = (OpCode)int.Parse(instruction[^2..]);
+
+		if (opCode == OpCode.Halt)
+			return new(opCode, 0, 0, 0);
+
+		var modes = instruction[..3].Reverse( ).ToList( );
+
+		//not happy either with this, it's messy and hard to follow.
+		//Ideally any instruction which writes has a flag to indicate as such, with a write parameter
+		var parameters = Memory
+			.Skip(pointer + 1)
+			.Take(3) // just take next 3 entries from memory
+			.WithIndex( )
+			.Select(p => modes[p.idx] == '0' && p.idx < 2 //when writing, i.e. the third parameter is always the memory value!
+				? Memory[p.Value] // position mode
+				: p.Value).ToList( ); // immediate mode, again, when writing this is correct!
+
+
+
+		return new(opCode, parameters[0], parameters[1], parameters[2]);
+	}
+
+	/// <summary>
+	/// Returns the total length of the instruction, inclusive with operation code. 
+	/// </summary>
+	/// <param name="opCode"></param>
+	/// <returns></returns>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
+	private int InstructionLength(OpCode opCode) => opCode switch
 	{
 		OpCode.Add => 4,
 		OpCode.Mult => 4,
 		OpCode.Halt => 1,
-		_ => throw new ArgumentOutOfRangeException(nameof(op), op, null)
+		OpCode.Input => 2,
+		OpCode.Output => 2,
+		_ => throw new ArgumentOutOfRangeException(nameof(opCode), opCode, null)
 	};
+
+	public static IEnumerable<int> Convert(List<string> input) => 
+		input[0].Split(",").Select(int.Parse);
+
 }
