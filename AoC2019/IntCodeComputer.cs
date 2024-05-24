@@ -1,3 +1,6 @@
+using System;
+using System.Diagnostics;
+
 namespace AoC2019;
 
 public class IntCodeComputer(IEnumerable<int> input)
@@ -21,8 +24,33 @@ public class IntCodeComputer(IEnumerable<int> input)
 		Halt = 99
 	}
 
-	
-	private record struct Instruction(OpCode OpCode, int P1, int P2, int P3);
+	private enum Mode
+	{
+		Position = '0',
+		Immediate = '1'
+	}
+
+	private record Parameter(Mode Mode, int Value);
+
+	private record Instruction(OpCode OpCode, int Increment, List<Parameter> Parameters)
+	{
+		private List<Parameter> Parameters { get; } = Parameters;
+
+		public bool IsWrite => OpCode is OpCode.Add or OpCode.Mult or OpCode.Input or OpCode.LessThan or OpCode.Equals;
+
+		public bool IsJump => OpCode is OpCode.JumpFalse or OpCode.JumpTrue;
+
+		public int WriteTo => IsWrite
+			? Parameters.Last( ).Value
+			: Parameters.First( ).Value;
+
+		public int GetParameter(int idx, List<int> memory) =>
+			Parameters.Count - 1 >= idx
+				? Parameters[idx].Mode == Mode.Position
+					? memory[Parameters[idx].Value]
+					: Parameters[idx].Value
+				: 0;
+	};
 
 	public void Execute()
 	{
@@ -30,15 +58,40 @@ public class IntCodeComputer(IEnumerable<int> input)
 
 		while (instruction.OpCode != OpCode.Halt)
 		{
-			Memory[instruction.P3] = instruction.OpCode switch
+			var p1 = instruction.GetParameter(0, Memory);
+			var p2 = instruction.GetParameter(1, Memory);
+
+			if (instruction.IsWrite)
 			{
-				OpCode.Add =>  instruction.P1 + instruction.P2,
-				OpCode.Mult => instruction.P1 * instruction.P2,
+				Memory[instruction.WriteTo] = instruction.OpCode switch
+				{
+					OpCode.Add => p1 + p2,
+					OpCode.Mult => p1 * p2,
+					OpCode.Input => Input,
+					OpCode.LessThan => p1 < p2 ? 1 : 0,
+					OpCode.Equals => p1 == p2 ? 1 : 0,
+				};
+			}
 
-				_ => throw new ArgumentOutOfRangeException( )
-			};
+			if (instruction.OpCode == OpCode.Output)
+			{
+				Output = p1; 
+				Console.WriteLine($"Wrote output {Output}");
+			}
 
-			pointer += InstructionLength(instruction.OpCode);
+			if (instruction.IsJump)
+			{
+				pointer = instruction.OpCode switch
+				{
+					OpCode.JumpTrue => p1 != 0 ? p2 : pointer + instruction.Increment,
+					OpCode.JumpFalse => p1 == 0 ? p2 : pointer + instruction.Increment,
+				};
+			}
+			else
+			{
+				pointer += instruction.Increment;
+			}
+			
 			instruction = ParseInstruction( );
 		}
 	}
@@ -48,25 +101,15 @@ public class IntCodeComputer(IEnumerable<int> input)
 		//not too happy about the conversion back-and-forth..
 		var instruction = Memory[pointer].ToString( ).PadLeft(5, '0');
 		var opCode = (OpCode)int.Parse(instruction[^2..]);
-
-		if (opCode == OpCode.Halt)
-			return new(opCode, 0, 0, 0);
-
 		var modes = instruction[..3].Reverse( ).ToList( );
-
-		//not happy either with this, it's messy and hard to follow.
-		//Ideally any instruction which writes has a flag to indicate as such, with a write parameter
 		var parameters = Memory
 			.Skip(pointer + 1)
-			.Take(3) // just take next 3 entries from memory
+			.Take(InstructionLength(opCode) - 1)
 			.WithIndex( )
-			.Select(p => modes[p.idx] == '0' && p.idx < 2 //when writing, i.e. the third parameter is always the memory value!
-				? Memory[p.Value] // position mode
-				: p.Value).ToList( ); // immediate mode, again, when writing this is correct!
+			.Select(p => new Parameter((Mode)modes[p.idx], p.Value))
+			.ToList( );
 
-
-
-		return new(opCode, parameters[0], parameters[1], parameters[2]);
+		return new(opCode, InstructionLength(opCode), parameters);
 	}
 
 	/// <summary>
@@ -77,15 +120,14 @@ public class IntCodeComputer(IEnumerable<int> input)
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	private int InstructionLength(OpCode opCode) => opCode switch
 	{
-		OpCode.Add => 4,
-		OpCode.Mult => 4,
 		OpCode.Halt => 1,
-		OpCode.Input => 2,
-		OpCode.Output => 2,
+		OpCode.Input or OpCode.Output => 2,
+		OpCode.JumpFalse or OpCode.JumpTrue => 3,
+		OpCode.Add or OpCode.Mult or OpCode.Equals or OpCode.LessThan => 4,
 		_ => throw new ArgumentOutOfRangeException(nameof(opCode), opCode, null)
 	};
 
-	public static IEnumerable<int> Convert(List<string> input) => 
+	public static IEnumerable<int> Convert(List<string> input) =>
 		input[0].Split(",").Select(int.Parse);
 
 }
