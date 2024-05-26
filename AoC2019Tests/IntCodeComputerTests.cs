@@ -24,9 +24,39 @@ internal class IntCodeComputerTests
 	[TestCaseSource(nameof(GetDay5Part2TestCases))]
 	public void Day5Part2Tests((int input, List<int> program, int result) test)
 	{
-		var sut = new IntCodeComputer(test.program) { Input = test.input };
+		var sut = new IntCodeComputer(test.program) { Input = new(){ test.input }};
 		sut.Execute( );
 		Assert.That(sut.Output, Is.EqualTo(test.result));
+	}
+
+	[TestCaseSource(nameof(GetDay7Part1TestCases))]
+	public async Task Day7Part1Tests((string input, string result) test)
+	{
+		var day07 = new Day07(test.input);
+		var actual = await day07.SolvePart1();
+		Assert.That(actual, Is.EqualTo(test.result));
+	}
+
+	[TestCaseSource(nameof(GetDay7Part2TestCases))]
+	public async Task Day7Part2Tests((string input, string result) test)
+	{
+		var day07 = new Day07(test.input);
+		var actual = await day07.SolvePart2( );
+		Assert.That(actual, Is.EqualTo(test.result));
+	}
+
+
+	public static IEnumerable<(string input, string result)> GetDay7Part2TestCases()
+	{
+		yield return ("day07test4", "139629729");
+		yield return ("day07test5", "18216");
+	}
+
+	public static IEnumerable<(string input, string result)> GetDay7Part1TestCases()
+	{
+		yield return ("day07test1", "43210");
+		yield return ("day07test2", "54321");
+		yield return ("day07test3", "65210");
 	}
 
 	public static IEnumerable<(int input, List<int> program, int result)> GetDay5Part2TestCases()

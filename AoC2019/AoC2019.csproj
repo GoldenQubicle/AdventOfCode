@@ -6,4 +6,7 @@
     <ProjectReference Include="..\Common\Common.csproj" />
     <Content Include="data\**" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="false" /> 
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Combinatorics" Version="2.0.0" />
+  </ItemGroup>
 </Project>

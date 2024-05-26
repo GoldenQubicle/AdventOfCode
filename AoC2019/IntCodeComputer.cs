@@ -2,9 +2,16 @@ namespace AoC2019;
 
 public class IntCodeComputer(IEnumerable<int> input)
 {
-	public int Input { get; set; }
+	public List<int> Input { get; set; }
 	public int Output { get; set; }
 	public List<int> Memory { get; init; } = input.ToList( );
+
+	public int GetInput()
+	{
+		var input = Input.First();
+		Input.RemoveAt(0);
+		return input;
+	}
 
 	private int pointer;
 
@@ -62,7 +69,7 @@ public class IntCodeComputer(IEnumerable<int> input)
 				{
 					OpCode.Add => p1 + p2,
 					OpCode.Mult => p1 * p2,
-					OpCode.Input => Input,
+					OpCode.Input => GetInput(),
 					OpCode.LessThan => p1 < p2 ? 1 : 0,
 					OpCode.Equals => p1 == p2 ? 1 : 0,
 				};
@@ -71,7 +78,7 @@ public class IntCodeComputer(IEnumerable<int> input)
 			if (instruction.OpCode == OpCode.Output)
 			{
 				Output = p1; 
-				Console.WriteLine($"Wrote output {Output}");
+				//Console.WriteLine($"Wrote output {Output}");
 			}
 
 			if (instruction.IsJump)
