@@ -15,18 +15,18 @@ namespace AoC2022
 
 
 		public override async Task<string> SolvePart2() => await Task.WhenAll(grid
-				.Where(c => getCharacter(c.Character) == 'a' && grid.GetNeighbors(c).Any(n => n.Character == 'b'))
+				.Where(c => GetCharacter(c.Character) == 'a' && grid.GetNeighbors(c).Any(n => n.Character == 'b'))
 				.Select(async o => await GetPath(o, grid.GetCells(c => c.Character == 'E').First( ))))
 			.ContinueWith(t => t.Result.Min(p => p.Count( ) - 1).ToString( ));
 
 		
 		private async Task<IEnumerable<INode>> GetPath(INode start, INode target) => await PathFinding.BreadthFirstSearch(
 			start, target, grid,
-			(c, n) => getCharacter(n.Character) - 1 <= getCharacter(c.Character),
+			(c, n) => GetCharacter(n.Character) - 1 <= GetCharacter(c.Character),
 			(c, t) => c.Character == t.Character);
 
 
-		char getCharacter(char c) => c switch
+		private static char GetCharacter(char c) => c switch
 		{
 			'S' => 'a',
 			'E' => 'z',

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Common.Interfaces;
 
-
 public interface IGraph
 {
     INode this[int x, int y]

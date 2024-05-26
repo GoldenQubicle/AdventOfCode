@@ -1,6 +1,3 @@
-using System;
-using System.Diagnostics;
-
 namespace AoC2019;
 
 public class IntCodeComputer(IEnumerable<int> input)
@@ -40,9 +37,7 @@ public class IntCodeComputer(IEnumerable<int> input)
 
 		public bool IsJump => OpCode is OpCode.JumpFalse or OpCode.JumpTrue;
 
-		public int WriteTo => IsWrite
-			? Parameters.Last( ).Value
-			: Parameters.First( ).Value;
+		public int WriteTo => Parameters.Last().Value;
 
 		public int GetParameter(int idx, List<int> memory) =>
 			Parameters.Count - 1 >= idx
@@ -126,8 +121,4 @@ public class IntCodeComputer(IEnumerable<int> input)
 		OpCode.Add or OpCode.Mult or OpCode.Equals or OpCode.LessThan => 4,
 		_ => throw new ArgumentOutOfRangeException(nameof(opCode), opCode, null)
 	};
-
-	public static IEnumerable<int> Convert(List<string> input) =>
-		input[0].Split(",").Select(int.Parse);
-
 }
