@@ -1,4 +1,6 @@
-﻿namespace AoC2019Tests;
+﻿using Common.Extensions;
+
+namespace AoC2019Tests;
 
 internal class IntCodeComputerTests
 {
@@ -9,7 +11,6 @@ internal class IntCodeComputerTests
 		sut.Execute( );
 
 		Assert.That(sut.Memory, Is.EqualTo(test.result));
-
 	}
 
 	[TestCaseSource(nameof(GetDay5Part1TestCases))]
@@ -24,7 +25,7 @@ internal class IntCodeComputerTests
 	[TestCaseSource(nameof(GetDay5Part2TestCases))]
 	public void Day5Part2Tests((int input, List<int> program, int result) test)
 	{
-		var sut = new IntCodeComputer(test.program) { Input = new(){ test.input }};
+		var sut = new IntCodeComputer(test.program) { Inputs = new(){ test.input }};
 		sut.Execute( );
 		Assert.That(sut.Output, Is.EqualTo(test.result));
 	}
@@ -37,6 +38,7 @@ internal class IntCodeComputerTests
 		Assert.That(actual, Is.EqualTo(test.result));
 	}
 
+	//[Ignore("wip")]
 	[TestCaseSource(nameof(GetDay7Part2TestCases))]
 	public async Task Day7Part2Tests((string input, string result) test)
 	{
@@ -115,4 +117,16 @@ internal class IntCodeComputerTests
 		Assert.That(part1, Is.EqualTo("7566643"));
 		Assert.That(part2, Is.EqualTo("9265694"));
 	}
+
+	[Test]
+	public async Task SolutionDay7()
+	{
+		var day7 = new Day07("day07");
+		var part1 = await day7.SolvePart1( );
+		var part2 = await day7.SolvePart2( );
+
+		Assert.That(part1, Is.EqualTo("880726"));
+		Assert.That(part2, Is.EqualTo("4931744"));
+	}
+
 }

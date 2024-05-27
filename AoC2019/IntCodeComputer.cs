@@ -2,18 +2,15 @@ namespace AoC2019;
 
 public class IntCodeComputer(IEnumerable<int> input)
 {
-	public List<int> Input { get; set; }
-	public int Output { get; set; }
-	public List<int> Memory { get; init; } = input.ToList( );
-
-	public int GetInput()
-	{
-		var input = Input.First();
-		Input.RemoveAt(0);
-		return input;
-	}
-
+	public List<int> Memory { get; } = input.ToList( );
+	public Queue<int> Inputs { get; set; }
+	public int Output { get; private set; }
+	public int Id { get; init ; }
+	public bool BreakOnOutput { get; init; }
+	public bool IsFinished { get; private set; }
+	private int GetInput() => Inputs.Dequeue( );
 	private int pointer;
+	private bool doBreak;
 
 	private enum OpCode
 	{
@@ -44,7 +41,7 @@ public class IntCodeComputer(IEnumerable<int> input)
 
 		public bool IsJump => OpCode is OpCode.JumpFalse or OpCode.JumpTrue;
 
-		public int WriteTo => Parameters.Last().Value;
+		public int WriteTo => Parameters.Last( ).Value;
 
 		public int GetParameter(int idx, List<int> memory) =>
 			Parameters.Count - 1 >= idx
@@ -54,12 +51,12 @@ public class IntCodeComputer(IEnumerable<int> input)
 				: 0;
 	};
 
-	public void Execute()
+	public bool Execute()
 	{
-		var instruction = ParseInstruction( );
-
-		while (instruction.OpCode != OpCode.Halt)
+		doBreak = false;
+		while (true)
 		{
+			var instruction = ParseInstruction( );
 			var p1 = instruction.GetParameter(0, Memory);
 			var p2 = instruction.GetParameter(1, Memory);
 
@@ -69,7 +66,7 @@ public class IntCodeComputer(IEnumerable<int> input)
 				{
 					OpCode.Add => p1 + p2,
 					OpCode.Mult => p1 * p2,
-					OpCode.Input => GetInput(),
+					OpCode.Input => GetInput( ),
 					OpCode.LessThan => p1 < p2 ? 1 : 0,
 					OpCode.Equals => p1 == p2 ? 1 : 0,
 				};
@@ -77,25 +74,26 @@ public class IntCodeComputer(IEnumerable<int> input)
 
 			if (instruction.OpCode == OpCode.Output)
 			{
-				Output = p1; 
-				//Console.WriteLine($"Wrote output {Output}");
+				Output = p1;
+
+				if (BreakOnOutput)
+					doBreak = true;
 			}
 
-			if (instruction.IsJump)
+			pointer = instruction.OpCode switch
 			{
-				pointer = instruction.OpCode switch
-				{
-					OpCode.JumpTrue => p1 != 0 ? p2 : pointer + instruction.Increment,
-					OpCode.JumpFalse => p1 == 0 ? p2 : pointer + instruction.Increment,
-				};
-			}
-			else
-			{
-				pointer += instruction.Increment;
-			}
-			
-			instruction = ParseInstruction( );
+				OpCode.JumpTrue => p1 != 0 ? p2 : pointer + instruction.Increment,
+				OpCode.JumpFalse => p1 == 0 ? p2 : pointer + instruction.Increment,
+				_ => pointer + instruction.Increment
+			};
+
+			IsFinished = instruction.OpCode == OpCode.Halt;
+
+			if (IsFinished || doBreak)
+				break;
 		}
+
+		return true;
 	}
 
 	private Instruction ParseInstruction()
