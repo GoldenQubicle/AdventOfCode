@@ -25,32 +25,6 @@ public class IntCodeComputer(IEnumerable<int> input)
 		Halt = 99
 	}
 
-	private enum Mode
-	{
-		Position = '0',
-		Immediate = '1'
-	}
-
-	private record Parameter(Mode Mode, int Value, int Position);
-
-	private record Instruction(OpCode OpCode, List<Parameter> Parameters)
-	{
-		public void Deconstruct(out OpCode opCode, out int p1, out int p2, out int writeTo)
-		{
-			opCode = OpCode;
-			p1 = GetParameter(0);
-			p2 = GetParameter(1);
-			writeTo = OpCode.IsWrite( ) ? Parameters.Last( ).Value : 0;
-		}
-
-		private int GetParameter(int idx) =>
-			Parameters.Count - 1 >= idx
-				? Parameters[idx].Mode == Mode.Position
-					? Parameters[idx].Position
-					: Parameters[idx].Value
-				: 0;
-	}
-
 	public bool Execute()
 	{
 		doBreak = false;
@@ -110,19 +84,34 @@ public class IntCodeComputer(IEnumerable<int> input)
 			{
 				var value = p.Value;
 				var position = p.Value >= 0 && p.Value <= Memory.Count - 1 ? Memory[p.Value] : 0;
-				return new Parameter((Mode)modes[p.idx], value, position );
+				return new Parameter((Mode)modes[p.idx], value, position);
 			}).ToList( );
 
 		return new(opCode, parameters);
-
 	}
 
-	/// <summary>
-	/// Returns the total length of the instruction, inclusive with operation code. 
-	/// </summary>
-	/// <param name="opCode"></param>
-	/// <returns></returns>
-	/// <exception cref="ArgumentOutOfRangeException"></exception>
+	private record Instruction(OpCode OpCode, List<Parameter> Parameters)
+	{
+		public void Deconstruct(out OpCode opCode, out int p1, out int p2, out int writeTo)
+		{
+			opCode = OpCode;
+			p1 = GetParameter(0);
+			p2 = GetParameter(1);
+			writeTo = OpCode.IsWrite( ) ? Parameters.Last( ).Value : 0;
+		}
+
+		private int GetParameter(int idx) =>
+			Parameters.Count - 1 >= idx
+				? Parameters[idx].Mode == Mode.Position
+					? Parameters[idx].Position
+					: Parameters[idx].Value
+				: 0;
+	}
+
+	private record Parameter(Mode Mode, int Value, int Position);
+
+	private enum Mode { Position = '0', Immediate = '1' }
+
 	private int InstructionLength(OpCode opCode) => opCode switch
 	{
 		OpCode.Halt => 1,
@@ -141,5 +130,4 @@ public static class OpCodeExtensions
 		IntCodeComputer.OpCode.Input or
 		IntCodeComputer.OpCode.Equals or
 		IntCodeComputer.OpCode.LessThan;
-
 }
