@@ -1,3 +1,5 @@
+using System.Reflection.Emit;
+
 namespace AoC2019;
 
 public class IntCodeComputer(IEnumerable<int> input)
@@ -5,14 +7,14 @@ public class IntCodeComputer(IEnumerable<int> input)
 	public List<int> Memory { get; } = input.ToList( );
 	public Queue<int> Inputs { get; set; }
 	public int Output { get; private set; }
-	public int Id { get; init ; }
+	public int Id { get; init; }
 	public bool BreakOnOutput { get; init; }
 	public bool IsFinished { get; private set; }
 	private int GetInput() => Inputs.Dequeue( );
 	private int pointer;
 	private bool doBreak;
 
-	private enum OpCode
+	public enum OpCode
 	{
 		Add = 01,
 		Mult = 02,
@@ -31,38 +33,36 @@ public class IntCodeComputer(IEnumerable<int> input)
 		Immediate = '1'
 	}
 
-	private record Parameter(Mode Mode, int Value);
+	private record Parameter(Mode Mode, int Value, int Position);
 
-	private record Instruction(OpCode OpCode, int Increment, List<Parameter> Parameters)
+	private record Instruction(OpCode OpCode, List<Parameter> Parameters)
 	{
-		private List<Parameter> Parameters { get; } = Parameters;
+		public void Deconstruct(out OpCode opCode, out int p1, out int p2, out int writeTo)
+		{
+			opCode = OpCode;
+			p1 = GetParameter(0);
+			p2 = GetParameter(1);
+			writeTo = OpCode.IsWrite( ) ? Parameters.Last( ).Value : 0;
+		}
 
-		public bool IsWrite => OpCode is OpCode.Add or OpCode.Mult or OpCode.Input or OpCode.LessThan or OpCode.Equals;
-
-		public bool IsJump => OpCode is OpCode.JumpFalse or OpCode.JumpTrue;
-
-		public int WriteTo => Parameters.Last( ).Value;
-
-		public int GetParameter(int idx, List<int> memory) =>
+		private int GetParameter(int idx) =>
 			Parameters.Count - 1 >= idx
 				? Parameters[idx].Mode == Mode.Position
-					? memory[Parameters[idx].Value]
+					? Parameters[idx].Position
 					: Parameters[idx].Value
 				: 0;
-	};
+	}
 
 	public bool Execute()
 	{
 		doBreak = false;
 		while (true)
 		{
-			var instruction = ParseInstruction( );
-			var p1 = instruction.GetParameter(0, Memory);
-			var p2 = instruction.GetParameter(1, Memory);
+			var (opCode, p1, p2, writeTo) = ParseInstruction( );
 
-			if (instruction.IsWrite)
+			if (opCode.IsWrite( ))
 			{
-				Memory[instruction.WriteTo] = instruction.OpCode switch
+				Memory[writeTo] = opCode switch
 				{
 					OpCode.Add => p1 + p2,
 					OpCode.Mult => p1 * p2,
@@ -72,7 +72,7 @@ public class IntCodeComputer(IEnumerable<int> input)
 				};
 			}
 
-			if (instruction.OpCode == OpCode.Output)
+			if (opCode == OpCode.Output)
 			{
 				Output = p1;
 
@@ -80,14 +80,16 @@ public class IntCodeComputer(IEnumerable<int> input)
 					doBreak = true;
 			}
 
-			pointer = instruction.OpCode switch
+			var next = pointer + InstructionLength(opCode);
+
+			pointer = opCode switch
 			{
-				OpCode.JumpTrue => p1 != 0 ? p2 : pointer + instruction.Increment,
-				OpCode.JumpFalse => p1 == 0 ? p2 : pointer + instruction.Increment,
-				_ => pointer + instruction.Increment
+				OpCode.JumpTrue => p1 != 0 ? p2 : next,
+				OpCode.JumpFalse => p1 == 0 ? p2 : next,
+				_ => next
 			};
 
-			IsFinished = instruction.OpCode == OpCode.Halt;
+			IsFinished = opCode == OpCode.Halt;
 
 			if (IsFinished || doBreak)
 				break;
@@ -106,10 +108,15 @@ public class IntCodeComputer(IEnumerable<int> input)
 			.Skip(pointer + 1)
 			.Take(InstructionLength(opCode) - 1)
 			.WithIndex( )
-			.Select(p => new Parameter((Mode)modes[p.idx], p.Value))
-			.ToList( );
+			.Select(p =>
+			{
+				var value = p.Value;
+				var position = p.Value >= 0 && p.Value <= Memory.Count - 1 ? Memory[p.Value] : 0;
+				return new Parameter((Mode)modes[p.idx], value, position );
+			}).ToList( );
 
-		return new(opCode, InstructionLength(opCode), parameters);
+		return new(opCode, parameters);
+
 	}
 
 	/// <summary>
@@ -126,4 +133,15 @@ public class IntCodeComputer(IEnumerable<int> input)
 		OpCode.Add or OpCode.Mult or OpCode.Equals or OpCode.LessThan => 4,
 		_ => throw new ArgumentOutOfRangeException(nameof(opCode), opCode, null)
 	};
+}
+
+public static class OpCodeExtensions
+{
+	public static bool IsWrite(this IntCodeComputer.OpCode opCode) => opCode is
+		IntCodeComputer.OpCode.Add or
+		IntCodeComputer.OpCode.Mult or
+		IntCodeComputer.OpCode.Input or
+		IntCodeComputer.OpCode.Equals or
+		IntCodeComputer.OpCode.LessThan;
+
 }
