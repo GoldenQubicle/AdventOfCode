@@ -2,16 +2,6 @@ namespace AoC2019;
 
 public class IntCodeComputer(IEnumerable<int> input)
 {
-	public List<int> Memory { get; } = input.ToList( );
-	public Queue<int> Inputs { get; set; }
-	public int Output { get; private set; }
-	public int Id { get; init; }
-	public bool BreakOnOutput { get; init; }
-	public bool IsFinished { get; private set; }
-	private int GetInput() => Inputs.Dequeue( );
-	private int pointer;
-	private bool doBreak;
-
 	public enum OpCode
 	{
 		Add = 01,
@@ -25,9 +15,20 @@ public class IntCodeComputer(IEnumerable<int> input)
 		Halt = 99
 	}
 
+	public List<int> Memory { get; } = input.ToList( );
+	public Queue<int> Inputs { get; set; }
+	public int Output { get; private set; }
+	public int Id { get; init; }
+	public bool BreakOnOutput { get; init; }
+	public bool IsFinished { get; private set; }
+	private int GetInput() => Inputs.Dequeue( );
+	private int pointer;
+	private bool doBreak;
+
 	public bool Execute()
 	{
 		doBreak = false;
+
 		while (true)
 		{
 			var (opCode, p1, p2, writeTo) = ParseInstruction( );
