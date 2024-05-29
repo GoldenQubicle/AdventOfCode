@@ -1,5 +1,3 @@
-using System.Reflection.Emit;
-
 namespace AoC2019;
 
 public class IntCodeComputer(IEnumerable<int> input)
