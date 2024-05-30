@@ -2,7 +2,7 @@
   "profiles": {
     "CLI": {
       "commandName": "Project",
-      "commandLineArgs": "runday -y 2019 -d 07 -p 02"
+      "commandLineArgs": "runday -y 2019 -d 08 -p 01"
     }
   }
 }
