@@ -1,3 +1,5 @@
+using Common.Extensions;
+
 namespace AoC2019Tests;
             
 public class Day08Test
@@ -23,8 +25,10 @@ public class Day08Test
     [Test]
     public async Task Part2( )
     {
-        var expected = string.Empty;
-        var actual = await day08.SolvePart2( );
-        Assert.That(actual, Is.EqualTo(expected));
+		Day08.Width = 2;
+		Day08.Height = 2;
+		day08 = new Day08("day08test2");
+		var actual = await day08.SolvePart2( );
+        Assert.That(actual, Is.EqualTo("\n#.\n.#\n"));
     }
 }
