@@ -148,9 +148,9 @@ internal class IntCodeComputerTests
 	{
 		var day9 = new Day09("day09");
 		var part1 = await day9.SolvePart1( );
-		//var part2 = await day9.SolvePart2( );
+		var part2 = await day9.SolvePart2( );
 
 		Assert.That(part1, Is.EqualTo("3429606717"));
-		//Assert.That(part2, Is.EqualTo("4931744"));
+		Assert.That(part2, Is.EqualTo("33679"));
 	}
 }

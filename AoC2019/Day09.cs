@@ -14,6 +14,8 @@ public class Day09 : Solution
 
     public override async Task<string> SolvePart2( )
     {
-    	return string.Empty;
-    }
+		var icc = new IntCodeComputer(Input) { Inputs = new( ) { 2 } };
+		icc.Execute( );
+		return icc.Output.ToString( );
+	}
 }
