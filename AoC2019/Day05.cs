@@ -2,10 +2,10 @@ namespace AoC2019;
 
 public class Day05 : Solution
 {
-	private readonly IEnumerable<int> memory;
+	private readonly IEnumerable<long> memory;
 
 	public Day05(string file) : base(file) =>
-		memory = Input[0].Split(",").Select(int.Parse);
+		memory = Input[0].Split(",").Select(long.Parse);
 
     public override async Task<string> SolvePart1( )
     {

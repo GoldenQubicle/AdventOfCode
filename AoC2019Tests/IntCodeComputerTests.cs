@@ -1,11 +1,12 @@
-﻿using Common.Extensions;
+﻿using System.Runtime.CompilerServices;
+using Common.Extensions;
 
 namespace AoC2019Tests;
 
 internal class IntCodeComputerTests
 {
 	[TestCaseSource(nameof(GetDay2TestCases))]
-	public void Day2Tests((List<int> input, List<int> result) test)
+	public void Day2Tests((List<long> input, List<long> result) test)
 	{
 		var sut = new IntCodeComputer(test.input);
 		sut.Execute( );
@@ -14,7 +15,7 @@ internal class IntCodeComputerTests
 	}
 
 	[TestCaseSource(nameof(GetDay5Part1TestCases))]
-	public void Day5Part1Tests((List<int> input, List<int> result) test)
+	public void Day5Part1Tests((List<long> input, List<long> result) test)
 	{
 		var sut = new IntCodeComputer(test.input);
 		sut.Execute( );
@@ -23,7 +24,7 @@ internal class IntCodeComputerTests
 	}
 
 	[TestCaseSource(nameof(GetDay5Part2TestCases))]
-	public void Day5Part2Tests((int input, List<int> program, int result) test)
+	public void Day5Part2Tests((int input, List<long> program, long result) test)
 	{
 		var sut = new IntCodeComputer(test.program) { Inputs = new(){ test.input }};
 		sut.Execute( );
@@ -38,7 +39,6 @@ internal class IntCodeComputerTests
 		Assert.That(actual, Is.EqualTo(test.result));
 	}
 
-	//[Ignore("wip")]
 	[TestCaseSource(nameof(GetDay7Part2TestCases))]
 	public async Task Day7Part2Tests((string input, string result) test)
 	{
@@ -47,6 +47,18 @@ internal class IntCodeComputerTests
 		Assert.That(actual, Is.EqualTo(test.result));
 	}
 
+	[TestCaseSource(nameof(GetDay9TestCases))]
+	public async Task Day9Part1Tests((List<long> program, long result) test)
+	{
+		var sut = new IntCodeComputer(test.program);
+		
+		Assert.That(sut.Output, Is.EqualTo(test.result));
+	}
+
+	public static IEnumerable<(List<long> program, long result)> GetDay9TestCases()
+	{
+		yield return (new(){ 104, 1125899906842624, 99 }, 1125899906842624);
+	}
 
 	public static IEnumerable<(string input, string result)> GetDay7Part2TestCases()
 	{
@@ -61,7 +73,7 @@ internal class IntCodeComputerTests
 		yield return ("day07test3", "65210");
 	}
 
-	public static IEnumerable<(int input, List<int> program, int result)> GetDay5Part2TestCases()
+	public static IEnumerable<(int input, List<long> program, long result)> GetDay5Part2TestCases()
 	{
 		yield return (8, new( ) { 3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8 }, 1);
 		yield return (7, new( ) { 3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8 }, 0);
@@ -80,7 +92,7 @@ internal class IntCodeComputerTests
 		yield return (9, new( ) { 3, 21, 1008, 21, 8, 20, 1005, 20, 22, 107, 8, 21, 20, 1006, 20, 31, 1106, 0, 36, 98, 0, 0, 1002, 21, 125, 20, 4, 20, 1105, 1, 46, 104, 999, 1105, 1, 46, 1101, 1000, 1, 20, 4, 20, 1105, 1, 46, 98, 99 }, 1001);
 	}
 
-	public static IEnumerable<(List<int> input, List<int> result)> GetDay5Part1TestCases()
+	public static IEnumerable<(List<long> input, List<long> result)> GetDay5Part1TestCases()
 	{
 		yield return (new( ) { 1002, 4, 3, 4, 33 }, new( ) { 1002, 4, 3, 4, 99 });
 		yield return (new( ) { 1101, 100, -1, 4, 0 }, new( ) { 1101, 100, -1, 4, 99 });
@@ -88,7 +100,7 @@ internal class IntCodeComputerTests
 		yield return (new( ) { 11101, 4, 4, 0, 99 }, new( ) { 8, 4, 4, 0, 99 });
 	}
 
-	public static IEnumerable<(List<int> input, List<int> result)> GetDay2TestCases()
+	public static IEnumerable<(List<long> input, List<long> result)> GetDay2TestCases()
 	{
 		yield return (new( ) { 1, 0, 0, 0, 99 }, new( ) { 2, 0, 0, 0, 99 });
 		yield return (new( ) { 2, 3, 0, 3, 99 }, new( ) { 2, 3, 0, 6, 99 });

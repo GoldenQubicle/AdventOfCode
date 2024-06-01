@@ -1,6 +1,6 @@
 namespace AoC2019;
 
-public class IntCodeComputer(IEnumerable<int> input)
+public class IntCodeComputer(IEnumerable<long> input)
 {
 	public enum OpCode
 	{
@@ -12,17 +12,19 @@ public class IntCodeComputer(IEnumerable<int> input)
 		JumpFalse = 06,
 		LessThan = 07,
 		Equals = 08,
+		Offset = 09,
 		Halt = 99
 	}
 
-	public List<int> Memory { get; } = input.ToList( );
-	public Queue<int> Inputs { get; set; }
-	public int Output { get; private set; }
+	public List<long> Memory { get; } = input.ToList( );
+	public Queue<long> Inputs { get; set; }
+	public long Output { get; private set; }
 	public int Id { get; init; }
 	public bool BreakOnOutput { get; init; }
 	public bool IsFinished { get; private set; }
-	private int GetInput() => Inputs.Dequeue( );
-	private int pointer;
+	private long GetInput() => Inputs.Dequeue( );
+	private long pointer;
+	private long offset;
 	private bool doBreak;
 
 	public bool Execute()
@@ -35,7 +37,7 @@ public class IntCodeComputer(IEnumerable<int> input)
 
 			if (opCode.IsWrite( ))
 			{
-				Memory[writeTo] = opCode switch
+				Memory[(int)writeTo] = opCode switch
 				{
 					OpCode.Add => p1 + p2,
 					OpCode.Mult => p1 * p2,
@@ -51,6 +53,11 @@ public class IntCodeComputer(IEnumerable<int> input)
 
 				if (BreakOnOutput)
 					doBreak = true;
+			}
+
+			if (opCode == OpCode.Offset)
+			{
+				offset += p1;
 			}
 
 			var next = pointer + InstructionLength(opCode);
@@ -74,18 +81,18 @@ public class IntCodeComputer(IEnumerable<int> input)
 	private Instruction ParseInstruction()
 	{
 		//not too happy about the conversion back-and-forth..
-		var instruction = Memory[pointer].ToString( ).PadLeft(5, '0');
+		var instruction = Memory[(int)pointer].ToString( ).PadLeft(5, '0');
 		var opCode = (OpCode)int.Parse(instruction[^2..]);
 		var modes = instruction[..3].Reverse( ).ToList( );
 		var parameters = Memory
-			.Skip(pointer + 1)
+			.Skip((int)pointer + 1)
 			.Take(InstructionLength(opCode) - 1)
 			.WithIndex( )
 			.Select(p =>
 			{
 				var value = p.Value;
-				var position = p.Value >= 0 && p.Value <= Memory.Count - 1 ? Memory[p.Value] : 0;
-				return new Parameter((Mode)modes[p.idx], value, position);
+				var position = p.Value >= 0 && p.Value <= Memory.Count - 1 ? Memory[(int)p.Value] : 0;
+				return new Parameter((Mode)modes[p.idx], value, position, 0L);
 			}).ToList( );
 
 		return new(opCode, parameters);
@@ -93,7 +100,7 @@ public class IntCodeComputer(IEnumerable<int> input)
 
 	private record Instruction(OpCode OpCode, List<Parameter> Parameters)
 	{
-		public void Deconstruct(out OpCode opCode, out int p1, out int p2, out int writeTo)
+		public void Deconstruct(out OpCode opCode, out long p1, out long p2, out long writeTo)
 		{
 			opCode = OpCode;
 			p1 = GetParameter(0);
@@ -101,7 +108,7 @@ public class IntCodeComputer(IEnumerable<int> input)
 			writeTo = OpCode.IsWrite( ) ? Parameters.Last( ).Value : 0;
 		}
 
-		private int GetParameter(int idx) =>
+		private long GetParameter(int idx) =>
 			Parameters.Count - 1 >= idx
 				? Parameters[idx].Mode == Mode.Position
 					? Parameters[idx].Position
@@ -109,9 +116,9 @@ public class IntCodeComputer(IEnumerable<int> input)
 				: 0;
 	}
 
-	private record Parameter(Mode Mode, int Value, int Position);
+	private record Parameter(Mode Mode, long Value, long Position, long OffSet);
 
-	private enum Mode { Position = '0', Immediate = '1' }
+	private enum Mode { Position = '0', Immediate = '1', Relative = '2' }
 
 	private int InstructionLength(OpCode opCode) => opCode switch
 	{

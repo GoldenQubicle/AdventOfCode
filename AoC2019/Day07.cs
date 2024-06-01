@@ -1,4 +1,3 @@
-using System.Numerics;
 using Combinatorics.Collections;
 
 namespace AoC2019;
@@ -7,21 +6,21 @@ public class Day07 : Solution
 {
 	public Day07(string file) : base(file) { }
 
-	private List<int> GetMemory() =>
-		Input[0].Split(",").Select(int.Parse).ToList( );
+	private List<long> GetMemory() =>
+		Input[0].Split(",").Select(long.Parse).ToList( );
 
 	public override async Task<string> SolvePart1()
 	{
-		var signals = new List<int>( );
-		var phases = new Permutations<int>(new List<int> { 0, 1, 2, 3, 4 });
+		var signals = new List<long>( );
+		var phases = new Permutations<long>(new List<long> { 0, 1, 2, 3, 4 });
 
 		Parallel.ForEach(phases, phase =>
-			signals.Add(phase.Aggregate(0, (current, p) => RunIntCode(p, current))));
+			signals.Add(phase.Aggregate(0L, (current, p) => RunIntCode(p, current))));
 
 		return signals.Max( ).ToString( );
 	}
 
-	private int RunIntCode(int phase, int input)
+	private long RunIntCode(long phase, long input)
 	{
 		var icc = new IntCodeComputer(GetMemory( ))
 		{
@@ -36,14 +35,14 @@ public class Day07 : Solution
 	public override async Task<string> SolvePart2()
 	{
 		var phases = new Permutations<int>(new List<int> { 5, 6, 7, 8, 9 });
-		var signals = new List<int>();
+		var signals = new List<long>();
 		
 		Parallel.ForEach(phases, phase => signals.Add(RunAmplifiersForPhase(phase)));
 
 		return signals.Max().ToString();
 	}
 
-	private int RunAmplifiersForPhase(IReadOnlyList<int> phase)
+	private long RunAmplifiersForPhase(IReadOnlyList<int> phase)
 	{
 		var amplifiers = phase.WithIndex()
 			.Select(p => new IntCodeComputer(GetMemory())
