@@ -20,7 +20,7 @@ internal class IntCodeComputerTests
 		var sut = new IntCodeComputer(test.input);
 		sut.Execute( );
 
-		Assert.That(sut.Memory, Is.EqualTo(test.result));
+		Assert.That(sut.Memory.Take(test.result.Count), Is.EqualTo(test.result));
 	}
 
 	[TestCaseSource(nameof(GetDay5Part2TestCases))]
@@ -51,13 +51,15 @@ internal class IntCodeComputerTests
 	public async Task Day9Part1Tests((List<long> program, long result) test)
 	{
 		var sut = new IntCodeComputer(test.program);
-		
+		sut.Execute();		
 		Assert.That(sut.Output, Is.EqualTo(test.result));
 	}
 
 	public static IEnumerable<(List<long> program, long result)> GetDay9TestCases()
 	{
 		yield return (new(){ 104, 1125899906842624, 99 }, 1125899906842624);
+		yield return (new(){ 1102, 34915192, 34915192, 7, 4, 7, 99, 0 }, 1219070632396864);
+		yield return (new(){ 109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99 }, 99 );
 	}
 
 	public static IEnumerable<(string input, string result)> GetDay7Part2TestCases()
@@ -141,4 +143,14 @@ internal class IntCodeComputerTests
 		Assert.That(part2, Is.EqualTo("4931744"));
 	}
 
+	[Test]
+	public async Task SolutionDay9()
+	{
+		var day9 = new Day09("day09");
+		var part1 = await day9.SolvePart1( );
+		//var part2 = await day9.SolvePart2( );
+
+		Assert.That(part1, Is.EqualTo("3429606717"));
+		//Assert.That(part2, Is.EqualTo("4931744"));
+	}
 }

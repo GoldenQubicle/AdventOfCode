@@ -1,7 +1,14 @@
 namespace AoC2019;
 
-public class IntCodeComputer(IEnumerable<long> input)
+public class IntCodeComputer
 {
+	public IntCodeComputer(IEnumerable<long> input) => 
+		Memory = input.ToList( );
+	
+	public IntCodeComputer(List<string> dayInput) => 
+		Memory = dayInput[0].Split(",").Select(long.Parse).ToList( );
+	
+
 	public enum OpCode
 	{
 		Add = 01,
@@ -16,7 +23,7 @@ public class IntCodeComputer(IEnumerable<long> input)
 		Halt = 99
 	}
 
-	public List<long> Memory { get; } = input.ToList( );
+	public List<long> Memory { get; } 
 	public Queue<long> Inputs { get; set; }
 	public long Output { get; private set; }
 	public int Id { get; init; }
@@ -37,6 +44,7 @@ public class IntCodeComputer(IEnumerable<long> input)
 
 			if (opCode.IsWrite( ))
 			{
+				EnsureMemoryCapacity(writeTo);
 				Memory[(int)writeTo] = opCode switch
 				{
 					OpCode.Add => p1 + p2,
@@ -50,7 +58,7 @@ public class IntCodeComputer(IEnumerable<long> input)
 			if (opCode == OpCode.Output)
 			{
 				Output = p1;
-
+				Console.WriteLine($"Wrote output: {Output}");
 				if (BreakOnOutput)
 					doBreak = true;
 			}
@@ -90,12 +98,22 @@ public class IntCodeComputer(IEnumerable<long> input)
 			.WithIndex( )
 			.Select(p =>
 			{
-				var value = p.Value;
-				var position = p.Value >= 0 && p.Value <= Memory.Count - 1 ? Memory[(int)p.Value] : 0;
-				return new Parameter((Mode)modes[p.idx], value, position, 0L);
+				var immediate = p.Value;
+				var position = immediate >= 0 && immediate <= Memory.Count - 1 ? Memory[(int)immediate] : 0;
+				EnsureMemoryCapacity(immediate + offset);
+				var relative = immediate + offset >= 0  ? Memory[(int)(immediate + offset)] : 0;
+				return new Parameter((Mode)modes[p.idx], immediate, position, relative , offset);
 			}).ToList( );
 
 		return new(opCode, parameters);
+	}
+
+	private void EnsureMemoryCapacity(long idx)
+	{
+		if (idx > int.MaxValue) return;
+
+		if (idx > Memory.Count - 1)
+			Memory.AddRange(new long[idx - Memory.Count + 1]);
 	}
 
 	private record Instruction(OpCode OpCode, List<Parameter> Parameters)
@@ -105,29 +123,36 @@ public class IntCodeComputer(IEnumerable<long> input)
 			opCode = OpCode;
 			p1 = GetParameter(0);
 			p2 = GetParameter(1);
-			writeTo = OpCode.IsWrite( ) ? Parameters.Last( ).Value : 0;
+			writeTo = OpCode.IsWrite( ) 
+				? Parameters.Last( ).Mode == Mode.Relative
+					? Parameters.Last().Value + Parameters.Last().Offset
+					: Parameters.Last().Value
+				: 0;
 		}
 
 		private long GetParameter(int idx) =>
 			Parameters.Count - 1 >= idx
 				? Parameters[idx].Mode == Mode.Position
 					? Parameters[idx].Position
+					: Parameters[idx].Mode == Mode.Relative
+					? Parameters[idx].Relative
 					: Parameters[idx].Value
 				: 0;
 	}
 
-	private record Parameter(Mode Mode, long Value, long Position, long OffSet);
+	private record Parameter(Mode Mode, long Value, long Position, long Relative, long Offset);
 
 	private enum Mode { Position = '0', Immediate = '1', Relative = '2' }
 
 	private int InstructionLength(OpCode opCode) => opCode switch
 	{
 		OpCode.Halt => 1,
-		OpCode.Input or OpCode.Output => 2,
+		OpCode.Input or OpCode.Output or OpCode.Offset => 2,
 		OpCode.JumpFalse or OpCode.JumpTrue => 3,
 		OpCode.Add or OpCode.Mult or OpCode.Equals or OpCode.LessThan => 4,
 		_ => throw new ArgumentOutOfRangeException(nameof(opCode), opCode, null)
 	};
+
 }
 
 public static class OpCodeExtensions

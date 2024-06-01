@@ -4,11 +4,12 @@ public class Day09 : Solution
 {
     public Day09(string file) : base(file) { }
     
-    public Day09(List<string> input) : base(input) { }
 
-    public override async Task<string> SolvePart1( ) 
+    public override async Task<string> SolvePart1( )
     {
-    	return string.Empty;
+	    var icc = new IntCodeComputer(Input) { Inputs = new (){ 1 } };
+	    icc.Execute();
+	    return icc.Output.ToString();
     }
 
     public override async Task<string> SolvePart2( )

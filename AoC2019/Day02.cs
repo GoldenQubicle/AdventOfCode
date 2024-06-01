@@ -2,14 +2,12 @@ namespace AoC2019;
 
 public class Day02 : Solution
 {
-	private readonly IEnumerable<long> memory;
-
-	public Day02(string file) : base(file) =>
-		memory = Input[0].Split(",").Select(long.Parse);
+	public Day02(string file) : base(file) { }
+	
 
 	public override async Task<string> SolvePart1()
 	{
-		var pc = new IntCodeComputer(memory);
+		var pc = new IntCodeComputer(Input);
 
 		pc.Memory[1] = 12;
 		pc.Memory[2] = 2;
@@ -26,7 +24,7 @@ public class Day02 : Solution
 
 		while (true)
 		{
-			var pc = new IntCodeComputer(memory);
+			var pc = new IntCodeComputer(Input);
 
 			pc.Memory[1] = noun;
 			pc.Memory[2] = verb;

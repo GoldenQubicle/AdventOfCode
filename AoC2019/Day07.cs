@@ -6,9 +6,6 @@ public class Day07 : Solution
 {
 	public Day07(string file) : base(file) { }
 
-	private List<long> GetMemory() =>
-		Input[0].Split(",").Select(long.Parse).ToList( );
-
 	public override async Task<string> SolvePart1()
 	{
 		var signals = new List<long>( );
@@ -22,7 +19,7 @@ public class Day07 : Solution
 
 	private long RunIntCode(long phase, long input)
 	{
-		var icc = new IntCodeComputer(GetMemory( ))
+		var icc = new IntCodeComputer(Input)
 		{
 			Inputs = new( ) { phase, input }
 		};
@@ -45,7 +42,7 @@ public class Day07 : Solution
 	private long RunAmplifiersForPhase(IReadOnlyList<int> phase)
 	{
 		var amplifiers = phase.WithIndex()
-			.Select(p => new IntCodeComputer(GetMemory())
+			.Select(p => new IntCodeComputer(Input)
 			{
 				Id = p.idx,
 				Inputs = p.idx == 0 ? new() {  p.Value, 0 } : new() { p.Value },
