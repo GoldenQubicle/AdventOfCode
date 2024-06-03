@@ -3,19 +3,15 @@ namespace AoC2019;
 public class Day09 : Solution
 {
     public Day09(string file) : base(file) { }
-    
 
-    public override async Task<string> SolvePart1( )
+    public override async Task<string> SolvePart1() => RunIntCode(1);
+
+    public override async Task<string> SolvePart2( ) => RunIntCode(2);
+
+	private string RunIntCode(int i)
     {
-	    var icc = new IntCodeComputer(Input) { Inputs = new (){ 1 } };
+	    var icc = new IntCodeComputer(Input) { Inputs = new() { i } };
 	    icc.Execute();
 	    return icc.Output.ToString();
     }
-
-    public override async Task<string> SolvePart2( )
-    {
-		var icc = new IntCodeComputer(Input) { Inputs = new( ) { 2 } };
-		icc.Execute( );
-		return icc.Output.ToString( );
-	}
 }

@@ -17,6 +17,7 @@ namespace Common.Extensions
         public static int MultiplyComponents(this (int x, int y) a) => a.x * a.y;
 
         public static (int x, int y) ToTuple(this Vector2 v) => ((int)v.X, (int)v.Y);
+        public static Vector2 ToVector2(this (int x, int y) v) => new(v.x, v.y);
 
     }
 }
