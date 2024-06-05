@@ -1,13 +1,15 @@
+using System.Collections.Concurrent;
+
 namespace AoC2019;
 
 public class IntCodeComputer
 {
-	public IntCodeComputer(IEnumerable<long> input) => 
-		Memory = input.ToList( );
-	
-	public IntCodeComputer(List<string> dayInput) => 
-		Memory = dayInput[0].Split(",").Select(long.Parse).ToList( );
-	
+	public IntCodeComputer(IEnumerable<long> input) =>
+		_memory = input.WithIndex( ).ToConcurrentDictionary(s => (long)s.idx, s => s.Value);
+
+	public IntCodeComputer(List<string> dayInput) =>
+		_memory = dayInput[0].Split(",").WithIndex( ).ToConcurrentDictionary(s => (long)s.idx, s => long.Parse(s.Value));
+
 
 	public enum OpCode
 	{
@@ -23,7 +25,16 @@ public class IntCodeComputer
 		Halt = 99
 	}
 
-	public List<long> Memory { get; } 
+	public List<long> Memory() => _memory.Select(kvp => kvp.Value).ToList( );
+
+	public void SetMemory(long address, long value)
+	{
+		if (!_memory.TryAdd(address, value))
+		{
+			_memory[address] = value;
+		}
+	}
+	private ConcurrentDictionary<long, long> _memory { get; }
 	public Queue<long> Inputs { get; set; }
 	public long Output { get; private set; }
 	public int Id { get; init; }
@@ -45,7 +56,7 @@ public class IntCodeComputer
 			if (opCode.IsWrite( ))
 			{
 				EnsureMemoryCapacity(writeTo);
-				Memory[(int)writeTo] = opCode switch
+				_memory[(int)writeTo] = opCode switch
 				{
 					OpCode.Add => p1 + p2,
 					OpCode.Mult => p1 * p2,
@@ -89,20 +100,21 @@ public class IntCodeComputer
 	private Instruction ParseInstruction()
 	{
 		//not too happy about the conversion back-and-forth..
-		var instruction = Memory[(int)pointer].ToString( ).PadLeft(5, '0');
+		EnsureMemoryCapacity(pointer);
+		var instruction = _memory[(int)pointer].ToString( ).PadLeft(5, '0');
 		var opCode = (OpCode)int.Parse(instruction[^2..]);
 		var modes = instruction[..3].Reverse( ).ToList( );
-		var parameters = Memory
+		var parameters = _memory
 			.Skip((int)pointer + 1)
 			.Take(InstructionLength(opCode) - 1)
+			//.Select(kvp => kvp.Value)
 			.WithIndex( )
 			.Select(p =>
 			{
-				var immediate = p.Value;
-				var position = immediate >= 0 && immediate <= Memory.Count - 1 ? Memory[(int)immediate] : 0;
-				EnsureMemoryCapacity(immediate + offset);
-				var relative = immediate + offset >= 0  ? Memory[(int)(immediate + offset)] : 0;
-				return new Parameter((Mode)modes[p.idx], immediate, position, relative , offset);
+				var immediate = p.Value.Value;
+				var position = immediate >= 0 && _memory.TryGetValue(immediate, out var im) ? im : 0;
+				var relative = immediate + offset >= 0 && _memory.TryGetValue(immediate + offset, out var rel) ? rel : 0;
+				return new Parameter((Mode)modes[p.idx], immediate, position, relative, offset);
 			}).ToList( );
 
 		return new(opCode, parameters);
@@ -110,10 +122,12 @@ public class IntCodeComputer
 
 	private void EnsureMemoryCapacity(long idx)
 	{
-		if (idx > int.MaxValue) return;
+		if (!_memory.ContainsKey(idx))
+			_memory.TryAdd(idx, 0);
+		//if (idx > int.MaxValue) return;
 
-		if (idx > Memory.Count - 1)
-			Memory.AddRange(new long[idx - Memory.Count + 1]);
+		//if (idx > _memory.Count - 1)
+		//	_memory.AddRange(new long[idx - _memory.Count + 1]);
 	}
 
 	private record Instruction(OpCode OpCode, List<Parameter> Parameters)
@@ -123,10 +137,10 @@ public class IntCodeComputer
 			opCode = OpCode;
 			p1 = GetParameter(0);
 			p2 = GetParameter(1);
-			writeTo = OpCode.IsWrite( ) 
+			writeTo = OpCode.IsWrite( )
 				? Parameters.Last( ).Mode == Mode.Relative
-					? Parameters.Last().Value + Parameters.Last().Offset
-					: Parameters.Last().Value
+					? Parameters.Last( ).Value + Parameters.Last( ).Offset
+					: Parameters.Last( ).Value
 				: 0;
 		}
 

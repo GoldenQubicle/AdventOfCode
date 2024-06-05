@@ -4,12 +4,8 @@
     &lt;TestId&gt;NUnit3x::E1953529-1701-4A2A-A7F4-7616B8794219::net8.0::AoC2019Tests.Day08Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3ef6ce80_002Dc842_002D4f81_002Dbca8_002Dbcd3a1c695bd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AnglesShouldBeTheSame" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::E1953529-1701-4A2A-A7F4-7616B8794219::net8.0::AoC2019Tests.Day10Test.AnglesShouldBeTheSame&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8369bd33_002D782b_002D420f_002Db2a7_002D0540bef58b2b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day10Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8369bd33_002D782b_002D420f_002Db2a7_002D0540bef58b2b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day10Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::E1953529-1701-4A2A-A7F4-7616B8794219::net8.0::AoC2019Tests.Day10Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
@@ -17,7 +13,7 @@
 	
 	
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cff58b92_002D761c_002D4eee_002D8ed0_002Df3c07d5b4d8c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IntCodeComputerTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cff58b92_002D761c_002D4eee_002D8ed0_002Df3c07d5b4d8c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="IntCodeComputerTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::E1953529-1701-4A2A-A7F4-7616B8794219::net8.0::AoC2019Tests.IntCodeComputerTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
