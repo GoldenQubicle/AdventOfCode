@@ -8,12 +8,13 @@ public class Day02 : Solution
 	public override async Task<string> SolvePart1()
 	{
 		var pc = new IntCodeComputer(Input);
-		pc.SetMemory(1, 12);
-		pc.SetMemory(2, 2);
+
+		pc.Memory[1] = 12;
+		pc.Memory[2] = 2;
 
 		pc.Execute( );
 
-		return pc.Memory()[0].ToString( );
+		return pc.Memory[0].ToString( );
 	}
 
 	public override async Task<string> SolvePart2()
@@ -24,12 +25,12 @@ public class Day02 : Solution
 		while (true)
 		{
 			var pc = new IntCodeComputer(Input);
-			pc.SetMemory(1, noun);
-			pc.SetMemory(2, verb);
-			
+
+			pc.Memory[1] = noun;
+			pc.Memory[2] = verb;
 			pc.Execute();
 
-			if (pc.Memory()[0] == 19690720)
+			if (pc.Memory[0] == 19690720)
 				break;
 
 			noun++;

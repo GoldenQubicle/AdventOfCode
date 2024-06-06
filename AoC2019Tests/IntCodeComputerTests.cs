@@ -20,7 +20,7 @@ internal class IntCodeComputerTests
 		var sut = new IntCodeComputer(test.input);
 		sut.Execute( );
 
-		Assert.That(sut.Memory().Take(test.result.Count), Is.EqualTo(test.result));
+		Assert.That(sut.Memory.Take(test.result.Count), Is.EqualTo(test.result));
 	}
 
 	[TestCaseSource(nameof(GetDay5Part2TestCases))]
