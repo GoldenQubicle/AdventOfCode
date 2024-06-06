@@ -29,32 +29,35 @@ public class Day11 : Solution
 		};
 	}
 
-	public override async Task<string> SolvePart1()
+	public override async Task<string> SolvePart1() => PaintHull(0).Count.ToString();
+
+	public override async Task<string> SolvePart2()
+	{
+		var grid = PaintHull(1);
+		grid.Pad();
+		Console.WriteLine(grid);
+		return $"\n{grid.ToString()}";
+	}
+
+	private Grid2d PaintHull(int input)
 	{
 		var icc = new IntCodeComputer(Input)
 		{
 			BreakOnOutput = true,
-			Inputs = new( ) { 0 }
+			Inputs = new() { input }
 		};
+
 		var robot = new Robot((0, 0));
 		var doPaint = true;
-		var panels = new Dictionary<(int, int), long>( );
+		var panels = new Grid2d();
 
-		while (icc.Execute( ))
+		while (icc.Execute())
 		{
+			if (icc.IsFinished) break;
 
 			if (doPaint)
 			{
-				//1st break color to paint, add to hashset
-				var color = icc.Output;
-				if (panels.TryGetValue(robot.Position, out _))
-				{
-					panels[robot.Position] = color;
-				}
-				else
-				{
-					panels.Add(robot.Position, color);
-				}
+				panels.AddOrUpdate(new Grid2d.Cell(robot.Position, icc.Output == 0 ? '.' : '#'));
 				doPaint = false;
 				continue;
 			}
@@ -62,18 +65,15 @@ public class Day11 : Solution
 			//2nd break turn, apply to robot, move forward
 			var dir = (Direction)icc.Output;
 			robot.Turn(dir);
-			robot.Move( );
+			robot.Move();
 
-			icc.Inputs.Add(panels.TryGetValue(robot.Position, out var panel) ? panel : 0);
+			icc.Inputs.Add(panels.TryGetCell(robot.Position, out var panel) ? panel.Character == '.' ? 0 : 1 : 0);
 
 			doPaint = true;
 		}
 
-		return (panels.Count( ) - 1).ToString( );
+		return panels;
 	}
 
-	public override async Task<string> SolvePart2()
-	{
-		return string.Empty;
-	}
+	
 }

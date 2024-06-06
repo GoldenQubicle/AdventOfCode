@@ -2,12 +2,12 @@ namespace AoC2019;
 
 public class IntCodeComputer
 {
-	public IntCodeComputer(IEnumerable<long> input) => 
+	public IntCodeComputer(IEnumerable<long> input) =>
 		Memory = input.ToList( );
-	
-	public IntCodeComputer(List<string> dayInput) => 
+
+	public IntCodeComputer(List<string> dayInput) =>
 		Memory = dayInput[0].Split(",").Select(long.Parse).ToList( );
-	
+
 
 	public enum OpCode
 	{
@@ -23,7 +23,7 @@ public class IntCodeComputer
 		Halt = 99
 	}
 
-	public List<long> Memory { get; } 
+	public List<long> Memory { get; }
 	public Queue<long> Inputs { get; set; }
 	public long Output { get; private set; }
 	public int Id { get; init; }
@@ -31,7 +31,7 @@ public class IntCodeComputer
 	public bool IsFinished { get; private set; }
 	private long GetInput() => Inputs.Dequeue( );
 	private long pointer;
-	private long offset;
+	public long offset;
 	private bool doBreak;
 
 	public bool Execute()
@@ -58,7 +58,7 @@ public class IntCodeComputer
 			if (opCode == OpCode.Output)
 			{
 				Output = p1;
-				Console.WriteLine($"Wrote output: {Output}");
+				//Console.WriteLine($"Wrote output: {Output}");
 				if (BreakOnOutput)
 					doBreak = true;
 			}
@@ -101,8 +101,8 @@ public class IntCodeComputer
 				var immediate = p.Value;
 				var position = immediate >= 0 && immediate <= Memory.Count - 1 ? Memory[(int)immediate] : 0;
 				EnsureMemoryCapacity(immediate + offset);
-				var relative = immediate + offset >= 0  ? Memory[(int)(immediate + offset)] : 0;
-				return new Parameter((Mode)modes[p.idx], immediate, position, relative , offset);
+				var relative = immediate + offset >= 0 && modes[p.idx] == '2' ? Memory[(int)(immediate + offset)] : 0;
+				return new Parameter((Mode)modes[p.idx], immediate, position, relative, offset);
 			}).ToList( );
 
 		return new(opCode, parameters);
@@ -110,7 +110,8 @@ public class IntCodeComputer
 
 	private void EnsureMemoryCapacity(long idx)
 	{
-		if (idx > int.MaxValue) return;
+		if (idx > int.MaxValue)
+			return;
 
 		if (idx > Memory.Count - 1)
 			Memory.AddRange(new long[idx - Memory.Count + 1]);
@@ -123,10 +124,10 @@ public class IntCodeComputer
 			opCode = OpCode;
 			p1 = GetParameter(0);
 			p2 = GetParameter(1);
-			writeTo = OpCode.IsWrite( ) 
+			writeTo = OpCode.IsWrite( )
 				? Parameters.Last( ).Mode == Mode.Relative
-					? Parameters.Last().Value + Parameters.Last().Offset
-					: Parameters.Last().Value
+					? Parameters.Last( ).Value + Parameters.Last( ).Offset
+					: Parameters.Last( ).Value
 				: 0;
 		}
 

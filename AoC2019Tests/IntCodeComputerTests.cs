@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Common.Extensions;
+using NUnit.Framework.Internal;
 
 namespace AoC2019Tests;
 
@@ -53,6 +54,15 @@ internal class IntCodeComputerTests
 		var sut = new IntCodeComputer(test.program);
 		sut.Execute();		
 		Assert.That(sut.Output, Is.EqualTo(test.result));
+	}
+
+	[Test]
+	public async Task RelativeBase()
+	{
+		var sut = new IntCodeComputer(new List<long>{ 109, 19, 204, -34, 99 });
+		sut.offset = 2000;
+		sut.Execute();
+		Assert.That(sut.Output, Is.EqualTo(0));
 	}
 
 	public static IEnumerable<(List<long> program, long result)> GetDay9TestCases()
@@ -159,9 +169,9 @@ internal class IntCodeComputerTests
 	{
 		var day11 = new Day11("day11");
 		var part1 = await day11.SolvePart1( );
-		//var part2 = await day11.SolvePart2( );
+		var part2 = await day11.SolvePart2( );
 
 		Assert.That(part1, Is.EqualTo("2184"));
-		//Assert.That(part2, Is.EqualTo("33679"));
+		Assert.That(part2, Is.EqualTo("\n..##..#..#..##..#..#.####.####.###..#..#...\n.#..#.#..#.#..#.#..#....#.#....#..#.#.#....\n.#..#.####.#....####...#..###..#..#.##.....\n.####.#..#.#....#..#..#...#....###..#.#....\n.#..#.#..#.#..#.#..#.#....#....#....#.#....\n.#..#.#..#..##..#..#.####.####.#....#..#...\n"));
 	}
 }
