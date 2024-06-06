@@ -56,15 +56,6 @@ internal class IntCodeComputerTests
 		Assert.That(sut.Output, Is.EqualTo(test.result));
 	}
 
-	[Test]
-	public async Task RelativeBase()
-	{
-		var sut = new IntCodeComputer(new List<long>{ 109, 19, 204, -34, 99 });
-		sut.offset = 2000;
-		sut.Execute();
-		Assert.That(sut.Output, Is.EqualTo(0));
-	}
-
 	public static IEnumerable<(List<long> program, long result)> GetDay9TestCases()
 	{
 		yield return (new(){ 104, 1125899906842624, 99 }, 1125899906842624);

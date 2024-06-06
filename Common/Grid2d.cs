@@ -201,8 +201,6 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 
 	public void Add(Cell cell) => Cells.TryAdd(cell.Position, cell);
 
-	
-
 	public void AddOrUpdate(Cell cell)
 	{
 		if (!Cells.TryAdd(cell.Position, cell))
@@ -235,10 +233,11 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 		var (minx, maxx, miny, maxy) = GetBounds();
 
 		var sb = new StringBuilder( );
-
+		sb.Append('\n');
 		//for (var y = miny ;y <= maxy ;y++) //hacky solution proper visualization 2022 day 17
 		for (var y = maxy ;y >= miny ;y--)
 		{
+			
 			for (var x = minx ;x <= maxx ;x++)
 			{
 				var p = (x, y);

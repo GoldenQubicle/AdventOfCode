@@ -31,7 +31,7 @@ public class IntCodeComputer
 	public bool IsFinished { get; private set; }
 	private long GetInput() => Inputs.Dequeue( );
 	private long pointer;
-	public long offset;
+	private long offset;
 	private bool doBreak;
 
 	public bool Execute()

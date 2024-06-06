@@ -29,31 +29,26 @@ public class Day11 : Solution
 		};
 	}
 
-	public override async Task<string> SolvePart1() => PaintHull(0).Count.ToString();
+	public override async Task<string> SolvePart1() => PaintHull(0).Count.ToString( );
 
-	public override async Task<string> SolvePart2()
-	{
-		var grid = PaintHull(1);
-		grid.Pad();
-		Console.WriteLine(grid);
-		return $"\n{grid.ToString()}";
-	}
+	public override async Task<string> SolvePart2() => PaintHull(1).Pad( ).ToString( );
 
 	private Grid2d PaintHull(int input)
 	{
 		var icc = new IntCodeComputer(Input)
 		{
 			BreakOnOutput = true,
-			Inputs = new() { input }
+			Inputs = new( ) { input }
 		};
 
 		var robot = new Robot((0, 0));
 		var doPaint = true;
-		var panels = new Grid2d();
+		var panels = new Grid2d( );
 
-		while (icc.Execute())
+		while (icc.Execute( ))
 		{
-			if (icc.IsFinished) break;
+			if (icc.IsFinished)
+				break;
 
 			if (doPaint)
 			{
@@ -65,7 +60,7 @@ public class Day11 : Solution
 			//2nd break turn, apply to robot, move forward
 			var dir = (Direction)icc.Output;
 			robot.Turn(dir);
-			robot.Move();
+			robot.Move( );
 
 			icc.Inputs.Add(panels.TryGetCell(robot.Position, out var panel) ? panel.Character == '.' ? 0 : 1 : 0);
 
@@ -75,5 +70,5 @@ public class Day11 : Solution
 		return panels;
 	}
 
-	
+
 }
