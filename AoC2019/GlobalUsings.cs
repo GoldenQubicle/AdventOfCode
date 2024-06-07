@@ -7,3 +7,5 @@ global using Common;
 global using System.Numerics;
 global using static Common.Maths;
 global using Common.Extensions;
+global using System.Text.RegularExpressions;
+global using Combinatorics.Collections;
