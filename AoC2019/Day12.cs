@@ -44,33 +44,34 @@ public class Day12 : Solution
 
 		var keys = idx
 			.SelectMany(i => Enum.GetValues<Axis>( )
-				.SelectMany(a => new List<char> { 'p', 'v' }
-					.Select(d => new Key(i, a, d)))).ToList( );
+					//.SelectMany(a => new List<char> { 'p', 'v' }
+					.Select(d => new Key(i, d))).ToList( );
 		var states = new Dictionary<State, int>( );
-		var cycles = keys.ToDictionary(k => k, _ => new List<int>());
+		var cycles = new Dictionary<Key, List<int>>( );
 		var step = 0;
 
-		while (cycles.Values.Any(c => c.Count < 1))
+		while (cycles.Count < 12 || cycles.Values.Any(c => c.Count < 1))
 		{
 			keys.ForEach(k =>
 			{
 				var state = Create(k);
 				if (!states.TryAdd(state, step))
 				{
-					cycles[k].Add(step - states[state]);
+					if (!cycles.ContainsKey(k))
+						cycles.TryAdd(k, new( ) { step - states[state] });
 				}
 			});
 
 			pairs.ForEach(ApplyGravity);
 			idx.ForEach(ApplyVelocity);
-		
+
 			step++;
 		}
 
-		var t = cycles.Values.Select(s => s.First()).Distinct();
+		var t = cycles.Values.SelectMany(s => s.Select(v => v)).Distinct( );
 		var x = cycles
-			.GroupBy(k => new { k.Key.Axis, k.Key.Id })
-			.ToDictionary(g => g.Key, g => g.Select(k => k.Value.First()).ToList())
+			.GroupBy(k => new { k.Key.Axis })
+			.ToDictionary(g => g.Key, g => g.SelectMany(k => k.Value).ToList( ))
 			.ToDictionary(k => k.Key, k => LeastCommonMultiple(k.Value));
 
 		var lcm = LeastCommonMultiple(t);
@@ -79,18 +80,22 @@ public class Day12 : Solution
 
 
 	private State Create(Key key) =>
-		new(key, (key.Axis, key.Dimension) switch
-		{
-			(Axis.X, 'p') => positions[key.Id].X,
-			(Axis.Y, 'p') => positions[key.Id].Y,
-			(Axis.Z, 'p') => positions[key.Id].Z,
-			(Axis.X, 'v') => velocities[key.Id].X,
-			(Axis.Y, 'v') => velocities[key.Id].Y,
-			(Axis.Z, 'v') => velocities[key.Id].Z,
-		});
+		new(key,
+			key.Axis switch
+			{
+				Axis.X => positions[key.Id].X,
+				Axis.Y => positions[key.Id].Y,
+				Axis.Z => positions[key.Id].Z,
+			},
+			key.Axis switch
+			{
+				Axis.X => velocities[key.Id].X,
+				Axis.Y => velocities[key.Id].Y,
+				Axis.Z => velocities[key.Id].Z,
+			});
 
-	private record struct Key(int Id, Axis Axis, char Dimension);
-	private record struct State(Key Key, float Value);
+	private record struct Key(int Id, Axis Axis);
+	private record struct State(Key Key, float Position, float Velocity);
 
 
 	private void ApplyVelocity(int idx) =>
