@@ -1,6 +1,3 @@
-using System.Data.Common;
-using System.Net.Sockets;
-
 namespace AoC2019;
 
 public class Day12 : Solution
@@ -14,20 +11,22 @@ public class Day12 : Solution
 		Vector3.Zero, Vector3.Zero, Vector3.Zero, Vector3.Zero
 	};
 
+	private static readonly List<int> ids = new( ) { 0, 1, 2, 3 };
+	private readonly List<(int l, int r)> pairs = new Combinations<int>(ids, 2)
+		.Select(p => (l: p[0], r: p[1])).ToList( );
+
 	public Day12(string file) : base(file, "\n") => positions = Input
 		.Select(l => Regex.Match(l, @"<x=(?<x>-?\d+), y=(?<y>-?\d+), z=(?<z>-?\d+)>"))
 		.Select(m => m.AsVector3( )).ToList( );
 
 	public override async Task<string> SolvePart1()
 	{
-		var idx = new List<int> { 0, 1, 2, 3 };
-		var pairs = new Combinations<int>(idx, 2)
-			.Select(p => (l: p[0], r: p[1])).ToList( );
+		var step = 0;
 
-		for (var s = 0 ;s < Steps ;s++)
+		while (step++ < Steps)
 		{
 			pairs.ForEach(ApplyGravity);
-			idx.ForEach(ApplyVelocity);
+			ids.ForEach(ApplyVelocity);
 		}
 
 		var potential = positions.Select(p => Math.Abs(p.X) + Math.Abs(p.Y) + Math.Abs(p.Z));
@@ -38,65 +37,43 @@ public class Day12 : Solution
 
 	public override async Task<string> SolvePart2()
 	{
-		var idx = new List<int> { 0, 1, 2, 3 };
-		var pairs = new Combinations<int>(idx, 2)
-			.Select(p => (l: p[0], r: p[1])).ToList( );
+		var states = new Dictionary<State, long>( );
+		var cycles = new Dictionary<Axis, long>( );
+		var step = 0L;
 
-		var keys = idx
-			.SelectMany(i => Enum.GetValues<Axis>( )
-					//.SelectMany(a => new List<char> { 'p', 'v' }
-					.Select(d => new Key(i, d))).ToList( );
-		var states = new Dictionary<State, int>( );
-		var cycles = new Dictionary<Key, List<int>>( );
-		var step = 0;
-
-		while (cycles.Count < 12 || cycles.Values.Any(c => c.Count < 1))
+		while (cycles.Count < 3)
 		{
-			keys.ForEach(k =>
+			Enum.GetValues<Axis>( ).ForEach(axis =>
 			{
-				var state = Create(k);
-				if (!states.TryAdd(state, step))
-				{
-					if (!cycles.ContainsKey(k))
-						cycles.TryAdd(k, new( ) { step - states[state] });
-				}
+				var state = CreateState(axis);
+
+				if (states.TryAdd(state, step))
+					return;
+
+				cycles.TryAdd(axis, step - states[state]);
 			});
 
 			pairs.ForEach(ApplyGravity);
-			idx.ForEach(ApplyVelocity);
+			ids.ForEach(ApplyVelocity);
 
 			step++;
 		}
 
-		var t = cycles.Values.SelectMany(s => s.Select(v => v)).Distinct( );
-		var x = cycles
-			.GroupBy(k => new { k.Key.Axis })
-			.ToDictionary(g => g.Key, g => g.SelectMany(k => k.Value).ToList( ))
-			.ToDictionary(k => k.Key, k => LeastCommonMultiple(k.Value));
-
-		var lcm = LeastCommonMultiple(t);
-		return string.Empty;
+		return LeastCommonMultiple(cycles.Values).ToString( );
 	}
 
+	private State CreateState(Axis axis)
+	{
+		var v = ids.Select(i => axis switch
+		{
+			Axis.X => new Vector2(positions[i].X, velocities[i].X),
+			Axis.Y => new Vector2(positions[i].Y, velocities[i].Y),
+			Axis.Z => new Vector2(positions[i].Z, velocities[i].Z),
+		}).ToList( );
+		return new(axis, v[0], v[1], v[2], v[3]);
+	}
 
-	private State Create(Key key) =>
-		new(key,
-			key.Axis switch
-			{
-				Axis.X => positions[key.Id].X,
-				Axis.Y => positions[key.Id].Y,
-				Axis.Z => positions[key.Id].Z,
-			},
-			key.Axis switch
-			{
-				Axis.X => velocities[key.Id].X,
-				Axis.Y => velocities[key.Id].Y,
-				Axis.Z => velocities[key.Id].Z,
-			});
-
-	private record struct Key(int Id, Axis Axis);
-	private record struct State(Key Key, float Position, float Velocity);
-
+	private record struct State(Axis Axis, Vector2 P1, Vector2 P2, Vector2 P3, Vector2 P4);
 
 	private void ApplyVelocity(int idx) =>
 		positions[idx] = Vector3.Add(positions[idx], velocities[idx]);
