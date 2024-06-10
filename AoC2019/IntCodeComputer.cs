@@ -25,7 +25,7 @@ public class IntCodeComputer
 
 	public List<long> Memory { get; }
 	public Queue<long> Inputs { get; set; }
-	public long Output { get; private set; }
+	public List<long> Output { get; } = new();
 	public int Id { get; init; }
 	public bool BreakOnOutput { get; init; }
 	public bool IsFinished { get; private set; }
@@ -57,7 +57,7 @@ public class IntCodeComputer
 
 			if (opCode == OpCode.Output)
 			{
-				Output = p1;
+				Output.Add(p1);
 				//Console.WriteLine($"Wrote output: {Output}");
 				if (BreakOnOutput)
 					doBreak = true;

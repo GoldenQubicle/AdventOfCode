@@ -12,6 +12,6 @@ public class Day09 : Solution
     {
 	    var icc = new IntCodeComputer(Input) { Inputs = new() { i } };
 	    icc.Execute();
-	    return icc.Output.ToString();
+	    return icc.Output.Last( ).ToString();
     }
 }

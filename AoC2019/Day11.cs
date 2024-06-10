@@ -52,13 +52,13 @@ public class Day11 : Solution
 
 			if (doPaint)
 			{
-				panels.AddOrUpdate(new Grid2d.Cell(robot.Position, icc.Output == 0 ? '.' : '#'));
+				panels.AddOrUpdate(new Grid2d.Cell(robot.Position, icc.Output.Last( ) == 0 ? '.' : '#'));
 				doPaint = false;
 				continue;
 			}
 
 			//2nd break turn, apply to robot, move forward
-			var dir = (Direction)icc.Output;
+			var dir = (Direction)icc.Output.Last( );
 			robot.Turn(dir);
 			robot.Move( );
 
