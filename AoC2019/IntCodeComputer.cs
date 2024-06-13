@@ -5,9 +5,12 @@ public class IntCodeComputer
 	public IntCodeComputer(IEnumerable<long> input) =>
 		Memory = input.ToList( );
 
-	public IntCodeComputer(List<string> dayInput) =>
+	public IntCodeComputer(List<string> dayInput, Action<List<long>> SetMemory = default)
+	{
 		Memory = dayInput[0].Split(",").Select(long.Parse).ToList( );
-
+		SetMemory?.Invoke(Memory);
+	}
+		
 
 	public enum OpCode
 	{
@@ -29,7 +32,10 @@ public class IntCodeComputer
 	public int Id { get; init; }
 	public bool BreakOnOutput { get; init; }
 	public bool IsFinished { get; private set; }
-	private long GetInput() => Inputs.Dequeue();
+	private long GetInput() => Inputs.TryDequeue(out var i) ? i : GetExternalInput();
+
+	public Func<int> GetExternalInput { get; set; }
+
 	private long pointer;
 	private long offset;
 	private bool doBreak;

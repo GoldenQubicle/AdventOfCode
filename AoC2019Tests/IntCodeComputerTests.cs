@@ -170,8 +170,10 @@ internal class IntCodeComputerTests
 	public async Task SolutionDay13()
 	{
 		var day13 = new Day13("day13");
-		var part1 = await day13.SolvePart1();
+		var part1 = await day13.SolvePart1( );
+		var part2 = await day13.SolvePart2( );
 
 		Assert.That(part1, Is.EqualTo("348"));
+		Assert.That(part2, Is.EqualTo("16999"));
 	}
 }
