@@ -165,4 +165,13 @@ internal class IntCodeComputerTests
 		Assert.That(part1, Is.EqualTo("2184"));
 		Assert.That(part2, Is.EqualTo("\n..##..#..#..##..#..#.####.####.###..#..#...\n.#..#.#..#.#..#.#..#....#.#....#..#.#.#....\n.#..#.####.#....####...#..###..#..#.##.....\n.####.#..#.#....#..#..#...#....###..#.#....\n.#..#.#..#.#..#.#..#.#....#....#....#.#....\n.#..#.#..#..##..#..#.####.####.#....#..#...\n"));
 	}
+
+	[Test]
+	public async Task SolutionDay13()
+	{
+		var day13 = new Day13("day13");
+		var part1 = await day13.SolvePart1();
+
+		Assert.That(part1, Is.EqualTo("348"));
+	}
 }

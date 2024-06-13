@@ -47,9 +47,6 @@ public class Day11 : Solution
 
 		while (icc.Execute( ))
 		{
-			if (icc.IsFinished)
-				break;
-
 			if (doPaint)
 			{
 				panels.AddOrUpdate(new Grid2d.Cell(robot.Position, icc.Output == 0 ? '.' : '#'));

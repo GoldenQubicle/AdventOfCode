@@ -24,12 +24,12 @@ public class IntCodeComputer
 	}
 
 	public List<long> Memory { get; }
-	public Queue<long> Inputs { get; set; }
+	public Queue<long> Inputs { get; set; } = new();
 	public long Output { get; private set; }
 	public int Id { get; init; }
 	public bool BreakOnOutput { get; init; }
 	public bool IsFinished { get; private set; }
-	private long GetInput() => Inputs.Dequeue( );
+	private long GetInput() => Inputs.Dequeue();
 	private long pointer;
 	private long offset;
 	private bool doBreak;
@@ -38,7 +38,7 @@ public class IntCodeComputer
 	{
 		doBreak = false;
 
-		while (true)
+		while (!IsFinished)
 		{
 			var (opCode, p1, p2, writeTo) = ParseInstruction( );
 
@@ -83,7 +83,7 @@ public class IntCodeComputer
 				break;
 		}
 
-		return true;
+		return !IsFinished;
 	}
 
 	private Instruction ParseInstruction()
