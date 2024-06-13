@@ -9,13 +9,13 @@ public class Day05 : Solution
     {
 	    var icc = new IntCodeComputer(Input) { Inputs = new(){ 1 } };
         icc.Execute();
-    	return icc.Output.Last().ToString();
+    	return icc.Output.ToString();
     }
 
     public override async Task<string> SolvePart2( )
     {
 		var icc = new IntCodeComputer(Input) { Inputs = new() { 5 } };
 		icc.Execute( );
-		return icc.Output.Last( ).ToString( );
+		return icc.Output.ToString( );
 	}
 }

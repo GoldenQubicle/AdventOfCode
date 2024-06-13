@@ -25,7 +25,7 @@ public class Day07 : Solution
 		};
 
 		icc.Execute( );
-		return icc.Output.Last( );
+		return icc.Output;
 	}
 
 
@@ -56,11 +56,11 @@ public class Day07 : Solution
 			if (amplifiers.All(a => a.IsFinished))
 				break;
 
-			var output = current.Output.Last( );
+			var output = current.Output;
 			current = amplifiers[current.Id == 4 ? 0 : current.Id + 1];
 			current.Inputs.Add(output);
 		}
 
-		return amplifiers.Last().Output.Last( );
+		return amplifiers.Last().Output;
 	}
 }

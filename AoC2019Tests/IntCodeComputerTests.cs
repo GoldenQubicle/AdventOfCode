@@ -29,7 +29,7 @@ internal class IntCodeComputerTests
 	{
 		var sut = new IntCodeComputer(test.program) { Inputs = new(){ test.input }};
 		sut.Execute( );
-		Assert.That(sut.Output.Last( ), Is.EqualTo(test.result));
+		Assert.That(sut.Output, Is.EqualTo(test.result));
 	}
 
 	[TestCaseSource(nameof(GetDay7Part1TestCases))]
@@ -53,7 +53,7 @@ internal class IntCodeComputerTests
 	{
 		var sut = new IntCodeComputer(test.program);
 		sut.Execute();		
-		Assert.That(sut.Output.Last( ), Is.EqualTo(test.result));
+		Assert.That(sut.Output, Is.EqualTo(test.result));
 	}
 
 	public static IEnumerable<(List<long> program, long result)> GetDay9TestCases()
