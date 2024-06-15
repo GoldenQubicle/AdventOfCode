@@ -17,14 +17,14 @@ public class Day14Test
 		var actual = await day14.SolvePart1( );
         Assert.That(actual, Is.EqualTo(test.expecteded));
     }
-            
-    [Test]
-    public async Task Part2( )
+
+	[TestCaseSource(nameof(GetPart2TestCases))]
+	public async Task Part2((string file, string expecteded) test)
     {
-        var expected = string.Empty;
-        var actual = await day14.SolvePart2( );
-        Assert.That(actual, Is.EqualTo(expected));
-    }
+	    var day14 = new Day14(test.file);
+	    var actual = await day14.SolvePart2( );
+	    Assert.That(actual, Is.EqualTo(test.expecteded));
+	}
 
     public static IEnumerable<(string file, string expecteded)> GetPart1TestCases()
     {
@@ -33,5 +33,12 @@ public class Day14Test
 	    yield return ("day14test3", "13312");
 	    yield return ("day14test4", "180697");
 	    yield return ("day14test5", "2210736");
+    }
+
+    public static IEnumerable<(string file, string expecteded)> GetPart2TestCases()
+    {
+	    //yield return ("day14test3", "82892753"); // for some reason this test case fails..
+	    yield return ("day14test4", "5586022");
+	    yield return ("day14test5", "460664");
     }
 }

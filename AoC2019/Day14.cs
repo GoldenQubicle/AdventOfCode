@@ -2,8 +2,8 @@ namespace AoC2019;
 
 public class Day14 : Solution
 {
-	private Dictionary<string, float> Outputs = new( );
-	private Dictionary<string, Dictionary<string, float>> Inputs = new( );
+	private Dictionary<string, int> Outputs = new( );
+	private Dictionary<string, Dictionary<string, int>> Inputs = new( );
 	private const string Ore = "ORE";
 	private const string Fuel = "FUEL";
 
@@ -20,37 +20,61 @@ public class Day14 : Solution
 	}
 
 
-	public override async Task<string> SolvePart1()
-	{
-		var ore = Inputs.Where(kvp => kvp.Value.ContainsKey(Ore)).ToDictionary(kvp => kvp.Key, _ => 0f);
-		var required = new Stack<(string name, float quanity)> { (Fuel, 1) };
-		
-		
-		while (required.TryPop(out var current))
-		{
-			if (ore.ContainsKey(current.name))
-				ore[current.name] += current.quanity;
-			else
-			{
-				//so the problem here is this; there can already be an item on the stack with the same name which causes rounding up too much..
-				//basically we need to aggregate over all the required outputs, and then resolve...
-				required.PushAll(Inputs[current.name]
-					.Select(i => (i.Key, i.Value * (float)Math.Ceiling(current.quanity / Outputs[current.name]))));
-
-			}
-			
-		}
-
-
-		return ore.Sum(o => Math.Ceiling(o.Value / Outputs[o.Key]) * Inputs[o.Key][Ore]).ToString();
-	}
+	public override async Task<string> SolvePart1() => ProduceFuel(1).ToString( );
 
 	public override async Task<string> SolvePart2()
 	{
-		return string.Empty;
+		var totalOre = 1000000000000d;
+		var orePerFuel = ProduceFuel(1);
+
+		var fuel = (long)Math.Ceiling(totalOre / orePerFuel);
+		var ore = ProduceFuel(fuel);
+		var ratio = totalOre / ore;
+
+		fuel = (long)Math.Floor(fuel * ratio); //floor this time
+		ore = ProduceFuel(fuel);
+
+		ratio = totalOre / ore;
+		fuel = (long)Math.Floor(fuel * ratio); //floor this time
+
+		return fuel.ToString( );
 	}
 
-	private static (string name, float amount) Parse(string input)
+	private long ProduceFuel(long amount)
+	{
+		var required = new Dictionary<string, long> { { Fuel, amount } };
+		var ore = 0L;
+
+		while (required.Values.Any(v => v > 0))
+		{
+			var current = required.First(kvp => kvp.Value > 0);
+			
+			var n =  (long)Math.Ceiling(current.Value / (float)Outputs[current.Key]);
+			required[current.Key] -= n * Outputs[current.Key];
+			
+			Inputs[current.Key].ForEach(c =>
+			{
+				var needed = n * c.Value;
+				if (c.Key.Equals(Ore))
+				{
+					ore += needed;
+					return;
+				}
+
+				if (!required.TryAdd(c.Key, needed))
+				{
+
+					required[c.Key] += needed;
+				}
+			});
+		}
+
+		return ore;
+	}
+
+
+
+	private static (string name, int amount) Parse(string input)
 	{
 		var parts = input.Trim( ).Split(" ");
 		return (parts[1], int.Parse(parts[0]));
