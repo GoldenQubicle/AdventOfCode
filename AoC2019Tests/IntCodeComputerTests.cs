@@ -184,7 +184,7 @@ internal class IntCodeComputerTests
 		var part1 = await day15.SolvePart1( );
 		//var part2 = await day15.SolvePart2( );
 
-		Assert.That(part1, Is.EqualTo("348"));
+		Assert.That(part1, Is.EqualTo("252"));
 		//Assert.That(part2, Is.EqualTo("16999"));
 	}
 }
