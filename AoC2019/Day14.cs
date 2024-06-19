@@ -7,17 +7,13 @@ public class Day14 : Solution
 	private const string Ore = "ORE";
 	private const string Fuel = "FUEL";
 
-	public Day14(string file) : base(file, split: "\n")
+	public Day14(string file) : base(file, split: "\n") => Input.ForEach(l =>
 	{
-
-		Input.ForEach(l =>
-		{
-			var parts = l.Split(" => ");
-			var output = Parse(parts[1]);
-			Outputs.Add(output.name, output.amount);
-			Inputs.Add(output.name, parts[0].Split(",").Select(Parse).ToDictionary(t => t.name, t => t.amount));
-		});
-	}
+		var parts = l.Split(" => ");
+		var output = Parse(parts[1]);
+		Outputs.Add(output.name, output.amount);
+		Inputs.Add(output.name, parts[0].Split(",").Select(Parse).ToDictionary(t => t.name, t => t.amount));
+	});
 
 
 	public override async Task<string> SolvePart1() => ProduceFuel(1).ToString( );
@@ -27,15 +23,16 @@ public class Day14 : Solution
 		var totalOre = 1000000000000d;
 		var orePerFuel = ProduceFuel(1);
 
-		var fuel = (long)Math.Ceiling(totalOre / orePerFuel);
+		//floor this time
+		var fuel = (long)Math.Floor(totalOre / orePerFuel);
 		var ore = ProduceFuel(fuel);
 		var ratio = totalOre / ore;
 
-		fuel = (long)Math.Floor(fuel * ratio); //floor this time
+		fuel = (long)Math.Floor(fuel * ratio); 
 		ore = ProduceFuel(fuel);
 
 		ratio = totalOre / ore;
-		fuel = (long)Math.Floor(fuel * ratio); //floor this time
+		fuel = (long)Math.Floor(fuel * ratio); 
 
 		return fuel.ToString( );
 	}
@@ -71,7 +68,6 @@ public class Day14 : Solution
 
 		return ore;
 	}
-
 
 
 	private static (string name, int amount) Parse(string input)

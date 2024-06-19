@@ -66,6 +66,4 @@ public class Day11 : Solution
 
 		return panels;
 	}
-
-
 }

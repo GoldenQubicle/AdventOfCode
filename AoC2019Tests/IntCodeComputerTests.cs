@@ -176,4 +176,15 @@ internal class IntCodeComputerTests
 		Assert.That(part1, Is.EqualTo("348"));
 		Assert.That(part2, Is.EqualTo("16999"));
 	}
+
+	[Test]
+	public async Task SolutionDay15()
+	{
+		var day15 = new Day15("day15");
+		var part1 = await day15.SolvePart1( );
+		//var part2 = await day15.SolvePart2( );
+
+		Assert.That(part1, Is.EqualTo("348"));
+		//Assert.That(part2, Is.EqualTo("16999"));
+	}
 }
