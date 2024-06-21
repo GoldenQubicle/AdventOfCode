@@ -17,8 +17,11 @@ public class IntCodeComputer
 		pointer = p;
 	}
 
-	public IntCodeComputer Copy() => new(Memory.Select(m => m).ToList( ), pointer) { BreakOnOutput = BreakOnOutput };
-
+	public IntCodeComputer Copy() =>
+		new(Memory.Select(m => m).ToList( ), pointer)
+		{
+			BreakOnOutput = BreakOnOutput
+		};
 
 	public enum OpCode
 	{
