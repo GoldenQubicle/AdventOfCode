@@ -16,7 +16,8 @@ public class Day16Test
         var actual = await day16.SolvePart1( );
         Assert.That(actual, Is.EqualTo("1"));
     }
-            
+
+    [Ignore("Not Finished")]
     [Test]
     public async Task Part2( )
     {

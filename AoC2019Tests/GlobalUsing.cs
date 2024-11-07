@@ -5,3 +5,4 @@ global using System.Text;
 global using System.Threading.Tasks;
 global using AoC2019;
 global using NUnit.Framework;
+global using Assert = NUnit.Framework.Legacy.ClassicAssert;

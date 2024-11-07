@@ -117,7 +117,7 @@ public class Day17 : Solution
 			_ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
 		};
 
-		if (grid[position].Character != '.')
+		if (grid.TryGetCell(position, out var c) && c.Character != '.')
 			return false;
 
 		next = grid[position];

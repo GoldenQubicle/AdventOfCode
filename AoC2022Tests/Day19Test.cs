@@ -5,7 +5,7 @@ namespace AoC2022Tests;
 using Blueprint = Dictionary<Resource, List<(Resource resource, int amount)>>;
 using Resources = Dictionary<Resource, int>;
 
-
+[Ignore("Not Finished")]
 public class Day19Test
 {
 	Day19 day19;

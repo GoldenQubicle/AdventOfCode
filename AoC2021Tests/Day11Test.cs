@@ -1,5 +1,6 @@
 namespace AoC2021Tests;
 
+[Ignore("Runs too long. Investigate")]
 public class Day11Test
 {
 	Day11 day11;
@@ -11,7 +12,6 @@ public class Day11Test
 	}
         
 	[Test]
-	[Ignore("runs too long, investigate")]
 	public void Part1( )
 	{
 		var actual = day11.SolvePart1( ).Result;
@@ -19,7 +19,6 @@ public class Day11Test
 	}
 
 	[Test]
-	[Ignore("runs too long, investigate")]
 	public void Part2( )
 	{
 		var actual = day11.SolvePart2( ).Result;

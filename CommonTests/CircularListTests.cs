@@ -33,7 +33,7 @@ namespace CommonTests
 		{
 			sut.SetHeadByIndex(3);
 			Assert.That(sut.Current, Is.EqualTo(5));
-			var sub = sut.TakeAt(4).Reverse();
+			var sub = sut.TakeAt(4, moveCurrent: false).Reverse();
 			sut.ReplaceRange(sub);
 			Assert.That(sut.ToList(), Is.EqualTo(new List<int>{ 6, 5, 4, 3, 2 }));
 			Assert.That(sut.Current, Is.EqualTo(3));
