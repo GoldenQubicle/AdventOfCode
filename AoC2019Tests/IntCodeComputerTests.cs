@@ -109,6 +109,7 @@ internal class IntCodeComputerTests
 		yield return (new( ) { 2, 3, 0, 3, 99 }, new( ) { 2, 3, 0, 6, 99 });
 		yield return (new( ) { 2, 4, 4, 5, 99, 0 }, new( ) { 2, 4, 4, 5, 99, 9801 });
 		yield return (new( ) { 1, 1, 1, 4, 99, 5, 6, 0, 99 }, new( ) { 30, 1, 1, 4, 2, 5, 6, 0, 99 });
+		yield return (new() { 1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50 }, new (){ 3500, 9, 10, 70, 2, 3, 11, 0, 99, 30, 40, 50 });
 	}
 
 	[Test]

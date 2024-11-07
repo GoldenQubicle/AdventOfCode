@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace AoC2022;
 
 public class Day17 : Solution
@@ -98,7 +96,7 @@ public class Day17 : Solution
 
 	private string LetRocksFall(Func<Rock, List<Rock>, bool> stateTracker = null)
 	{
-		const int totalRocks = 4044;
+		const int totalRocks = 2022;
 		var rockCount = 0;
 		var rocksPlaced = new List<Rock>( );
 

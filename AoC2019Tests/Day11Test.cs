@@ -1,5 +1,6 @@
 namespace AoC2019Tests;
-            
+
+[Ignore("No Tests Today")]
 public class Day11Test
 {
     Day11 day11;

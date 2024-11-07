@@ -1,5 +1,6 @@
 namespace AoC2019Tests;
-            
+
+[Ignore("Included in IntCodeComputerTests")]
 public class Day02Test
 {
     Day02 day02;

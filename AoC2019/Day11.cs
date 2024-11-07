@@ -1,9 +1,7 @@
 namespace AoC2019;
 
-public class Day11 : Solution
+public class Day11(string file) : Solution(file)
 {
-	public Day11(string file) : base(file) { }
-
 	private enum Direction { Left, Right, Up, Down }
 
 	private record Robot((int x, int y) Position, Direction Direction = Direction.Up)

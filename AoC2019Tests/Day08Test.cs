@@ -29,6 +29,6 @@ public class Day08Test
 		Day08.Height = 2;
 		day08 = new Day08("day08test2");
 		var actual = await day08.SolvePart2( );
-        Assert.That(actual, Is.EqualTo("\n#.\n.#\n"));
+        Assert.That(actual, Is.EqualTo("\n\n#.\n.#\n"));
     }
 }

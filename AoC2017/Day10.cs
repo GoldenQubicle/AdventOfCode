@@ -60,7 +60,7 @@ public class Day10 : Solution
 	{
 		foreach (var length in lengths)
 		{
-			var range = List.TakeAt(length).Reverse( ).ToList();
+			var range = List.TakeAt(length, moveCurrent: false).Reverse( ).ToList();
 			
 			if (IRenderState.IsActive)
 			{

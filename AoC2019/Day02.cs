@@ -1,10 +1,7 @@
 namespace AoC2019;
 
-public class Day02 : Solution
+public class Day02(string file) : Solution(file)
 {
-	public Day02(string file) : base(file) { }
-	
-
 	public override async Task<string> SolvePart1()
 	{
 		var pc = new IntCodeComputer(Input);

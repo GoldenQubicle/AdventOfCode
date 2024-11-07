@@ -1,6 +1,6 @@
 using Common;
 using Common.Extensions;
-using Math = System.Math;
+
 
 namespace AoC2023;
 
@@ -22,6 +22,7 @@ public class Day04 : Solution
 	public override async Task<string> SolvePart1() => cards.Values
 		.Select(c => c.numbers.Intersect(c.win))
 		.Select(i => Math.Pow(2, i.Count( )-1))
+		.Where(s => s >= 1)
 		.Sum( ).ToString( );
 
 
