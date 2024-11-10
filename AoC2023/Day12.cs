@@ -1,12 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Common;
-using Common.Extensions;
-
 namespace AoC2023;
 
 public class Day12 : Solution
@@ -24,66 +15,43 @@ public class Day12 : Solution
 
 	public override async Task<string> SolvePart1()
 	{
-		var t = springs.Select(s => GetArrangements(s.row, s.records));
+		return springs.Select(s => GetArrangements(s.row, s.records)).Sum( ).ToString( );
+		return string.Empty;
+	} 
+	
 
-		return t.Sum( ).ToString( );
+	private static string Replace(string row, int idx, char c)
+	{
+		var t = row.Remove(idx, 1);
+		return t.Insert(idx, c.ToString());
 	}
 
-	public static int GetArrangements(string row, List<int> records)
+	public static int GetArrangements(string row, List<int> record)
 	{
-		var toCheck = new Queue<(string row, int count, List<int> groups)>( );
+		var result = new List<string>( );
+		var queue = new Queue<string>( );
+		queue.Enqueue(row);
 
-		toCheck.EnqueueAll(GetNext(row, 0, records));
-
-		var count = 0;
-		while (toCheck.Count > 0)
+		while (queue.TryDequeue(out var current))
 		{
-			var distinct = toCheck.Distinct( ).ToList( );
-			toCheck.Clear( );
-			toCheck.EnqueueAll(distinct);
-			var current = toCheck.Dequeue( );
-
-			
-			if (current.row.Length < current.groups.Sum( ) + (current.groups.Count > 0 ? current.groups.Count - 1 : 0) - current.count)
+			var idx = current.IndexOf('?');
+			if (idx == -1)
+			{
+				result.Add(current);
 				continue;
-
-			if (current.row != string.Empty)
-			{
-				Console.WriteLine($"{current.row} with count {current.count} and groups {current.groups.Count}");
-
-				if (current.row.First( ) == '#')
-				{
-					if (current.groups.Count > 0 && current.count + 1 <= current.groups[0])
-						toCheck.EnqueueAll(GetNext(current.row[1..], current.count + 1, current.groups));
-				}
-
-				if (current.row.First( ) == '.')
-				{
-					var closeGroup = current.groups.Count > 0 && current.count == current.groups.First( );
-					toCheck.EnqueueAll(closeGroup
-						? GetNext(current.row[1..], 0, current.groups[1..])
-						: GetNext(current.row[1..], 0, current.groups));
-				}
 			}
-			else
-			{
-				Console.WriteLine($"{current.row} with count {current.count} and groups {current.groups.Count} and group {(current.groups.Count > 0 ? current.groups.First( ) : 0)}");
-				var isValid = current.groups.Count != 0 && current.count == current.groups.First( ) || current.groups.Count == 0 && current.count == 0;
 
-				Console.WriteLine(isValid);
-				count += isValid ? 1 : 0;
-			}
+			queue.Enqueue(Replace(current, idx, '.'));
+			queue.Enqueue(Replace(current, idx, '#'));
 		}
+
+		var count = result
+			.Select(r => Regex.Matches(r, "(#+)"))
+			.Count(m => m.Count == record.Count && record.WithIndex( ).All(r => m[r.idx].Length == r.Value));
 
 		return count;
 
 	}
-
-	private static List<(string r, int gc, List<int> g)> GetNext(string row, int count, List<int> records) =>
-		row.StartsWith('?')
-			? new( ) { (row.ReplaceAt(0, '.'), count, records), (row.ReplaceAt(0, '#'), count, records) }
-			: new( ) { (row, count, records) };
-
 
 	public override async Task<string> SolvePart2()
 	{

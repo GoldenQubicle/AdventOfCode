@@ -1,7 +1,3 @@
-using System.Text.RegularExpressions;
-using Common;
-using Common.Extensions;
-
 namespace AoC2023;
 
 public class Day18 : Solution

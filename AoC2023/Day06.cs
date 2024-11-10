@@ -1,6 +1,3 @@
-using System.Text;
-using Common;
-
 namespace AoC2023;
 
 public class Day06 : Solution

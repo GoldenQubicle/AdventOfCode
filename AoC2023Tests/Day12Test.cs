@@ -1,8 +1,6 @@
-using AoC2023;
-
 namespace AoC2023Tests;
 
-[Ignore("Not Finished")]
+//[Ignore("Not Finished")]
 public class Day12Test
 {
 	Day12 day12;
@@ -40,9 +38,9 @@ public class Day12Test
 		yield return ("?###????????", new List<int> { 3, 2, 1 }, 10);
 		yield return ("?.????#####??#.?#??", new List<int> { 1, 1, 9, 1, 1 }, 2);
 		yield return ("?.???#???.???.", new List<int> { 1, 4, 2 }, 15);
-		yield return (".?????#?#??##.??????", new List<int> { 9, 3 }, 4); // failing with double the expected outcome
-		yield return (".?????#?#??##.??????", new List<int> { 9, 5 }, 2); // failing with double the expected outcome
-		yield return (".?????#?#??##.??????", new List<int> { 9, 6 }, 1); // failing with double the expected outcome
+		yield return (".?????#?#??##.??????", new List<int> { 9, 3 }, 4); 
+		yield return (".?????#?#??##.??????", new List<int> { 9, 5 }, 2); 
+		yield return (".?????#?#??##.??????", new List<int> { 9, 6 }, 1); 
 		yield return (".?????#?#??##", new List<int> { 9 }, 1);
 		yield return (".?????#?#??#?", new List<int> { 9 }, 2);
 		yield return ("??????", new List<int> { 5 }, 2);
@@ -60,8 +58,7 @@ public class Day12Test
 	[Test]
 	public void Part2()
 	{
-		var expected = string.Empty;
 		var actual = day12.SolvePart2( ).Result;
-		Assert.That(actual, Is.EqualTo(expected));
+		Assert.That(actual, Is.EqualTo("525152"));
 	}
 }

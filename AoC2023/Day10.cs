@@ -1,5 +1,3 @@
-using Common;
-
 namespace AoC2023;
 
 public class Day10 : Solution

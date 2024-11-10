@@ -1,8 +1,3 @@
-using System.Linq;
-using System.Text.RegularExpressions;
-using Common;
-using Common.Extensions;
-
 namespace AoC2023;
 
 public class Day08 : Solution

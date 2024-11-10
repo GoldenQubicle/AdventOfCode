@@ -1,7 +1,3 @@
-using Common;
-using Common.Extensions;
-
-
 namespace AoC2023;
 
 public class Day04 : Solution

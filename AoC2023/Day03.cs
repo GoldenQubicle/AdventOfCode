@@ -1,7 +1,3 @@
-using System.Text;
-using Common;
-using Common.Extensions;
-
 namespace AoC2023;
 
 public class Day03 : Solution

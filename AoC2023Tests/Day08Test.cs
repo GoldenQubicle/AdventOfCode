@@ -1,5 +1,3 @@
-using AoC2023;
-
 namespace AoC2023Tests;
             
 public class Day08Test
