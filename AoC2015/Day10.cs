@@ -1,9 +1,3 @@
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Common;
-
 namespace AoC2015
 {
     public class Day10 : Solution

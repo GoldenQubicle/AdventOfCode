@@ -1,7 +1,3 @@
-using Common.Interfaces;
-using Common.Renders;
-using static AoC2018.Day15;
-
 namespace AoC2018;
 
 public class Day15 : Solution

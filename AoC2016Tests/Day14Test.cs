@@ -1,7 +1,3 @@
-using AoC2016;
-using NUnit.Framework;
-using System.Collections.Generic;
-
 namespace AoC2016Tests
 {
     public class Day14Test

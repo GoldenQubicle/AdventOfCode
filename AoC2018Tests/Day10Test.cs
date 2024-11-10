@@ -1,8 +1,3 @@
-using AoC2018;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AoC2018Tests
 {
     public class Day10Test

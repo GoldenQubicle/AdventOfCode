@@ -1,7 +1,3 @@
-using AoC2015;
-using NUnit.Framework;
-using System.Collections.Generic;
-
 namespace AoC2015Tests
 {
     public class Day22Test

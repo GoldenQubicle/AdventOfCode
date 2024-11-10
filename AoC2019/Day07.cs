@@ -1,5 +1,3 @@
-using Combinatorics.Collections;
-
 namespace AoC2019;
 
 public class Day07 : Solution

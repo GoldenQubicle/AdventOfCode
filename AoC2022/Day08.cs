@@ -1,5 +1,3 @@
-using static Common.Grid2d;
-
 namespace AoC2022
 {
     public class Day08 : Solution

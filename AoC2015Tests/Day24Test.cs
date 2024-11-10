@@ -1,6 +1,3 @@
-using AoC2015;
-using NUnit.Framework;
-
 namespace AoC2015Tests
 {
     public class Day24Test

@@ -1,5 +1,3 @@
-using Common;
-
 namespace AoC2018Tests;
             
 public class Day15Test

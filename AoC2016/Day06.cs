@@ -1,7 +1,3 @@
-using System.Linq;
-using System.Threading.Tasks;
-using Common;
-
 namespace AoC2016
 {
     public class Day06 : Solution

@@ -1,5 +1,3 @@
-using Common.Interfaces;
-
 namespace AoC2022
 {
 	public class Day12 : Solution

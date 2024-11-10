@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace AoC2019Tests;
 
 public class Day03Test

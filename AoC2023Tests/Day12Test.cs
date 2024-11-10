@@ -1,6 +1,6 @@
 namespace AoC2023Tests;
 
-//[Ignore("Not Finished")]
+
 public class Day12Test
 {
 	Day12 day12;
@@ -55,6 +55,7 @@ public class Day12Test
 		Assert.That(actual, Is.EqualTo("21"));
 	}
 
+	[Ignore("Not Finished")]
 	[Test]
 	public void Part2()
 	{

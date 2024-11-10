@@ -1,5 +1,3 @@
-using AoC2018;
-
 namespace AoC2018Tests
 {
     public class Day12Test

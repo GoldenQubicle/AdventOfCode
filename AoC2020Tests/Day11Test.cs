@@ -1,9 +1,4 @@
-﻿using AoC2020;
-using NUnit.Framework;
-using System.Linq;
-using Common;
-
-namespace AoC2020Tests;
+﻿namespace AoC2020Tests;
 
 class Day11Test
 {

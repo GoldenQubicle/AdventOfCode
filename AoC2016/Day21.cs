@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Common;
-using Common.Extensions;
-
 namespace AoC2016
 {
     public class Day21 : Solution

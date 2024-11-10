@@ -1,9 +1,3 @@
-using static AoC2016.Day01;
-using AoC2016;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AoC2016Tests
 {
     public class Day01Test

@@ -1,9 +1,4 @@
-using static AoC2022.Day19;
-
 namespace AoC2022;
-
-using Blueprint = Dictionary<Resource, List<(Resource resource, int amount)>>;
-using Resources = Dictionary<Resource, int>;
 
 public class Day19 : Solution
 {

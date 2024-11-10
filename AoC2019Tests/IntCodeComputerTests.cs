@@ -1,8 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Common.Extensions;
-using NUnit.Framework.Internal;
-
-namespace AoC2019Tests;
+﻿namespace AoC2019Tests;
 
 internal class IntCodeComputerTests
 {

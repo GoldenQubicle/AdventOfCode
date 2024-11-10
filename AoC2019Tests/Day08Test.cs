@@ -1,5 +1,3 @@
-using Common.Extensions;
-
 namespace AoC2019Tests;
             
 public class Day08Test

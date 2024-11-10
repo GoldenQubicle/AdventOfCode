@@ -9,3 +9,4 @@ global using static Common.Maths;
 global using Common.Extensions;
 global using System.Text.RegularExpressions;
 global using Combinatorics.Collections;
+global using Common.Interfaces;

@@ -1,6 +1,3 @@
-using AoC2020;
-using NUnit.Framework;
-
 namespace AoC2020Tests
 {
     class Day01Test

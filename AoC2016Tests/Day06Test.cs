@@ -1,6 +1,3 @@
-using AoC2016;
-using NUnit.Framework;
-
 namespace AoC2016Tests
 {
     public class Day06Test

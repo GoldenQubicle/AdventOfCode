@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Common;
-
-namespace AoC2020
+﻿namespace AoC2020
 {
     public class Day20 : Solution
     {

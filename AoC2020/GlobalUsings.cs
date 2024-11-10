@@ -1,3 +1,5 @@
+// Global using directives
+
 global using System;
 global using System.Collections.Generic;
 global using System.Linq;
@@ -5,8 +7,4 @@ global using System.Text;
 global using System.Text.RegularExpressions;
 global using System.Threading.Tasks;
 global using Common;
-global using AoC2022;
-global using NUnit.Framework;
-global using System.Collections.Generic;
-global using System.Linq;
-global using Assert = NUnit.Framework.Legacy.ClassicAssert;
+global using Common.Extensions;
