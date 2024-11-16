@@ -33,18 +33,20 @@ public class Day21 : Solution
 
 	private string DoSteps(int steps, (int x, int y) start)
 	{
+		
 		var queue = new Queue<INode>();
 		queue.Enqueue(grid[start]);
 		
 		for (var i = 0; i <= steps; i++)
 		{
 			var next = new HashSet<INode>();
+
 			while (queue.TryDequeue(out var current))
 			{
 				grid.GetNeighbors(current, n => n.Character == '.')
 					.ForEach(n => next.Add(n));
 			}
-			Console.WriteLine($"step {i}: reachable {next.Count + 1}");
+			Console.WriteLine($"step {i}: reachable {next.Count}");
 			if (i == steps )
 			{
 				next.ForEach(c => c.Character = 'A');

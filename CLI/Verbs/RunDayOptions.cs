@@ -3,6 +3,7 @@ using Common;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CLI.Verbs;
@@ -53,14 +54,31 @@ public class RunDayOptions : BaseOptions
 
 		if (isValid)
 		{
-			var (part1, part2) = await GetSolutions(options);
+			var partString = options.Part == 0 ? "part 1 & 2" : $"part {options.Part}";
+			Console.Write($"Starting to solve {options.Year} day {options.Day} {partString} \n");
 
-			message = options.Part switch
+			var cts = new CancellationTokenSource( );
+
+			var loggerTask = PeriodicLogger(TimeSpan.FromSeconds(15), cts.Token);
+			
+			var solutions =  GetSolutions(options);
+			
+			try
 			{
-				1 => $"Year {options.Year}\nDay {options.DayString} Part 1: {part1}",
-				2 => $"Year {options.Year}\nDay {options.DayString} Part 2: {part2}",
-				_ => $"Year {options.Year}\nDay {options.DayString} Part 1: {part1} \nDay {options.DayString} Part 2: {part2}",
-			};
+				var(part1, part2) = await solutions;
+				message = options.Part switch
+				{
+					1 => $"Year {options.Year}\nDay {options.DayString} Part 1: {part1}",
+					2 => $"Year {options.Year}\nDay {options.DayString} Part 2: {part2}",
+					_ => $"Year {options.Year}\nDay {options.DayString} Part 1: {part1} \nDay {options.DayString} Part 2: {part2}",
+				};
+			} finally
+			{
+				await cts.CancelAsync( );
+				await loggerTask;
+			}
+
+			
 		}
 
 		Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
@@ -68,18 +86,34 @@ public class RunDayOptions : BaseOptions
 	}
 
 	private static async Task<(string part1, string part2)> GetSolutions(RunDayOptions options)
-	{ 
-		var ctorType = new[] { typeof(string) };
+	{
+		var ctorType = new[ ] { typeof(string) };
 		var ctor = options.DayType.GetConstructor(ctorType);
 
 		var part1 = options.Part is 1 or 0
-			? await ((Solution)ctor.Invoke(new object[] { $"day{options.DayString}" })).SolvePart1()
+			? await ((Solution)ctor.Invoke([$"day{options.DayString}"])).SolvePart1( )
 			: string.Empty;
 
 		var part2 = options.Part is 2 or 0
-			? await ((Solution)ctor.Invoke(new object[] { $"day{options.DayString}" })).SolvePart2()
+			? await ((Solution)ctor.Invoke([$"day{options.DayString}"])).SolvePart2( )
 			: string.Empty;
 
 		return (part1, part2);
+	}
+
+	static async Task PeriodicLogger( TimeSpan interval, CancellationToken cancellationToken)
+	{
+		while (!cancellationToken.IsCancellationRequested)
+		{
+			Console.WriteLine($"...the elves are busy busy busy... {DateTime.Now.ToLongTimeString( )}");
+			try
+			{
+				await Task.Delay(interval, cancellationToken);
+			} catch (TaskCanceledException)
+			{
+				// Expected when the token is canceled
+				break;
+			}
+		}
 	}
 }

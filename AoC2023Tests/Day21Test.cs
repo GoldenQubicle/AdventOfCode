@@ -1,6 +1,6 @@
 namespace AoC2023Tests;
 
-[Ignore("not finished")]
+//[Ignore("not finished")]
 public class Day21Test
 {
     Day21 day21;

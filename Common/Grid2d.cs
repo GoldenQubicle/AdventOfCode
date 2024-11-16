@@ -234,10 +234,9 @@ public class Grid2d : IEnumerable<Grid2d.Cell>, IGraph
 
 		var sb = new StringBuilder( );
 		sb.Append('\n');
-		//for (var y = miny ;y <= maxy ;y++) //hacky solution proper visualization 2022 day 17
-		for (var y = maxy ;y >= miny ;y--)
+		for (var y = miny ;y <= maxy ;y++)
+		//for (var y = maxy ;y >= miny ;y--) //hacky solution proper visualization 2022 day 17
 		{
-			
 			for (var x = minx ;x <= maxx ;x++)
 			{
 				var p = (x, y);
