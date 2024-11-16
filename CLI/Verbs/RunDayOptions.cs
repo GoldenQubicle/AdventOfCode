@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using Common;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -21,8 +22,14 @@ public class RunDayOptions : BaseOptions
 
 		if ( !result.isValid ) return result;
 
-		//note we assume debug builds are present
-		var dir = $"{RootPath}\\AoC{Year}\\bin\\Debug\\net8.0";
+		
+#if DEBUG
+        const string mode = "Debug";
+#else
+		const string mode = "Release";
+#endif
+
+		var dir = $"{RootPath}\\AoC{Year}\\bin\\{mode}\\net8.0";
 		var assemblyPath = $"{dir}\\AoC{Year}.dll";
 
 		if ( !Directory.Exists(dir) )
