@@ -1,12 +1,4 @@
-﻿using CommandLine;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-
-namespace CLI.Verbs;
+﻿namespace CLI.Verbs;
 
 [Verb("scaffold", HelpText = "Create class file for given day & year, with optional unit test")]
 public class ScaffoldOptions : BaseOptions

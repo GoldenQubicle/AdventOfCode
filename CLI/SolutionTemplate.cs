@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿namespace CLI;
 
-namespace CLI
+public sealed class SolutionTemplate
 {
-    public sealed class SolutionTemplate
-    {
-        public int Year { get; init; }
-        public string Day { get; init; }
-        public bool HasUnitTest { get; init; }
-        public string ExpectedValuePart1 { get; init; }
-        public List<(string input, string outcome)> TestCases { get; init; }
+	public int Year { get; init; }
+	public string Day { get; init; }
+	public bool HasUnitTest { get; init; }
+	public string ExpectedValuePart1 { get; init; }
+	public List<(string input, string outcome)> TestCases { get; init; }
 
-        public string CreateSolution() =>  CSharpSolution();
+	public string CreateSolution() =>  CSharpSolution();
 
-        public string CreateUnitTest() => CSharpUnitTest();
+	public string CreateUnitTest() => CSharpUnitTest();
 
-        private string CSharpSolution() => 
-            $@"namespace AoC{Year};
+	private string CSharpSolution() => 
+		$@"namespace AoC{Year};
              
              public class Day{Day} : Solution
              {{
@@ -38,8 +34,8 @@ namespace CLI
              ".Replace("             ", "");
 
 
-        private string CSharpUnitTest() =>
-            $@"namespace AoC{Year}Tests;
+	private string CSharpUnitTest() =>
+		$@"namespace AoC{Year}Tests;
             
              public class Day{Day}Test
              {{
@@ -52,15 +48,15 @@ namespace CLI
                  }}
                  
                  {(TestCases.Count == 0 ?
-            @$"[Test]
+	                 @$"[Test]
                  public async Task Part1( )
                  {{
                      var actual = await day{Day}.SolvePart1( );
                      Assert.That(actual, Is.EqualTo(""{(string.IsNullOrEmpty(ExpectedValuePart1) ? string.Empty : ExpectedValuePart1)}""));
                  }}"
-            :
-            $@"{TestCases.Aggregate(string.Empty,
-                (s, c) => s + @$"[TestCase(""{c.input}"",""{c.outcome}"")] {Environment.NewLine}    ").TrimEnd()}
+	                 :
+	                 $@"{TestCases.Aggregate(string.Empty,
+		                 (s, c) => s + @$"[TestCase(""{c.input}"",""{c.outcome}"")] {Environment.NewLine}    ").TrimEnd()}
                  public async Task Part1(string input, string expected )
                  {{
                      day{Day} = new Day{Day}(new List<string> {{ input }} );
@@ -77,5 +73,4 @@ namespace CLI
                  }}
              }}
              ".Replace("             ", "");
-    }
 }

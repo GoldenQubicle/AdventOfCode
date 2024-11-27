@@ -1,11 +1,8 @@
-﻿using CommandLine;
-using System.Reflection;
-
-namespace CLI.Verbs;
+﻿namespace CLI.Verbs;
 
 public abstract class BaseOptions
 {
-	[Option(shortName: 'y', Required = true, HelpText = "The year, from 2015 to 2023")]
+	[Option(shortName: 'y', Required = true, HelpText = "The year, from 2015 to 2024")]
 	public int Year { get; set; }
 
 	[Option(shortName: 'd', Required = true, HelpText = "The day, from 1 to 25")]
@@ -15,8 +12,8 @@ public abstract class BaseOptions
 
 	public virtual (bool isValid, string message) Validate( )
 	{
-		if ( Year is < 2015 or > 2023 )
-			return (false, $"Error: year must be between 2015 and 2023.");
+		if ( Year is < 2015 or > 2024 )
+			return (false, $"Error: year must be between 2015 and 2024.");
 
 		if ( Day is < 1 or > 25 )
 			return (false, $"Error: day must be between 1 and 25.");

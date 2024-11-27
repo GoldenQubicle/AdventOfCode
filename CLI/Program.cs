@@ -1,11 +1,4 @@
-﻿using CommandLine;
-using CLI.Verbs;
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-
-namespace CLI;
+﻿namespace CLI;
 
 public class Program
 {

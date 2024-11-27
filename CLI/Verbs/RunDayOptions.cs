@@ -1,13 +1,4 @@
-﻿using CommandLine;
-using Common;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace CLI.Verbs;
+﻿namespace CLI.Verbs;
 
 [Verb("runday", HelpText = "Run a single day")]
 public class RunDayOptions : BaseOptions
@@ -84,8 +75,6 @@ public class RunDayOptions : BaseOptions
 				await cts.CancelAsync( );
 				await loggerTask;
 			}
-
-			
 		}
 
 		Console.ForegroundColor = isValid ? ConsoleColor.Green : ConsoleColor.Red;
