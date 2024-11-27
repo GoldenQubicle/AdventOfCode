@@ -14,7 +14,7 @@ public class Day25Test
     public async Task Part1( )
     {
         var actual = await day25.SolvePart1( );
-        Assert.That(actual, Is.EqualTo(""));
+        Assert.That(actual, Is.EqualTo("54"));
     }
             
     [Test]
