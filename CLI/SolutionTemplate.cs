@@ -67,9 +67,8 @@ public sealed class SolutionTemplate
                  [Test]
                  public async Task Part2( )
                  {{
-                     var expected = string.Empty;
                      var actual = await day{Day}.SolvePart2( );
-                     Assert.That(actual, Is.EqualTo(expected));
+                     Assert.That(actual, Is.EqualTo(""""));
                  }}
              }}
              ".Replace("             ", "");
