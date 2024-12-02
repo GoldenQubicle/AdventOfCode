@@ -31,7 +31,7 @@ public class Day12 : Solution
 
 	private HashSet<string> GetGroup(string start)
 	{
-		var stack = new Stack<(string current, HashSet<string> visisted)> { (start, new( )) };
+		var stack = new Stack<(string current, HashSet<string> visisted)> { (start, []) };
 		var seen = new HashSet<string>( );
 
 		while (stack.TryPop(out var state))
@@ -42,11 +42,10 @@ public class Day12 : Solution
 			{
 				current = options.First( );
 
-				if (options.Skip(1).Any( ))
-				{
-					options.Skip(1).ForEach(o => stack.Push((o, new(visited))));
-				}
+				options.Skip(1)
+					.ForEach(o => stack.Push((o, [..visited])));
 			}
+
 			seen.AddRange(visited);
 		}
 
@@ -55,9 +54,11 @@ public class Day12 : Solution
 
 	private bool TryGetNext(string current, HashSet<string> visited, out List<string> options)
 	{
+		options = [ ];
 		visited.Add(current);
-		options = new( );
-		var o = programs[current].Where(p => p != current && !visited.Contains(p));
+
+		var o = programs[current]
+			.Where(p => p != current && !visited.Contains(p)).ToList();
 
 		if (!o.Any( ))
 			return false;
