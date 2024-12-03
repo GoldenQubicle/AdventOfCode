@@ -13,7 +13,9 @@ namespace Common.Extensions
 
         public static int ToInt(this string s) => int.Parse(s.Where(char.IsDigit).AsString());
 
-        public static bool HasInteger(this string s) => s.Any(char.IsDigit);
+        public static long ToLong(this string s) => long.Parse(s.Where(char.IsDigit).AsString( ));
+
+		public static bool HasInteger(this string s) => s.Any(char.IsDigit);
 
         public static string ReplaceAt(this string s, int idx, string n, int r)
         {
