@@ -16,8 +16,6 @@ public class Day13 : Solution
 		.ToDictionary(l => l.Depth, l => l);
 
 
-
-
 	public override async Task<string> SolvePart1()
 	{
 		var maxDepth = layers.Keys.Max( );
@@ -43,8 +41,8 @@ public class Day13 : Solution
 		while (delay++ < 5_000_000)
 		{
 			acceptedDelays.Add(delay, 0);
-			layers.Values.ForEach(l =>
-				acceptedDelays[delay] += (delay + l.Depth) % l.Cycle != 0 ? 1 : 0);
+			layers.Values
+				.ForEach(l => acceptedDelays[delay] += (delay + l.Depth) % l.Cycle != 0 ? 1 : 0);
 		}
 
 		return acceptedDelays.First(kvp => kvp.Value == layers.Count).Key.ToString( );

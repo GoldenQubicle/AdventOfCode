@@ -155,4 +155,5 @@ public static class Maths // dumb name but prevents namespace conflict with Syst
 		hashBytes.ForEach(b => sb.Append(b.ToString("X2")));
 		return sb.ToString( );
 	}
-}
+
+	}
