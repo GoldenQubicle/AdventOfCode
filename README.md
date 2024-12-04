@@ -10,19 +10,19 @@ as well as create `Day02test.cs` in `AoC2015Test` project with a single test cas
 
 Available commands and their flags.
 - `scaffold`, create .cs file for day with option for unit test file<br>
-    -y           Required. The year, from 2015 to 2023<br>
+    -y           Required. The year, from 2015 to 2024<br>
     -d           Required. The day, from 1 to 25<br>
     -u           Creates a unit test file<br>
     -e           Mutually exclusive with -c. Sets the expected value for example part 1 and reads input from file.<br>
     -c           Mutually exclusive with -e. Generate test cases for part 1 in the format of `input:outcome`.<br>
 
 - `getinput`, retrieves input from site<br> 
-  -y           Required. The year, from 2015 to 2023<br>
+  -y           Required. The year, from 2015 to 2024<br>
   -d           Required. The day, from 1 to 25<br>
   -s           Required. The session token for adventofcode.com<br>
 
 - `runday`, run an individual day<br>
-  -y           Required. The year, from 2015 to 2023<br>
+  -y           Required. The year, from 2015 to 2024<br>
   -d           Required. The day, from 1 to 25<br>
   -p           Part one or two, or both if not specified<br>
 
