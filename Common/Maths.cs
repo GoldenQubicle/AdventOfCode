@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Numerics;
-using System.Security.Cryptography;
-using System.Text;
-using Common.Extensions;
-
-namespace Common;
+﻿namespace Common;
 
 public static class Maths // dumb name but prevents namespace conflict with System.Math
 {

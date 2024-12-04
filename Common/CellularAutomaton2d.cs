@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using static Common.Grid2d;
-
-namespace Common;
+﻿namespace Common;
 
 /// <summary>
 /// Generic Cellular Automaton Solver, operates on underlying Grid2D - constructed from Input - according to the rules given. 

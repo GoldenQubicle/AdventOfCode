@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using System.Numerics;
-using System.Text.RegularExpressions;
-
-namespace Common.Extensions;
+﻿namespace Common.Extensions;
 
 public static class RegexExtensions
 {
@@ -14,13 +10,15 @@ public static class RegexExtensions
 
 	public static Vector3 AsVector3(this Match m) => new(m.AsLong("x"), m.AsLong("y"), m.AsLong("z"));
 
-    public static int AsInt(this Match m, string group) => int.Parse(m.Groups[group].Success ? m.Groups[group].Value : "0");
-    public static int AsInt(this Match m, int idx) => int.Parse(m.Groups[idx].Success ? m.Groups[idx].Value : "0");
+	public static int AsInt(this Match m, string group) => int.Parse(m.Groups[group].Success ? m.Groups[group].Value : "0");
+	
+	public static int AsInt(this Match m, int idx) => int.Parse(m.Groups[idx].Success ? m.Groups[idx].Value : "0");
 
 	public static long AsLong(this Match m, string group) => long.Parse(m.Groups[group].Success ? m.Groups[group].Value : "0");
 
-    public static string AsString(this Match m, string group) => m.Groups[group].Success ? m.Groups[group].Value : string.Empty;
-    public static string AsString(this Match m, int idx) => m.Groups[idx].Success ? m.Groups[idx].Value : string.Empty;
+	public static string AsString(this Match m, string group) => m.Groups[group].Success ? m.Groups[group].Value : string.Empty;
+	
+	public static string AsString(this Match m, int idx) => m.Groups[idx].Success ? m.Groups[idx].Value : string.Empty;
 
 	public static int GetGroupAsInt(this MatchCollection mc, string group)
 	{
@@ -35,7 +33,6 @@ public static class RegexExtensions
 
 	public static int AsInt(this MatchCollection mc, int idx) => int.Parse(mc[idx].Value);
 
-
 	public static string GetGroup(this MatchCollection mc, string group)
 	{
 		foreach (Match match in mc)
@@ -46,5 +43,4 @@ public static class RegexExtensions
 
 		return string.Empty;
 	}
-
 }

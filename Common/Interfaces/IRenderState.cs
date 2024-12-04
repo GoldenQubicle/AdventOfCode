@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using System;
-
-namespace Common.Interfaces;
+﻿namespace Common.Interfaces;
 
 public interface IRenderState
 {

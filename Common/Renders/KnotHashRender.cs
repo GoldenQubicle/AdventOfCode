@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Common.Interfaces;
-
-namespace Common.Renders
+﻿namespace Common.Renders
 {
 	public class KnotHashRender : IRenderState
 	{

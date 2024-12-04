@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Common.Extensions;
-using Common.Interfaces;
-using Common.Renders;
-
-namespace Common;
+﻿namespace Common;
 
 public class PathFinding
 {

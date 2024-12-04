@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Common.Interfaces;
+﻿namespace Common.Interfaces;
 
 public interface IGraph
 {
