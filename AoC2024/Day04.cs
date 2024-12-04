@@ -5,19 +5,12 @@ public class Day04 : Solution
 
 	private readonly Grid2d puzzle;
 
-	private readonly List<(int x, int y)> offsets = 
-	[
-		(-1, -1), (0, -1), (1, -1),
-		(-1,  0),          (1,  0),
-		(-1,  1), (0,  1), (1,  1)
-	];
-
 	public Day04(string file) : base(file) => puzzle = new(Input);
 
 
 	public override async Task<string> SolvePart1() => puzzle
 		.Where(c => c.Character == 'X')
-		.Select(c => offsets
+		.Select(c => puzzle.Offsets
 			.Select(o => Enumerable.Range(1, 3)
 				.Select(n => c.Position.Add(n * o.x, n * o.y))
 				.Where(puzzle.IsInBounds))
@@ -28,7 +21,7 @@ public class Day04 : Solution
 
 	public override async Task<string> SolvePart2() => puzzle
 		.Where(c => c.Character == 'A')
-		.Select(c => offsets
+		.Select(c => puzzle.Offsets
 			.Where(o => o.x != 0 && o.y != 0)
 			.Select(o => c.Position.Add(o.x, o.y))
 			.Where(p => puzzle.IsInBounds(p) && puzzle[p].Character is 'M' or 'S')
@@ -37,7 +30,6 @@ public class Day04 : Solution
 		.Count(n => n
 			.GroupBy(c => c.Character)
 			.All(g => g.Count() == 2 && NotOpposite(g.ToList())))
-
 		.ToString( );
 
 	//if both x & y differ within a group of M or S they're on opposite corners
