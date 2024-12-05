@@ -2,10 +2,11 @@ namespace AoC2024;
 
 public class Day05 : Solution
 {
-	private Dictionary<int, (List<int> before, List<int> after)> rules = new( );
-	private List<List<int>> updates = new( );
+	private readonly Dictionary<int, (List<int> before, List<int> after)> rules = new( );
+	private readonly List<List<int>> updates = new( );
 	public Day05(string file) : base(file)
 	{
+		//booo... this is all very sucky
 		foreach (var line in Input)
 		{
 			if (string.IsNullOrEmpty(line))
@@ -16,82 +17,86 @@ public class Day05 : Solution
 				var pairs = line.Split('|', StringSplitOptions.TrimEntries).Select(int.Parse).ToList( );
 
 				if (!rules.TryAdd(pairs[0], (new( ), new( ) { pairs[1] })))
-				{
 					rules[pairs[0]].after.Add(pairs[1]);
-				}
+
 				continue;
 			}
 
 			updates.Add(line.Split(',', StringSplitOptions.TrimEntries).Select(int.Parse).ToList( ));
 
 		}
-
-		var toBeAdded = new List<(int, int)>();
-		foreach (var rule in rules)
+		
+		var toBeAdded = new List<(int, int)>( );
+		rules.ForEach(rule =>
 		{
 			rule.Value.after.ForEach(r =>
 			{
-				if (rules.ContainsKey(r))
-				{
-					rules[r].before.Add(rule.Key);
-				}
+				if (rules.TryGetValue(r, out var rule1))
+					rule1.before.Add(rule.Key);
 				else
-				{
 					toBeAdded.Add((r, rule.Key));
-				}
 			});
-		}
+		});
+
+		
 		toBeAdded.ForEach(r =>
 		{
-			if (!rules.TryAdd(r.Item1, (new() { r.Item2 }, new())))
+			if (!rules.TryAdd(r.Item1, (new( ) { r.Item2 }, new( ))))
 			{
-				rules[ r.Item1].before.Add(r.Item2);
+				rules[r.Item1].before.Add(r.Item2);
 			}
 		});
 	}
 
+	
+	public override async Task<string> SolvePart1() => updates
+		.Aggregate(0, (sum, pages) => IsValidUpdate(pages) ? sum + pages[pages.Count / 2] : sum).ToString( );
 
 
-	public override async Task<string> SolvePart1()
+	public override async Task<string> SolvePart2() => updates
+		.Aggregate(0, (sum, pages) => !IsValidUpdate(pages) ? sum + Order(pages) : sum).ToString( );
+
+	
+	private int Order(List<int> pages)
 	{
-		var result = 0;
-		foreach (var pages in updates)
-		{
-			if (IsValid(pages))
-			{
-				var mid =  (pages.Count / 2);
-				result += pages[mid];
-			}
-		}
+		pages = Reorder(pages);
 
-		return result.ToString();
+		while (!IsValidUpdate(pages))
+			pages = Reorder(pages);
+
+		return pages[pages.Count / 2];
 	}
 
-	private bool IsValid(List<int> pages)
+
+	private List<int> Reorder(List<int> pages)
 	{
-		var all = new List<bool>();
-		foreach (var (page, idx) in pages.WithIndex())
-		{
-			//if (idx == 0)
-			//{
-			//	var valid1 = rules[page].before.All(a => !pages[1..].Contains(a));
-			//}
+		var invalid = pages.WithIndex( ).First(p => !IsValid(pages, p.Value, p.idx));
 
-			//if (idx == pages.Count - 1)
-			//{
-			//	var valid1 = rules[page].after.All(a => !pages[..^1].Contains(a));
-			//}
+		var swap = !IsBeforeValid(pages, invalid.Value, invalid.idx)
+			? pages[..invalid.idx].First(p => rules[invalid.Value].after.Contains(p))
+			: pages[invalid.idx..].First(p => rules[invalid.Value].before.Contains(p));
 
-			var before = rules[page].after.All(a => !pages[..idx].Contains(a));
-			var after = rules[page].before.All(a => !pages[(idx + 1)..].Contains(a));
-			all.Add(before && after);
-		}
+		var idx = pages.IndexOf(swap);
+		pages[idx] = invalid.Value;
+		pages[invalid.idx] = swap;
 
-		return all.All(b => b);
+		return pages;
 	}
 
-	public override async Task<string> SolvePart2()
-	{
-		return string.Empty;
-	}
+
+	private bool IsValidUpdate(List<int> pages) =>
+		pages.WithIndex( ).All(p => IsValid(pages, p.Value, p.idx));
+
+
+	private bool IsValid(List<int> pages, int page, int idx) =>
+		IsBeforeValid(pages, page, idx) && IsAfterValid(pages, page, idx);
+
+
+	private bool IsBeforeValid(List<int> pages, int page, int idx) =>
+		rules[page].after.All(a => !pages[..idx].Contains(a)); //what should come after does not appear before idx
+
+
+	private bool IsAfterValid(List<int> pages, int page, int idx) =>
+		rules[page].before.All(a => !pages[(idx + 1)..].Contains(a));//what should come before does not appear after idx
+
 }
