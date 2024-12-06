@@ -82,8 +82,7 @@ public class Day05 : Solution
 
 		return pages;
 	}
-
-
+	
 	private bool IsValidUpdate(List<int> pages) =>
 		pages.WithIndex( ).All(p => IsValid(pages, p.Value, p.idx));
 
