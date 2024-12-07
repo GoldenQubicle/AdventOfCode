@@ -1,13 +1,9 @@
 namespace AoC2024;
 
-public class Day06 : Solution
+public class Day06(string file) : Solution(file)
 {
 
-	private Grid2d grid;
-
 	private readonly List<(int, int)> offsets = [(0, -1), (1, 0), (0, 1), (-1, 0)];
-
-	public Day06(string file) : base(file) => grid = new(Input, diagonalAllowed: false);
 
 	public override async Task<string> SolvePart1() => DoPatrol( ).Count.ToString( );
 
@@ -57,6 +53,7 @@ public class Day06 : Solution
 
 	private HashSet<(int, int)>  DoPatrol()
 	{
+		var grid = new Grid2d(Input);
 		var visited = new HashSet<(int, int)>( );
 		var current = grid.First(c => c.Character == '^').Position;
 		var dir = 0;
