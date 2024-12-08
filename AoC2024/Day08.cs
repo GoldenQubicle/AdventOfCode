@@ -7,19 +7,20 @@ public class Day08 : Solution
 	public Day08(string file) : base(file) => grid = new(Input);
 
 
-	public override async Task<string> SolvePart1() => GetGroupedAntennas( )
-		.Aggregate(new HashSet<(int, int)>( ), (set, list) => GetAntiNodes(list, set))
-		.Count.ToString( );
+	public override async Task<string> SolvePart1() => CountAntiNodes(isPart2: false);
 
 
-	public override async Task<string> SolvePart2() => GetGroupedAntennas( )
-		.Aggregate(new HashSet<(int, int)>( ), (set, list) => GetAntiNodes(list, set, isPart2: true))
+	public override async Task<string> SolvePart2() => CountAntiNodes(isPart2: true);
+	
+
+	private string CountAntiNodes(bool isPart2) => GetGroupedAntennas( )
+		.Aggregate(new HashSet<(int, int)>( ), (set, list) => GetAntiNodes(list, set, isPart2))
 		.Count.ToString( );
 
 
 	private HashSet<(int, int)> GetAntiNodes(List<(int x, int y)> list, HashSet<(int, int)> set, bool isPart2 = false)
 	{
-		GetIndexPairs(list)
+		GetIndexPairs(list.Count)
 			.ForEach(pair => set.AddRange(GetAntiNodesForPair(list[pair.a1], list[pair.a2], isPart2)));
 		return set;
 	}
@@ -61,9 +62,9 @@ public class Day08 : Solution
 	}
 
 
-	private static IEnumerable<(int a1, int a2)> GetIndexPairs(List<(int x, int y)> list) =>
-		Enumerable.Range(0, list.Count - 1)
-			.SelectMany(a1 => Enumerable.Range(a1 + 1, list.Count - 1 - a1).Select(a2 => (a1, a2)));
+	private static IEnumerable<(int a1, int a2)> GetIndexPairs(int count) =>
+		Enumerable.Range(0, count - 1)
+			.SelectMany(a1 => Enumerable.Range(a1 + 1, count - 1 - a1).Select(a2 => (a1, a2)));
 
 
 	private List<List<(int x, int y)>> GetGroupedAntennas() => grid
@@ -71,6 +72,4 @@ public class Day08 : Solution
 		.GroupBy(c => c.Character)
 		.Where(g => g.Count( ) >= 2)
 		.Select(g => g.Select(c => c.Position).ToList( )).ToList( );
-
-
 }
