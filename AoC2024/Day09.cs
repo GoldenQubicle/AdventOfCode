@@ -1,10 +1,8 @@
-using System.Reflection;
-
 namespace AoC2024;
 
 public class Day09 : Solution
 {
-	private string diskMap;
+	private readonly string diskMap;
 	public Day09(string file) : base(file) => diskMap = Input.First( );
 
 	public override async Task<string> SolvePart1()
@@ -19,22 +17,21 @@ public class Day09 : Solution
 
 		for (var idx = 0 ;idx < diskMap.Length - 1 ;idx++)
 		{
-			var frontBlocks = diskMap[idx].ToInt( );
-
 			if (int.IsOddInteger(idx)) // the front block is free, start moving the back blocks
 			{
-				for (var i = 0 ;i < frontBlocks ;i++)
+				for (var i = 0 ;i < diskMap[idx].ToInt( ) ;i++)
 				{
 					checkSum += pointer * backValue;
 					pointer++;
 					backBlocks--;
 
-					if (backBlocks == 0) // we still have free front blocks but out of back blocks
-					{
-						backValue--;
-						backIdx -= 2;
-						backBlocks = diskMap[backIdx].ToInt( );
-					}
+					if (backBlocks > 0)
+						continue;
+
+					// we still have free front blocks but out of back blocks
+					backValue--;
+					backIdx -= 2;
+					backBlocks = diskMap[backIdx].ToInt( );
 				}
 				continue;
 			}
@@ -45,7 +42,7 @@ public class Day09 : Solution
 			if (frontValue == backValue)
 			{
 				//at the midpoint, we may already have moved some of the back blocks
-				//just gotta account for the remainder of the back block
+				//just gotta account for the remainder of the back blocks
 				for (var i = 0 ;i < backBlocks ;i++)
 				{
 					checkSum += pointer * frontValue;
@@ -56,7 +53,7 @@ public class Day09 : Solution
 			}
 
 			//add the front blocks to the checksum
-			for (var i = 0 ;i < frontBlocks ;i++)
+			for (var i = 0 ;i < diskMap[idx].ToInt( ) ;i++)
 			{
 				checkSum += pointer * frontValue;
 				pointer++;
@@ -80,7 +77,6 @@ public class Day09 : Solution
 		var backValue = diskMap.Length / 2;
 		var backIdx = diskMap.Length - 1;
 
-		//move the files
 		while (backIdx > 0)
 		{
 			var size = diskMap[backIdx].ToInt( );
@@ -88,7 +84,7 @@ public class Day09 : Solution
 
 			if (index is { Key: 0, Value: 0 }) //not enough free space available, work backwards over the files
 			{
-				backIdx -= 2; 
+				backIdx -= 2;
 				backValue--;
 				continue;
 			}
@@ -98,7 +94,7 @@ public class Day09 : Solution
 				movedFiles[index.Key].AddRange(Enumerable.Repeat(backValue, size));
 
 			// account for space taken up by moved files to properly calculate the checksum later
-			freeSpaces[index.Key] -= size; 
+			freeSpaces[index.Key] -= size;
 
 			// account for the freed up space to properly calculate the checksum later
 			freeSpaces.Add(backIdx, size);
@@ -109,22 +105,19 @@ public class Day09 : Solution
 		}
 
 		var pointer = 0;
-		var idFront = 0;
+		var frontValue = 0;
 		var checkSum = 0L;
 
-		//calculate the checksum
 		for (var idx = 0 ;idx < diskMap.Length ;idx++)
 		{
-			if (int.IsOddInteger(idx)) // formerly free space but could be we moved files so check both
+			if (int.IsOddInteger(idx)) // formerly free space but could be - partially - taken up by moved files so check both
 			{
 				if (movedFiles.TryGetValue(idx, out var values))
-				{
 					values.ForEach(v =>
 					{
 						checkSum += pointer * v;
 						pointer++;
 					});
-				}
 
 				if (freeSpaces.TryGetValue(idx, out var free1))
 					pointer += free1;
@@ -132,21 +125,18 @@ public class Day09 : Solution
 				continue;
 			}
 
-			//formerly occupied but could be moved and thus freed up
+			//formerly occupied but files could be moved and thus freed up
 			if (freeSpaces.TryGetValue(idx, out var free2))
 				pointer += free2;
 			else
-			{
-				var size = diskMap[idx].ToInt( );
-				for (var i = 0 ;i < size ;i++)
+				for (var i = 0 ;i < diskMap[idx].ToInt( ) ;i++)
 				{
-					checkSum += pointer * idFront;
+					checkSum += pointer * frontValue;
 					pointer++;
 				}
-			}
 
 
-			idFront++;
+			frontValue++;
 		}
 
 		return checkSum.ToString( );
