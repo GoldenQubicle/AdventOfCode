@@ -60,11 +60,17 @@ public class Day19 : Solution
 		//per workflow if rule applies, adjust range accordingly
 		//crucially, per applied rule I want to queue a new state with adjusted ranges
 		//intersect xmas ranges for all states which end up in A
-		var queue = new Queue<Part>( );
-
+		var queue = new Queue<Part>{ new (new ()
+		{
+			{ 'x', (1, 4000) },
+			{ 'm', (1, 4000) },
+			{ 'a', (1, 4000) },
+			{ 's', (1, 4000) },
+		})};
+		var wf = "in";
 		while (queue.TryDequeue(out var current))
 		{
-
+			var workflow = workflows[wf].Rules;
 		}
 
 		return string.Empty;
