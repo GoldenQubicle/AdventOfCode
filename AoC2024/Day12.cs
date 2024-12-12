@@ -41,7 +41,7 @@ public class Day12 : Solution
 				var diagonals = vertices.Count(v => IsDiagonal(seen, v));
 
 				var edges = isPart2
-					? vertices.Count(kvp => kvp.Value is 1 or 3) + diagonals * 2 //1 is an outer corner, 3 is an inner corner, count diagonals twice as inner & outer corner.
+					? vertices.Count(kvp => kvp.Value is 1 or 3) + diagonals * 2 //1 is an outer corner, 3 is an inner corner, count diagonals twice.
 					: vertices.Count(kvp => kvp.Value < 4) + diagonals; //vertex with count 4 is on the inside. 
 
 				gardens.Add((seen.Count, edges));
