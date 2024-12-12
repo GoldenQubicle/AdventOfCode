@@ -41,7 +41,7 @@ public class Day12 : Solution
 		}
 		
 		//do not care, skip
-			if (row.StartsWith('.'))
+		if (row.StartsWith('.'))
 			return GetArrangements(row[1..], record, count);
 
 		//replace and recurse

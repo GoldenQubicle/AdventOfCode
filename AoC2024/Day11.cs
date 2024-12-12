@@ -2,10 +2,13 @@ namespace AoC2024;
 
 public class Day11 : Solution
 {
-	private List<string> stones;
+	private readonly List<string> stones;
+
 	public Day11(string file) : base(file) => stones = Input[0].Split(" ").ToList( );
 
+
 	public override async Task<string> SolvePart1() => stones.Sum(s => ApplyRules(s, 25, new( ))).ToString();
+
 	
 	public override async Task<string> SolvePart2() => stones.Sum(s => ApplyRules(s, 75, new( ))).ToString( );
 	
