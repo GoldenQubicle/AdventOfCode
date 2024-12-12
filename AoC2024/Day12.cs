@@ -29,26 +29,20 @@ public class Day12 : Solution
 				//start flood fill 
 				while (queue.TryDequeue(out var current))
 				{
+					//add 4 vertices per cell, i.e. the perimeter at cell level, and track of count per vertex to determine overlap later
+					offsets.ForEach(o => vertices.AddTo(current.Position.Add(o), v => v + 1));
+
 					seen.Add(current);
-					var neighbors = grid.GetNeighbors(current);
 
-					queue.EnqueueAll(neighbors.Where(n => !queue.Contains(n) && !seen.Contains(n) && n.Character == group.Key));
-
-					//add 4 vertices per cell, i.e. the perimeter at cell level
-					//keep track of count per vertex to determine overlap later
-					offsets.ForEach(o =>
-					{
-						if (!vertices.TryAdd(current.Position.Add(o), 1))
-							vertices[current.Position.Add(o)] += 1;
-					});
-
+					queue.EnqueueAll(grid.GetNeighbors(current)
+						.Where(n => !queue.Contains(n) && !seen.Contains(n) && n.Character == group.Key));
 				}
 
 				var diagonals = vertices.Count(v => IsDiagonal(seen, v));
 
 				var edges = isPart2
-					? vertices.Count(kvp => kvp.Value is 1 or 3) + diagonals * 2 //1 is an outer corner, 3 is an inner corner, count diagonals twice.
-					: vertices.Count(kvp => kvp.Value < 4) - diagonals + diagonals * 2; //vertex with count 4 is on the inside. Weird diagonal bookkeeping but just dividing by 2 is not correct.
+					? vertices.Count(kvp => kvp.Value is 1 or 3) + diagonals * 2 //1 is an outer corner, 3 is an inner corner, count diagonals twice as inner & outer corner.
+					: vertices.Count(kvp => kvp.Value < 4) + diagonals; //vertex with count 4 is on the inside. 
 
 				gardens.Add((seen.Count, edges));
 

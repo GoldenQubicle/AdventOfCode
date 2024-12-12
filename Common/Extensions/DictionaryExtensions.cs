@@ -26,6 +26,8 @@ public static class DictionaryExtensions
 
 	public static Dictionary<TKey, TValue> AddTo<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key, Func<TValue, TValue> func)
 	{
+		if(!dic.ContainsKey(key))
+			dic.Add(key, default(TValue));
 		dic[key] = func(dic[key]);
 		return dic;
 	}
