@@ -3,6 +3,7 @@ namespace AoC2024;
 public class Day12 : Solution
 {
 	private readonly Grid2d grid;
+
 	public Day12(string file) : base(file) => grid = new(Input, diagonalAllowed: false);
 
 	public override async Task<string> SolvePart1() => GetGardenPerimeters(isPart2: false);
