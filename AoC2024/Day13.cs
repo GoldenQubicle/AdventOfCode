@@ -1,4 +1,5 @@
 namespace AoC2024;
+using MathNet.Numerics.LinearAlgebra;
 
 public class Day13 : Solution
 {

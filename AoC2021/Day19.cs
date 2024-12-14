@@ -32,39 +32,62 @@ public partial class Day19 : Solution
 		 
 		 */
 
-		var distances = new Dictionary<int, List<DistancePairs>>( );
+		var distances = new  Dictionary<int, List<DistancePairs>>( );
 
 
 		foreach (var scanner in scanners)
 		{
-			distances.Add(scanner.Key, new( ));
-
+			distances.Add(scanner.Key, new());
 			foreach (var pair in GetIndexPairs(scanner.Value.Count))
 			{
 				var distance = Vector3.Distance(scanner.Value[pair.p1], scanner.Value[pair.p2]);
-				distances[scanner.Key].Add(new(pair.p1, pair.p2, distance));
+				distances[scanner.Key].Add(new(scanner.Key, pair.p1, pair.p2, distance));
 			}
 		}
 
+
 		// so basically, the first eleven matches have idx 0. the question is what does that correspond to in the other pair
 		//for each scanner pairing..
+		var beaconMapping = scanners
+			.ToDictionary(s => s.Key, s => s.Value.WithIndex().ToDictionary(t => t.idx, _ => default(Beacon)));
 
 		foreach (var pair in GetIndexPairs(scanners.Count))
 		{
 			//for each pair of scanner, see which beacons pairs have the same distance between them
 			//if there are >= 66 of such same distance pairs it means we have at least 12 beacons overlapping
-			var same = distances[pair.p1]
-				.Select(d1 => (d1, d2: distances[pair.p2].FirstOrDefault(d2 => d1.Distance == d2.Distance)))
-				.Where(d => d.d2 != default).ToList( );
+			var equal = distances[pair.p1]
+				.Select(d1 => (s1: d1, s2: distances[pair.p2].FirstOrDefault(d2 => d1.Distance == d2.Distance)))
+				.Where(d => d.s2 != default).ToList( );
 
-			var beaconCount = same.Select(s => s.d1.Idx1).Concat(same.Select(s => s.d1.Idx2)).ToHashSet( ).Count;
+			//get the distinct beacon indices for scanner 1
+			var beaconCount = equal.Select(s => s.s1.Idx1).Concat(equal.Select(s => s.s1.Idx2)).ToHashSet( ).Count;
 			
 			if(beaconCount < 12) continue;
 
-			var beacon = same[0].d1.Idx1;
-			var beaconPair = same.Take(beaconCount-1)
-				.Select(s => s.d2.Idx1).Concat(same.Take(beaconCount-1).Select(s => s.d2.Idx2))
-				.GroupBy(idx => idx).First(g => g.Count() == beaconCount - 1);
+			//take the beacon from the first distance pair from the first scanner in the pair
+			//due to the pairing it will occur as the 1st index of the distance pairs beaconCount times
+			var beaconIdxS1 = equal[0].s1.Idx1; 
+			var beaconIdxS2 = equal.Take(beaconCount-1) //now figure out from the distance pairs of scanner 2 which index also occurs beaconCount times 
+				.Select(s => s.s2.Idx1).Concat(equal.Take(beaconCount-1).Select(s => s.s2.Idx2))
+				.GroupBy(idx => idx).First(g => g.Count() == beaconCount - 1).Key;
+
+			//so now I finally figured out the first beacon mapping...
+			//next... go over equals and work out which beacon index maps to which other index
+			//also yeah.. should probably add the scanner id to the distance pairs...
+
+			var beacon = new Beacon(0);
+			beacon.Map.Add((pair.p1, beaconIdxS1));
+			beacon.Map.Add((pair.p2, beaconIdxS2));
+
+			if (beaconMapping[pair.p1][beaconIdxS1] == default)
+			{
+				beaconMapping[pair.p1][beaconIdxS1] = beacon;
+			}
+
+			
+			beaconMapping[pair.p2][beaconIdxS2] = beacon;
+
+			var  t = beaconMapping.SelectMany(s => s.Value.Select(d => d.Value)).Where(b => b != default).Distinct().Count();
 
 			/*now construct beacon mapping... the problem kinda is I want to have a sparse matrix
 			 * because not every beacon is contained in the overlapping region
@@ -74,7 +97,7 @@ public partial class Day19 : Solution
 			 * 3	8	7
 			 */
 
-			Console.WriteLine($"scanner pair {pair.p1}:{pair.p2} has {beaconCount} in common - probably {same.Count}");
+			Console.WriteLine($"scanner pair {pair.p1}:{pair.p2} has {beaconCount} in common - probably {equal.Count}");
 		}
 
 
@@ -83,9 +106,11 @@ public partial class Day19 : Solution
 		return string.Empty;
 	}
 
-	private record DistancePairs(int Idx1, int Idx2, float Distance);
+	//what if.. we just add the scanner index also in here... reckon it makes things A LOT easier to work with
+	
+	private record DistancePairs(int Scanner, int Idx1, int Idx2, float Distance);
 
-	private record Beacon
+	private record Beacon(int Id)
 	{
 		public List<(int scanner,int index)> Map { get; } = new();
 	}
