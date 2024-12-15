@@ -12,70 +12,53 @@ public class Day15 : Solution
 			.Aggregate(new StringBuilder( ), (sb, line) => sb.Append(line)).ToString( );
 	}
 
+	public override async Task<string> SolvePart1() => DoRobotWarehouseWoes(isPart1: true);
 
-	public override async Task<string> SolvePart1()
+	public override async Task<string> SolvePart2() => DoRobotWarehouseWoes(isPart1: false);
+
+	private string DoRobotWarehouseWoes(bool isPart1)
 	{
+		grid = isPart1 ? grid : ToWideGrid( );
 		var robot = grid.First(c => c.Character is '@').Position;
-
+		
 		foreach (var dir in instructions)
 		{
-			var move = GetDirection(dir);
+			var move = GetMove(dir);
 
-			if (!CanMovePart1(robot, move, out var boxes))
+			if (!CanMove(robot, dir, out var boxes, isPart1))
 				continue;
 
-			boxes.ForEach(b => grid[b.Add(move)].Character = 'O');
+			boxes.ForEach(b =>
+			{
+				grid[b.p.Add(move)].Character = b.c;
+				grid[b.p].Character = '.';
+			});
 
 			MoveRobot(ref robot, move);
 		}
 
-		return grid.Where(c => c.Character is 'O').Sum(c => 100 * c.Y + c.X).ToString( );
+		return grid
+			.Where(c => isPart1
+				? c.Character is 'O'
+				: c.Character is '[')
+			.Sum(c => 100 * c.Y + c.X).ToString( );
 	}
 
 
-	public override async Task<string> SolvePart2()
-	{
-		grid = ToWideGrid( );
-
-		var robot = grid.First(c => c.Character is '@').Position;
-
-		foreach (var dir in instructions)
-		{
-			if (!CanMovePart2(robot, dir, out var boxes))
-				continue;
-
-			var move = GetDirection(dir);
-
-			if (dir is '<' or '>')
-				boxes.ForEach(b => grid[b.p.Add(move)].Character = b.c);
-
-			if (dir is '^' or 'v')
-				boxes.ForEach(b =>
-				{
-					grid[b.p.Add(move)].Character = b.c;
-					grid[b.p].Character = '.';
-				});
-
-			MoveRobot(ref robot, move);
-		}
-		return grid.Where(c => c.Character is '[').Sum(c => 100 * c.Y + c.X).ToString( );
-	}
-
-
-	private bool CanMovePart2((int x, int y) pos, char dir, out List<((int x, int y) p, char c)> boxes)
+	private bool CanMove((int x, int y) pos, char dir, out List<((int x, int y) p, char c)> boxes, bool isPart1)
 	{
 		boxes = new( );
-		var move = GetDirection(dir);
+		var move = GetMove(dir);
 		pos = pos.Add(move);
 
-		if (dir is '<' or '>')
+		if (isPart1 || dir is '<' or '>')
 		{
-			while (grid[pos].Character is '[' or ']')
+			while (IsBox(pos))
 			{
 				boxes.Add((pos, grid[pos].Character));
 				pos = pos.Add(move);
 			}
-
+			boxes.Reverse( );
 			return grid[pos].Character is '.';
 		}
 
@@ -86,7 +69,6 @@ public class Day15 : Solution
 		//Go over all boxes until either we hit a wall, or all boxes have available space in the direction we're going.
 
 		var queue = new Queue<(int, int)> { pos };
-
 		while (queue.TryDequeue(out var current))
 		{
 			if (grid[current].Character is '#')
@@ -101,35 +83,16 @@ public class Day15 : Solution
 
 			queue.Enqueue(current.Add(move));
 			queue.Enqueue(neighbor.Add(move));
-
 			boxes.Add((current, grid[current].Character));
 			boxes.Add((neighbor, grid[neighbor].Character));
 		}
 
-		boxes.Reverse( ); // reverse in order to update cells properly
-
+		boxes.Reverse( );
 		return true;
 	}
 
-
-	private bool CanMovePart1((int x, int y) pos, (int x, int y) move, out List<(int x, int y)> boxes)
-	{
-		boxes = new( );
-		pos = pos.Add(move);
-
-		while (grid[pos].Character is 'O')
-		{
-			boxes.Add(pos);
-			pos = pos.Add(move);
-		}
-
-		return grid[pos].Character is '.';
-	}
-
-
 	private bool IsBox((int x, int y) pos) =>
-		grid[pos].Character is '[' or ']';
-
+		grid[pos].Character is '[' or ']' or 'O';
 
 	private void MoveRobot(ref (int x, int y) robot, (int x, int y) moveTo)
 	{
@@ -138,8 +101,7 @@ public class Day15 : Solution
 		grid[robot].Character = '@';
 	}
 
-
-	private static (int x, int y) GetDirection(char direction) => direction switch
+	private static (int x, int y) GetMove(char direction) => direction switch
 	{
 		'>' => (1, 0),
 		'<' => (-1, 0),
@@ -147,7 +109,6 @@ public class Day15 : Solution
 		'v' => (0, 1),
 		_ => throw new ArgumentOutOfRangeException( )
 	};
-
 
 	private Grid2d ToWideGrid()
 	{

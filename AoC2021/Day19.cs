@@ -41,7 +41,7 @@ public partial class Day19 : Solution
 						transforms.Add(new(s1, s2, s, f, offset));
 					}
 
-					var deltas2s1= scanners[s2]
+					var deltas2s1 = scanners[s2]
 						.SelectMany(v1 => scanners[s1].Select(v2 => Vector3.Subtract(v1, Flip(f, Swizzle(s, v2)))))
 						.GroupBy(v => v)
 						.OrderByDescending(g => g.Count( ));
@@ -55,10 +55,16 @@ public partial class Day19 : Solution
 			}
 		}
 
+		var origin0 = Vector3.Zero;
+		var origin1 = Vector3.Add(origin0, Flip(0, Swizzle(0, transforms[0].Offset)));
+		var origin3 = Vector3.Add(origin1, Flip(transforms[0].Flip, Swizzle(transforms[0].Swizzle, transforms[2].Offset)));
+		var origin4 = Vector3.Add(origin1, Flip(transforms[0].Flip, Swizzle(transforms[0].Swizzle, transforms[4].Offset)));
 
-		var origin3 = Vector3.Add(transforms[0].Offset, Flip(transforms[0].Flip, Swizzle(transforms[0].Swizzle, transforms[2].Offset)));
-		var origin4 = Vector3.Add(transforms[0].Offset, Flip(transforms[0].Flip, Swizzle(transforms[0].Swizzle, transforms[4].Offset)));
-		var origin2 = Vector3.Add(origin4, Flip(transforms[7].Flip, Swizzle(transforms[7].Swizzle, transforms[7].Offset)));
+		//how in the world do we get the proper position for scanner 2 relative to origin?!
+		var t = Flip(transforms[0].Flip, Swizzle(transforms[0].Swizzle, transforms[7].Offset));
+		t = Flip(transforms[4].Flip, Swizzle(transforms[4].Swizzle, t));
+		
+		var origin2 = Vector3.Add(origin4, Flip(transforms[4].Flip, Swizzle(transforms[4].Swizzle, transforms[7].Offset)));
 		return string.Empty;
 	}
 
