@@ -12,21 +12,21 @@ public class Day15 : Solution
 			.Aggregate(new StringBuilder( ), (sb, line) => sb.Append(line)).ToString( );
 	}
 
-	
+
 	public override async Task<string> SolvePart1()
 	{
 		var robot = grid.First(c => c.Character is '@').Position;
 
 		foreach (var dir in instructions)
 		{
-			var moveTo = GetDirection(dir);
+			var move = GetDirection(dir);
 
-			if (!CanMovePart1(robot, moveTo, out var boxes)) continue;
-			
+			if (!CanMovePart1(robot, move, out var boxes))
+				continue;
 
-			boxes.ForEach(b => grid[b.Add(moveTo)].Character = 'O');
+			boxes.ForEach(b => grid[b.Add(move)].Character = 'O');
 
-			MoveRobot(ref robot, moveTo);
+			MoveRobot(ref robot, move);
 		}
 
 		return grid.Where(c => c.Character is 'O').Sum(c => 100 * c.Y + c.X).ToString( );
@@ -41,38 +41,39 @@ public class Day15 : Solution
 
 		foreach (var dir in instructions)
 		{
-			if (!CanMovePart2(robot, dir, out var boxes)) continue;
+			if (!CanMovePart2(robot, dir, out var boxes))
+				continue;
 
-			var moveTo = GetDirection(dir);
+			var move = GetDirection(dir);
 
 			if (dir is '<' or '>')
-				boxes.ForEach(b => grid[b.p.Add(moveTo)].Character = b.c);
+				boxes.ForEach(b => grid[b.p.Add(move)].Character = b.c);
 
 			if (dir is '^' or 'v')
 				boxes.ForEach(b =>
 				{
-					grid[b.p.Add(moveTo)].Character = b.c;
+					grid[b.p.Add(move)].Character = b.c;
 					grid[b.p].Character = '.';
 				});
 
-			MoveRobot(ref robot, moveTo);
+			MoveRobot(ref robot, move);
 		}
 		return grid.Where(c => c.Character is '[').Sum(c => 100 * c.Y + c.X).ToString( );
 	}
 
 
-	private bool CanMovePart2((int x, int y) pos, char direction, out List<((int x, int y) p, char c)> boxes)
+	private bool CanMovePart2((int x, int y) pos, char dir, out List<((int x, int y) p, char c)> boxes)
 	{
-		boxes = new ( );
-		var moveTo = GetDirection(direction);
-		pos = pos.Add(moveTo);
+		boxes = new( );
+		var move = GetDirection(dir);
+		pos = pos.Add(move);
 
-		if (direction is '<' or '>')
+		if (dir is '<' or '>')
 		{
 			while (grid[pos].Character is '[' or ']')
 			{
 				boxes.Add((pos, grid[pos].Character));
-				pos = pos.Add(moveTo);
+				pos = pos.Add(move);
 			}
 
 			return grid[pos].Character is '.';
@@ -85,20 +86,21 @@ public class Day15 : Solution
 		//Go over all boxes until either we hit a wall, or all boxes have available space in the direction we're going.
 
 		var queue = new Queue<(int, int)> { pos };
-		
+
 		while (queue.TryDequeue(out var current))
 		{
 			if (grid[current].Character is '#')
 				return false;
 
-			if (!IsBox(current)) continue;
+			if (!IsBox(current))
+				continue;
 
 			var neighbor = grid[current].Character is '['
 				? current.Add(1, 0)
 				: current.Add(-1, 0);
 
-			queue.Enqueue(current.Add(moveTo));
-			queue.Enqueue(neighbor.Add(moveTo));
+			queue.Enqueue(current.Add(move));
+			queue.Enqueue(neighbor.Add(move));
 
 			boxes.Add((current, grid[current].Character));
 			boxes.Add((neighbor, grid[neighbor].Character));
@@ -109,23 +111,23 @@ public class Day15 : Solution
 		return true;
 	}
 
-	
-	private bool CanMovePart1((int x, int y) pos, (int x, int y) moveTo, out List<(int x, int y)> boxes)
+
+	private bool CanMovePart1((int x, int y) pos, (int x, int y) move, out List<(int x, int y)> boxes)
 	{
-		boxes = new ( );
-		pos = pos.Add(moveTo);
+		boxes = new( );
+		pos = pos.Add(move);
 
 		while (grid[pos].Character is 'O')
 		{
 			boxes.Add(pos);
-			pos = pos.Add(moveTo);
+			pos = pos.Add(move);
 		}
 
 		return grid[pos].Character is '.';
 	}
 
 
-	private bool IsBox((int x, int y) pos) => 
+	private bool IsBox((int x, int y) pos) =>
 		grid[pos].Character is '[' or ']';
 
 

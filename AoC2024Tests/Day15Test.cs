@@ -2,14 +2,6 @@ namespace AoC2024Tests;
             
 public class Day15Test
 {
-    Day15 day15;
-
-    [SetUp]
-	public void Setup( )
-    {
-        //day15 = new Day15("day15test1");
-    }
-
 	[TestCaseSource(nameof(GetCasesPart1))]
 	public async Task Part1((string file, string expected) testCase)
     {
@@ -30,7 +22,5 @@ public class Day15Test
     {
 	    yield return ("day15test1", "2028");
 	    yield return ("day15test2", "10092");
-	    
-
     }
 }
