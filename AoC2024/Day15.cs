@@ -25,16 +25,16 @@ public class Day15 : Solution
 		{
 			var move = GetMove(dir);
 
-			if (!CanMove(robot, dir, out var boxes, isPart1))
+			if (!CanMove(robot, move, out var boxes, isPart1))
 				continue;
+
+			MoveRobot(ref robot, move);
 
 			boxes.ForEach(b =>
 			{
 				grid[b.p.Add(move)].Character = b.c;
 				grid[b.p].Character = '.';
 			});
-
-			MoveRobot(ref robot, move);
 		}
 
 		return grid
@@ -45,13 +45,12 @@ public class Day15 : Solution
 	}
 
 
-	private bool CanMove((int x, int y) pos, char dir, out List<((int x, int y) p, char c)> boxes, bool isPart1)
+	private bool CanMove((int x, int y) pos, (int x, int y) move, out List<((int x, int y) p, char c)> boxes, bool isPart1)
 	{
 		boxes = new( );
-		var move = GetMove(dir);
 		pos = pos.Add(move);
 
-		if (isPart1 || dir is '<' or '>')
+		if (isPart1 || move.x is -1 or 1)
 		{
 			while (IsBox(pos))
 			{
@@ -67,7 +66,6 @@ public class Day15 : Solution
 
 		//The problem is when moving up or down, the boxes can be a weird shape and get stuck not directly above or below the robot.
 		//Go over all boxes until either we hit a wall, or all boxes have available space in the direction we're going.
-
 		var queue = new Queue<(int, int)> { pos };
 		while (queue.TryDequeue(out var current))
 		{
