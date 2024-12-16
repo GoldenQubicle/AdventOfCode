@@ -26,71 +26,83 @@ public partial class Day19 : Solution
 
 		foreach (var (s1, s2) in GetIndexPairs(scanners.Count))
 		{
-			for (var s = 0 ;s < 6 ;s++)
+			for (var r = 0; r < 24; r++)
 			{
-				for (var f = 0 ;f < 8 ;f++)
+				var deltas1s2 = scanners[s1]
+					.SelectMany(v1 => scanners[s2].Select(v2 => Vector3.Subtract(v1, Rotate(r, v2))))
+					.GroupBy(v => v)
+					.OrderByDescending(g => g.Count( ));
+
+				if (deltas1s2.First( ).Count( ) >= 12)
 				{
-					var deltas1s2 = scanners[s1]
-						.SelectMany(v1 => scanners[s2].Select(v2 => Vector3.Subtract(v1, Flip(f, Swizzle(s, v2)))))
-						.GroupBy(v => v)
-						.OrderByDescending(g => g.Count( ));
+					var offset = deltas1s2.First( ).First( );
+					transforms.Add(new(s1, s2, r, offset));
+				}
 
-					if (deltas1s2.First( ).Count( ) >= 12)
-					{
-						var offset = deltas1s2.First().First();
-						transforms.Add(new(s1, s2, s, f, offset));
-					}
+				var deltas2s1 = scanners[s2]
+					.SelectMany(v1 => scanners[s1].Select(v2 => Vector3.Subtract(v1, Rotate(r, v2))))
+					.GroupBy(v => v)
+					.OrderByDescending(g => g.Count( ));
 
-					var deltas2s1 = scanners[s2]
-						.SelectMany(v1 => scanners[s1].Select(v2 => Vector3.Subtract(v1, Flip(f, Swizzle(s, v2)))))
-						.GroupBy(v => v)
-						.OrderByDescending(g => g.Count( ));
-
-					if (deltas2s1.First( ).Count( ) >= 12)
-					{
-						var offset = deltas2s1.First( ).First( );
-						transforms.Add(new(s2, s1, s, f, offset));
-					}
+				if (deltas2s1.First( ).Count( ) >= 12)
+				{
+					var offset = deltas2s1.First( ).First( );
+					transforms.Add(new(s2, s1, r, offset));
 				}
 			}
+
+			
 		}
 
 		var origin0 = Vector3.Zero;
-		var origin1 = Vector3.Add(origin0, Flip(0, Swizzle(0, transforms[0].Offset)));
-		var origin3 = Vector3.Add(origin1, Flip(transforms[0].Flip, Swizzle(transforms[0].Swizzle, transforms[2].Offset)));
-		var origin4 = Vector3.Add(origin1, Flip(transforms[0].Flip, Swizzle(transforms[0].Swizzle, transforms[4].Offset)));
+		var origin1 = Vector3.Add(origin0, Rotate(0, transforms[0].Offset));
+		var origin3 = Vector3.Add(origin1, Rotate(transforms[0].Rotation, transforms[2].Offset));
+		var origin4 = Vector3.Add(origin1, Rotate(transforms[0].Rotation, transforms[4].Offset));
 
 		//how in the world do we get the proper position for scanner 2 relative to origin?!
-		var t = Flip(transforms[0].Flip, Swizzle(transforms[0].Swizzle, transforms[7].Offset));
-		t = Flip(transforms[4].Flip, Swizzle(transforms[4].Swizzle, t));
-		
-		var origin2 = Vector3.Add(origin4, Flip(transforms[4].Flip, Swizzle(transforms[4].Swizzle, transforms[7].Offset)));
+		//to get from 0-1-4-2 we apply the rotations for each step
+		var origin2 = Vector3.Add(origin4, Rotate(transforms[0].Rotation, Rotate(transforms[4].Rotation, transforms[7].Offset)));
+
+		//build a mapping by going over all scanner transforms
+		//s1.from -> s1.to, get all transforms where s1.to == sN.from && sN.to != s1.to
+		//temporary hold on to all rotations along the way
+		//in the end we should have all scanner positions relative to origin
+		//...aaand than what.... ?
+
 		return string.Empty;
 	}
 
-	private record ScannerTransform(int From, int To, int Swizzle, int Flip, Vector3 Offset);
+	private record ScannerTransform(int From, int To, int Rotation,  Vector3 Offset);
 
-	private Vector3 Swizzle(int n, Vector3 v) => n switch
+	private Vector3 Rotate(int n, Vector3 v) => n switch
 	{
 		0 => new(v.X, v.Y, v.Z),
-		1 => new(v.X, v.Z, v.Y),
-		2 => new(v.Y, v.Z, v.X),
-		3 => new(v.Y, v.X, v.Z),
-		4 => new(v.Z, v.X, v.Y),
-		5 => new(v.Z, v.Y, v.X),
+		1 => new(v.Z, v.Y, -v.X),
+		2 => new(-v.X, v.Y, -v.Z),
+		3 => new(-v.Z, v.Y, v.X),
+		4 => new(-v.X, -v.Y, v.Z),
+		5 => new(-v.Z, -v.Y, -v.X),
+		6 => new(v.X, -v.Y, -v.Z),
+		7 => new(v.Z, -v.Y, v.X),
+		8 => new(v.X, -v.Z, v.Y),
+		9 => new(v.Y, -v.Z, -v.X),
+		10 => new(-v.X, -v.Z, -v.Y),
+		11 => new(-v.Y, -v.Z, v.X),
+		12 => new(v.X, v.Z, -v.Y),
+		13 => new(-v.Y, v.Z, -v.X),
+		14 => new(-v.X, v.Z, v.Y),
+		15 => new(v.Y, v.Z, v.X),
+		16 => new(v.Z, v.X, v.Y),
+		17 => new(v.Y, v.X, -v.Z),
+		18 => new(-v.Z, v.X, -v.Y),
+		19 => new(-v.Y, v.X, v.Z),
+		20 => new(-v.Z, -v.X, v.Y),
+		21 => new(v.Y, -v.X, v.Z),
+		22 => new(v.Z, -v.X, -v.Y),
+		23 => new(-v.Y, -v.X, -v.Z)
 	};
 
-	private Vector3 Flip(int n, Vector3 v) => n switch
-	{
-		0 => Vector3.Multiply(v, new Vector3(1, 1, 1)),
-		1 => Vector3.Multiply(v, new Vector3(1, -1, 1)),
-		2 => Vector3.Multiply(v, new Vector3(1, 1, -1)),
-		3 => Vector3.Multiply(v, new Vector3(1, -1, -1)),
-		4 => Vector3.Multiply(v, new Vector3(-1, 1, 1)),
-		5 => Vector3.Multiply(v, new Vector3(-1, -1, 1)),
-		6 => Vector3.Multiply(v, new Vector3(-1, 1, -1)),
-		7 => Vector3.Multiply(v, new Vector3(-1, -1, -1)),
-	};
+	
 
 	public override async Task<string> SolvePart2()
 	{
