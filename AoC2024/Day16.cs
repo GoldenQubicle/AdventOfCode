@@ -21,7 +21,7 @@ public class Day16 : Solution
 		var atExit = false;
 		var maxDistance = Maths.GetManhattanDistance(start, end);
 		var seats = new HashSet<(int, int)>( );
-		var minPathLength = 0;
+		var minPathLength = int.MaxValue;
 
 		queue.Enqueue(new(start, 0, new( )), maxDistance);
 
@@ -31,19 +31,13 @@ public class Day16 : Solution
 
 			seen.Add(current);
 
-			if (current.Position == end.Position) // we made it out
-			{
-				minCost = current.Cost < minCost ? current.Cost : minCost;
-				continue;
-			}
-
 			var options = grid.GetNeighbors(current, n => !seen.Contains(n) && n.Character is '.' or 'E').ToList( );
 
 			if (!options.Any( ))
 				continue; // dead end
 
 			//as long as there's only 1 option in the same direction just keep moving
-			//could optimize this more to also take direction switches into account
+			//could optimize this more by also taking direction switches into account
 			//however for some reason it doesn't work as expected and cannot bother to find out why
 			while (options.Count == 1 && GetDirection(current, options[0]) == dir)
 			{
@@ -62,13 +56,21 @@ public class Day16 : Solution
 
 			if (atExit)
 			{
-				if (current.Cost < minCost || seen.Count < minPathLength)
+				//for part 2 we're only interested in the BEST paths
+				//annoyingly there are paths with the same cost but MORE cells visited than the best paths
+				//consequently we check on cost & path length, and clear the seats if a better minimum is found for either
+				if (current.Cost < minCost)
 				{
 					minCost = current.Cost;
+					seats.Clear( );
+				}
+
+				if (current.Cost == minCost && seen.Count < minPathLength)
+				{
 					minPathLength = seen.Count;
 					seats.Clear( );
-					seats.AddRange(seen.Select(c => c.Position));
 				}
+
 				if (current.Cost == minCost && seen.Count == minPathLength)
 					seats.AddRange(seen.Select(c => c.Position));
 
