@@ -6,15 +6,22 @@ public class Day16 : Solution
 
 	public Day16(string file) : base(file) => grid = new(Input, diagonalAllowed: false);
 
-	public override async Task<string> SolvePart1()
+	public override async Task<string> SolvePart1() => DoReindeerMaze(isPart1: true);
+
+	public override async Task<string> SolvePart2() => DoReindeerMaze(isPart1: false);
+
+
+	private string DoReindeerMaze(bool isPart1)
 	{
 		var start = grid.First(c => c.Character is 'S');
 		var end = grid.First(c => c.Character is 'E');
-		
+
 		var queue = new PriorityQueue<State, long>( );
 		var minCost = long.MaxValue;
 		var atExit = false;
 		var maxDistance = Maths.GetManhattanDistance(start, end);
+		var seats = new HashSet<(int, int)>( );
+		var minPathLength = 0;
 
 		queue.Enqueue(new(start, 0, new( )), maxDistance);
 
@@ -55,46 +62,45 @@ public class Day16 : Solution
 
 			if (atExit)
 			{
-				minCost = current.Cost < minCost ? current.Cost : minCost;
+				if (current.Cost < minCost || seen.Count < minPathLength)
+				{
+					minCost = current.Cost;
+					minPathLength = seen.Count;
+					seats.Clear( );
+					seats.AddRange(seen.Select(c => c.Position));
+				}
+				if (current.Cost == minCost && seen.Count == minPathLength)
+					seats.AddRange(seen.Select(c => c.Position));
+
 				atExit = false;
 				continue;
 			}
-			
+
 			options.ForEach(o =>
 			{
 				var newDir = GetDirection(current, o);
 				var newCost = newDir == dir ? current.Cost + 1 : current.Cost + 1001;
 
-				if (newCost > o.Cost && o.Cost != 0) return;
+				if (newCost > o.Cost && o.Cost != 0)
+					return;
 
 				o.Cost = newCost;
-				queue.Enqueue(new(o, newDir, new(seen)), newCost - maxDistance - Maths.GetManhattanDistance(o, end));
+				queue.Enqueue(new(o, newDir, [.. seen]), newCost - maxDistance - Maths.GetManhattanDistance(o, end));
 			});
 		}
 
-		return minCost.ToString( );
+		return isPart1 ? minCost.ToString( ) : seats.Count.ToString( );
 	}
 
-	public override async Task<string> SolvePart2()
-	{
-		return string.Empty;
-	}
 
 	private record State(INode Current, int Direction, HashSet<INode> Seen);
 
-	private (int x, int y) GetDirection(int d) => d switch
-	{
-		0 => (1, 0), // east
-		1 => (0, 1), // south
-		2 => (-1, 0), // west
-		3 => (0, -1), // north
-	};
 
-	private int GetDirection(INode current, INode next) => (current.Position.Subtract(next.Position)) switch
+	private int GetDirection(INode current, INode next) => current.Position.Subtract(next.Position) switch
 	{
-		(-1, _) => 0, // east
+		(1, _) => 0, // east
 		(_, -1) => 1, // south
-		(1, _) => 2, // west
+		(-1, _) => 2, // west
 		(_, 1) => 3 // north
 	};
 }

@@ -26,7 +26,7 @@ public class Day16Test
 
     private static IEnumerable<(string file, string expected)> GetCasesPart2()
     {
-	    yield return ("45", "7036");
-	    yield return ("64", "11048");
+	    yield return ("day16test1", "45");
+	    yield return ("day16test2", "64");
     }
 }
