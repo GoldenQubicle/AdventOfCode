@@ -83,11 +83,13 @@ public class Day16 : Solution
 				var newDir = GetDirection(current, o);
 				var newCost = newDir == dir ? current.Cost + 1 : current.Cost + 1001;
 
-				if (newCost > o.Cost && o.Cost != 0)
+				if (newCost > o.Cost && o.Cost != 0) //already seen this cell at a lower cost, no need to enqueue
 					return;
 
 				o.Cost = newCost;
-				queue.Enqueue(new(o, newDir, [.. seen]), newCost - maxDistance - Maths.GetManhattanDistance(o, end));
+
+				queue.Enqueue(new(o, newDir, [.. seen]),
+					newCost - maxDistance - Maths.GetManhattanDistance(o, end)); //prioritize cost and moving towards the end. 
 			});
 		}
 
