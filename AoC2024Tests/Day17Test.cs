@@ -2,14 +2,6 @@ namespace AoC2024Tests;
             
 public class Day17Test
 {
-    //Day17 day17;
-            
-    //[SetUp]
-    //public void Setup( )
-    //{
-    //    //day17 = new Day17("day17test1");
-    //}
-
 	[TestCaseSource(nameof(GetCasesPart1))]
 	public async Task Part1((string file, string expected) testCase)
     {
@@ -25,7 +17,7 @@ public class Day17Test
 
         day17.SolvePart1();
 
-        Assert.That(day17.registers[test.register], Is.EqualTo(test.expected));
+        Assert.That(day17.Registers[test.register], Is.EqualTo(test.expected));
 	}
             
     [Test]
@@ -33,7 +25,7 @@ public class Day17Test
     {
 	    var day17 = new Day17(["2024", "0", "0", " :0,3,5,4,3,0"]);
 	    var actual = await day17.SolvePart2();
-	    Assert.That(actual, Is.EqualTo("117440"));
+	    Assert.That(actual, Is.EqualTo("117440")); 
     }
 
     private static IEnumerable<(List<string> input, char register, int expected)> GetRegisterTestCases()
