@@ -57,7 +57,8 @@ public class Day17 : Solution
 		}
 
 		return aValue.ToString( );
-
+		
+		//terrible
 		long getIncrement(int idx) => idx switch
 		{
 			0 => 1,

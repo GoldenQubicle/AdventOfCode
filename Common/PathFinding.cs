@@ -30,6 +30,7 @@ public class PathFinding
 		var queue = new Queue<INode>( );
 		var visited = new Dictionary<INode, INode>( );
 		var current = start;
+		var isTargetFound = false;
 		queue.Enqueue(current);
 		visited.Add(current, default);
 		
@@ -38,7 +39,10 @@ public class PathFinding
 			current = next;
 
 			if (targetCondition(current, target))
+			{
+				isTargetFound = true;
 				break;
+			}
 
 			graph.GetNeighbors(current, n => !queue.Contains(n) && !visited.ContainsKey(n) && constraint(current, n))
 				.ForEach(n =>
@@ -52,6 +56,9 @@ public class PathFinding
 		}
 
 		var path = new List<INode>( );
+
+		if (!isTargetFound) return path;
+
 		while (!current.Equals(start))
 		{
 			path.Add(current);
