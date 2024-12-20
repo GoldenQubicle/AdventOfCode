@@ -32,8 +32,8 @@ public class Day19 : Solution
 		if (matches.Count == 0)
 			return 0;
 
-		var sum = matches.Sum(m => MatchPattern(design[..^m.Length], cache));
-		cache.Add(design, sum);
-		return sum;
+		cache.Add(design, matches.Sum(m => MatchPattern(design[..^m.Length], cache)));
+		
+		return cache[design];
 	}
 }
