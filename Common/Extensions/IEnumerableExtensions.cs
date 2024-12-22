@@ -2,6 +2,10 @@
 
 public static class IEnumerableExtensions
 {
+	public static IEnumerable<(int idx1, int idx2)> GetIndexPairs<T>(this IEnumerable<T> collection) =>
+		Enumerable.Range(0, collection.Count() - 1)
+			.SelectMany(a1 => Enumerable.Range(a1 + 1, collection.Count( ) - 1 - a1).Select(a2 => (a1, a2)));
+
 	public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
 	{
 		foreach (var item in collection)
