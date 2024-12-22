@@ -1,6 +1,4 @@
-using System.Reflection.Emit;
 using Combinatorics.Collections;
-using Common.Renders;
 
 namespace AoC2024;
 
@@ -8,128 +6,103 @@ public class Day21 : Solution
 {
 	private readonly List<string> codes;
 
-	private readonly Dictionary<char, (int x, int y)> DirPad = new( )
+	private readonly Dictionary<char, (int x, int y)> dirPad = new( )
 	{
 		{ '-', (0, 0) }, { '^', (1, 0) }, { 'A', (2, 0) },
 		{ '<', (0, 1) }, { 'v', (1, 1) }, { '>', (2, 1) },
 	};
 
-	private readonly Dictionary<char, (int x, int y)> NumPad = new( )
+	private readonly Dictionary<char, (int x, int y)> numPad = new( )
 	{
 		{ '7', (0,0) }, { '8', (1,0) }, { '9', (2,0) },
 		{ '4', (0,1) }, { '5', (1,1) }, { '6', (2,1) },
 		{ '1', (0,2) }, { '2', (1,2) }, { '3', (2,2) },
 		{ '-', (0,3) }, { '0', (1,3) }, { 'A', (2,3) }, };
 
+	private readonly Dictionary<(char from, char to, int level), long> cache = new( );
+
 	public Day21(string file) : base(file) => codes = Input;
 
-	public override async Task<string> SolvePart1()
+	public override async Task<string> SolvePart1() =>
+		codes.Sum(c => c.ToInt( ) * DoKeyPads("A" + c, 2)).ToString( );
+
+	public override async Task<string> SolvePart2() =>
+		codes.Sum(c => c.ToInt( ) * DoKeyPads("A" + c, 25)).ToString( );
+
+
+	private long DoKeyPads(string input, int maxLevel, int level = 0)
 	{
-		
-		var result = codes.ToDictionary(c => c, c => Recurse([c], 0).Min(s => s.Length));
-
-		
-		return result.Sum(kvp => kvp.Key.ToInt() * kvp.Value ).ToString();
-	}
-
-	private Dictionary<(char from, char to), long> cache = new( );
-
-	public override async Task<string> SolvePart2()
-	{
-		foreach (var from in NumPad.Keys)
-		{
-			if(from == '-') continue;
-			foreach (var to in NumPad.Keys)
-			{
-				if (to == '-' || from == to) continue;
-				var moveSet = GetMoveSet(from, to, 0);
-				foreach (var set in moveSet)
-				{
-					var f = 'A';
-					var moves = new List<string> { string.Empty };
-					foreach (var t in set)
-					{
-						var result = GetMoveSet(f, t, 1);
-						moves = moves.SelectMany(m => result.Select(r => m + r)).ToList( );
-						
-
-						f = t;
-					}
-					moves.ForEach(m => Console.WriteLine($"from {from} to {to} {m.Length} {m}"));
-				}
-				
-			}
-		}
-
-		return string.Empty;
-	}
-
-
-	
-
-	private List<string> Recurse(List<string> input, int level)
-	{
+		var count = 0L;
 		while (true)
 		{
-			if (level == 3) return input;
-			var superset = new List<string>();
-			foreach (var s in input)
+			var from = input[0];
+			var to = input[1];
+			var key = (from, to, level);
+
+			if (cache.TryGetValue(key, out var minCount))
+				count += minCount;
+			else
 			{
-				var from = 'A';
-				var moves = new List<string> { string.Empty };
-
-				foreach (var to in s)
-				{
-					var result = GetMoveSet(from, to, level);
-					moves = moves.SelectMany(m => result.Select(r => m + r)).ToList();
-					from = to;
-				}
-
-				superset.AddRange(moves);
+				var moveSet = GenerateMoveSet(from, to, level); 
+				var counts = level == maxLevel - 1 
+					? moveSet.Select(m => GetMoveSetCount("A" + m, level + 1)).ToList( )
+					: moveSet.Select(m => DoKeyPads("A" + m, maxLevel, level + 1)).ToList( );
+				cache.Add(key, counts.Min( ));
+				count += cache[key];
 			}
 
-			input = superset;
-			level = level + 1;
+			if (input.Length == 2)
+				return count;
+
+			input = input[1..];
+		}
+	}
+
+	
+	private long GetMoveSetCount(string input, int level)
+	{
+		var count = 0L;
+		while (true)
+		{
+			var from = input[0];
+			var to = input[1];
+			var key = (from, to, level);
+
+			if (cache.TryGetValue(key, out var total))
+				count += total;
+			else
+			{
+				var moveSet = GenerateMoveSet(from, to, level);
+				cache.Add(key, moveSet.Min(s => s.Length));
+				count += cache[key];
+			}
+
+			if (input.Length == 2)
+				return count;
+
+			input = input[1..];
 		}
 	}
 
 
-
-	private long GetMoveSetCount(char from, char to, int level)
+	//Generate the full move sets for either numeric or direction pad
+	//e.g. A->2 results in <^A and ^<A
+	private List<string> GenerateMoveSet(char from, char to, int level)
 	{
-		var key = (from, to);
-		if (cache.TryGetValue(key, out var count))
-			return count;
-
-		var moveSet = GetMoveSet(from, to, level);
-		cache.Add(key, moveSet.Min(s => s.Length));
-		return cache[key];
-	}
-
-	private List<string> GetMoveSet(char from, char to, int level)
-	{
-		var map = level == 0 ? NumPad : DirPad;
+		var map = level == 0 ? numPad : dirPad;
 		var gap = map['-'];
-		var delta = map[to].Subtract(map[from]);
-
-		var x = delta.x;
-		var y = delta.y;
+		var (x, y) = map[to].Subtract(map[from]);
 
 		var perm = new List<(int, int)>( );
 
 		for (var i = 0 ;i < Math.Abs(x) ;i++)
-		{
 			perm.Add(x < 0 ? (-1, 0) : (1, 0));
-		}
-
+		
 		for (var j = 0 ;j < Math.Abs(y) ;j++)
-		{
 			perm.Add(y < 0 ? (0, -1) : (0, 1));
-		}
 
 		var moveSets = new Permutations<(int, int)>(perm).ToList( );
-
-
+		
 		var results = new List<string>( );
 		foreach (var set in moveSets)
 		{
@@ -150,102 +123,6 @@ public class Day21 : Solution
 
 		return results;
 	}
-
-
-
-
-	//internal class DirectionPad
-	//{
-	//	private readonly Dictionary<char, (int x, int y)> buttons = new( )
-	//	{
-	//		{ '^', (1, 0) },
-	//		{ 'A', (2, 0) },
-	//		{ '<', (0, 1) },
-	//		{ 'v', (1, 1) },
-	//		{ '>', (2, 1) },
-	//	};
-
-	//	private (int x, int y) gap = (0, 0);
-
-	//	private char current = 'A';
-
-	//	public List<string> Press(char button)
-	//	{
-	//		var pos = buttons[current];
-	//		var result = GetMoveSet(buttons[button].Subtract(pos), pos, gap);
-	//		current = button;
-	//		return result;
-	//	}
-	//}
-
-	//internal class KeyPad
-	//{
-	//	private readonly Dictionary<char, (int x, int y)> buttons = new( )
-	//	{
-	//		{ '7', (0,0) },
-	//		{ '8', (1,0) },
-	//		{ '9', (2,0) },
-	//		{ '4', (0,1) },
-	//		{ '5', (1,1) },
-	//		{ '6', (2,1) },
-	//		{ '1', (0,2) },
-	//		{ '2', (1,2) },
-	//		{ '3', (2,2) },
-	//		{ '0', (1,3) },
-	//		{ 'A', (2,3) },
-	//	};
-
-	//	private (int x, int y) gap = (0, 3);
-
-	//	private char current = 'A';
-
-	//	public List<string> Press(char button)
-	//	{
-	//		var pos = buttons[current];
-	//		var result = GetMoveSet(buttons[button].Subtract(pos), pos, gap);
-	//		current = button;
-	//		return result;
-	//		//var x = buttons[button].x - buttons[current].x;
-	//		//var y = buttons[button].y - buttons[current].y;
-	//		//var perm = new List<(int, int)>( );
-
-	//		//for (var i = 0 ;i < Math.Abs(x) ;i++)
-	//		//{
-	//		//	perm.Add(x < 0 ? (-1, 0) : (1, 0));
-	//		//}
-
-	//		//for (var j = 0 ;j < Math.Abs(y) ;j++)
-	//		//{
-	//		//	perm.Add(y < 0 ? (0, -1) : (0, 1));
-	//		//}
-
-	//		//var moveSets = new Permutations<(int, int)>(perm).ToList( );
-
-
-	//		//var results = new List<string>( );
-	//		//foreach (var set in moveSets)
-	//		//{
-	//		//	var pos = buttons[current];
-	//		//	var result = string.Empty;
-	//		//	foreach (var move in set)
-	//		//	{
-	//		//		pos = pos.Add(move);
-	//		//		if (pos == gap)
-	//		//			break;
-	//		//		result += GetDirection(move);
-	//		//	}
-	//		//	if (pos == gap)
-	//		//		continue;
-	//		//	result += 'A';
-	//		//	results.Add(result);
-	//		//}
-
-	//		//current = button;
-	//		//return results;
-	//	}
-	//}
-
-
 
 	internal static char GetDirection((int, int) dir) => dir switch
 	{

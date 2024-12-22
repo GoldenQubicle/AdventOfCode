@@ -46,14 +46,10 @@ public class Day22 : Solution
 
 				if (!tracker.TryAdd(key, new( ) { { buyer.idx, current } }))
 					tracker[key].TryAdd(buyer.idx, current);
-
-
 			});
 		}
 
-		var sum = tracker.Select(t => t.Value.Values.Sum( )).Max( );
-
-		return sum.ToString( );
+		return tracker.Values.Select(t => t.Values.Sum( )).Max( ).ToString( );
 	}
 
 	public long GetNextSecret(long secret)
