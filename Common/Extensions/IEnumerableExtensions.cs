@@ -6,6 +6,9 @@ public static class IEnumerableExtensions
 		Enumerable.Range(0, collection.Count() - 1)
 			.SelectMany(a1 => Enumerable.Range(a1 + 1, collection.Count( ) - 1 - a1).Select(a2 => (a1, a2)));
 
+	
+	public static IEnumerable<T> Expand<T>(this IEnumerable<T> list, T item) => [.. list, item];
+
 	public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
 	{
 		foreach (var item in collection)

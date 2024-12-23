@@ -21,6 +21,6 @@ public class Day23Test
     public async Task Part2( )
     {
         var actual = await day23.SolvePart2( );
-        Assert.That(actual, Is.EqualTo(""));
+        Assert.That(actual, Is.EqualTo("co,de,ka,ta"));
     }
 }
