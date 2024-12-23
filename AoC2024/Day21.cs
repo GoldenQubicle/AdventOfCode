@@ -85,7 +85,7 @@ public class Day21 : Solution
 	}
 
 
-	//Generate the full move sets for either numeric or direction pad
+	//Generate the full move set for either numeric or direction pad
 	//e.g. A->2 results in <^A and ^<A
 	private List<string> GenerateMoveSet(char from, char to, int level)
 	{
