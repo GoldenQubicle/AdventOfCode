@@ -4,7 +4,12 @@
     &lt;TestId&gt;NUnit3x::51C2E67C-4A2E-4175-8B88-11968429A1F9::net8.0::AoC2024Tests.Day22Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=60453181_002D7e16_002D4f6d_002D8428_002D491201e5d1b7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day23Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=413aeebf_002D0129_002D445c_002D9f5b_002D9d665fab6e6c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day24Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::51C2E67C-4A2E-4175-8B88-11968429A1F9::net8.0::AoC2024Tests.Day24Test&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=60453181_002D7e16_002D4f6d_002D8428_002D491201e5d1b7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day23Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::51C2E67C-4A2E-4175-8B88-11968429A1F9::net8.0::AoC2024Tests.Day23Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
