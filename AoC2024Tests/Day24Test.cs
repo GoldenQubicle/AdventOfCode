@@ -21,7 +21,8 @@ public class Day24Test
     [Test]
     public async Task Part2( )
     {
-        var actual = await day24.SolvePart2( );
+	    var day24 = new Day24("day24test2");
+		var actual = await day24.SolvePart2( );
         Assert.That(actual, Is.EqualTo(""));
     }
 
