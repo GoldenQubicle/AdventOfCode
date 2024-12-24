@@ -31,19 +31,14 @@ public class Day24 : Solution
 	public override async Task<string> SolvePart1()
 	{
 		while (!AllOutput())
-			gates.Where(HasInput).ForEach(SetValue);
+			gates.Where(HasInput).ForEach(SetOutput);
 		
+		var binary = wires
+			.Where(g => g.Key.StartsWith("z"))
+			.OrderByDescending(k => k.Key)
+			.Aggregate(new StringBuilder(), (sb, w) => sb.Append(w.Value)).ToString();
 
-		var binary = string.Empty;
-		wires.Where(g => g.Key.StartsWith("z")).OrderByDescending(k => k.Key ).ForEach(k =>
-		{
-			Console.WriteLine($"{k.Key}: {k.Value}");
-			binary += $"{k.Value}";
-		});
-
-		var number = Convert.ToInt64(binary, 2).ToString();
-
-		return number;
+		return Convert.ToInt64(binary, 2).ToString( );
 	}
 
 	public override async Task<string> SolvePart2()
@@ -55,7 +50,7 @@ public class Day24 : Solution
 
 	private bool AllOutput() => !wires.Where(w => w.Key.StartsWith("z")).Any(w => w.Value == -1);
 
-	private void SetValue(Gate gate)
+	private void SetOutput(Gate gate)
 	{
 		switch (gate.Op)
 		{
