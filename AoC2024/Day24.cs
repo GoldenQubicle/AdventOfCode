@@ -78,7 +78,7 @@ public class Day24 : Solution
 		//we found 3 XOR gates not connected to z and not an input gate, also highly suspect
 		//lastly we found 2 AND gates which looked, guess what, highly suspect
 		//the list below is based on nothing but looking at the gates in the debugger, reddit visualisations and various queries - see above for the remnants
-		var wrongGates = new List<string> { "z10", "z18", "z33", "mwk", "jmh", "gqp", "hsw" };
+		var wrongGates = new List<string> { "z10", "z18", "z33", "mwk", "jmh", "gqp", "hsw", "qgd" };
 
 		return string.Join(",", wrongGates.Order());
 
