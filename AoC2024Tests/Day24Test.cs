@@ -23,7 +23,7 @@ public class Day24Test
     {
 	    var day24 = new Day24("day24test2");
 		var actual = await day24.SolvePart2( );
-        Assert.That(actual, Is.EqualTo(""));
+        Assert.That(actual, Is.EqualTo("gqp,hsw,jmh,mwk,qgd,z10,z18,z33"));
     }
 
     private static IEnumerable<(string file, string expected)> GetCasesPart1()
