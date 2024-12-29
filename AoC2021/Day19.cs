@@ -1,3 +1,7 @@
+using System.Diagnostics.Contracts;
+using System.Drawing.Text;
+using Microsoft.VisualBasic;
+
 namespace AoC2021;
 
 public partial class Day19 : Solution
@@ -18,15 +22,16 @@ public partial class Day19 : Solution
 		}
 	}
 
-	public Day19(List<string> input) : base(input) { }
-
 	public override async Task<string> SolvePart1()
 	{
-		var transforms = new List<ScannerTransform>();
+		var transforms = new List<ScannerTransform>( );
 
-		foreach (var (s1, s2) in GetIndexPairs(scanners.Count))
+		foreach (var (s1, s2) in scanners.GetIndexPairs( ))
 		{
-			for (var r = 0; r < 24; r++)
+			//foreach scanner pair, for each rotation subtract the beacon positions.
+			//If we find 12 or more of the same beacon delta for a given pair, it must mean the scanners see the same beacons
+			//and consequently, we have the rotation and offset for the given pair of scanners 
+			for (var r = 0 ;r < 24 ;r++)
 			{
 				var deltas1s2 = scanners[s1]
 					.SelectMany(v1 => scanners[s2].Select(v2 => Vector3.Subtract(v1, Rotate(r, v2))))
@@ -51,28 +56,74 @@ public partial class Day19 : Solution
 				}
 			}
 
-			
+
 		}
 
-		var origin0 = Vector3.Zero;
-		var origin1 = Vector3.Add(origin0, Rotate(0, transforms[0].Offset));
-		var origin3 = Vector3.Add(origin1, Rotate(transforms[0].Rotation, transforms[2].Offset));
-		var origin4 = Vector3.Add(origin1, Rotate(transforms[0].Rotation, transforms[4].Offset));
+		//var origin = Vector3.Zero;
+		//var rotation = 0;
+		//var origin0 = Vector3.Add(Vector3.Zero, Rotate(rotation, Vector3.Zero));
+		//var origin1 = Vector3.Add(origin0, Rotate(0, transforms[0].Offset));
+		//var origin3 = Vector3.Add(origin1, Rotate(transforms[0].Rotation, transforms[2].Offset));
+		//var origin4 = Vector3.Add(origin1, Rotate(transforms[0].Rotation, transforms[4].Offset));
 
-		//how in the world do we get the proper position for scanner 2 relative to origin?!
-		//to get from 0-1-4-2 we apply the rotations for each step
-		var origin2 = Vector3.Add(origin4, Rotate(transforms[0].Rotation, Rotate(transforms[4].Rotation, transforms[7].Offset)));
+		////how in the world do we get the proper position for scanner 2 relative to origin?!
+		////to get from 0-1-4-2 we apply the rotations for each step
+		//var origin2 = Vector3.Add(origin4, Rotate(transforms[0].Rotation, Rotate(transforms[4].Rotation, transforms[7].Offset)));
 
-		//build a mapping by going over all scanner transforms
-		//s1.from -> s1.to, get all transforms where s1.to == sN.from && sN.to != s1.to
-		//temporary hold on to all rotations along the way
-		//in the end we should have all scanner positions relative to origin
-		//...aaand than what.... ?
+		/* what needs to happen next; for all scanners with overlap, translate the position and all beacon positions to origin
+		 * then per scanner check which beacons are within range
+		 *
+		 */
 
+		var origins = new Dictionary<int, Vector3> { { 0, Vector3.Zero } };
+		var queue = new Queue<(Vector3 origin, List<int> rotations, ScannerTransform)>( );
+		transforms.Where(t => t.From == 0).ForEach(t => queue.Enqueue((Vector3.Zero, [0], t)));
+		var beacons = new HashSet<Vector3>();
+		beacons.AddRange(scanners[0]);
+
+		while (queue.TryDequeue(out var state))
+		{
+			var (origin, rotations, transform) = state;
+
+			var nextOrigin = Vector3.Add(origin, DoRotations(rotations, transform.Offset));
+			origins.TryAdd(transform.To, nextOrigin);
+
+			scanners[transform.To].ForEach(b0 =>
+			{
+				var br = DoRotations(rotations.Expand(transform.Rotation), b0);
+				var b1 = Vector3.Add(nextOrigin, br );
+				if (!beacons.Add(b1))
+				{
+					var t = string.Empty;
+				}
+			});
+
+			var to = transforms.Where(t => t.From == transform.To && t.To != transform.From && !origins.ContainsKey(t.To)).ToList();
+			to.ForEach(t =>
+			{
+				queue.Enqueue((nextOrigin, rotations.Expand(transform.Rotation), t));
+			});
+		}
+
+		//var origin = transforms.First(t => t.From == 0);
+		//var to = transforms.Where(t => t.From == origin.To && t.To != origin.From).ToList();
+		return beacons.Count().ToString();
 		return string.Empty;
+
+		Vector3 DoRotations(List<int> rotations, Vector3 vec)
+		{
+			rotations.Reverse();
+			foreach (var r in rotations)
+			{
+				vec = Rotate(r, vec);
+			}
+
+			rotations.Reverse();
+			return vec;
+		}
 	}
 
-	private record ScannerTransform(int From, int To, int Rotation,  Vector3 Offset);
+	private record ScannerTransform(int From, int To, int Rotation, Vector3 Offset);
 
 	private Vector3 Rotate(int n, Vector3 v) => n switch
 	{
@@ -102,7 +153,7 @@ public partial class Day19 : Solution
 		23 => new(-v.Y, -v.X, -v.Z)
 	};
 
-	
+
 
 	public override async Task<string> SolvePart2()
 	{
@@ -112,8 +163,4 @@ public partial class Day19 : Solution
 	[GeneratedRegex(@"(?<x>-?\d+),(?<y>-?\d+),(?<z>-?\d+)")]
 	private static partial Regex Regex();
 
-	//2024 day 8
-	private static IEnumerable<(int p1, int p2)> GetIndexPairs(int count) =>
-		Enumerable.Range(0, count - 1)
-			.SelectMany(a1 => Enumerable.Range(a1 + 1, count - 1 - a1).Select(a2 => (a1, a2)));
 }
