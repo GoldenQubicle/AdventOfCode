@@ -6,4 +6,9 @@ public static class HashSetExtensions
 	{
 		range.ForEach(e => set.Add(e));
 	}
+
+	public static void Add<T>(this HashSet<T> set, IEnumerable<T> range)
+	{
+		range.ForEach(e => set.Add(e));
+	}
 }

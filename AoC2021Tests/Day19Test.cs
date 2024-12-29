@@ -21,8 +21,7 @@ public class Day19Test
     [Test]
     public async Task Part2( )
     {
-        var expected = string.Empty;
         var actual = await day19.SolvePart2( );
-        Assert.That(actual, Is.EqualTo(expected));
+        Assert.That(actual, Is.EqualTo("3621"));
     }
 }

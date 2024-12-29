@@ -129,6 +129,9 @@ public static class Maths // dumb name but prevents namespace conflict with Syst
 	public static T GetManhattanDistance<T>((T x, T y) a, (T x, T y) b) where T : INumber<T> =>
 		T.Abs(a.x - b.x) + T.Abs(a.y - b.y);
 
+	public static long GetManhattanDistance(Vector3 a, Vector3 b) =>
+		(long)(Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y) + Math.Abs(a.Z - b.Z));
+
 	public static int GetManhattanDistance(INode a, INode b) =>
 		GetManhattanDistance(a.Position, b.Position);
 
