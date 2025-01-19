@@ -14,7 +14,7 @@ public class Day12Test
 	[TestCaseSource(nameof(GetArrangementCases))]
 	public void GetArrangementsShouldReturnCount((string row, List<int> groups, int expected) test)
 	{
-		var actual = Day12.GetArrangements(test.row, test.groups, 0, new ());
+		var actual = Day12.GetArrangements(test.row, test.groups, 0);
 		Assert.That(actual, Is.EqualTo(test.expected));
 	}
 

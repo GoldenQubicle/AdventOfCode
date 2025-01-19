@@ -18,7 +18,7 @@ public class Day12 : Solution
 
 	public override async Task<string> SolvePart1()
 	{
-		return springs.Select(s => GetArrangements(s.row, s.records, 0, new ())).Sum( ).ToString( );
+		return springs.Select(s => GetArrangements(s.row, s.records, 0)).Sum( ).ToString( );
 		return string.Empty;
 	}
 
@@ -43,10 +43,8 @@ public class Day12 : Solution
 		return -1;
 	}
 
-	public static int GetArrangements(string row, List<int> record, int count, Dictionary<string, int> cache)
+	public static int GetArrangements(string row, List<int> record, int count)
 	{
-		if ((string.IsNullOrEmpty(row) || row.Length < 2) && record.Count > 0) return 0;
-
 		//no more groups left to fit...
 		if (record.Count == 0)
 		{
@@ -54,43 +52,35 @@ public class Day12 : Solution
 			if (row.Contains('#'))
 				return count;
 
-			return 1;
+			return count + 1;
 		}
-
-		if (cache.TryGetValue(row, out var value))
-			return value;
 
 		//do not care, skip
 		if (row.StartsWith('.'))
-			return GetArrangements(row[1..], record, count, cache);
+			return GetArrangements(row[1..], record, count);
 
 		//replace and recurse
 		if (row.StartsWith('?'))
 		{
-			return (GetArrangements(row[1..], record, count, cache) + // might as well skip here immediately instead of replacing  
-					GetArrangements('#' + row[1..], record, count, cache));
+			return (GetArrangements(row[1..], record, count) + // might as well skip here immediately instead of replacing  
+			        GetArrangements('#' + row[1..], record, count));
 		}
 
 		//row must start with # when we get here
 		var n = record.First( );
-		var possible = row.TakeWhile(c => c != '.'); 
+		var possible = row.TakeWhile(c => c != '.');
 		var atEnd = row.Length == n;
-		
+
 		if (possible.Count( ) >= n && (atEnd || row[n] != '#'))
 		{
 			var next = atEnd ? string.Empty : row[(n + 1)..];
-			var result = GetArrangements(next, record.Skip(1).ToList( ), count, cache);
-			cache.Add(row, result);
-		}
-		else
-		{
-			cache.Add(row, 0);
+			return GetArrangements(next, record.Skip(1).ToList( ), count);
 		}
 
 
-		
 
-		return cache[row];
+
+		return count;
 	}
 
 	//private int FitPossibleGroups(string group, int length)
@@ -125,7 +115,7 @@ public class Day12 : Solution
 		{
 			var row = string.Join('?', Enumerable.Repeat(s.row, 5));
 			var record = Enumerable.Repeat(s.records, 5).SelectMany(n => n).ToList( );
-			result.Add(GetArrangements(row, record, 0, new ()));
+			result.Add(GetArrangements(row, record, 0));
 		});
 
 		//return springs.Select(s =>
