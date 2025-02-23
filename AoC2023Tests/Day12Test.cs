@@ -15,6 +15,16 @@ public class Day12Test
 	public void GetArrangementsShouldReturnCount((string row, List<int> groups, int expected) test)
 	{
 		var actual = Day12.GetArrangements(test.row, test.groups, 0);
+		Console.WriteLine($"test {test.row}");
+
+		var broken = test.groups.Sum();
+		var minWorking = test.groups.Count - 1;
+
+		var minCount = broken + minWorking;
+
+		var unknown = test.groups.Where(c => c is '?');
+	
+
 		Assert.That(actual, Is.EqualTo(test.expected));
 	}
 

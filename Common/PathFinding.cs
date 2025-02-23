@@ -99,7 +99,7 @@ public class PathFinding
 			if (targetCondition(current, target))
 				break;
 
-			foreach (var n in grid.GetNeighbors(current, n => !visited.ContainsKey(n) &&  constraint(current, n)))
+			foreach (var n in grid.GetNeighbors(current, n => !visited.ContainsKey(n) && constraint(current, n)))
 			{
 				var newCost = costs[current] + n.Value;
 
