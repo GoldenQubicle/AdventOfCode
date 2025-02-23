@@ -13,7 +13,7 @@ public class Day15 : Solution
 		state = CreateInitialState(grid);
 		unitData = state.Units.Select(u => new UnitData(u.Id, u.Position, u.Type, u.HitPoints)).ToList( );
 	}
-		
+
 
 	public override async Task<string> SolvePart1()
 	{
@@ -44,7 +44,7 @@ public class Day15 : Solution
 
 	public Grid2d CreateInitialGrid() => new(Input, diagonalAllowed: false);
 
-	public static Combat CreateInitialState(Grid2d grid, int elfAttack = 3) => new(0, 
+	public static Combat CreateInitialState(Grid2d grid, int elfAttack = 3) => new(0,
 		grid.Where(c => c.Character is 'E' or 'G')
 			.WithIndex( )
 			.Select(c => c.Value.Character switch
@@ -60,7 +60,7 @@ public class Day15 : Solution
 
 		//Console.WriteLine($"Initial combat");
 		//Console.WriteLine(grid);
-	
+
 		while (targetsRemaining)
 		{
 			if (IRenderState.IsActive)
@@ -129,8 +129,8 @@ public class Day15 : Solution
 		foreach (var open in inRange)
 		{
 			var path = await PathFinding.BreadthFirstSearch(grid[unit.Position], open, grid,
-				(_, neighbor) => neighbor.Character == '.',
-				(current, goal) => current.X == goal.X && current.Y == goal.Y);
+				d => d.neighbor.Character == '.',
+				d => d.current.Position == d.target.Position);
 
 			if (path.Contains(open))
 				reachable.Add(open, path.Count( ));
@@ -171,7 +171,7 @@ public class Day15 : Solution
 		if (target.IsDead)
 		{
 			grid[target.Position].Character = '.';
-			
+
 			if (IRenderState.IsActive)
 				await IRenderState.Update(new Death(target.Id));
 		}
@@ -186,8 +186,8 @@ public class Day15 : Solution
 		foreach (var neighbor in grid.GetNeighbors(grid[unitPosition], n => n.Character == '.'))
 		{
 			var path = await PathFinding.BreadthFirstSearch(neighbor, grid[nearest], grid,
-				(_, n) => n.Character == '.',
-				(current, goal) => current.X == goal.X && current.Y == goal.Y);
+				d => d.neighbor.Character == '.',
+				d => d.current.Position == d.target.Position);
 
 			//check if path actually contains the target we're looking for
 			if (path.Contains(grid[nearest]))

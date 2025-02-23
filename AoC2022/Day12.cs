@@ -20,8 +20,8 @@ namespace AoC2022
 		
 		private async Task<IEnumerable<INode>> GetPath(INode start, INode target) => await PathFinding.BreadthFirstSearch(
 			start, target, grid,
-			(c, n) => GetCharacter(n.Character) - 1 <= GetCharacter(c.Character),
-			(c, t) => c.Character == t.Character);
+			d => GetCharacter(d.neighbor.Character) - 1 <= GetCharacter(d.current.Character),
+			d =>  d.current.Character == d.target.Character);
 
 
 		private static char GetCharacter(char c) => c switch

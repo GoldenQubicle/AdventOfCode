@@ -24,8 +24,8 @@ public class PathFinding
 	}
 
 	public static async Task<IEnumerable<INode>> BreadthFirstSearch(INode start, INode target, IGraph graph,
-		Func<INode,INode, bool> constraint,
-		Func<INode, INode, bool> targetCondition )
+		Func<(INode current,INode neighbor), bool> constraint,
+		Func<(INode current, INode target), bool> targetCondition )
 	{
 		var queue = new Queue<INode>( );
 		var visited = new Dictionary<INode, INode>( );
@@ -38,13 +38,13 @@ public class PathFinding
 		{
 			current = next;
 
-			if (targetCondition(current, target))
+			if (targetCondition((current, target)))
 			{
 				isTargetFound = true;
 				break;
 			}
 
-			graph.GetNeighbors(current, n => !queue.Contains(n) && !visited.ContainsKey(n) && constraint(current, n))
+			graph.GetNeighbors(current, n => !queue.Contains(n) && !visited.ContainsKey(n) && constraint((current, n)))
 				.ForEach(n =>
 				{
 					visited.TryAdd(n, current);
@@ -77,9 +77,9 @@ public class PathFinding
 	}
 
 	public static async Task<(IEnumerable<INode> path, long cost)> UniformCostSearch(INode start, INode target, IGraph grid,
-		Func<INode, INode, bool> constraint,
-		Func<INode, INode, bool> targetCondition,
-		Func<INode, INode, long> heuristic)
+		Func<(INode current, INode neighbour), bool> constraint,
+		Func<(INode current, INode target), bool> targetCondition,
+		Func<(INode neighbor, INode target), long> heuristic)
 	{
 		var queue = new PriorityQueue<INode, long>( );
 		var visited = new Dictionary<INode, INode>( );
@@ -96,10 +96,10 @@ public class PathFinding
 		{
 			current = next;
 
-			if (targetCondition(current, target))
+			if (targetCondition((current, target)))
 				break;
 
-			foreach (var n in grid.GetNeighbors(current, n => !visited.ContainsKey(n) && constraint(current, n)))
+			foreach (var n in grid.GetNeighbors(current, n => !visited.ContainsKey(n) && constraint((current, n))))
 			{
 				var newCost = costs[current] + n.Value;
 
@@ -111,7 +111,7 @@ public class PathFinding
 				if (queue.UnorderedItems.Contains((n, newCost)))
 					continue;
 
-				queue.Enqueue(n, newCost + heuristic(target, n));
+				queue.Enqueue(n, newCost + heuristic((target, n)));
 
 				visited.TryAdd(n, current);
 

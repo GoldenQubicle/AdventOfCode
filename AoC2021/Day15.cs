@@ -2,9 +2,9 @@ namespace AoC2021;
 
 public class Day15 : Solution
 {
-	private Grid2d grid;
+	private readonly Grid2d grid;
 	public Day15(string file) : base(file) =>
-		grid = new Grid2d(Input, diagonalAllowed: false);
+		grid = new (Input, diagonalAllowed: false);
 
 	public override async Task<string> SolvePart1()
 	{
@@ -12,9 +12,9 @@ public class Day15 : Solution
 		var target = grid[grid.Max(c => c.X), grid.Max(c => c.Y)];
 
 		var result = await PathFinding.UniformCostSearch(start, target, grid,
-			(node, node1) => true,
-			(node, node1) => node.Equals(target),
-			(node, node1) => 0L);
+			_ =>  true,
+			d => d.current.Equals(d.target),
+			_ => 0L);
 
 		result.path.ForEach(c => c.Character = '#');
 		return result.cost.ToString();
@@ -53,9 +53,9 @@ public class Day15 : Solution
 		var target = grid[grid.Max(c => c.X), grid.Max(c => c.Y)];
 
 		var result = await PathFinding.UniformCostSearch(start, target, grid,
-			(node, node1) => true,
-			(node, node1) => node.Equals(target),
-			(node, node1) => Maths.GetManhattanDistance(node.Cast<Grid2d.Cell>().Position, node.Cast<Grid2d.Cell>( ).Position));
+			_ => true,
+			d => d.current.Equals(d.target),
+			d => Maths.GetManhattanDistance(d.neighbor, d.target));
 
 
 		result.path.ForEach(c => c.Character = '#');

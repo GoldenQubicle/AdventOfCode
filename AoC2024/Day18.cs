@@ -43,7 +43,7 @@ public class Day18 : Solution
 		start: grid[0, 0],
 		target: grid[Width - 1, Height - 1],
 		graph: grid,
-		constraint: (_, n) => n.Character == '.',
-		targetCondition: (c, e) => c.Position == e.Position);
+		constraint: d => d.neighbor.Character == '.',
+		targetCondition: d => d.current.Position == d.target.Position);
 
 }

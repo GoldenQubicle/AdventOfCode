@@ -44,9 +44,9 @@ public class Day20 : Solution
 		var path = await PathFinding.BreadthFirstSearch(
 			start: start,
 			target: end,
-			constraint: (_, node1) => node1.Character is '.' or 'E',
+			constraint: d => d.neighbor.Character is '.' or 'E',
 			graph: grid,
-			targetCondition: (node, node1) => node.Position == node1.Position);
+			targetCondition: d => d.current.Position == d.target.Position);
 
 		return path.Reverse( ).ToList( );
 	}
