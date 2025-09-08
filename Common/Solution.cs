@@ -51,8 +51,8 @@ public abstract class Solution
 
 	private static string GetAocDebugDirectory(string year)
 	{
-		//Assuming a ./source/repos/... folder structure which contains the AoC project, SharpRay, etc
+		//Assuming a ./source/repos/... folder structure which contains the AoC project, SharpRay, etc and .net 9 runtime
 		var root = Directory.GetCurrentDirectory( ).Split("repos")[0];
-		return $@"{root}repos\AdventOfCode\AoC{year}\bin\Debug\net8.0";
+		return $@"{root}repos\AdventOfCode\AoC{year}\bin\Debug\net9.0";
 	}
 }

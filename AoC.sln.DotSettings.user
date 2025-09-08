@@ -1,23 +1,16 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1d1c6575_002D347f_002D4e5d_002D9266_002D11ca31f46f2c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day20Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::51C2E67C-4A2E-4175-8B88-11968429A1F9::net8.0::AoC2024Tests.Day20Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2120b011_002D68a4_002D4b81_002Da664_002Dd9dc82e8fae5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day12Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::EF21635A-2A64-4524-9ACF-BEF825095F95::net8.0::AoC2022Tests.Day12Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6d2c188d_002D8083_002D4208_002Dad18_002D8efbddc060cc/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day18Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::51C2E67C-4A2E-4175-8B88-11968429A1F9::net8.0::AoC2024Tests.Day18Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=95f4ba47_002Da4de_002D4d51_002D8380_002Db0b971a2d6b7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day15Test #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::8730BBB1-1670-46B4-BC10-7D8F536E5F15::net8.0::AoC2018Tests.Day15Test&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c03d313b_002Dd37c_002D4dc9_002D8f2a_002Da33f13e8de3e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;AoC2015Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2015Tests" Presentation="&amp;lt;AoC2015Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2016Tests" Presentation="&amp;lt;AoC2016Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2017Tests" Presentation="&amp;lt;AoC2017Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2018Tests" Presentation="&amp;lt;AoC2018Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2019Tests" Presentation="&amp;lt;AoC2019Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2020Tests" Presentation="&amp;lt;AoC2020Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2021Tests" Presentation="&amp;lt;AoC2021Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\CommonTests" Presentation="&amp;lt;CommonTests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2024Tests" Presentation="&amp;lt;AoC2024Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2023Tests" Presentation="&amp;lt;AoC2023Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="C:\Users\e.van.ekeren\source\repos\AdventOfCode\AoC2022Tests" Presentation="&amp;lt;AoC2022Tests&amp;gt;" /&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
