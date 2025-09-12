@@ -5,8 +5,8 @@ namespace AoC2023;
 
 public class Day12 : Solution
 {
-	private readonly List<(string row, List<int> records)> springs;
-
+	private List<(string row, List<int> records)> springs;
+	private static readonly Dictionary<(string, string), long> _cache = new( );
 	public Day12(string file) : base(file)
 	{
 		springs = Input.Select(l =>
@@ -16,117 +16,74 @@ public class Day12 : Solution
 		}).ToList( );
 	}
 
-	public override async Task<string> SolvePart1()
-	{
-		return springs.Select(s => GetArrangements(s.row, s.records, 0)).Sum( ).ToString( );
-		return string.Empty;
-	}
+	public override async Task<string> SolvePart1() => 
+		springs.Select(s => RecurseArrangement(s.row, s.records, 0, 0)).Sum( ).ToString( );
 
-
-	private static string Replace(string row, int idx, char c)
-	{
-		var t = row.Remove(idx, 1);
-		return t.Insert(idx, c.ToString( ));
-	}
-
-	public static int TryFit(string springs, List<int> record, Dictionary<string, int> cache)
-	{
-		if (record.IsEmpty() && (string.IsNullOrEmpty(springs) || springs.All(c => c is '.')))
-			return 1;
-
-		if (cache.TryGetValue(springs, out var count))
-			return count;
-
-		//work from the back
-		//do stuff
-
-		return -1;
-	}
-
-	public static int GetArrangements(string row, List<int> record, int count)
-	{
-		//no more groups left to fit...
-		if (record.Count == 0)
-		{
-			//...but did we actually meet the criteria for a valid arrangement?
-			if (row.Contains('#'))
-				return count;
-
-			return count + 1;
-		}
-
-		//do not care, skip
-		if (row.StartsWith('.'))
-			return GetArrangements(row[1..], record, count);
-
-		//replace and recurse
-		if (row.StartsWith('?'))
-		{
-			return (GetArrangements(row[1..], record, count) + // might as well skip here immediately instead of replacing  
-			        GetArrangements('#' + row[1..], record, count));
-		}
-
-		//row must start with # when we get here
-		var n = record.First( );
-		var possible = row.TakeWhile(c => c != '.');
-		var atEnd = row.Length == n;
-
-		if (possible.Count( ) >= n && (atEnd || row[n] != '#'))
-		{
-			var next = atEnd ? string.Empty : row[(n + 1)..];
-			return GetArrangements(next, record.Skip(1).ToList( ), count);
-		}
-
-
-
-
-		return count;
-	}
-
-	//private int FitPossibleGroups(string group, int length)
-	//{
-	//	var result = new List<string>( );
-	//	var queue = new Queue<string>( );
-	//	queue.Enqueue(row);
-
-	//	while (queue.TryDequeue(out var current))
-	//	{
-	//		var idx = current.IndexOf('?');
-	//		if (idx == -1)
-	//		{
-	//			result.Add(current);
-	//			continue;
-	//		}
-
-	//		queue.Enqueue(Replace(current, idx, '.'));
-	//		queue.Enqueue(Replace(current, idx, '#'));
-	//	}
-
-	//	var count = result
-	//		.Select(r => Regex.Matches(r, "(#+)"))
-	//		.Count(m => m.Count == record.Count && record.WithIndex( ).All(r => m[r.idx].Length == r.Value));
-	//	return 0;
-	//}
 
 	public override async Task<string> SolvePart2()
 	{
-		var result = new ConcurrentBag <int>();
-		Parallel.ForEach(springs, s =>
-		{
-			var row = string.Join('?', Enumerable.Repeat(s.row, 5));
-			var record = Enumerable.Repeat(s.records, 5).SelectMany(n => n).ToList( );
-			result.Add(GetArrangements(row, record, 0));
-		});
+		//still taking forever, should obviously take modulo of indices and just wrap around the rows 5 times
+		
 
-		//return springs.Select(s =>
-		//{
-		//	cache = new( );
-		//	var row = string.Join('?', Enumerable.Repeat(s.row, 5));
-		//	var record = Enumerable.Repeat(s.records, 5).SelectMany(n => n).ToList();
-		//	return GetArrangements(row, record, 0);
-
-		//}).Sum().ToString();
-
-		return result.Sum().ToString();
+		return springs.Select(s => RecurseArrangement(s.row, s.records, 0, 0)).Sum( ).ToString( );
 	}
+	
+	public static long RecurseArrangement(string row, List<int> records, int rowIdx, int recordIdx, bool isPart2 = false)
+	{
+		//make rowIdx & recordIdx local variables based on modulo 
+		var sIdx = rowIdx % row.Length;
+		var rIdx = recordIdx % records.Count;
+		var rowLength = isPart2 ? (row.Length * 5) - 1 : row.Length;
+		var recordsCount= isPart2 ? records.Count * 5 : records.Count;
+
+		if (rowIdx >= rowLength) //no more springs left to check
+			return recordIdx == records.Count ? 1 : 0; //check if used up all groups
+
+		var key = (row[rowIdx..], string.Join('-', records.Skip(recordIdx)));
+
+		if (_cache.TryGetValue(key, out var result))
+			return result;
+
+		//no more groups left to fit
+		if (recordIdx >= recordsCount)
+			return row[rowIdx..].Contains('#') ? 0 : 1; // check for any remaining damaged spring
+
+		var arrangements = 0L;
+
+		if (row[rowIdx] is '.' or '?')
+			arrangements += RecurseArrangement(row, records, rowIdx + 1, recordIdx);
+
+		if (row[rowIdx] is '#' or '?')
+			arrangements += TryPlaceGroup(row, records, rowIdx, recordIdx);
+
+		_cache[key] = arrangements;
+
+		return arrangements;
+	}
+
+	private static long TryPlaceGroup(string row, List<int> records, int rowIdx, int recordIdx)
+	{
+		var size = records[recordIdx];
+
+		//group too big for remaining row
+		if (rowIdx + size > row.Length)
+			return 0;
+
+		var end = rowIdx + size;
+		var check = row[rowIdx..end];
+
+		if (row[rowIdx..end].Contains('.')) //operation spring in the way
+			return 0;
+
+		if (end < row.Length && row[end] == '#')
+			return 0;//must have at least one operation spring after group
+
+		return RecurseArrangement(row, records, end + 1, recordIdx + 1);
+
+	}
+
+
+
+
+
 }

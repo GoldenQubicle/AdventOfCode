@@ -14,17 +14,7 @@ public class Day12Test
 	[TestCaseSource(nameof(GetArrangementCases))]
 	public void GetArrangementsShouldReturnCount((string row, List<int> groups, int expected) test)
 	{
-		var actual = Day12.GetArrangements(test.row, test.groups, 0);
-		Console.WriteLine($"test {test.row}");
-
-		var broken = test.groups.Sum();
-		var minWorking = test.groups.Count - 1;
-
-		var minCount = broken + minWorking;
-
-		var unknown = test.groups.Where(c => c is '?');
-	
-
+		var actual = Day12.RecurseArrangement(test.row, test.groups, 0, 0);
 		Assert.That(actual, Is.EqualTo(test.expected));
 	}
 
@@ -48,9 +38,9 @@ public class Day12Test
 		yield return ("?###????????", new List<int> { 3, 2, 1 }, 10);
 		yield return ("?.????#####??#.?#??", new List<int> { 1, 1, 9, 1, 1 }, 2);
 		yield return ("?.???#???.???.", new List<int> { 1, 4, 2 }, 15);
-		yield return (".?????#?#??##.??????", new List<int> { 9, 3 }, 4); 
-		yield return (".?????#?#??##.??????", new List<int> { 9, 5 }, 2); 
-		yield return (".?????#?#??##.??????", new List<int> { 9, 6 }, 1); 
+		yield return (".?????#?#??##.??????", new List<int> { 9, 3 }, 4);
+		yield return (".?????#?#??##.??????", new List<int> { 9, 5 }, 2);
+		yield return (".?????#?#??##.??????", new List<int> { 9, 6 }, 1);
 		yield return (".?????#?#??##", new List<int> { 9 }, 1);
 		yield return (".?????#?#??#?", new List<int> { 9 }, 2);
 		yield return ("??????", new List<int> { 5 }, 2);
