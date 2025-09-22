@@ -28,33 +28,41 @@ public class Day12 : Solution
 		return springs.Select(s => RecurseArrangement(s.row, s.records, 0, 0)).Sum( ).ToString( );
 	}
 	
-	public static long RecurseArrangement(string row, List<int> records, int rowIdx, int recordIdx, bool isPart2 = false)
+	public static long RecurseArrangement(string row, List<int> groups, int rowIdx, int groupIdx, bool isPart2 = false)
 	{
-		//make rowIdx & recordIdx local variables based on modulo 
-		var sIdx = rowIdx % row.Length;
-		var rIdx = recordIdx % records.Count;
+		//make rowIdx & groupIdx local variables based on modulo 
+		var rIdx = rowIdx % row.Length;
+		var gIdx = groupIdx % groups.Count;
 		var rowLength = isPart2 ? (row.Length * 5) - 1 : row.Length;
-		var recordsCount= isPart2 ? records.Count * 5 : records.Count;
+		var groupsCount= isPart2 ? groups.Count * 5 : groups.Count;
 
 		if (rowIdx >= rowLength) //no more springs left to check
-			return recordIdx == records.Count ? 1 : 0; //check if used up all groups
+			return groupIdx == groups.Count ? 1 : 0; //check if used up all groups
 
-		var key = (row[rowIdx..], string.Join('-', records.Skip(recordIdx)));
+		var key = (row[rowIdx..], string.Join('-', groups.Skip(groupIdx)));
 
 		if (_cache.TryGetValue(key, out var result))
 			return result;
 
 		//no more groups left to fit
-		if (recordIdx >= recordsCount)
+		if (groupIdx >= groupsCount)
 			return row[rowIdx..].Contains('#') ? 0 : 1; // check for any remaining damaged spring
 
 		var arrangements = 0L;
 
 		if (row[rowIdx] is '.' or '?')
-			arrangements += RecurseArrangement(row, records, rowIdx + 1, recordIdx);
+			arrangements += RecurseArrangement(row, groups, rowIdx + 1, groupIdx);
 
-		if (row[rowIdx] is '#' or '?')
-			arrangements += TryPlaceGroup(row, records, rowIdx, recordIdx);
+		//if (row[rowIdx] is '#' or '?')
+
+		var groupSize = groups[gIdx];
+		var end = rowIdx + groupSize;
+
+		//group too big for remaining row OR operational spring in the way OR doesn't have at least one operation spring after group
+		if (rowIdx + groupSize > rowLength || row[rowIdx..end].Contains('.') || end < rowLength && row[end] == '#')
+			arrangements += 0;
+		else 
+			arrangements += RecurseArrangement(row, groups, end + 1, groupIdx + 1);
 
 		_cache[key] = arrangements;
 

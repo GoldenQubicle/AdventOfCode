@@ -14,8 +14,25 @@ public class Day12Test
 	[TestCaseSource(nameof(GetArrangementCases))]
 	public void GetArrangementsShouldReturnCount((string row, List<int> groups, int expected) test)
 	{
+		var actual = Day12.RecurseArrangement(test.row, test.groups, 0, 0, new( ));
+		Assert.That(actual, Is.EqualTo(test.expected));
+	}
+
+	[TestCaseSource(nameof(Part2_GetArrangementCases))]
+	public void Part2_GetArrangementsShouldReturnCount((string row, List<int> groups, int expected) test)
+	{
 		var actual = Day12.RecurseArrangement(test.row, test.groups, 0, 0);
 		Assert.That(actual, Is.EqualTo(test.expected));
+	}
+
+	public static IEnumerable<(string row, List<int> groups, int expected)> Part2_GetArrangementCases()
+	{
+		yield return ("???.###", [1, 1, 3], 1);
+		yield return (".??..??...?##.", [1, 1, 3], 16384);
+		yield return ("?#?#?#?#?#?#?#?", [1, 3, 1, 6], 1);
+		yield return ("????.#...#...", [4, 1, 1], 16);
+		yield return ("????.######..#####.", [1, 6, 5], 2500);
+		yield return ("?###????????", [3, 2, 1], 506250);
 	}
 
 	public static IEnumerable<(string row, List<int> groups, int expected)> GetArrangementCases()
@@ -55,7 +72,6 @@ public class Day12Test
 		Assert.That(actual, Is.EqualTo("21"));
 	}
 
-	//[Ignore("Not Finished")]
 	[Test]
 	public void Part2()
 	{
