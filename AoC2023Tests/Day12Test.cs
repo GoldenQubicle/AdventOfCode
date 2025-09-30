@@ -14,14 +14,14 @@ public class Day12Test
 	[TestCaseSource(nameof(GetArrangementCases))]
 	public void GetArrangementsShouldReturnCount((string row, List<int> groups, int expected) test)
 	{
-		var actual = Day12.RecurseArrangement(test.row, test.groups, 0, 0, new( ));
+		var actual = Day12.RecurseArrangement(test.row, test.groups, 0, 0, [ ]);
 		Assert.That(actual, Is.EqualTo(test.expected));
 	}
 
 	[TestCaseSource(nameof(Part2_GetArrangementCases))]
 	public void Part2_GetArrangementsShouldReturnCount((string row, List<int> groups, int expected) test)
 	{
-		var actual = Day12.RecurseArrangement(test.row, test.groups, 0, 0);
+		var actual = Day12.RecurseArrangement(test.row, test.groups, 0, 0, [ ], isPart2: true);
 		Assert.That(actual, Is.EqualTo(test.expected));
 	}
 
