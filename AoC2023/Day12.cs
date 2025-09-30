@@ -24,36 +24,45 @@ public class Day12 : Solution
 	public static long RecurseArrangement(string row, List<int> groups, int rowIdx, int groupIdx, Dictionary<(string, string), long> cache, bool isPart2 = false)
 	{
 		//make rowIdx & groupIdx local variables based on modulo 
-		var rIdx = rowIdx % row.Length;
+		//a couple of things; for part2 we want to fit groups on row + '?' + row 
+		//so the modulo needs to be based with the additional ? in mind
+
+		var rIdx = rowIdx % (row.Length + 1); // take the additional ? into account for part 2
 		var gIdx = groupIdx % groups.Count;
-		var rowLength = isPart2 ? (row.Length * 5) - 1 : row.Length;
+
+		var rowLength = isPart2 ? (row.Length * 5) + 4 : row.Length;
 		var groupsCount = isPart2 ? groups.Count * 5 : groups.Count;
 
 		if (rowIdx >= rowLength) //no more springs left to check
-			return groupIdx == groups.Count ? 1 : 0; //check if used up all groups
+			return groupIdx == groupsCount ? 1 : 0; //check if used up all groups
 
-		var key = (row[rowIdx..], string.Join('-', groups.Skip(groupIdx)));
+		var toCheck = rowIdx < (row.Length * 4) + 3 && isPart2
+			? row + '?' + row
+			: row;
+
+		var key = (toCheck[rIdx..], string.Join('-', groups.Skip(groupIdx)));
 
 		if (cache.TryGetValue(key, out var result))
 			return result;
 
 		//no more groups left to fit
 		if (groupIdx >= groupsCount)
-			return row[rowIdx..].Contains('#') ? 0 : 1; // check for any remaining damaged spring
+			return toCheck[rIdx..].Contains('#') ? 0 : 1; // check for any remaining damaged spring
 
 		var arrangements = 0L;
 
-		if (row[rowIdx] is '.' or '?')
+		if (toCheck[rIdx] is '.' or '?')
 			arrangements += RecurseArrangement(row, groups, rowIdx + 1, groupIdx, cache, isPart2);
 
 		var groupSize = groups[gIdx];
-		var end = rowIdx + groupSize;
+		var unfoldedEnd = rowIdx + groupSize; 
+		var rowEnd = rIdx + groupSize;
 
 		//group too big for remaining row OR operational spring in the way OR doesn't have at least one operation spring after group
-		if (rowIdx + groupSize > rowLength || row[rowIdx..end].Contains('.') || end < rowLength && row[end] == '#')
+		if (unfoldedEnd > rowLength || toCheck[rIdx..rowEnd].Contains('.') || unfoldedEnd < rowLength && toCheck[rowEnd] == '#')
 			arrangements += 0;
 		else
-			arrangements += RecurseArrangement(row, groups, end + 1, groupIdx + 1, cache, isPart2);
+			arrangements += RecurseArrangement(row, groups, unfoldedEnd + 1, groupIdx + 1, cache, isPart2);
 
 		cache[key] = arrangements;
 
