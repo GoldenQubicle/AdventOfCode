@@ -30,23 +30,23 @@ public class Day12 : Solution
 		var rIdx = rowIdx % (row.Length + 1); // take the additional ? into account for part 2
 		var gIdx = groupIdx % groups.Count;
 
-		var rowLength = isPart2 ? (row.Length * 5) + 4 : row.Length;
-		var groupsCount = isPart2 ? groups.Count * 5 : groups.Count;
+		var unfoldedLength = isPart2 ? (row.Length * 5) + 4 : row.Length;
+		var unfoldedGroupsCount = isPart2 ? groups.Count * 5 : groups.Count;
 
-		if (rowIdx >= rowLength) //no more springs left to check
-			return groupIdx == groupsCount ? 1 : 0; //check if used up all groups
+		if (rowIdx >= unfoldedLength) //no more springs left to check
+			return groupIdx == unfoldedGroupsCount ? 1 : 0; //check if used up all groups
 
-		var toCheck = rowIdx < (row.Length * 4) + 3 && isPart2
+		var toCheck = rowIdx <= (row.Length * 4) + 3 && isPart2
 			? row + '?' + row
 			: row;
 
-		var key = (toCheck[rIdx..], string.Join('-', groups.Skip(groupIdx)));
+		var key = (toCheck[rIdx..], string.Join('-', groups.Skip(gIdx)));
 
 		if (cache.TryGetValue(key, out var result))
 			return result;
 
 		//no more groups left to fit
-		if (groupIdx >= groupsCount)
+		if (groupIdx >= unfoldedGroupsCount)
 			return toCheck[rIdx..].Contains('#') ? 0 : 1; // check for any remaining damaged spring
 
 		var arrangements = 0L;
@@ -59,7 +59,7 @@ public class Day12 : Solution
 		var rowEnd = rIdx + groupSize;
 
 		//group too big for remaining row OR operational spring in the way OR doesn't have at least one operation spring after group
-		if (unfoldedEnd > rowLength || toCheck[rIdx..rowEnd].Contains('.') || unfoldedEnd < rowLength && toCheck[rowEnd] == '#')
+		if (unfoldedEnd > unfoldedLength || toCheck[rIdx..rowEnd].Contains('.') || unfoldedEnd < unfoldedLength && toCheck[rowEnd] == '#')
 			arrangements += 0;
 		else
 			arrangements += RecurseArrangement(row, groups, unfoldedEnd + 1, groupIdx + 1, cache, isPart2);
