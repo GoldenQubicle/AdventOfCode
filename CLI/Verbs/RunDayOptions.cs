@@ -20,7 +20,7 @@ public class RunDayOptions : BaseOptions
 		const string mode = "Release";
 #endif
 
-		var dir = $"{RootPath}\\AoC{Year}\\bin\\{mode}\\net8.0";
+		var dir = $"{RootPath}\\AoC{Year}\\bin\\{mode}\\net9.0";
 		var assemblyPath = $"{dir}\\AoC{Year}.dll";
 
 		if ( !Directory.Exists(dir) )
